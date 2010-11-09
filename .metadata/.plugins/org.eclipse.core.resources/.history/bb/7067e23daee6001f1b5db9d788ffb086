@@ -1,0 +1,88 @@
+<?PHP
+	class user{
+		var $bizname;
+		var $name;
+		var $family;
+		var $logedin;
+		
+		function __construct($data){
+			$this->bizname=&$data["bizname"];
+			$this->name=&$data["name"];
+			$this->family=&$data["family"];
+			$this->logedin=&$data["logedin"];
+		}
+		
+		function logout(){
+			$this->name="no-name";
+			$this->family="no-family";
+			$this->logedin=false;
+		}
+
+		function login($n,$f){
+			$this->name=$n;
+			$this->family=$f;
+			$this->logedin=true;
+		}
+
+		function message($to,$msg,$info){
+			if($to!=$this->bizname)
+				return;
+			if($msg=="login"){
+				$this->login($info['name'],$info['family']);
+			}
+			elseif($msg=="logout"){
+				$this->logout();
+			}
+			$this->show();
+		}
+
+		function show(){
+			if($this->logedin==true)
+				$this->show_logedin();
+			else
+				$this->show_public();
+		}
+
+		function show_content(){
+			if($this->logedin==true)
+				$this->show_logedin_content();
+			else
+				$this->show_public_content();
+		}
+
+		private function show_public(){
+			echo "<div id=\"".$this->bizname."\">";
+			$this->show_public_content();
+			echo "</div>";			
+		}
+
+		private function show_public_content(){
+			echo "<FORM method=\"POST\" name=\"".$this->bizname."\">";
+			?>
+					Name: <INPUT type="input" name="name"><br>
+					Family: <INPUT type="input" name="family"><br>
+					<INPUT type="hidden" name="message" value="login">
+					<?="<INPUT type=\"hidden\" name=\"this\" value=\"".$this->bizname."\">"?>
+					<?="<input value=\"Login\" type=\"button\" onclick='JavaScript:sndmsg(\"".$this->bizname."\")'>"?>
+				</FORM>
+			<?PHP
+		}
+
+		private function show_logedin(){
+			echo "<div id=\"".$this->bizname."\">";
+			$this->show_logedin_content();
+			echo "</div>";
+		}
+
+		private function show_logedin_content(){
+			echo "Welcome ".$this->name." ".$this->family."<br>";
+			echo "<FORM method=\"POST\" name=\"".$this->bizname."\">";
+			?>
+					<INPUT type="hidden" name="message" value="logout">
+					<?="<INPUT type=\"hidden\" name=\"this\" value=\"".$this->bizname."\">"?>
+					<?="<input value=\"Logout\" type=\"button\" onclick='JavaScript:sndmsg(\"".$this->bizname."\")'>"?>
+				</FORM>
+			<?PHP
+		}
+	}
+?>

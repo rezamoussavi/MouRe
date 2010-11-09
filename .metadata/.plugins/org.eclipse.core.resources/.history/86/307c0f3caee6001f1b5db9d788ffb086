@@ -1,0 +1,40 @@
+<?PHP	
+	require_once "user.php";
+	require_once "usercounter.php";
+
+	class os{
+		var $user1;
+		var $user2;
+		var $usercounter;
+
+		function __construct($data){
+			if(!isset($data["user1"])) 
+				$data["user1"]["bizname"]="user1";
+			$this->user1=new user(&$data["user1"]);
+			if(!isset($data["user2"])) 
+				$data["user2"]["bizname"]="user2";
+			$this->user2=new user(&$data["user2"]);
+			if(!isset($data["usercounter"])) 
+				$data["usercounter"]["bizname"]="usercounter";
+			$data["usercounter"]["user1"]=&$this->user1;
+			$data["usercounter"]["user2"]=&$this->user2;
+			$this->usercounter=new usercounter(&$data["usercounter"]);
+		}
+				
+		function show(){
+			echo "Welcome to the site<br><hr>";
+			$this->user1->show();
+			echo "<br><hr>";
+			$this->user2->show();
+			echo "<br><hr>other Bizes go here...";
+			$this->usercounter->show();
+			echo "<br><br><br><hr>copyright - MouRe";
+		}
+
+		function message($to,$msg,$info){
+			$this->user1->message($to,$msg,$info);
+			$this->user2->message($to,$msg,$info);
+			$this->usercounter->message($to,$msg,$info);
+		}
+	}
+?>

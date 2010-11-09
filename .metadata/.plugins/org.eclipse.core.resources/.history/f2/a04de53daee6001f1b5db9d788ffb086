@@ -1,0 +1,51 @@
+<?PHP
+	require_once "user.php";
+
+	class usercounter{
+		var $bizname;
+		var $counter;
+		var $user1;
+		var $user2;
+		
+		function __construct($data){
+			$this->counter=&$data["counter"];
+			$this->bizname=&$data["bizname"];
+			$this->user1=&$data["user1"];
+			$this->user2=&$data["user2"];
+			$this->count();
+		}
+		
+		function message($to,$message,$info){
+			if($to!=$this->bizname)
+				return;
+			if($message=="refresh"){
+				$this->count();
+				$this->show();
+			}
+		}
+
+		function count(){
+			$this->counter=0;
+			if($this->user1->logedin)
+				$this->counter++;
+			if($this->user2->logedin)
+				$this->counter++;
+		}
+		function show(){
+			echo "<div id=\"".$this->bizname."\">";
+			$this->show_content();
+			echo "</div>";
+		}
+		
+		function show_content(){
+			echo "<hr> ".$this->counter." users logedin ";
+			echo "<FORM method=\"POST\" name=\"".$this->bizname."\">";
+			?>
+					<INPUT type="hidden" name="message" value="refresh">
+					<?="<INPUT type=\"hidden\" name=\"this\" value=\"".$this->bizname."\">"?>
+					<?="<input value=\"refresh\" type=\"button\" onclick='JavaScript:sndmsg(\"".$this->bizname."\")'>"?>
+				</FORM>
+			<?PHP
+		}
+	}
+?>

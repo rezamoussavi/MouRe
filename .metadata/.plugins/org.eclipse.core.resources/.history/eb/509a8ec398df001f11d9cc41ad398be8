@@ -1,0 +1,11 @@
+<?php
+	class test{
+		$name="";
+		function __construct($n){
+			$name=$n;
+		}
+		function show(){
+			echo "show: ",$name;
+		}
+	}
+?>
