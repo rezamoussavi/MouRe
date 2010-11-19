@@ -3,7 +3,8 @@
 	$UN="salamroo_os";
 	$Pass="salamroo_os_pass";
 	$DataBase="salamroo_os";
-	$osdbcon = mysql_connect ("localhost", $UN, $Pass);
+	$ServerAddress="localhost";
+	$osdbcon = mysql_connect ($ServerAddress, $UN, $Pass);
 	if ($osdbcon) 
 	{
 		if(!mysql_select_db($DataBase,$osdbcon))
