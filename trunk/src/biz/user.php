@@ -3,7 +3,13 @@
 //DB Info : Specify what informaton this BIZ is going to use from DB
 
 
-
+/*database attributes
+ * userUID
+ * email
+ * hashPassword
+ * verificationCode
+ * biznessUID
+ */
 
 class user {
 
@@ -122,7 +128,8 @@ class user {
     /*     * **************************General Biz functionality*************************** */
 
     function login($email, $password) {
-        query("SELECT * FROM user_info WHERE email LIKE '" . $email . "' AND password LIKE '" . $password . "' AND biznessUID= '" . osBackBiznessUID() . "' ;");
+        $hashPassword = sha1Hash($email,$password);
+        query("SELECT * FROM user_info WHERE email LIKE '" . $email . "' AND hashPassword LIKE '" . $hashPassword. "' AND biznessUID= '" . osBackBiznessUID() . "' ;");
         //query("SELECT * FROM user_info;");
         if ($row = fetch()) {
             $this->email = $email;
@@ -149,13 +156,14 @@ class user {
             }
         } else {
             $vcode = $this->createVerificationCode();
-            query("INSERT INTO user_info (email,password,verificationCode,biznessUID) VALUES ('" . $email . "', '" . $password . "','" . $vcode . "','".osBackBiznessUID()."');");
+            $hashPassword = sha1Hash($email,$password);
+            query("INSERT INTO user_info (email,hashPassword,verificationCode,biznessUID) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBiznessUID()."');");
             $this->sendEmail($email, "Welcome,Please Verify", $vcode);
             return TRUE; //user added succefully
         }
     }
 
-    function backUID($email) {
+    function backUIDByEmail($email) {
         query("SELECT * FROM user_info WHERE email LIKE '" . $email . "' ;");
         if ($row = fetch()) {
             return $row["userUID"];
@@ -169,7 +177,8 @@ class user {
         if ($row = fetch()) {
             if ($email == $row["email"]) {
                 $password = $this->generateRandomPassword();
-                query("UPDATE user_info SET password = '" . $password . "' WHERE email = '" . $email . "';");
+                $hashPassword = hsa1Hash($email,$password);
+                query("UPDATE user_info SET hashPassword = '" . $hashPassword . "' WHERE email = '" . $email . "';");
                 $this->sendEmail($email, "New Password", $password);
                 return TRUE; //email succefully sent
             }
@@ -179,6 +188,10 @@ class user {
 
     /*     * **************************Internal Biz functionality*************************** */
 
+    private function sha1Hash($email,$password) {
+        $hashPassword = sha1($email.$password);
+        return $hashPassword;
+    }
     private function sendEmail($to, $title, $msgToSend) {
         mail($to, $title, $msgToSend, "From: Our Server");
     }
