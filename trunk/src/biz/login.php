@@ -4,7 +4,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once '../biz/user/user.php';
+require_once '../biz/user.php';
 
 class login {
 
@@ -38,7 +38,7 @@ class login {
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
         if (!(isset($data['user_show']))) {
-            $data['user_show']['fullname'] = ($this->_bizbankname . "_" . "user_show"); //$this->user
+            $data['user_show']['fullname'] = ($this->_bizname . "_" . "user_show"); //$this->user
             $data['user_show']['bizname'] = 'user_show';
             $data['user_show']['parent'] = $this;
         } else {
@@ -66,7 +66,7 @@ class login {
         switch ($message) {
 
             case "login":
-                $this->login($info['email'], $info['password'], $info['biznessUID']);
+                $this->user_show->login($info['email'], $info['password']);
                 break;
             case "logout":
                 $this->logout();
@@ -80,14 +80,14 @@ class login {
                 ;
             case "validate":
                 if ($this->validate($info["validationCode"])) {
-                    $this->login($info['email'], $info['password'], $info['biznessUID']);
+                    $this->login($info['email'], $info['password']);
                 }
                 break;
             default:
                 break;
         }
         // handle possible messages for this
-        show();
+        $this->show();
     }
 
     function broadcast($msg, $info) {
@@ -96,7 +96,7 @@ class login {
 
     /*     * **************************HTML HANDELING*************************** */
 
-    function showLogin($param) {
+    function showLoginForm() {
 
         echo <<<EOF
             <FORM name = "$this->_fullname" method = "post">
@@ -114,7 +114,15 @@ EOF;
     }
 
     function show() {
-        $this->user_show->show();
+        if($this->user_show->loggedIn == true)
+        {
+            echo "Welcome!";
+        }
+        else
+        {
+            echo "NOOO!";
+            $this->showLoginForm();
+        }
     }
 
 }

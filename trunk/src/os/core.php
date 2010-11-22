@@ -7,19 +7,19 @@
 		$_SESSION['bizbank']=array();
 	}
 
-	function os_broadcast($msg,$info){
+	function osBroadcast($msg,$info){
 		global $bizbank;
 		$bizbank->broadcast($msg,$info);
 	}
-	function os_message($to,$msg,$info){
+	function osMessage($to,$msg,$info){
 		global $bizbank;
 		$bizbank->message($to,$msg,$info);
 	}
-	function os_back_bizness(){
+	function osBackBizness(){
 		global $bizbank;
 		return $bizbank->bizness_id;
 	}
-	function os_back_bizbank(){
+	function osBackBizbank(){
 		global $bizbank;
 		return $bizbank->bizbank_id;
 	}

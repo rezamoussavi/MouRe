@@ -21,7 +21,7 @@ class user {
     //CALSS FIELDS
     var $userUID;
     var $email;
-    var $loggedin;
+    var $loggedIn;
 
     //FIELDS WHICH HAVE TYPE OF OTHER BIZES
 
@@ -128,19 +128,23 @@ class user {
     /*     * **************************General Biz functionality*************************** */
 
     function login($email, $password) {
-        $hashPassword = sha1Hash($email,$password);
-        query("SELECT * FROM user_info WHERE email LIKE '" . $email . "' AND hashPassword LIKE '" . $hashPassword. "' AND biznessUID= '" . osBackBiznessUID() . "' ;");
+        $hashPassword = $this->sha1Hash($email,$password);
+        
+        query($s);
         //query("SELECT * FROM user_info;");
+        echo $s;
+        
         if ($row = fetch()) {
             $this->email = $email;
-            $this->loggedin = true;
+            $this->loggedIn = true;
             $this->userUID = $row["userUID"];
-            if ($row["validationCode"] == '0') {
+            if ($row["verificationCode"] == '0') {
                 return 1; // login succefull
             }
             return -1; //login succefull but need to validate
         }
-        query("SELECT * FROM user_info WHERE email LIKE '" . $email . "' AND biznessUID= '" . osBackBiznessUID() . "';");
+        
+        query("SELECT * FROM user_info WHERE email='" . $email . "' AND biznessUID= '" . osBackBizness() . "';");
         if ($row = fetch()) {
             $this->email = $email;
             return -2; //email exists but password was wrong
@@ -149,22 +153,22 @@ class user {
     }
 
     function add($email, $password) {
-        query("SELECT * FROM user_info WHERE email LIKE '" . $email . "' ;");
+        query("SELECT * FROM user_info WHERE email='" . $email . "' ;");
         if ($row = fetch()) {
             if ($email == $row["email"]) {
                 return FALSE; //user already exist
             }
         } else {
             $vcode = $this->createVerificationCode();
-            $hashPassword = sha1Hash($email,$password);
-            query("INSERT INTO user_info (email,hashPassword,verificationCode,biznessUID) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBiznessUID()."');");
+            $hashPassword = $this->sha1Hash($email,$password);
+            query("INSERT INTO user_info (email,password,verificationCode,biznessUID) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."');");
             $this->sendEmail($email, "Welcome,Please Verify", $vcode);
             return TRUE; //user added succefully
         }
     }
 
     function backUIDByEmail($email) {
-        query("SELECT * FROM user_info WHERE email LIKE '" . $email . "' ;");
+        query("SELECT * FROM user_info WHERE email='" . $email . "' ;");
         if ($row = fetch()) {
             return $row["userUID"];
         } else {
@@ -173,12 +177,12 @@ class user {
     }
 
     function sendNewPassword($email) {
-        query("SELECT * FROM user_info WHERE email LIKE '" . $email . "';");
+        query("SELECT * FROM user_info WHERE email='" . $email . "';");
         if ($row = fetch()) {
             if ($email == $row["email"]) {
                 $password = $this->generateRandomPassword();
                 $hashPassword = hsa1Hash($email,$password);
-                query("UPDATE user_info SET hashPassword = '" . $hashPassword . "' WHERE email = '" . $email . "';");
+                query("UPDATE user_info SET password = '" . $hashPassword . "' WHERE email = '" . $email . "';");
                 $this->sendEmail($email, "New Password", $password);
                 return TRUE; //email succefully sent
             }
@@ -221,7 +225,7 @@ class user {
     /*     * **************************HTML HANDELING*************************** */
 
     function show() {
-
+        echo "user show lol";
     }
 
 //	function show_notLoggedin() {

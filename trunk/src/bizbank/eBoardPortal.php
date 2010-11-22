@@ -4,7 +4,7 @@
 
 
 
-require_once '../biz/user/login.php';
+require_once '../biz/login.php';
 
 class eBoardPortal {
 
@@ -13,8 +13,11 @@ class eBoardPortal {
 
     /*     * **************************FIELDS*************************** */
     //CALSS FIELDS
+    var $bizness_id;
+    
     //FIELDS WHICH HAVE TYPE OF OTHER BIZES
     var $login;
+    
 
 
     /*     * **************************CONSTRUCTOR*************************** */
@@ -40,6 +43,7 @@ class eBoardPortal {
             $data['login']['parent'] = $this;
         }
         $this->login = new login(&$data['login']);
+        $this->bizness_id = 1;
     }
 
     /*     * **************************MESSAGE HANDELING*************************** */
