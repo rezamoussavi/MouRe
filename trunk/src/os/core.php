@@ -1,4 +1,4 @@
-<?PHP
+<?php
 	if(isset($_GET['kill']))
 		unset($_SESSION['bizbank']);
 
