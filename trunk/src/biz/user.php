@@ -130,9 +130,9 @@ class user {
     function login($email, $password) {
         $hashPassword = $this->sha1Hash($email,$password);
         
+        $s = "SELECT * FROM user_info WHERE email='" . $email . "' AND password='" . $hashPassword . "'  AND biznessUID= '" . osBackBizness() . "';";
         query($s);
         //query("SELECT * FROM user_info;");
-        echo $s;
         
         if ($row = fetch()) {
             $this->email = $email;
