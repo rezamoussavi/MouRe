@@ -71,13 +71,24 @@ class login {
             case "logout":
                 $this->logout();
                 break;
-            case "forgetPassword":
+            case "forgotPassword":
+                $this->show("forgotPassword");
+                break;
+            case "doForgetPassword":
+                $this->show("login");
                 $this->sendNewPassword();
                 break;
-            case "signup":
-                $this->add($info['email'], $info['password']);
+            case "doSignup":
+                if($this->user_show->add($info['email'], $info['password'])){
+                    $this->show("validation");
+                }else{
+                    $this->show("userExists");
+                }
+            case "signupPage":
+                $this->show("signupPage");
                 break;
-                ;
+            case "validation":
+                $this->show("validation");
             case "validate":
                 if ($this->validate($info["validationCode"])) {
                     $this->login($info['email'], $info['password']);
@@ -87,7 +98,7 @@ class login {
                 break;
         }
         // handle possible messages for this
-        $this->show();
+        //$this->show("login");
     }
 
     function broadcast($msg, $info) {
@@ -96,33 +107,131 @@ class login {
 
     /*     * **************************HTML HANDELING*************************** */
 
-    function showLoginForm() {
+    function show($showMsg) {
+//        var $formName="a";
+        switch ($showMsg) {
+            case "login":
 
-        echo <<<EOF
-            <FORM name = "$this->_fullname" method = "post">
-                email : <INPUT type="input" name="email"><br>
-                Password : <INPUT type="password" name="password"><br>
-                Confirm Password : <INPUT type="password" name="password"><br>
-                <INPUT type="hidden" name="_message" value="login">
-                <INPUT type = "hidden" name="_target" value="$this->_fullname">
-                <INPUT value ="Login" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
-            </FORM>
+//                echo <<<EOF
+                    echo "<div id = \"".$this->_fullname."\">";
+//EOF;
+             $formName = $this->_fullname."Login";
+                echo <<<EOF
+            <form name = "$formName" method = "post" >
+                email : <input type="input" name="email"><br/>
+                Password : <input type="password" name="password"><br/>
+                Confirm Password : <input type="password" name="password"><br />
+                <input type="hidden" name="_message" value="login" />
+                <input type = "hidden" name="_target" value="$this->_fullname">
+                <input value ="Login" type = "button" onclick = 'JavaScript:sndmsg("$formName")'><br />
+            </form>
+EOF;
+             $formName = $this->_fullname."signup";
+                echo <<<EOF
+            <form name = "$formName" method = "post" >
+                new user? <br />
+                <input type="hidden" name="_message" value="signupPage" />
+                <input type = "hidden" name="_target" value="$this->_fullname">
+                <input value ="signup" type = "button" onclick = 'JavaScript:sndmsg("$formName")'><br />
+            </form>
+EOF;
+                $formName = $this->_fullname."forgotPassword";
+                echo <<<EOF
+            <form name = "$formName" method = "post" >
+                forgot password ? <br />
+                <input type="hidden" name="_message" value="forgotPassword" />
+                <input type = "hidden" name="_target" value="$this->_fullname">
+                <input value ="send me new password" type = "button" onclick = 'JavaScript:sndmsg("$formName")'>
+            </form>
+EOF;
+            echo "</div>";
+
+
+
+
+
+                break;
+            case ("signupPage"):
+                echo <<<EOF
+            <div id = "$this->_fullname">
+            <form name = "$this->_fullname" method = "post" >
+                  sign up page!<br />
+                email : <input type="input" name="email"><br/>
+                Password : <input type="password" name="password"><br/>
+                Confirm Password : <input type="password" name="password"><br />
+                <input type="hidden" name="_message" value="doSignup" />
+                <input type = "hidden" name="_target" value="$this->_fullname">
+                <input value ="sign me up" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
+            </form>
+            </div>
 
 
 
 EOF;
+                break;
+            case ("forgotPassword"):
+                echo <<<EOF
+            <div id = "$this->_fullname">
+            <form name = "$this->_fullname" method = "post" >
+                email : <input type="input" name="email"><br/>
+                <input type="hidden" name="_message" value="doForgotPassword" />
+                <input type = "hidden" name="_target" value="$this->_fullname">
+                <input value ="send me my new password" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
+            </form>
+            </div>
+
+
+
+EOF;
+                break;
+            case ("userExists"):
+                echo <<<EOF
+            <div id = "$this->_fullname">
+            <form name = "$this->_fullname" method = "post" >
+                User already exists<br />
+                Please choose another email<br />
+                <input type="hidden" name="_message" value="signup" />
+                <input type = "hidden" name="_target" value="$this->_fullname">
+                <input value ="choose new email" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
+            </form>
+            </div>
+EOF;
+                break;
+            case ("validation"):
+                echo <<<EOF
+            <div id = "$this->_fullname">
+            <form name = "$this->_fullname" method = "post" >
+                do validation!<br />
+                <input type="hidden" name="_message" value="signup" />
+                <input type = "hidden" name="_target" value="$this->_fullname">
+                <input value ="choose new email" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
+            </form>
+            </div>
+EOF;
+
+
+            break;
+            default:
+                break;
+        }
     }
 
-    function show() {
-        if($this->user_show->loggedIn == true)
-        {
-            echo "Welcome!";
-        }
-        else
-        {
-            echo "NOOO!";
-            $this->showLoginForm();
-        }
+    function showLoginForm() {
+        $this->show("login");
+//        echo <<<EOF
+//            <form name = "$this->_fullname" method = "post" />
+//                email : <input type="input" name="email"><br/>
+//                Password : <input type="password" name="password"><br/>
+//                Confirm Password : <input type="password" name="password"><br />
+//                <input type="hidden" name="_message" value="login" />
+//                <input type = "hidden" name="_target" value="$this->_fullname">
+//                <input value ="Login" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
+//            </form>
+//
+//
+//
+//
+//EOF;
     }
 
 }
