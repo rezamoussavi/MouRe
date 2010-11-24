@@ -1,0 +1,13 @@
+body
+{
+   color: #555;
+   font-family: sans-serif;
+   font-size: 12px;
+}
+
+#content
+{
+   margin: auto;
+   width: 800px;
+   border: 1px solid #eee;
+}

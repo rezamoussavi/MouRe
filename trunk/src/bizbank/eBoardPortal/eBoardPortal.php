@@ -2,8 +2,6 @@
 
 //DB Info : Specify what informaton this BIZ is going to use from DB
 
-
-
 require_once '../biz/login/login.php';
 
 class eBoardPortal {
@@ -72,7 +70,35 @@ class eBoardPortal {
     /*     * **************************HTML HANDELING*************************** */
 
     function show() {
+
+    /****** START OF HTML *******/
+    echo <<<EOF
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../bizbank/eBoardPortal/layout.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+EOF;
+    /****************************/
+    
+    echo <<<EOF
+    <div id="content">
+EOF;
         $this->login->showLoginForm();
+
+    echo <<<EOF
+    </div>
+EOF;
+
+    /****** END OF HTML *******/        
+    echo <<<EOF
+	</body>
+	</html>
+EOF;
+    /**************************/
     }
 
 }
