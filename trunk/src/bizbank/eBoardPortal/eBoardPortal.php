@@ -70,44 +70,23 @@ class eBoardPortal {
     /*     * **************************HTML HANDELING*************************** */
 
     function show() {
-    echo '<?xml version="1.0" encoding="UTF-8"?>';     
-    ?>
-
-	
-	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
+    
+    //print out the html head
+    echo '<?xml version="1.0" encoding="UTF-8"?>
+            <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+            <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+            <head>
    
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link href="../bizbank/eBoardPortal/layout.css" rel="stylesheet" type="text/css" />
-	</head>
-	<body>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <link href="../bizbank/eBoardPortal/layout.css" rel="stylesheet" type="text/css" />
+            </head>';
 
+    //include the actual page content
+    include 'eBoardPortal_view.php';
    
-    
-  
-    <div id="contentholder">
-        <div class="content">
-        <div class="toprow">
-            <div class="login">
-            
-            <?php $this->login->show() ?>
-            
-            </div>
-    
-            <div class="banner">
-                <h1>A Board Name</h1>
-            </div>
-    
-            <div class="helpinfo"> hej 3
-            </div>
-        </div>
-        </div>
-    </div>        
-    </body></html>
+    //close html document
+    echo '</html>';
 
-    
-<?php    
     }
 
 }
