@@ -46,7 +46,7 @@ class user {
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
         $this->email = &$data["email"];
-        $this->loggedin = &$data["loggedin"];
+        $this->loggedIn = &$data["loggedin"];
         $this->userUID = &$data["userUID"];
     }
 
@@ -98,11 +98,11 @@ class user {
     /*     * **************************Especial Biz functionality*************************** */
 
     function logout() {
-        $this->loggedin = false;
+        $this->loggedIn = 0;
     }
 
     function isLoggedin() {
-        return $this->loggedin;
+        return $this->loggedIn;
     }
 
     function backUID($email) {
@@ -136,12 +136,14 @@ class user {
         
         if ($row = fetch()) {
             $this->email = $email;
-            $this->loggedIn = true;
             $this->userUID = $row["userUID"];
             if ($row["verificationCode"] == '0') {
+                $this->loggedIn = 1;
                 return 1; // login succefull
+            } else {
+                $this->loggedIn = 2;
+                return 2; //login succefull but need to validate
             }
-            return -1; //login succefull but need to validate
         }
         
         query("SELECT * FROM user_info WHERE email='" . $email . "' AND biznessUID= '" . osBackBizness() . "';");
@@ -149,7 +151,8 @@ class user {
             $this->email = $email;
             return -2; //email exists but password was wrong
         }
-        return 0; //login failed
+        $this->loggedIn = -1;
+        return -1; //login failed
     }
 
     function add($email, $password) {

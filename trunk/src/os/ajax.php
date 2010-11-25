@@ -30,4 +30,4 @@ function getquerystring(bizname) {
 }
 </script>
 <div id="old_os_message_box" style="visibility:hidden"> </div>
-<div id="os_message_box" > </div>
+<div id="os_message_box" style="visibility:hidden"> </div>

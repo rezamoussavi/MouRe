@@ -16,7 +16,8 @@ class login {
     /*     * **************************FIELDS*************************** */
     //CALSS FIELDS
     //FIELDS WHICH HAVE TYPE OF OTHER BIZES
-    var $user_Show;
+    var $userShow;
+    //var $loginStatus;
 
 
     /*     * **************************CONSTRUCTOR*************************** */
@@ -42,7 +43,7 @@ class login {
             $data['user_show']['bizname'] = 'user_show';
             $data['user_show']['parent'] = $this;
         } else {
-            $this->user_show = new user(&$data['user_show']);
+            $this->userShow = new user(&$data['user_show']);
         }
     }
 
@@ -57,19 +58,21 @@ class login {
       } */
 
     function message($to, $message, $info) {
+
         if ($to != $this->_fullname) {
             //pass msg to childs
-
-
             return;
         }
+        
         switch ($message) {
 
             case "login":
-                $this->user_show->login($info['email'], $info['password']);
+                //If the user is already logged in, just break. Otherwise, log in.
+                $this->userShow->login($info['email'], $info['password']);
                 break;
+                    
             case "logout":
-                $this->logout();
+                $this->userShow->logout();
                 break;
             case "forgotPassword":
                 $this->show("forgotPassword");
@@ -79,7 +82,7 @@ class login {
                 $this->sendNewPassword();
                 break;
             case "doSignup":
-                if($this->user_show->add($info['email'], $info['password'])){
+                if($this->userShow->add($info['email'], $info['password'])){
                     $this->show("validation");
                 }else{
                     $this->show("userExists");
@@ -98,34 +101,172 @@ class login {
                 break;
         }
         // handle possible messages for this
-        //$this->show("login");
+        $this->show();
     }
 
     function broadcast($msg, $info) {
-        $this->user_show->broadcast(&$msg, &$info);
+        $this->userShow->broadcast(&$msg, &$info);
     }
 
     /*     * **************************HTML HANDELING*************************** */
 
-    function show($showMsg) {
-//        var $formName="a";
+    function show()
+    {
+        $html;
+        switch($this->userShow->loggedIn)
+        {
+            // "no"
+            case 0:
+                $html = $this->showLoginForm();
+                break;
+            case -1:
+                $html = $this->showLoginForm();
+                break;
+            
+            // "yes"
+            case 1:
+                $html = $this->showWelcomeMsg();
+                break;
+            case 2:
+                $html = $this->showWelcomeMsg();
+                break;
+            
+            default:
+            echo $this->userShow->loggedIn;
+                $html = "error in show()";
+                break;
+        }
+        // "return"
+        echo $html;
+    }
+    
+    function showLoginForm()
+    {
+        //some data...
+        $formName = $this->_fullname."login";
+        
+        //pack html variable
+        $html =
+        
+        '<div id = "' . $this->_fullname . '">
+        <h2>Login</h2>
+        <form name="' . $formName . '" method="post" >
+        
+            
+            <div style="width: 50px; margin-top: 10px;">email </div> <input type="input" name="email" style="border: 1px solid #666; background-color: #fff;"><br />
+            <div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" style="border: 1px solid #666; background-color: #fff;"> <br />
+            
+            <input type="hidden" name="_message" value="login" />
+            <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+            
+            <input value ="Login" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 10px; border: 1px solid #666; background-color: #fff;"><br />
+        </form>
+        </div>';
+        return $html;
+    }
+    
+    function showWelcomeMsg()
+    {
+        //important to add the div thingy here so that the ajax knows what to update :)
+        $formName = $this->_fullname."logout";
+        $html = '<div id = "' . $this->_fullname . '">';
+        
+        switch($this->userShow->loggedIn)
+        {
+            case 0:
+                $html .= "shouldn't be possible...";
+                $this->showLoginForm();
+                break;
+            
+            case -1:
+                $html .= "Something went wrong, try again.";
+                $this->showLoginForm();
+                break;
+            
+            case 1:
+                $html .= "<h2>Welcome sir!</h2>";
+                $html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
+                        <form name="' . $formName . '" method="post" >
+        
+                        <input type="hidden" name="_message" value="login" />
+                        <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+            
+                        <input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 0px; border: 1px solid #666; background-color: #fff;"><br />
+                        </form>';
+                break;
+            
+            case 2:
+                $html .= "You need to validate your account. Check your email!";
+                $html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
+                        <form name="' . $formName . '" method="post" >
+        
+                        <input type="hidden" name="_message" value="login" />
+                        <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+            
+                        <input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 0px; border: 1px solid #666; background-color: #fff;"><br />
+                        </form>';
+                break;
+        }
+        
+        $html .= "</div>";
+        return $html;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/****  Deprecated stuff... ****/
+
+    function show2($showMsg) {
+
         switch ($showMsg) {
             case "login":
-
-//                echo <<<EOF
-                    echo "<div id = \"".$this->_fullname."\">";
-//EOF;
-             $formName = $this->_fullname."Login";
-                echo <<<EOF
-            <form name = "$formName" method = "post" >
-                email : <input type="input" name="email"><br/>
-                Password : <input type="password" name="password"><br/>
-                Confirm Password : <input type="password" name="password"><br />
+                
+            //some data...
+            $formName = $this->_fullname."Login";
+            
+            //pack html variable
+            $html =
+            
+            '<div id = "' . $this->_fullname . '">
+            <h2>Login</h2>
+            <form name="' . $formName . '" method="post" >
+            
+                
+                <div style="width: 50px; margin-top: 10px;">email </div> <input type="input" name="email" style="border: 1px solid #666; background-color: #fff;"><br />
+                <div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" style="border: 1px solid #666; background-color: #fff;"> <br />
+                
                 <input type="hidden" name="_message" value="login" />
-                <input type = "hidden" name="_target" value="$this->_fullname">
-                <input value ="Login" type = "button" onclick = 'JavaScript:sndmsg("$formName")'><br />
+                <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+                
+                <input value ="Login" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 10px; border: 1px solid #666; background-color: #fff;"><br />
             </form>
-EOF;
+            </div>';
+
+/*
              $formName = $this->_fullname."signup";
                 echo <<<EOF
             <form name = "$formName" method = "post" >
@@ -145,13 +286,15 @@ EOF;
             </form>
 EOF;
             echo "</div>";
-
-
-
-
-
+*/
+                echo $html;
                 break;
-            case ("signupPage"):
+            
+            case "welcome":
+                $html = "welcome!";
+                break;
+            
+            case "signupPage":
                 echo <<<EOF
             <div id = "$this->_fullname">
             <form name = "$this->_fullname" method = "post" >
@@ -164,12 +307,10 @@ EOF;
                 <input value ="sign me up" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
             </form>
             </div>
-
-
-
 EOF;
                 break;
-            case ("forgotPassword"):
+            
+            case "forgotPassword":
                 echo <<<EOF
             <div id = "$this->_fullname">
             <form name = "$this->_fullname" method = "post" >
@@ -179,12 +320,10 @@ EOF;
                 <input value ="send me my new password" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
             </form>
             </div>
-
-
-
 EOF;
                 break;
-            case ("userExists"):
+            
+            case "userExists":
                 echo <<<EOF
             <div id = "$this->_fullname">
             <form name = "$this->_fullname" method = "post" >
@@ -197,42 +336,36 @@ EOF;
             </div>
 EOF;
                 break;
-            case ("validation"):
-                echo <<<EOF
-            <div id = "$this->_fullname">
-            <form name = "$this->_fullname" method = "post" >
+            
+            case "validation":
+                $html = '
+                <div id = "' . $this->_fullname . '">
+                <form name = "' . $this->_fullname . '" method = "post" >
                 do validation!<br />
                 <input type="hidden" name="_message" value="signup" />
-                <input type = "hidden" name="_target" value="$this->_fullname">
-                <input value ="choose new email" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
-            </form>
-            </div>
-EOF;
-
-
+                <input type = "hidden" name="_target" value="' . $this->_fullname . '">
+                <input value ="choose new email" type = "button" onclick = \'JavaScript:sndmsg("' . $this->_fullname . '")\'>
+                </form>
+                </div>';
+                
+                echo $html;
             break;
+        
             default:
+            echo "Suppose something went wrong...";
                 break;
         }
+        
+        
+        //return $html;
     }
+    
 
+    /*
     function showLoginForm() {
-        $this->show("login");
-//        echo <<<EOF
-//            <form name = "$this->_fullname" method = "post" />
-//                email : <input type="input" name="email"><br/>
-//                Password : <input type="password" name="password"><br/>
-//                Confirm Password : <input type="password" name="password"><br />
-//                <input type="hidden" name="_message" value="login" />
-//                <input type = "hidden" name="_target" value="$this->_fullname">
-//                <input value ="Login" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
-//            </form>
-//
-//
-//
-//
-//EOF;
+        return $this->show("login");
     }
+    */
 
 }
 
