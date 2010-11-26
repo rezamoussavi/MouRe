@@ -117,10 +117,13 @@ class login {
         {
             // "no"
             case 0:
-                $html = $this->showLoginForm();
+                $html = $this->showLoginForm(0);
                 break;
             case -1:
-                $html = $this->showLoginForm();
+                $html = $this->showLoginForm(-1);
+                break;
+            case -2:
+                $html = $this->showLoginForm(-2);
                 break;
             
             // "yes"
@@ -132,7 +135,6 @@ class login {
                 break;
             
             default:
-            echo $this->userShow->loggedIn;
                 $html = "error in show()";
                 break;
         }
@@ -140,20 +142,35 @@ class login {
         echo $html;
     }
     
-    function showLoginForm()
+    function showLoginForm($mode)
     {
         //some data...
         $formName = $this->_fullname."login";
+        $modehtml = "";
+        switch($mode)
+        {
+            case 0:
+                $modehtml = "";
+                break;
+            case -1:
+                $modehtml = "Incorrect password!";
+                break;
+            case -2:
+                $modehtml = "Account does not exist";
+                break;
+            default:
+                $modehtml = "";
+                break;
+        }
         
         //pack html variable
         $html =
-        
         '<div id = "' . $this->_fullname . '">
         <h2>Login</h2>
+        <h5>' . $modehtml . '</h5>
         <form name="' . $formName . '" method="post" >
         
-            
-            <div style="width: 50px; margin-top: 10px;">email </div> <input type="input" name="email" style="border: 1px solid #666; background-color: #fff;"><br />
+            <div style="width: 50px; margin-top: 10px;">Email </div> <input type="input" name="email" style="border: 1px solid #666; background-color: #fff;"><br />
             <div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" style="border: 1px solid #666; background-color: #fff;"> <br />
             
             <input type="hidden" name="_message" value="login" />
@@ -175,12 +192,12 @@ class login {
         {
             case 0:
                 $html .= "shouldn't be possible...";
-                $this->showLoginForm();
+                $this->showLoginForm(0);
                 break;
             
             case -1:
                 $html .= "Something went wrong, try again.";
-                $this->showLoginForm();
+                $this->showLoginForm(-1);
                 break;
             
             case 1:
@@ -188,7 +205,7 @@ class login {
                 $html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
                         <form name="' . $formName . '" method="post" >
         
-                        <input type="hidden" name="_message" value="login" />
+                        <input type="hidden" name="_message" value="logout" />
                         <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
             
                         <input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 0px; border: 1px solid #666; background-color: #fff;"><br />
@@ -200,7 +217,7 @@ class login {
                 $html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
                         <form name="' . $formName . '" method="post" >
         
-                        <input type="hidden" name="_message" value="login" />
+                        <input type="hidden" name="_message" value="logout" />
                         <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
             
                         <input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 0px; border: 1px solid #666; background-color: #fff;"><br />

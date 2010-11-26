@@ -128,31 +128,45 @@ class user {
     /*     * **************************General Biz functionality*************************** */
 
     function login($email, $password) {
-        $hashPassword = $this->sha1Hash($email,$password);
         
-        $s = "SELECT * FROM user_info WHERE email='" . $email . "' AND password='" . $hashPassword . "'  AND biznessUID= '" . osBackBizness() . "';";
-        query($s);
-        //query("SELECT * FROM user_info;");
+        //First check if the email even exists in the database...
+        query("SELECT * FROM user_info WHERE email='" . $email . "' AND biznessUID= '" . osBackBizness() . "';");
+        $row = fetch();
         
-        if ($row = fetch()) {
-            $this->email = $email;
-            $this->userUID = $row["userUID"];
-            if ($row["verificationCode"] == '0') {
-                $this->loggedIn = 1;
-                return 1; // login succefull
-            } else {
-                $this->loggedIn = 2;
-                return 2; //login succefull but need to validate
+        //Didn't exist...
+        if (count($row) == 1) {
+            $this->loggedIn = -2;
+            return -2;
+        }
+        //Email did exist
+        else
+        {
+            $hashPassword = $this->sha1Hash($email,$password);
+            $s = "SELECT * FROM user_info WHERE email='" . $email . "' AND password='" . $hashPassword . "'  AND biznessUID= '" . osBackBizness() . "';";
+            query($s);
+            
+            if ($row = fetch()) {
+                $this->email = $email;
+                $this->userUID = $row["userUID"];
+                
+                if ($row["verificationCode"] == '0') {
+                    // login succefull
+                    $this->loggedIn = 1;
+                    return 1;
+                } else {
+                    //login succefull but need to validation
+                    $this->loggedIn = 2;
+                    return 2;
+                }
+            }
+            else
+            {
+                //login failed
+                $this->loggedIn = -1;
+                return -1; 
             }
         }
         
-        query("SELECT * FROM user_info WHERE email='" . $email . "' AND biznessUID= '" . osBackBizness() . "';");
-        if ($row = fetch()) {
-            $this->email = $email;
-            return -2; //email exists but password was wrong
-        }
-        $this->loggedIn = -1;
-        return -1; //login failed
     }
 
     function add($email, $password) {
