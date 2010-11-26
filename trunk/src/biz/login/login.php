@@ -74,29 +74,32 @@ class login {
             case "logout":
                 $this->userShow->logout();
                 break;
+            
             case "forgotPassword":
                 $this->show("forgotPassword");
                 break;
+            
             case "doForgetPassword":
                 $this->show("login");
                 $this->sendNewPassword();
                 break;
+            
             case "doSignup":
                 if($this->userShow->add($info['email'], $info['password'])){
                     $this->show("validation");
                 }else{
                     $this->show("userExists");
                 }
+                break;
+            
             case "signupPage":
                 $this->show("signupPage");
                 break;
-            case "validation":
-                $this->show("validation");
+
             case "validate":
-                if ($this->validate($info["validationCode"])) {
-                    $this->login($info['email'], $info['password']);
-                }
+                $this->userShow->validate($info["validationCode"]);    
                 break;
+            
             default:
                 break;
         }
@@ -128,10 +131,13 @@ class login {
             
             // "yes"
             case 1:
-                $html = $this->showWelcomeMsg();
+                $html = $this->showWelcome();
                 break;
             case 2:
-                $html = $this->showWelcomeMsg();
+                $html = $this->showValidation('clean');
+                break;
+            case 3:
+                $html = $this->showValidation('error');
                 break;
             
             default:
@@ -182,54 +188,65 @@ class login {
         return $html;
     }
     
-    function showWelcomeMsg()
+    function showValidation($mode)
+    {
+        //important to add the div thingy here so that the ajax knows what to update :)
+        $formNameLogout = $this->_fullname."logout";
+        $formNameValidate = $this->_fullname."validate";
+        
+        $html = '<div id = "' . $this->_fullname . '">';
+        if($mode == 'clean')
+        {
+            $failmsg = "";
+        }
+        else if($mode == 'error')
+        {
+            $failmsg = "incorrect code.";
+        }
+
+        $html .= "You need to validate your account. Check your email!";
+        $html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
+
+                <form name="' . $formNameLogout . '" method="post" >
+                <input type="hidden" name="_message" value="logout" />
+                <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+                <input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameLogout . '")\'  style="margin-top: 0px; border: 1px solid #666; background-color: #fff;"><br />
+                </form>
+                
+                <h5>' . $failmsg . '</h5>
+                <form name="' . $formNameValidate . '" method="post" >
+                <div style="width: 100px; margin-top: 10px;">Validation code </div> <input type="input" name="validationCode" style="border: 1px solid #666; background-color: #fff;"><br />
+                <input type="hidden" name="_message" value="validate" />
+                <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+                <input value ="Validate!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameValidate . '")\'  style="margin-top: 10px; border: 1px solid #666; background-color: #fff;"><br />
+                </form>
+                
+                ';
+
+        $html .= "</div>";
+        return $html;
+    }
+    
+    function showWelcome()
     {
         //important to add the div thingy here so that the ajax knows what to update :)
         $formName = $this->_fullname."logout";
         $html = '<div id = "' . $this->_fullname . '">';
         
-        switch($this->userShow->loggedIn)
-        {
-            case 0:
-                $html .= "shouldn't be possible...";
-                $this->showLoginForm(0);
-                break;
-            
-            case -1:
-                $html .= "Something went wrong, try again.";
-                $this->showLoginForm(-1);
-                break;
-            
-            case 1:
-                $html .= "<h2>Welcome sir!</h2>";
-                $html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
-                        <form name="' . $formName . '" method="post" >
-        
-                        <input type="hidden" name="_message" value="logout" />
-                        <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-            
-                        <input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 0px; border: 1px solid #666; background-color: #fff;"><br />
-                        </form>';
-                break;
-            
-            case 2:
-                $html .= "You need to validate your account. Check your email!";
-                $html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
-                        <form name="' . $formName . '" method="post" >
-        
-                        <input type="hidden" name="_message" value="logout" />
-                        <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-            
-                        <input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 0px; border: 1px solid #666; background-color: #fff;"><br />
-                        </form>';
-                break;
-        }
-        
+      
+        $html .= "<h2>Welcome sir!</h2>";
+        $html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
+                <form name="' . $formName . '" method="post" >
+
+                <input type="hidden" name="_message" value="logout" />
+                <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+    
+                <input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 0px; border: 1px solid #666; background-color: #fff;"><br />
+                </form>';
+
         $html .= "</div>";
         return $html;
     }
-
-
 
 
 

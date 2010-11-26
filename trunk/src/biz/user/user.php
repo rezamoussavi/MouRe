@@ -114,14 +114,26 @@ class user {
     }
 
     function validate($verificationCode) {
-        query("SELECT * FROM user_info WHERE userUID LIKE '" . $this->userUID . "' ;");
+        
+        query("SELECT * FROM user_info WHERE userUID='" . $this->userUID . "' ;");
         if ($row = fetch()) {
+            //correct code
             if ($verificationCode == $row["verificationCode"]) {
-                query("UPDATE user_info SET validationCode = '0' WHERE userUID = '" . $this->userUID . "';");
+                query("UPDATE user_info SET verificationCode='0' WHERE userUID = '" . $this->userUID . "';");
+                $this->loggedIn = 1;
                 return TRUE;
             }
-        } else {
-            return FALSE;
+            //wrong code
+            else
+            {
+                $this->loggedIn = 3;
+                return FALSE;
+            } 
+        }
+        //shouldn't be possible
+        else
+        {
+            echo 'this should really not be possible...';
         }
     }
 
