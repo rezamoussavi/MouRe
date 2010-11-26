@@ -28,18 +28,19 @@ div.toprow
 
 div.login
 {
-   width: 250px;
+   width: 180px;
    float: left;
 }
 
 div.banner
 {
-   width: 400px;
+   width: 520px;
    float: left;
+   text-align: center;
 }
 
 div.helpinfo
 {
-   width: 150px;
+   width: 100px;
    float: left;
 }
