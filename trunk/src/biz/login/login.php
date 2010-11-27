@@ -17,7 +17,7 @@ class login {
     //CALSS FIELDS
     //FIELDS WHICH HAVE TYPE OF OTHER BIZES
     var $userShow;
-    //var $loginStatus;
+    var $signupSuccess;
 
 
     /*     * **************************CONSTRUCTOR*************************** */
@@ -84,12 +84,36 @@ class login {
                 $this->sendNewPassword();
                 break;
             
-            case "doSignup":
-                if($this->userShow->add($info['email'], $info['password'])){
-                    $this->show("validation");
-                }else{
-                    $this->show("userExists");
+            case "displaySignupForm":
+                $this->userShow->loggedIn = -3;
+                break;
+            
+            case "signup":
+                
+                $signup = $this->userShow->add($info['email'], $info['password'], $info['passwordagain']);
+                
+                switch($signup)
+                {
+                    case 1:
+                        $this->signupSuccess = 1;
+                        $this->userShow->loggedIn = 2;
+                        break;
+                    
+                    case -1:
+                        $this->signupSuccess = -1;
+                        $this->userShow->loggedIn = -3;
+                        break;
+                    
+                    case -2:
+                        $this->signupSuccess = -2;
+                        $this->userShow->loggedIn = -3;
+                        break;
+                    
+                    default:
+                        echo '##### weird...';
+                        break;
                 }
+                
                 break;
             
             case "signupPage":
@@ -98,6 +122,10 @@ class login {
 
             case "validate":
                 $this->userShow->validate($info["validationCode"]);    
+                break;
+            
+            case "home":
+                $this->userShow->loggedIn = 0;
                 break;
             
             default:
@@ -128,6 +156,9 @@ class login {
             case -2:
                 $html = $this->showLoginForm(-2);
                 break;
+            case -3:
+                $html = $this->showSignupForm(-3);
+                break;
             
             // "yes"
             case 1:
@@ -152,6 +183,8 @@ class login {
     {
         //some data...
         $formName = $this->_fullname."login";
+        $formNameSignup = $this->_fullname."displaySignupForm";
+        
         $modehtml = "";
         switch($mode)
         {
@@ -173,6 +206,7 @@ class login {
         $html =
         '<div id = "' . $this->_fullname . '">
         <h2>Login</h2>
+        
         <h5>' . $modehtml . '</h5>
         <form name="' . $formName . '" method="post" >
         
@@ -182,9 +216,64 @@ class login {
             <input type="hidden" name="_message" value="login" />
             <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
             
-            <input value ="Login" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  style="margin-top: 10px; border: 1px solid #666; background-color: #fff;"><br />
+            <div style="width: 180px;">
+            <input value ="Login" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 50px; border: 1px solid #ccc; background-color: #fff;" />            
+            </div>
         </form>
+
+        <form name="' . $formNameSignup . '" method="post" >
+            <input type="hidden" name="_message" value="displaySignupForm" />
+            <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+            
+            <input value ="signup!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameSignup . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
+        </form>
+        
         </div>';
+        return $html;
+    }
+    
+    function showSignupForm()
+    {
+        $formName = $this->_fullname."signup";
+        $formNameHome = $this->_fullname."home";
+        $msg = "";
+        
+        switch($this->signupSuccess)
+        {
+            case 1:
+                $msg = "";
+                break;
+            case -1:
+                $msg = "There is already an account registered using this email.";
+                break;
+            case -2:
+                $msg = "The passwords you entered didn't match. Try again!";
+                break;
+        }
+        
+        $html = '<div id = "' . $this->_fullname . '">
+        
+        <h2>Signup!</h2> 
+        <h5>' .  $msg . '</h5>
+        <form name="' . $formName . '" method="post" >
+                <div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" style="border: 1px solid #666; background-color: #fff;"><br />
+                <div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" style="border: 1px solid #666; background-color: #fff;"><br />
+                <div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" style="border: 1px solid #666; background-color: #fff;"><br />
+                
+                <input type="hidden" name="_message" value="signup" />
+                <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+                <input value ="sign up!" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press"  style="margin-top: 10px; border: 1px solid #666; background-color: #fff;"><br />
+        </form>
+        
+        <form name="' . $formNameHome . '" method="post" >
+            <input type="hidden" name="_message" value="home" />
+            <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+            
+            <input value ="Back to login" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameHome . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
+        </form>
+        
+        </div>
+        ';
         return $html;
     }
     

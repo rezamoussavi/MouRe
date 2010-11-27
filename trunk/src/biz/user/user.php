@@ -21,25 +21,22 @@ class user {
     //CALSS FIELDS
     var $userUID;
     var $email;
-    var $loggedIn;
+    var $loggedIn;  /*
+                     * -3: not logged in, display signup form
+                     * -2: failed login, email doesn't exist in db
+                     * -1: failed login, wrong password
+                     * 0: basically not logged in... default mode...
+                     * 1: basically logged in
+                     * 2: logged in but needs validation
+                     * 3: logged in but entered wrong validation code
+                     */
+
 
     //FIELDS WHICH HAVE TYPE OF OTHER BIZES
 
 
 
     /*     * **************************CONSTRUCTOR*************************** */
-
-    //function __construct($data){
-    //SET CLASS FIELDS WITH $data
-    //IF REQUIRED BIZES HAVE NOT BEEN USED,INITIALIZE
-    /* if(!(isset($data["bizVN"]))){
-      $data[$bizVN][$_fullname] = (this->$_fullname."_".$bizVN);
-      $data[$bizVN][$_bizname] = $_bizname;
-      }
-      this->$bizVN = new "$bizVN"(&$data[$bizVN]);
-      } */
-
-
 
     //}
     function __construct($data) {
@@ -52,14 +49,6 @@ class user {
 
     /*     * **************************MESSAGE HANDELING*************************** */
 
-    /* function message($to,$message,$info) {
-      this->$bizVN->message(&$to,&$message,&$info);
-      if($to != this->$-fullname){
-      return;
-      }
-      show_content();
-      } */
-
     function message($to, $message, $info) {
         if ($to != $this->_fullname) {
             //pass msg to childs
@@ -67,28 +56,7 @@ class user {
 
             return;
         }
-//                switch ($message) {
-//
-//                case "login":
-//                    $this->login($info['email'],$info['password'],$info['biznessUID']);
-//                    break;
-//                case "logout":
-//                    $this->logout();
-//                    break;
-//                case "forgetPassword":
-//                    $this->sendNewPassword();
-//                    break;
-//                case "signup":
-//                    $this->add($info['email'],$info['password']);
-//                    break;;
-//                case "validate":
-//                    if ($this->validate($info["validationCode"])) {
-//                        $this->login($info['email'],$info['password'],$info['biznessUID']);
-//                    }
-//                    break;
-//                default:
-//                    break;
-//            }
+
     }
 
     function broadcast($msg, $info) {
@@ -181,18 +149,38 @@ class user {
         
     }
 
-    function add($email, $password) {
+    function add($email, $password, $passwordagain) {
+        
+        //check if the email is already registered 
         query("SELECT * FROM user_info WHERE email='" . $email . "' ;");
-        if ($row = fetch()) {
+        if ($row = fetch())
+        {
             if ($email == $row["email"]) {
-                return FALSE; //user already exist
+                return -1; //user already exist
             }
-        } else {
-            $vcode = $this->createVerificationCode();
-            $hashPassword = $this->sha1Hash($email,$password);
-            query("INSERT INTO user_info (email,password,verificationCode,biznessUID) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."');");
-            $this->sendEmail($email, "Welcome,Please Verify", $vcode);
-            return TRUE; //user added succefully
+        }
+        //if not, proceed! 
+        else
+        {
+            if($password == $passwordagain)
+            {
+                //save the new user in the database
+                $vcode = $this->createVerificationCode();
+                $hashPassword = $this->sha1Hash($email,$password);
+                query("INSERT INTO user_info (email,password,verificationCode,biznessUID) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."');");
+                
+                //send an email to the user. FIX MAILING FUNCTION!
+                $this->sendEmail($email, "Welcome to buziness!", "Welcome! Please verify your account using this code: ".$vcode);
+                
+                $this->loggedIn = 2;
+                //user added succefully
+                return 1; 
+            }
+            //passwords didn't match...
+            else
+            {
+                return -2;
+            }
         }
     }
 
@@ -226,7 +214,10 @@ class user {
         return $hashPassword;
     }
     private function sendEmail($to, $title, $msgToSend) {
-        mail($to, $title, $msgToSend, "From: Our Server");
+        /*
+         * Needs to be reworked...
+         */
+        mail($to, $title, $msgToSend, "From: Bizness");
     }
 
     private function createRandomChars($toSelectFrom, $length) {

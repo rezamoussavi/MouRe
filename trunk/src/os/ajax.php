@@ -1,10 +1,13 @@
 <script language="Javascript">
 function sndmsg(bizname) {
-    var xmlHttpReq = false;
+    
+	 //create xmlHttp setup...
+	 var xmlHttpReq = false;
     // Mozilla/Safari
     if (window.XMLHttpRequest) {xmlHttpReq = new XMLHttpRequest();}
     // IE
     else if (window.ActiveXObject) {xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");}
+	 
     xmlHttpReq.open('POST', "index.php", true);
     xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xmlHttpReq.onreadystatechange = function() {
