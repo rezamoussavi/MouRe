@@ -17,7 +17,7 @@ function sndmsg(bizname) {
 			for(var i=0;i<mails.length;i++)
 				if(mails[i].tagName=="DIV")
 					document.getElementById(mails[i].id).innerHTML=mails[i].innerHTML;
-			//document.getElementById("os_message_box").innerHTML =" ";
+			document.getElementById("os_message_box").innerHTML =" ";
 		}
     }
     xmlHttpReq.send(getquerystring(bizname));
@@ -32,5 +32,5 @@ function getquerystring(bizname) {
     return qstr;
 }
 </script>
-<div id="old_os_message_box" style="visibility:hidden"> </div>
+<div id="old_os_message_box"> </div>
 <div id="os_message_box" style="visibility:hidden"> </div>
