@@ -89,7 +89,7 @@ class login {
                 break;
             
             case "signup":
-                if($info['email'] != "")
+                if($info['email'] != "" && $info['password'] != "" && $info['passwordagain'] != "")
                 {
                     $signup = $this->userShow->add($info['email'], $info['password'], $info['passwordagain']);
                     
@@ -225,8 +225,8 @@ class login {
         <form name="' . $formNameSignup . '" method="post" >
             <input type="hidden" name="_message" value="displaySignupForm" />
             <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-            
-            <input value ="signup!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameSignup . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
+            <span>No account yet?</span>
+            <input value ="sign up!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameSignup . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
         </form>
         
         </div>';
@@ -270,7 +270,8 @@ class login {
             <input type="hidden" name="_message" value="home" />
             <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
             
-            <input value ="Back to login" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameHome . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
+            <span>Already a user?</span>
+            <input value ="login!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameHome . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
         </form>
         
         </div>
