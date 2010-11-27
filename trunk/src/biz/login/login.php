@@ -89,31 +89,32 @@ class login {
                 break;
             
             case "signup":
-                
-                $signup = $this->userShow->add($info['email'], $info['password'], $info['passwordagain']);
-                
-                switch($signup)
+                if($info['email'] != "")
                 {
-                    case 1:
-                        $this->signupSuccess = 1;
-                        $this->userShow->loggedIn = 2;
-                        break;
+                    $signup = $this->userShow->add($info['email'], $info['password'], $info['passwordagain']);
                     
-                    case -1:
-                        $this->signupSuccess = -1;
-                        $this->userShow->loggedIn = -3;
-                        break;
-                    
-                    case -2:
-                        $this->signupSuccess = -2;
-                        $this->userShow->loggedIn = -3;
-                        break;
-                    
-                    default:
-                        echo '##### weird...';
-                        break;
+                    switch($signup)
+                    {
+                        case 1:
+                            $this->signupSuccess = 1;
+                            $this->userShow->loggedIn = 2;
+                            break;
+                        
+                        case -1:
+                            $this->signupSuccess = -1;
+                            $this->userShow->loggedIn = -3;
+                            break;
+                        
+                        case -2:
+                            $this->signupSuccess = -2;
+                            $this->userShow->loggedIn = -3;
+                            break;
+                        
+                        default:
+                            echo '##### weird...';
+                            break;
+                    }
                 }
-                
                 break;
             
             case "signupPage":
