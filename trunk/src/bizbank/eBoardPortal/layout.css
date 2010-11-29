@@ -45,7 +45,14 @@ div.helpinfo
    float: left;
 }
 
+
+.press
+{
+   border: 1px solid #ccc;
+   background-color: #fff;
+}
 .press:hover
 {
    cursor: pointer;
+   border: 1px solid #888;
 }
