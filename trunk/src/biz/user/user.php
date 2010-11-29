@@ -22,6 +22,7 @@ class user {
     var $userUID;
     var $email;
     var $loggedIn;  /*
+                     * -4: not logged in, forgot password
                      * -3: not logged in, display signup form
                      * -2: failed login, email doesn't exist in db
                      * -1: failed login, wrong password
@@ -169,11 +170,22 @@ class user {
                 $hashPassword = $this->sha1Hash($email,$password);
                 query("INSERT INTO user_info (email,password,verificationCode,biznessUID) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."');");
                 
-                //send an email to the user. FIX MAILING FUNCTION!
-                $this->sendEmail($email, "Welcome to buziness!", "Welcome! Please verify your account using this code: ".$vcode);
+                // A welcome message to the user...
+                $msg = "Welcome! Please verify your account using this code: ".$vcode;
                 
+                //send an email to the user. FIX MAILING FUNCTION!
+                $this->sendEmail($email, "Welcome to buziness!", $msg);
+                
+                
+                //to get the fresh userUID...
+                query("SELECT * FROM user_info WHERE email='" . $email . "' ;");
+                if ($row = fetch())
+                    {
+                        $this->userUID = $row['userUID'];
+                    }
                 $this->loggedIn = 2;
-                //user added succefully
+                
+                //All set - user added and logged in!
                 return 1; 
             }
             //passwords didn't match...
@@ -194,15 +206,14 @@ class user {
     }
 
     function sendNewPassword($email) {
+        
         query("SELECT * FROM user_info WHERE email='" . $email . "';");
         if ($row = fetch()) {
-            if ($email == $row["email"]) {
                 $password = $this->generateRandomPassword();
-                $hashPassword = hsa1Hash($email,$password);
+                $hashPassword = $this->sha1Hash($email,$password);
                 query("UPDATE user_info SET password = '" . $hashPassword . "' WHERE email = '" . $email . "';");
                 $this->sendEmail($email, "New Password", $password);
                 return TRUE; //email succefully sent
-            }
         }
         return FALSE; //email wasn't found in db
     }

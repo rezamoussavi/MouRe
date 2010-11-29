@@ -18,6 +18,7 @@ class login {
     //FIELDS WHICH HAVE TYPE OF OTHER BIZES
     var $userShow;
     var $signupSuccess;
+    var $newPasswordSuccess;
 
 
     /*     * **************************CONSTRUCTOR*************************** */
@@ -75,17 +76,26 @@ class login {
                 $this->userShow->logout();
                 break;
             
-            case "forgotPassword":
-                $this->show("forgotPassword");
-                break;
-            
-            case "doForgetPassword":
-                $this->show("login");
-                $this->sendNewPassword();
-                break;
-            
             case "displaySignupForm":
                 $this->userShow->loggedIn = -3;
+                break;
+            
+            case "requestNewPassword":
+                $req = $this->userShow->sendNewPassword($info['email']);
+                
+                if($req)
+                {
+                    $this->newPasswordSuccess = 1;
+                }
+                else
+                {
+                    $this->newPasswordSuccess = -1;
+                }
+                
+                break;
+            
+            case "displayForgotForm":
+                $this->userShow->loggedIn = -4;
                 break;
             
             case "signup":
@@ -158,7 +168,10 @@ class login {
                 $html = $this->showLoginForm(-2);
                 break;
             case -3:
-                $html = $this->showSignupForm(-3);
+                $html = $this->showSignupForm();
+                break;
+            case -4:
+                $html = $this->showForgotForm();
                 break;
             
             // "yes"
@@ -185,6 +198,7 @@ class login {
         //some data...
         $formName = $this->_fullname."login";
         $formNameSignup = $this->_fullname."displaySignupForm";
+        $formNameForgot = $this->_fullname."displayForgotForm";
         
         $modehtml = "";
         switch($mode)
@@ -227,6 +241,13 @@ class login {
             <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
             <span>No account yet?</span>
             <input value ="sign up!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameSignup . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
+        </form>
+        
+        <form name="' . $formNameForgot . '" method="post" >
+            <input type="hidden" name="_message" value="displayForgotForm" />
+            <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+            <span>Password lost?</span>
+            <input value ="get a new!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameForgot . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
         </form>
         
         </div>';
@@ -272,6 +293,57 @@ class login {
             
             <span>Already a user?</span>
             <input value ="login!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameHome . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
+        </form>
+        
+        </div>
+        ';
+        return $html;
+    }
+    
+    function showForgotForm()
+    {
+        $formName = $this->_fullname."requestNewPassword";
+        $formNameHome = $this->_fullname."home";
+        $msg = "";
+        
+        switch($this->newPasswordSuccess)
+        {
+            case -1:
+                $msg = "Account does not exist.";
+                break;
+            
+            case 1:
+                $msg = "Check your email for the new password!";
+                break;
+            
+            default:
+                break;
+        }
+        
+        $html = '<div id = "' . $this->_fullname . '">
+        
+        <h2>Get a new password</h2> 
+        <h5>' .  $msg . '</h5>';
+        
+        if($this->newPasswordSuccess < 1)
+        {
+            $html .= '
+            <form name="' . $formName . '" method="post" >
+                    <div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" style="border: 1px solid #666; background-color: #fff;"><br />
+                    
+                    <input type="hidden" name="_message" value="requestNewPassword" />
+                    <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+                    <input value ="send" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press"  style="margin-top: 10px; border: 1px solid #666; background-color: #fff;"><br />
+            </form>';
+        }
+        
+        $html .= '
+        <form name="' . $formNameHome . '" method="post" >
+            <input type="hidden" name="_message" value="home" />
+            <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+            
+            <span>Go back </span>
+            <input value ="home" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameHome . '")\' class="press" style="margin-top: 10px; margin-right: 0px; border: 1px solid #ccc; background-color: #fff;" />            
         </form>
         
         </div>
