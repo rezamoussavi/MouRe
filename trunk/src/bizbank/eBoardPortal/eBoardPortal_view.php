@@ -13,7 +13,7 @@
         </div>
  
         <div class="helpinfo">
-            <h2>info here?</h2>
+            <?php $this->dummie->show() ?>
         </div>
     </div>
     </div>

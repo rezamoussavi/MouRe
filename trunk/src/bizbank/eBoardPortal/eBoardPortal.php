@@ -3,6 +3,7 @@
 //DB Info : Specify what informaton this BIZ is going to use from DB
 
 require_once '../biz/login/login.php';
+require_once '../biz/dummie/dummie.php';
 
 class eBoardPortal {
 
@@ -15,7 +16,7 @@ class eBoardPortal {
     
     //FIELDS WHICH HAVE TYPE OF OTHER BIZES
     var $login;
-    
+    var $dummie;
 
 
     /*     * **************************CONSTRUCTOR*************************** */
@@ -40,19 +41,21 @@ class eBoardPortal {
             $data['login']['bizname'] = 'login';
             $data['login']['parent'] = $this;
         }
+        
+        if (!(isset($data['dummie']))) {
+            $data['dummie']['fullname'] = ($this->_bizbankname . "_" . "dummie"); //$this->user
+            $data['dummie']['bizname'] = 'dummie';
+            $data['dummie']['parent'] = $this;
+        }
+        
         $this->login = new login(&$data['login']);
+        $this->dummie = new dummie(&$data['dummie']);
+        
         $this->bizness_id = 1;
     }
 
     /*     * **************************MESSAGE HANDELING*************************** */
 
-    /* function message($to,$message,$info) {
-      this->$bizVN->message(&$to,&$message,&$info);
-      if($to != this->$-fullname){
-      return;
-      }
-      show_content();
-      } */
 
     function message($to, $message, $info) {
         $this->login->message(&$to, &$message, &$info);
@@ -65,6 +68,7 @@ class eBoardPortal {
 
     function broadcast($msg, $info) {
         $this->login->broadcast(&$msg, &$info);
+        $this->dummie->broadcast(&$msg, &$info);
     }
 
     /*     * **************************HTML HANDELING*************************** */

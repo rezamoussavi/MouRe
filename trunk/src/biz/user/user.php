@@ -13,7 +13,7 @@
 
 class user {
 
-    //all of our biz classes should define these two variables
+    //all of our biz classes should define these three variables
     var $_fullname;
     var $_bizname;
     var $_parent;
@@ -54,7 +54,6 @@ class user {
         if ($to != $this->_fullname) {
             //pass msg to childs
 
-
             return;
         }
 
@@ -68,6 +67,7 @@ class user {
 
     function logout() {
         $this->loggedIn = 0;
+        osBroadcast("logout", array());
     }
 
     function isLoggedin() {
@@ -133,6 +133,9 @@ class user {
                 if ($row["verificationCode"] == '0') {
                     // login succefull
                     $this->loggedIn = 1;
+                    
+                    // let bizes know we're logged in!
+                    osBroadcast("login", array("email" => $this->email, "userUID" => $this->userUID));
                     return 1;
                 } else {
                     //login succefull but need to validation
@@ -259,34 +262,6 @@ class user {
         echo "user show lol";
     }
 
-//	function show_notLoggedin() {
-//            echo <<<EOF
-//            <FORM name = "$this->_fullname" method = "post">
-//                email : <INPUT type="input" name="email"><br>
-//                Password : <INPUT type="input" name="password"><br>
-//                <INPUT type="hidden" name="_message" value="login">
-//                <INPUT type = "hidden" name="_target" value="$this->_fullname">
-//                <INPUT value ="Login" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
-//            </FORM>
-//
-//
-//
-//EOF;
-//        }
-//
-//	function show_loggedin() {
-//            echo <<<EOF
-//            Welcome dear $this->firstName $this->lastName <br>
-//            <FORM name = "$this->_fullname" method = "post">
-//                <INPUT type ="hidden" name="_message" value="logout">
-//                <INPUT type = "hidden" name="_target" value="$this->_fullname">
-//                <INPUT value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")'>
-//            </FORM>
-//
-//
-//EOF;
-//
-//        }
 }
 
 ?>
