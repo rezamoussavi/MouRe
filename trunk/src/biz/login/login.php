@@ -4,7 +4,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once '../biz/user/user.php';
+
+//import bizes
+$bizes = array('user');
+
+$bizpath = '../biz/';
+foreach($bizes as $bizname)
+{
+    $biz = $bizpath.$bizname."/".$bizname.".php";
+    require_once($biz);
+}
+
+
+//require_once '../biz/user/user.php';
 
 class login
 {
@@ -17,47 +29,37 @@ class login
     /*     * **************************FIELDS*************************** */
     //CALSS FIELDS
     //FIELDS WHICH HAVE TYPE OF OTHER BIZES
-    var $userShow;
+    //var $myBizes['userShow'];
+    
+    //bizes
+    var $bizes = array('userShow' => 'user');
+    var $myBizes = array();
+    
     var $signupSuccess;
     var $newPasswordSuccess;
 
 
     /*     * **************************CONSTRUCTOR*************************** */
 
-    //function __construct($data){
-    //SET CLASS FIELDS WITH $data
-    //IF REQUIRED BIZES HAVE NOT BEEN USED,INITIALISE
-    /* if(!(isset($data["bizVN"]))){
-      $data[$bizVN][$_fullname] = (this->$_fullname."_".$bizVN);
-      $data[$bizVN][$_bizname] = $_bizname;
-      }
-      this->$bizVN = new "$bizVN"(&$data[$bizVN]);
-      } */
-
-
-
-    //}
     function __construct($data) {
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
-        if (!(isset($data['user_show']))) {
-            $data['user_show']['fullname'] = ($this->_bizname . "_" . "user_show"); //$this->user
-            $data['user_show']['bizname'] = 'user_show';
-            $data['user_show']['parent'] = $this;
-        } else {
-            $this->userShow = new user(&$data['user_show']);
+        
+        foreach($this->bizes as $bizname=>$biz)
+        {
+            if (!(isset($data[$bizname]))) {
+                
+                $data[$bizname]['fullname'] = ($this->_bizname . "_" . $bizname); //$this->user
+                $data[$bizname]['bizname'] = $bizname;
+                $data[$bizname]['parent'] = $this;
+                
+            }
+            $this->myBizes[$bizname] = new $biz(&$data[$bizname]);
         }
+        
     }
 
     /*     * **************************MESSAGE HANDELING*************************** */
-
-    /* function message($to,$message,$info) {
-      this->$bizVN->message(&$to,&$message,&$info);
-      if($to != this->$-fullname){
-      return;
-      }
-      show_content();
-      } */
 
     function message($to, $message, $info) {
 
@@ -70,19 +72,19 @@ class login
 
             case "login":
                 //If the user is already logged in, just break. Otherwise, log in.
-                $this->userShow->login($info['email'], $info['password']);
+                $this->myBizes['userShow']->login($info['email'], $info['password']);
                 break;
                     
             case "logout":
-                $this->userShow->logout();
+                $this->myBizes['userShow']->logout();
                 break;
             
             case "displaySignupForm":
-                $this->userShow->loggedIn = -3;
+                $this->myBizes['userShow']->loggedIn = -3;
                 break;
             
             case "requestNewPassword":
-                $req = $this->userShow->sendNewPassword($info['email']);
+                $req = $this->myBizes['userShow']->sendNewPassword($info['email']);
                     
                 if($req)
                 {
@@ -96,29 +98,29 @@ class login
                 break;
             
             case "displayForgotForm":
-                $this->userShow->loggedIn = -4;
+                $this->myBizes['userShow']->loggedIn = -4;
                 break;
             
             case "signup":
                 if($info['email'] != "" && $info['password'] != "" && $info['passwordagain'] != "")
                 {
-                    $signup = $this->userShow->add($info['email'], $info['password'], $info['passwordagain']);
+                    $signup = $this->myBizes['userShow']->add($info['email'], $info['password'], $info['passwordagain']);
                     
                     switch($signup)
                     {
                         case 1:
                             $this->signupSuccess = 1;
-                            $this->userShow->loggedIn = 2;
+                            $this->myBizes['userShow']->loggedIn = 2;
                             break;
                         
                         case -1:
                             $this->signupSuccess = -1;
-                            $this->userShow->loggedIn = -3;
+                            $this->myBizes['userShow']->loggedIn = -3;
                             break;
                         
                         case -2:
                             $this->signupSuccess = -2;
-                            $this->userShow->loggedIn = -3;
+                            $this->myBizes['userShow']->loggedIn = -3;
                             break;
                         
                         default:
@@ -133,11 +135,11 @@ class login
                 break;
 
             case "validate":
-                $this->userShow->validate($info["validationCode"]);    
+                $this->myBizes['userShow']->validate($info["validationCode"]);    
                 break;
             
             case "home":
-                $this->userShow->loggedIn = 0;
+                $this->myBizes['userShow']->loggedIn = 0;
                 break;
             
             default:
@@ -148,8 +150,10 @@ class login
     }
 
     function broadcast($msg, $info) {
-        //just pass the message on...
-        $this->userShow->broadcast(&$msg, &$info);
+        foreach($this->myBizes as $abiz)
+        {
+            $abiz->broadcast(&$msg, &$info);
+        }
     }
 
     /*     * **************************HTML HANDELING*************************** */
@@ -157,7 +161,7 @@ class login
     function show()
     {
         $html;
-        switch($this->userShow->loggedIn)
+        switch($this->myBizes['userShow']->loggedIn)
         {
             // "no"
             case 0:

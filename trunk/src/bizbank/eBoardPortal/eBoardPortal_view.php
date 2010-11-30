@@ -1,10 +1,9 @@
-<body>
 <div id="contentholder">
     <div class="content">
     <div class="toprow">
         <div class="login">
         
-        <?php $this->login->show() ?>
+        <?php $this->myBizes['login']->show(); ?>
          
         </div>
  
@@ -13,9 +12,9 @@
         </div>
  
         <div class="helpinfo">
-            <?php $this->dummie->show() ?>
+            <?php $this->myBizes['d1']->show(); ?>
+            <?php $this->myBizes['d2']->show(); ?>
         </div>
     </div>
     </div>
-</div>        
-</body>
+</div>

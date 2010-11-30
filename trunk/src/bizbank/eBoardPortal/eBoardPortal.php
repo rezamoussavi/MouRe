@@ -2,8 +2,19 @@
 
 //DB Info : Specify what informaton this BIZ is going to use from DB
 
-require_once '../biz/login/login.php';
-require_once '../biz/dummie/dummie.php';
+/*
+ * might be possible to solve multiple biz-spec with a config file...
+ */
+
+//import bizes
+$bizes = array('login', 'dummie');
+
+$bizpath = '../biz/';
+foreach($bizes as $bizname)
+{
+    $biz = $bizpath.$bizname."/".$bizname.".php";
+    require_once($biz);
+}
 
 class eBoardPortal {
 
@@ -15,41 +26,29 @@ class eBoardPortal {
     var $bizness_id;
     
     //FIELDS WHICH HAVE TYPE OF OTHER BIZES
-    var $login;
-    var $dummie;
-
+    //var $login;
+    //var $dummie;
+    var $bizes = array('login' => 'login',
+                       'd1' => 'dummie',
+                       'd2' => 'dummie');
+    var $myBizes = array();
 
     /*     * **************************CONSTRUCTOR*************************** */
 
-    //function __construct($data){
-    //SET CLASS FIELDS WITH $data
-    //IF REQUIRED BIZES HAVE NOT BEEN USED,INITIALISE
-    /* if(!(isset($data["bizVN"]))){
-      $data[$bizVN][$_fullname] = (this->$_fullname."_".$bizVN);
-      $data[$bizVN][$_bizname] = $_bizname;
-      }
-      this->$bizVN = new "$bizVN"(&$data[$bizVN]);
-      } */
-
-
-
-    //}
     function __construct($data) {
         $this->_bizbankname = "eBoardPortal";
-        if (!(isset($data['login']))) {
-            $data['login']['fullname'] = ($this->_bizbankname . "_" . "login"); //$this->user
-            $data['login']['bizname'] = 'login';
-            $data['login']['parent'] = $this;
-        }
         
-        if (!(isset($data['dummie']))) {
-            $data['dummie']['fullname'] = ($this->_bizbankname . "_" . "dummie"); //$this->user
-            $data['dummie']['bizname'] = 'dummie';
-            $data['dummie']['parent'] = $this;
+        foreach($this->bizes as $bizname=>$biz)
+        {
+            if (!(isset($data[$bizname]))) {
+                
+                $data[$bizname]['fullname'] = ($this->_bizbankname . "_" . $bizname); //$this->user
+                $data[$bizname]['bizname'] = $bizname;
+                $data[$bizname]['parent'] = $this;
+                
+            }
+            $this->myBizes[$bizname] = new $biz(&$data[$bizname]);
         }
-        
-        $this->login = new login(&$data['login']);
-        $this->dummie = new dummie(&$data['dummie']);
         
         $this->bizness_id = 1;
     }
@@ -58,7 +57,7 @@ class eBoardPortal {
 
 
     function message($to, $message, $info) {
-        $this->login->message(&$to, &$message, &$info);
+        $this->myBizes['login']->message(&$to, &$message, &$info);
         if ($to != $this->_bizbankname) {
             return;
         }
@@ -66,9 +65,12 @@ class eBoardPortal {
         // handle possible messages for this
     }
 
-    function broadcast($msg, $info) {
-        $this->login->broadcast(&$msg, &$info);
-        $this->dummie->broadcast(&$msg, &$info);
+    function broadcast($msg, $info)
+    {
+        foreach($this->myBizes as $abiz)
+        {
+            $abiz->broadcast(&$msg, &$info);
+        }
     }
 
     /*     * **************************HTML HANDELING*************************** */
@@ -83,13 +85,14 @@ class eBoardPortal {
    
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <link href="../bizbank/eBoardPortal/layout.css" rel="stylesheet" type="text/css" />
-            </head>';
+            </head>
+            <body>';
 
     //include the actual page content
     include 'eBoardPortal_view.php';
    
     //close html document
-    echo '</html>';
+    echo '</body></html>';
 
     }
 
