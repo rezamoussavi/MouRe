@@ -53,7 +53,6 @@ class user {
     function message($to, $message, $info) {
         if ($to != $this->_fullname) {
             //pass msg to childs
-
             return;
         }
 
@@ -61,6 +60,7 @@ class user {
 
     function broadcast($msg, $info) {
         //pass to child bizes
+        //no children
     }
 
     /*     * **************************Especial Biz functionality*************************** */

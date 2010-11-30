@@ -1,7 +1,5 @@
 <?php
 
-//require_once '../biz/user/user.php';
-
 class dummie
 {
    //all of our biz classes should define these three variables
@@ -55,6 +53,7 @@ class dummie
       }
       
         //pass to child bizes
+        //no children
         
     }
    
