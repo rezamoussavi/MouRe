@@ -23,5 +23,10 @@
 		global $bizbank;
 		return $bizbank->bizbank_id;
 	}
+	
+	function osReturn($html, $callingBiz)
+	{
+		echo '<div id="' . $callingBiz . '">' . $html . '</div>';
+	}
 
 ?>

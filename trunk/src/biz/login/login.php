@@ -196,7 +196,8 @@ class login
                 break;
         }
         // "return"
-        echo $html;
+        // echo $html;
+        osReturn($html, $this->_fullname);
     }
     
     function showLoginForm($mode)
@@ -225,8 +226,7 @@ class login
         
         //pack html variable
         $html =
-        '<div id = "' . $this->_fullname . '">
-        <h2>Login</h2>
+        '<h2>Login</h2>
         
         <h5>' . $modehtml . '</h5>
         <form name="' . $formName . '" method="post" >
@@ -255,8 +255,7 @@ class login
             <span>Password lost?</span>
             <input value ="get a new!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameForgot . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />            
         </form>
-        
-        </div>';
+        ';
         return $html;
     }
     
@@ -279,8 +278,7 @@ class login
                 break;
         }
         
-        $html = '<div id = "' . $this->_fullname . '">
-        
+        $html = '
         <h2>Signup!</h2> 
         <h5>' .  $msg . '</h5>
         <form name="' . $formName . '" method="post" >
@@ -300,8 +298,6 @@ class login
             <span>Already a user?</span>
             <input value ="login!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameHome . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />            
         </form>
-        
-        </div>
         ';
         return $html;
     }
@@ -326,7 +322,7 @@ class login
                 break;
         }
         
-        $html = '<div id = "' . $this->_fullname . '">
+        $html = '
         
         <h2>Get a new password</h2> 
         <h5>' .  $msg . '</h5>';
@@ -351,8 +347,6 @@ class login
             <span>Go back </span>
             <input value ="home" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameHome . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />            
         </form>
-        
-        </div>
         ';
         return $html;
     }
@@ -363,7 +357,6 @@ class login
         $formNameLogout = $this->_fullname."logout";
         $formNameValidate = $this->_fullname."validate";
         
-        $html = '<div id = "' . $this->_fullname . '">';
         if($mode == 'clean')
         {
             $failmsg = "";
@@ -373,7 +366,7 @@ class login
             $failmsg = "incorrect code.";
         }
 
-        $html .= "You need to validate your account. Check your email!";
+        $html = '<h5>You need to validate your account. Check your email!</h5>';
         $html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
 
                 <form name="' . $formNameLogout . '" method="post" >
@@ -392,7 +385,6 @@ class login
                 
                 ';
 
-        $html .= "</div>";
         return $html;
     }
     
@@ -400,18 +392,14 @@ class login
     {
         //important to add the div thingy here so that the ajax knows what to update :)
         $formName = $this->_fullname."logout";
-        $html = '<div id = "' . $this->_fullname . '">';
-        
-      
-        $html .= "<h2>Welcome sir!</h2>";
+
+        $html = "<h2>Welcome sir!</h2>";
         $html .= '<form name="' . $formName . '" method="post" >
                 <input type="hidden" name="_message" value="logout" />
                 <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
     
                 <input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  class="press" style="margin-top: 0px;"><br />
                 </form>';
-
-        $html .= "</div>";
         return $html;
     }
 

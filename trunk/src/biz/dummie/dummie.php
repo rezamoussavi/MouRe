@@ -72,8 +72,7 @@ class dummie
          $html .= "<h2>:(</h2>";
       }
       
-      
-      echo '<div id = "' . $this->_fullname . '">' . $html . '</div>';
+      osReturn($html, $this->_fullname);
    }
    
 }
