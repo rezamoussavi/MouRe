@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 02, 2010 at 05:03 PM
+-- Generation Time: Dec 02, 2010 at 07:44 PM
 -- Server version: 5.0.91
 -- PHP Version: 5.2.9
 
@@ -27,6 +27,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE IF NOT EXISTS `os_bizness_info` (
   `biznessUID` int(11) NOT NULL auto_increment,
+  `biznessname` varchar(128) NOT NULL,
   `domain` varchar(128) NOT NULL,
   `bizbankname` varchar(128) NOT NULL,
   `contactperson` varchar(128) NOT NULL,
@@ -39,5 +40,5 @@ CREATE TABLE IF NOT EXISTS `os_bizness_info` (
 -- Dumping data for table `os_bizness_info`
 --
 
-INSERT INTO `os_bizness_info` (`biznessUID`, `domain`, `bizbankname`, `contactperson`, `contactemail`) VALUES
-(1, 'salamrooz.com', 'eBoardPortal', 'Erik', 'erikkinding@gmail.com');
+INSERT INTO `os_bizness_info` (`biznessUID`, `biznessname`, `domain`, `bizbankname`, `contactperson`, `contactemail`) VALUES
+(1, 'ITUniv', 'salamrooz.com', 'eBoardPortal', 'Erik', 'erikkinding@gmail.com');
