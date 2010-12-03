@@ -44,6 +44,7 @@ class login
     function __construct($data) {
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
+		$this->_parent = &$data["parent"];
         
         foreach($this->bizes as $bizname=>$biz)
         {
