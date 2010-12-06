@@ -3,7 +3,7 @@
     <div class="toprow">
         <div class="login">
         
-        <?php $this->myBizes['login']->show(); ?>
+        <?php $this->myBizes['login']->show(1); ?>
          
         </div>
  
@@ -12,8 +12,8 @@
         </div>
  
         <div class="helpinfo">
-            <?php $this->myBizes['d1']->show(); ?>
-            <?php $this->myBizes['d2']->show(); ?>
+            <?php $this->myBizes['d1']->show(1); ?>
+            <?php $this->myBizes['d2']->show(1); ?>
         </div>
     </div>
     </div>

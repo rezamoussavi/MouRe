@@ -258,7 +258,7 @@ class user {
 
     /*     * **************************HTML HANDELING*************************** */
 
-    function show() {
+    function show($echo) {
         echo "user show lol";
     }
 

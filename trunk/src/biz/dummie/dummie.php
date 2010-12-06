@@ -10,6 +10,8 @@ class dummie
    //local
    var $loggedIn;
    var $userEmail;
+   
+   var $html;
     
    function __construct($data)
    {
@@ -33,7 +35,7 @@ class dummie
             return;
         }
       
-      $this->show();
+      $this->show(0);
     }
 
     function broadcast($msg, $info)
@@ -43,12 +45,12 @@ class dummie
          case 'login':
             $this->loggedIn = 1;
             $this->userEmail = $info["email"];
-            $this->show();
+            $this->show(1);
             break;
          
          case 'logout':
             $this->loggedIn = 0;
-            $this->show();
+            $this->show(1);
             break;
       }
       
@@ -57,22 +59,28 @@ class dummie
         
     }
    
-   function show()
+   function show($echo)
    {
 
-      $html = "";
       
       
       if($this->loggedIn > 0)
       {
-         $html .= "<h2>:) </h2> " . $this->userEmail;
+         $this->html .= "<h2>:) </h2> " . $this->userEmail;
       }
       else
       {
-         $html .= "<h2>:(</h2>";
+         $this->html .= "<h2>:(</h2>";
       }
       
-      osReturn($html, $this->_fullname);
+      if($echo)
+      {
+         echo osShow($this);
+      }
+      else
+      {
+         return osShow($this);
+      }
    }
    
 }

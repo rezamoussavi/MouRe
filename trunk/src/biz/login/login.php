@@ -37,6 +37,7 @@ class login
     
     var $signupSuccess;
     var $newPasswordSuccess;
+    var $html;
 
 
     /*     * **************************CONSTRUCTOR*************************** */
@@ -130,10 +131,6 @@ class login
                     }
                 }
                 break;
-            
-            case "signupPage":
-                $this->show("signupPage");
-                break;
 
             case "validate":
                 $this->myBizes['userShow']->validate($info["validationCode"]);    
@@ -147,7 +144,7 @@ class login
                 break;
         }
         // handle possible messages for this
-        $this->show();
+        $this->show(1);
     }
 
     function broadcast($msg, $info) {
@@ -159,46 +156,53 @@ class login
 
     /*     * **************************HTML HANDELING*************************** */
 
-    function show()
+    function show($echo)
     {
-        $html;
         switch($this->myBizes['userShow']->loggedIn)
         {
             // "no"
             case 0:
-                $html = $this->showLoginForm(0);
+                $this->html = $this->showLoginForm(0);
                 break;
             case -1:
-                $html = $this->showLoginForm(-1);
+                $this->html = $this->showLoginForm(-1);
                 break;
             case -2:
-                $html = $this->showLoginForm(-2);
+                $this->html = $this->showLoginForm(-2);
                 break;
             case -3:
-                $html = $this->showSignupForm();
+                $this->html = $this->showSignupForm();
                 break;
             case -4:
-                $html = $this->showForgotForm();
+                $this->html = $this->showForgotForm();
                 break;
             
             // "yes"
             case 1:
-                $html = $this->showWelcome();
+                $this->html = $this->showWelcome();
                 break;
             case 2:
-                $html = $this->showValidation('clean');
+                $this->html = $this->showValidation('clean');
                 break;
             case 3:
-                $html = $this->showValidation('error');
+                $this->html = $this->showValidation('error');
                 break;
             
             default:
-                $html = "error in show()";
+                $this->html = "error in show()";
                 break;
         }
-        // "return"
-        // echo $html;
-        osReturn($html, $this->_fullname);
+
+        // echo html to Ajax function
+        if($echo)
+        {
+            echo osShow($this);
+        }
+        //return to parent
+        else
+        {
+            return osShow($this);
+        }
     }
     
     function showLoginForm($mode)
