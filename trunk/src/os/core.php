@@ -24,9 +24,9 @@
 		return $bizbank->bizbank_id;
 	}
 	
-	function osReturn($html, $callingBiz)
+	function osShow($callingBiz)
 	{
-		echo '<div id="' . $callingBiz . '">' . $html . '</div>';
+		return '<div id="' . $callingBiz->_fullname . '">' . $callingBiz->html . '</div>';
 	}
 
 ?>
