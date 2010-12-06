@@ -1,23 +1,22 @@
 <?php
 
-class dummie
+require_once 'biz.php';
+
+class dummie extends Biz
 {
-   //all of our biz classes should define these three variables
-   var $_fullname;
-   var $_bizname;
-   var $_parent;
-   
    //local
-   var $loggedIn;
-   var $userEmail;
+   public $loggedIn;
+   public $userEmail;
    
-   var $html;
-    
+   //the bizes you want to use: {variable name : biz type}
+   private $bizes = array();
+   
    function __construct($data)
    {
-      $this->_bizname = &$data["bizname"];
-      $this->_fullname = &$data["fullname"];
+      //do generic constuct stuff...
+      parent::__construct($data, $this->bizes);
       
+      //do biz specific stuff
       if(!isset($data["loggedIn"]))
       {
          $data["loggedIn"] = 0;
@@ -57,13 +56,11 @@ class dummie
         //pass to child bizes
         //no children
         
-    }
+   }
    
    function show($echo)
    {
 
-      
-      
       if($this->loggedIn > 0)
       {
          $this->html .= "<h2>:) </h2> " . $this->userEmail;

@@ -15,50 +15,22 @@ foreach($bizes as $bizname)
     require_once($biz);
 }
 
+require_once 'biz.php';
 
-//require_once '../biz/user/user.php';
-
-class login
-{
-
-    //all of our biz classes should define these three variable
-    var $_fullname;
-    var $_bizname;
-    var $_parent;
-
-    /*     * **************************FIELDS*************************** */
-    //CALSS FIELDS
-    //FIELDS WHICH HAVE TYPE OF OTHER BIZES
-    //var $myBizes['userShow'];
+class login extends Biz
+{   
+    //the bizes you want to use: {variable name : biz type}
+    private $bizes = array('userShow' => 'user');
     
-    //bizes
-    var $bizes = array('userShow' => 'user');
-    var $myBizes = array();
-    
-    var $signupSuccess;
-    var $newPasswordSuccess;
-    var $html;
+    //local variables
+    public $signupSuccess;
+    public $newPasswordSuccess;
 
 
     /*     * **************************CONSTRUCTOR*************************** */
 
     function __construct($data) {
-        $this->_bizname = &$data["bizname"];
-        $this->_fullname = &$data["fullname"];
-		$this->_parent = &$data["parent"];
-        
-        foreach($this->bizes as $bizname=>$biz)
-        {
-            if (!(isset($data[$bizname]))) {
-                
-                $data[$bizname]['fullname'] = ($this->_bizname . "_" . $bizname); //$this->user
-                $data[$bizname]['bizname'] = $bizname;
-                $data[$bizname]['parent'] = $this;
-                
-            }
-            $this->myBizes[$bizname] = new $biz(&$data[$bizname]);
-        }
-        
+        parent::__construct($data, $this->bizes);
     }
 
     /*     * **************************MESSAGE HANDELING*************************** */
@@ -74,19 +46,19 @@ class login
 
             case "login":
                 //If the user is already logged in, just break. Otherwise, log in.
-                $this->myBizes['userShow']->login($info['email'], $info['password']);
+                $this->_biznodes['userShow']->login($info['email'], $info['password']);
                 break;
                     
             case "logout":
-                $this->myBizes['userShow']->logout();
+                $this->_biznodes['userShow']->logout();
                 break;
             
             case "displaySignupForm":
-                $this->myBizes['userShow']->loggedIn = -3;
+                $this->_biznodes['userShow']->loggedIn = -3;
                 break;
             
             case "requestNewPassword":
-                $req = $this->myBizes['userShow']->sendNewPassword($info['email']);
+                $req = $this->_biznodes['userShow']->sendNewPassword($info['email']);
                     
                 if($req)
                 {
@@ -100,29 +72,29 @@ class login
                 break;
             
             case "displayForgotForm":
-                $this->myBizes['userShow']->loggedIn = -4;
+                $this->_biznodes['userShow']->loggedIn = -4;
                 break;
             
             case "signup":
                 if($info['email'] != "" && $info['password'] != "" && $info['passwordagain'] != "")
                 {
-                    $signup = $this->myBizes['userShow']->add($info['email'], $info['password'], $info['passwordagain']);
+                    $signup = $this->_biznodes['userShow']->add($info['email'], $info['password'], $info['passwordagain']);
                     
                     switch($signup)
                     {
                         case 1:
                             $this->signupSuccess = 1;
-                            $this->myBizes['userShow']->loggedIn = 2;
+                            $this->_biznodes['userShow']->loggedIn = 2;
                             break;
                         
                         case -1:
                             $this->signupSuccess = -1;
-                            $this->myBizes['userShow']->loggedIn = -3;
+                            $this->_biznodes['userShow']->loggedIn = -3;
                             break;
                         
                         case -2:
                             $this->signupSuccess = -2;
-                            $this->myBizes['userShow']->loggedIn = -3;
+                            $this->_biznodes['userShow']->loggedIn = -3;
                             break;
                         
                         default:
@@ -133,11 +105,11 @@ class login
                 break;
 
             case "validate":
-                $this->myBizes['userShow']->validate($info["validationCode"]);    
+                $this->_biznodes['userShow']->validate($info["validationCode"]);    
                 break;
             
             case "home":
-                $this->myBizes['userShow']->loggedIn = 0;
+                $this->_biznodes['userShow']->loggedIn = 0;
                 break;
             
             default:
@@ -148,7 +120,7 @@ class login
     }
 
     function broadcast($msg, $info) {
-        foreach($this->myBizes as $abiz)
+        foreach($this->_biznodes as $abiz)
         {
             $abiz->broadcast(&$msg, &$info);
         }
@@ -158,7 +130,7 @@ class login
 
     function show($echo)
     {
-        switch($this->myBizes['userShow']->loggedIn)
+        switch($this->_biznodes['userShow']->loggedIn)
         {
             // "no"
             case 0:
