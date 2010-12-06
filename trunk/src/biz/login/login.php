@@ -232,8 +232,8 @@ class login
         <h5>' . $modehtml . '</h5>
         <form name="' . $formName . '" method="post" >
         
-            <div style="width: 50px; margin-top: 10px;">Email </div> <input type="input" name="email" style="border: 1px solid #666; background-color: #fff;"><br />
-            <div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" style="border: 1px solid #666; background-color: #fff;"> <br />
+            <div style="width: 50px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
+            <div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" /> <br />
             
             <input type="hidden" name="_message" value="login" />
             <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
@@ -283,9 +283,9 @@ class login
         <h2>Signup!</h2> 
         <h5>' .  $msg . '</h5>
         <form name="' . $formName . '" method="post" >
-                <div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" style="border: 1px solid #666; background-color: #fff;"><br />
-                <div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" style="border: 1px solid #666; background-color: #fff;"><br />
-                <div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" style="border: 1px solid #666; background-color: #fff;"><br />
+                <div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
+                <div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" /><br />
+                <div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" /><br />
                 
                 <input type="hidden" name="_message" value="signup" />
                 <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
@@ -332,7 +332,7 @@ class login
         {
             $html .= '
             <form name="' . $formName . '" method="post" >
-                    <div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" style="border: 1px solid #666; background-color: #fff;"><br />
+                    <div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
                     
                     <input type="hidden" name="_message" value="requestNewPassword" />
                     <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
@@ -378,7 +378,7 @@ class login
                 
                 <h5>' . $failmsg . '</h5>
                 <form name="' . $formNameValidate . '" method="post" >
-                <div style="width: 100px; margin-top: 10px;">Validation code </div> <input type="input" name="validationCode" style="border: 1px solid #666; background-color: #fff;"><br />
+                <div style="width: 100px; margin-top: 10px;">Validation code </div> <input type="input" name="validationCode" /><br />
                 <input type="hidden" name="_message" value="validate" />
                 <input type = "hidden" name="_target" value="' . $this->_fullname . '" />
                 <input value ="Validate!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameValidate . '")\'  style="margin-top: 10px;"><br />

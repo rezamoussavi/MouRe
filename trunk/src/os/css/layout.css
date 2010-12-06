@@ -4,3 +4,9 @@ body
    font-size: 11px;
    color: #333;
 }
+
+input
+{
+   border: 1px solid #666;
+   background-color: #fff;
+}

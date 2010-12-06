@@ -46,12 +46,11 @@ div.helpinfo
 }
 
 
-.press
+input.press
 {
    border: 1px solid #ccc;
-   background-color: #fff;
 }
-.press:hover
+input.press:hover
 {
    cursor: pointer;
    border: 1px solid #888;

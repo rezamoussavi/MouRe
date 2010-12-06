@@ -84,8 +84,9 @@ class eBoardPortal {
             <head>
    
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <link href="../bizbank/eBoardPortal/layout.css" rel="stylesheet" type="text/css" />
-            
+            <link href="../os/css/layout.css" rel="stylesheet" type="text/css" />
+            <link href="../os/css/eBoardPortal.css" rel="stylesheet" type="text/css" />
+
             <script type="text/javascript" src="../os/js/bloop.js"></script>
             </head>
             <body>';
