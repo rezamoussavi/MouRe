@@ -62,10 +62,10 @@ class eblistviewer
             }
         }
 		*/
-		if(! isset $data["UID"])
+		if(! isset ($data["UID"]))
 			$data['UID']=0;
 		/* *** Initializing myCat *** */
-		if(! isset $data['myCat']){
+		if(! isset ($data['myCat'])){
 			$data['myCat']['fullname']=$this->_bizname."_myCat";
 			$data['myCat']['bizname']="myCat";
 			$data['myCat']['parent']=$this;
@@ -84,20 +84,20 @@ class eblistviewer
         }
 		*/
 		$this->UID=&$data["UID"];
-		if(! isset $data['expanded'])
+		if(! isset ($data['expanded']))
 			switch ($data['UID']){
 				case  0:	$data['expanded']=true; break;
 				default:	$data['expanded']=false; break;
 			}
 		$this->expanded=&$data["expanded"];
 		$this->myCat=new category(&$data['myCat']);
-		if(isset $data['eBLists']){
+		if(isset ($data['eBLists'])){
 			$this->eBLists=array();
 			foreach($data['eBLists'] as $listName=>$listdata){
 				$this->eBLists[]=new eblistviewer(&$listdata);
 			}
 		}
-		if(isset $data['eBoards']){
+		if(isset ($data['eBoards'])){
 			$this->eBoards=array();
 			foreach($data['eBoards'] as $eBName=>$eBdata){
 				$this->eBoards[]=new eblineviewer(&$eBdata);
@@ -123,30 +123,30 @@ class eblistviewer
             $this->myBizes[$bizname] = new $biz(&$data[$bizname]);
         }
 		*/
-		if(! isset $data["UID"])
+		if(! isset ($data["UID"]))
 			$data['UID']=0;
 		$this->UID=&$data["UID"];
-		if(! isset $data['expanded'])
+		if(! isset ($data['expanded']))
 			switch ($data['UID']){
 				case  0:	$data['expanded']=true; break;
 				default:	$data['expanded']=false; break;
 			}
 		$this->expanded=&$data["expanded"];
 		/* *** Initializing myCat *** */
-		if(! isset $data['myCat']){
+		if(! isset ($data['myCat'])){
 			$data['myCat']['fullname']=$this->_bizname."_myCat";
 			$data['myCat']['bizname']="myCat";
 			$data['myCat']['parent']=$this;
 			$data['myCat']['catUID']=$data['UID'];
 		}
 		$this->myCat=new category(&$data['myCat']);
-		if(isset $data['eBLists']){
+		if(isset ($data['eBLists'])){
 			$this->eBLists=array();
 			foreach($data['eBLists'] as $listName=>$listdata){
 				$this->eBLists[]=new eblistviewer(&$listdata);
 			}
 		}
-		if(isset $data['eBoards']){
+		if(isset ($data['eBoards'])){
 			$this->eBoards=array();
 			foreach($data['eBoards'] as $eBName=>$eBdata){
 				$this->eBoards[]=new eblineviewer(&$eBdata);
@@ -157,7 +157,7 @@ class eblistviewer
     }
 
 	function loadContent(){
-		if(isset $data['eBLists'] || isset $data['eBoards'])
+		if(isset ($data['eBLists']) || isset ($data['eBoards']))
 			return;
 		$con=$this->myCat->backContent();
 		foreach($con as $cat){

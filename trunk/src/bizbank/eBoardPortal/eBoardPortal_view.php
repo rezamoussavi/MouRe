@@ -4,6 +4,7 @@
         <div class="login">
         
         <?php $this->myBizes['login']->show(1); ?>
+        <?php $this->myBizes['eblist']->show(1); ?>
          
         </div>
  
