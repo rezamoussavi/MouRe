@@ -50,8 +50,13 @@ class category
     function __construct($data) {
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
-
+		$this->_parent = &$data["parent"];
+		var $firstTime=false;
+		if(! isset $data["catUID"])
+			$data["catUID"]=0;
         $this->catUID = &$data["catUID"];
+		if(! isset $data['lable'])
+			$firstTime=true;
         $this->lable = &$data["lable"];
 		/* ***No need yet
 		$this->owner_type = &$data["owner_type"];
@@ -59,6 +64,8 @@ class category
 		$this->owner_UID = &$data["owner_UID"];
 		*/
 		$this->type_name = &$data["type_name"];
+		if($firstTime==true)
+			init();
 		/*  
 		foreach($this->bizes as $bizname=>$biz)
         {
@@ -71,7 +78,7 @@ class category
             }
             $this->myBizes[$bizname] = new $biz(&$data[$bizname]);
         }
-		*/       
+		*/
     }
 
     /*     * **************************MESSAGE HANDELING*************************** */
@@ -107,15 +114,15 @@ class category
 		if($this->catUID==0){//----ROOT it is
 			query("SELECT c.catUID as catUID, c.Lable AS lable, t.Name AS type_name FROM category_cat AS c,category_type AS t WHERE c.typeUID=t.typeUID AND c.owner_type ='bizness' AND c.owner_UID='".osBackBizbank()."'");
 			if($row=fetch()){
-				$this->catUID=$row['catUID'].
-				$this->lable=$row['lable'].
-				$this->type_name=$row['type_name'].
+				$this->catUID=$row['catUID'];
+				$this->lable=$row['lable'];
+				$this->type_name=$row['type_name'];
 			}
 		}else{//---Specific category
 			query("SELECT c.Lable AS lable, t.Name AS type_name FROM category_cat AS c,category_type AS t WHERE c.typeUID=t.typeUID AND c.catUID=".$this->catUID);
 			if($row=fetch()){
-				$this->lable=$row['lable'].
-				$this->type_name=$row['type_name'].
+				$this->lable=$row['lable'];
+				$this->type_name=$row['type_name'];
 			}
 		}
 	}
