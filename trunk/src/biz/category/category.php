@@ -51,11 +51,11 @@ class category
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
 		$this->_parent = &$data["parent"];
-		var $firstTime=false;
-		if(! isset $data["catUID"])
+		$firstTime=false;
+		if(! isset ($data["catUID"]))
 			$data["catUID"]=0;
         $this->catUID = &$data["catUID"];
-		if(! isset $data['lable'])
+		if(! isset ($data['lable']))
 			$firstTime=true;
         $this->lable = &$data["lable"];
 		/* ***No need yet
@@ -65,7 +65,7 @@ class category
 		*/
 		$this->type_name = &$data["type_name"];
 		if($firstTime==true)
-			init();
+			$this->init();
 		/*  
 		foreach($this->bizes as $bizname=>$biz)
         {

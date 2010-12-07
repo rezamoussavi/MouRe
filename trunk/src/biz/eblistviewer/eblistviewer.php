@@ -37,6 +37,7 @@ class eblistviewer
 	var $html;
 	var $myCat;
 	var $expanded;
+	var $userUID;
 	var $UID;//Will set by parent to let this biz know which category/eBList it is
 	var $eBLists;//array of eBListViewer.biz
 	var $eBoards;//array of eBLineViewer.biz
@@ -46,9 +47,9 @@ class eblistviewer
     function __construct($data) {
 		if (!isset($data['sleep'])) {
             $data['sleep'] = true;
-            initialize($data);
+            $this->initialize($data);
         }
-        wakeup($data);
+        $this->wakeup($data);
 	}
 
 	function initialize($data){
@@ -62,6 +63,8 @@ class eblistviewer
             }
         }
 		*/
+		if(! isset ($data["userUID"]))
+			$data['userUID']=-1;
 		if(! isset ($data["UID"]))
 			$data['UID']=0;
 		/* *** Initializing myCat *** */
@@ -83,6 +86,7 @@ class eblistviewer
             $this->myBizes[$bizname] = new $biz(&$data[$bizname]);
         }
 		*/
+		$this->userUID=&$data["userUID"];
 		$this->UID=&$data["UID"];
 		if(! isset ($data['expanded']))
 			switch ($data['UID']){
@@ -160,6 +164,7 @@ class eblistviewer
 		if(isset ($data['eBLists']) || isset ($data['eBoards']))
 			return;
 		$con=$this->myCat->backContent();
+		if(is_array($con))
 		foreach($con as $cat){
 			switch($cat['extra']){
 				case 'eBList':
@@ -192,9 +197,9 @@ class eblistviewer
         if ($to != $this->_fullname) {
             //pass msg to childs
 			$this->myCat->message($to, $message, $info);
-			foreach($this->eBoards as $eB)
+			foreach($this->eBoards as &$eB)
 				$eB->message($to, $message, $info);
-			foreach($this->eBLists as $eL)
+			foreach($this->eBLists as &$eL)
 				$eL->message($to, $message, $info);
             return;
         }
@@ -207,16 +212,28 @@ class eblistviewer
 
     function broadcast($msg, $info) {
 		/* *** not in this biz
-        foreach($this->myBizes as $abiz)
+        foreach($this->myBizes as &$abiz)
         {
             $abiz->broadcast(&$msg, &$info);
         }
 		*/
 		$this->myCat->broadcast(&$msg, &$info);
-		foreach($this->eBoards as $eB)
+		foreach($this->eBoards as &$eB)
 			$eB->broadcast(&$msg, &$info);
-		foreach($this->eBLists as $eL)
+		foreach($this->eBLists as &$eL)
 			$eL->broadcast(&$msg, &$info);
+      switch($msg)
+      {
+         case 'login':
+            $this->userUID = $info["userUID"];
+            $this->show(true);
+            break;
+         
+         case 'logout':
+            $this->userUID = -1;
+            $this->show(true);
+            break;
+      }
     }
 
     /*     * **************************HTML HANDELING*************************** */
@@ -224,15 +241,15 @@ class eblistviewer
     function show($echo)
     {
 		$Content=$this->showContent(false);
-		$formName=$this->_fulname;
+		$formNam=$this->_fullname;
 		$msgTarget=$this->_fullname;
 		$Lable=$this->myCat->lable;
 
         $this->html= '
-			<form name="' . $formName . '" method="post">
+			<form name="' . $formNam . '" method="post">
 	            <input type="hidden" name="_message" value="click" />
 				<input type = "hidden" name="_target" value="' . $msgTarget . '" />
-				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $formNam . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
 			' . $Content;
 		if($echo)
@@ -244,9 +261,11 @@ class eblistviewer
 	function showContent($echo){
 		$html='';
 		if($this->expanded){
-			foreach($this->eBLists as $L)
+			if(is_array(eBLists))
+			foreach($this->eBLists as &$L)
 				$html = $html.$L->show(false);
-			foreach($this->eBoards as $B)
+			if(is_array(eBoards))
+			foreach($this->eBoards as &$B)
 				$html = $html.$B->show(false);
 		}
 		if($echo)
