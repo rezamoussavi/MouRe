@@ -11,13 +11,12 @@
  * biznessUID
  */
 
-require_once 'biz.php';
+class user {
 
-class user extends Biz {
-    
-    //the bizes you want to use: {variable name : biz type}
-    private $bizes = array();
-
+    //all of our biz classes should define these three variables
+    var $_fullname;
+    var $_bizname;
+    var $_parent;
     /*     * **************************FIELDS*************************** */
     //CALSS FIELDS
     var $userUID;
@@ -34,15 +33,16 @@ class user extends Biz {
                      */
 
 
+    //FIELDS WHICH HAVE TYPE OF OTHER BIZES
 
 
 
     /*     * **************************CONSTRUCTOR*************************** */
+
+    //}
     function __construct($data) {
-        //generic
-        parent::__construct($data, $this->bizes);
-        
-        //biz specific
+        $this->_bizname = &$data["bizname"];
+        $this->_fullname = &$data["fullname"];
         $this->email = &$data["email"];
         $this->loggedIn = &$data["loggedin"];
         $this->userUID = &$data["userUID"];

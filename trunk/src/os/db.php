@@ -1,8 +1,8 @@
 <?php
 ///////////////////////////////////     Connection.START
-	$UN="salamroo_os";
-	$Pass="salamroo_os_pass";
-	$DataBase="salamroo_os";
+	$UN="root";
+	$Pass="zxc";
+	$DataBase="MouRe2";
 	$ServerAddress="localhost";
 	$osdbcon = mysql_connect ($ServerAddress, $UN, $Pass);
 	if ($osdbcon) 

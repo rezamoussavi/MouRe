@@ -16,10 +16,12 @@
 		$bizbank->message($to,$msg,$info);
 	}
 	function osBackBizness(){
+		return 1;
 		global $bizbank;
 		return $bizbank->bizness_id;
 	}
 	function osBackBizbank(){
+		return 1;
 		global $bizbank;
 		return $bizbank->bizbank_id;
 	}

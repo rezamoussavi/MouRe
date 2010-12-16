@@ -46,40 +46,46 @@ class category
 	var $type_name;
 
     /*     * **************************CONSTRUCTOR*************************** */
+    function __construct(&$data) {
+		if (!isset($data['sleep'])) {
+            $data['sleep'] = true;
+            $this->initialize($data);
+        }
+        $this->wakeup($data);
+	}
 
-    function __construct($data) {
+	function initialize(&$data){
+		if(! isset ($data["catUID"]))
+			$data["catUID"]=0;
+		if($data['catUID']==0){//----ROOT it is
+			query("SELECT c.catUID as catUID, c.Lable AS lable, t.name AS type_name FROM category_cat AS c,category_type AS t WHERE c.typeUID=t.typeUID AND c.owner_type ='bizness' AND c.owner_UID='".osBackBizness()."'");
+			if($row=fetch()){
+				$data['catUID']=$row['catUID'];
+				$data['lable']=$row['lable'];
+				$data['type_name']=$row['type_name'];
+			}
+		}else{//---Specific category
+			query("SELECT c.Lable AS lable, t.Name AS type_name FROM category_cat AS c,category_type AS t WHERE c.typeUID=t.typeUID AND c.catUID=".$data['catUID']);
+			if($row=fetch()){
+				$data['lable']=$row['lable'];
+				$data['type_name']=$row['type_name'];
+			}
+		}
+	}
+
+	function wakeup(&$data){
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
 		$this->_parent = &$data["parent"];
-		$firstTime=false;
-		if(! isset ($data["catUID"]))
-			$data["catUID"]=0;
         $this->catUID = &$data["catUID"];
-		if(! isset ($data['lable']))
-			$firstTime=true;
-        $this->lable = &$data["lable"];
+		$this->type_name = &$data["type_name"];
+		$this->lable = &$data["lable"];
 		/* ***No need yet
 		$this->owner_type = &$data["owner_type"];
 		$this->owner_name = &$data["owner_name"];
 		$this->owner_UID = &$data["owner_UID"];
 		*/
-		$this->type_name = &$data["type_name"];
-		if($firstTime==true)
-			$this->init();
-		/*  
-		foreach($this->bizes as $bizname=>$biz)
-        {
-            if (!(isset($data[$bizname]))) {
-                
-                $data[$bizname]['fullname'] = ($this->_bizname . "_" . $bizname); //$this->user
-                $data[$bizname]['bizname'] = $bizname;
-                $data[$bizname]['parent'] = $this;
-                
-            }
-            $this->myBizes[$bizname] = new $biz(&$data[$bizname]);
-        }
-		*/
-    }
+	}
 
     /*     * **************************MESSAGE HANDELING*************************** */
 
@@ -90,7 +96,7 @@ class category
             return;
         }
         // handle possible messages for this
-        $this->show();
+        //$this->show();
     }
 
     function broadcast($msg, $info) {
@@ -103,37 +109,20 @@ class category
 
     /*     * **************************HTML HANDELING*************************** */
 
-    function show()
+    function show($echo)
     {
 		//Nothing to show
     }
 
     /*     * **************************HTML HANDELING*************************** */
-
-	function init(){
-		if($this->catUID==0){//----ROOT it is
-			query("SELECT c.catUID as catUID, c.Lable AS lable, t.Name AS type_name FROM category_cat AS c,category_type AS t WHERE c.typeUID=t.typeUID AND c.owner_type ='bizness' AND c.owner_UID='".osBackBizbank()."'");
-			if($row=fetch()){
-				$this->catUID=$row['catUID'];
-				$this->lable=$row['lable'];
-				$this->type_name=$row['type_name'];
-			}
-		}else{//---Specific category
-			query("SELECT c.Lable AS lable, t.Name AS type_name FROM category_cat AS c,category_type AS t WHERE c.typeUID=t.typeUID AND c.catUID=".$this->catUID);
-			if($row=fetch()){
-				$this->lable=$row['lable'];
-				$this->type_name=$row['type_name'];
-			}
-		}
-	}
 	
 	function backContent(){
-		if($this->catUID==0)
-			return;
-		query("SELECT co.bizname AS bizname,co.bizUID AS bizUID, co.extra AS extra FROM category_cat AS c, category_content AS co WHERE co.catUID=c.catUID");
 		$ret=array();
-		while($row=fetch()){
-			$ret[]=array("bizname"=>$row['bizname'],"bizUID"=>$row['bizUID'],"extra"=>$row['extra']);
+		if($this->catUID!=0){
+			query("SELECT co.bizname AS bizname,co.bizUID AS bizUID, co.extra AS extra FROM category_cat AS c, category_content AS co WHERE co.catUID=c.catUID AND c.catUID=".$this->catUID);
+			while($row=fetch()){
+				$ret[]=array("bizname"=>$row['bizname'],"bizUID"=>$row['bizUID'],"extra"=>$row['extra']);
+			}
 		}
 		return $ret;
 	}

@@ -7,10 +7,10 @@
 
 	if(isset($_POST['_message'])){
 		if($_POST['_target']=="_broadcast"){
-			os_broadcast($_POST['_message'],$_POST);
+			osBroadcast($_POST['_message'],$_POST);
 		}
 		else{
-			$bizbank->message($_POST['_target'],$_POST['_message'],$_POST);
+			osMessage($_POST['_target'],$_POST['_message'],$_POST);
 		}
 	}else{
 		$bizbank->show();

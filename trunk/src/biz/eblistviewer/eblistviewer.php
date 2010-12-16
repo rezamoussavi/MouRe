@@ -17,8 +17,8 @@ foreach($bizes as $bizname)
     require_once($biz);
 }
 
-class eblistviewer
-{
+class eblistviewer {
+
     //all of our biz classes should define these three variable
     var $_fullname;
     var $_bizname;
@@ -40,11 +40,13 @@ class eblistviewer
 	var $userUID;
 	var $UID;//Will set by parent to let this biz know which category/eBList it is
 	var $eBLists;//array of eBListViewer.biz
+	var $eBListsData;
 	var $eBoards;//array of eBLineViewer.biz
+	var $eBoardsData;
 
     /*     * **************************CONSTRUCTOR*************************** */
 
-    function __construct($data) {
+    function __construct(&$data) {
 		if (!isset($data['sleep'])) {
             $data['sleep'] = true;
             $this->initialize($data);
@@ -52,7 +54,7 @@ class eblistviewer
         $this->wakeup($data);
 	}
 
-	function initialize($data){
+	function initialize(&$data){
 		/* *** In this biz we have arrays of bizes so we skip the array way of initializing bizes
         foreach($this->bizes as $bizname=>$biz)
         {
@@ -67,6 +69,11 @@ class eblistviewer
 			$data['userUID']=-1;
 		if(! isset ($data["UID"]))
 			$data['UID']=0;
+		if(! isset ($data['expanded']))
+			switch ($data['UID']){
+				case  0:	$data['expanded']=true; break;
+				default:	$data['expanded']=false; break;
+			}
 		/* *** Initializing myCat *** */
 		if(! isset ($data['myCat'])){
 			$data['myCat']['fullname']=$this->_bizname."_myCat";
@@ -74,9 +81,11 @@ class eblistviewer
 			$data['myCat']['parent']=$this;
 			$data['myCat']['catUID']=$data['UID'];
 		}
+		$data['eBLists']=array();
+		$data['eBoards']=array();
 	}
 
-	function wakeup($data){
+	function wakeup(&$data){
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
 		$this->_parent = &$data["parent"];
@@ -88,118 +97,74 @@ class eblistviewer
 		*/
 		$this->userUID=&$data["userUID"];
 		$this->UID=&$data["UID"];
-		if(! isset ($data['expanded']))
-			switch ($data['UID']){
-				case  0:	$data['expanded']=true; break;
-				default:	$data['expanded']=false; break;
-			}
 		$this->expanded=&$data["expanded"];
 		$this->myCat=new category(&$data['myCat']);
-		if(isset ($data['eBLists'])){
-			$this->eBLists=array();
-			foreach($data['eBLists'] as $listName=>$listdata){
-				$this->eBLists[]=new eblistviewer(&$listdata);
+		$this->eBListsData=&$data['eBLists'];
+		$this->eBoardsData=&$data['eBoards'];
+		$this->eBLists=array();
+		$this->eBoards=array();
+		foreach($data['eBLists'] as $listName=>&$listdata){
+			if(! isset($listdata["bizname"])){
+				$listdata["bizname"]=$listName;
+				$listdata["fullname"]=$this->_fullname."_".$listName;
+				$listdata["parent"]=$this;
 			}
+			$this->eBLists[]=new eblistviewer(&$listdata);
 		}
-		if(isset ($data['eBoards'])){
-			$this->eBoards=array();
-			foreach($data['eBoards'] as $eBName=>$eBdata){
-				$this->eBoards[]=new eblineviewer(&$eBdata);
+		foreach($data['eBoards'] as $eBName=>&$eBdata){
+			if(! isset($eBdata["bizname"])){
+				$eBdata["bizname"]=$eBName;
+				$eBdata["fullname"]=$this->_fullname."_".$eBName;
+				$eBdata["parent"]=$this;
 			}
+			$this->eBoards[]=new eblineviewer(&$eBdata);
 		}
 		if($this->expanded)
-			$this->loadContent();
+			$this->loadContent($data);
 	}
 
-	function old__construct($data){
-        $this->_bizname = &$data["bizname"];
-        $this->_fullname = &$data["fullname"];
-		$this->_parent = &$data["parent"];
-
-		/* *** In this biz we have arrays of bizes so we skip the array way of initializing bizes
-        foreach($this->bizes as $bizname=>$biz)
-        {
-            if (!(isset($data[$bizname]))) {
-                $data[$bizname]['fullname'] = ($this->_bizname . "_" . $bizname);
-                $data[$bizname]['bizname'] = $bizname;
-                $data[$bizname]['parent'] = $this;
-            }
-            $this->myBizes[$bizname] = new $biz(&$data[$bizname]);
-        }
-		*/
-		if(! isset ($data["UID"]))
-			$data['UID']=0;
-		$this->UID=&$data["UID"];
-		if(! isset ($data['expanded']))
-			switch ($data['UID']){
-				case  0:	$data['expanded']=true; break;
-				default:	$data['expanded']=false; break;
-			}
-		$this->expanded=&$data["expanded"];
-		/* *** Initializing myCat *** */
-		if(! isset ($data['myCat'])){
-			$data['myCat']['fullname']=$this->_bizname."_myCat";
-			$data['myCat']['bizname']="myCat";
-			$data['myCat']['parent']=$this;
-			$data['myCat']['catUID']=$data['UID'];
-		}
-		$this->myCat=new category(&$data['myCat']);
-		if(isset ($data['eBLists'])){
-			$this->eBLists=array();
-			foreach($data['eBLists'] as $listName=>$listdata){
-				$this->eBLists[]=new eblistviewer(&$listdata);
-			}
-		}
-		if(isset ($data['eBoards'])){
-			$this->eBoards=array();
-			foreach($data['eBoards'] as $eBName=>$eBdata){
-				$this->eBoards[]=new eblineviewer(&$eBdata);
-			}
-		}
-		if($this->expanded)
-			$this->loadContent();
-    }
-
-	function loadContent(){
-		if(isset ($data['eBLists']) || isset ($data['eBoards']))
-			return;
+	function loadContent(&$maindata){
+		if((sizeof($maindata['eBLists'])+sizeof($maindata['eBoards']))!=0)
+			return;// It has loaded once
 		$con=$this->myCat->backContent();
-		if(is_array($con))
 		foreach($con as $cat){
 			switch($cat['extra']){
 				case 'eBList':
+					$index=count($this->eBListsData);
 					$data=array();
-					$this->eBLists[0][]=$data;
 					$data['UID']=$cat['bizUID'];
 					$data['parent']=$this;
-					$data['bizname']=count($this->eBLists)-1;
+					$data['bizname']=$index;
 					$data['fullname']=$this->_fullname."_".$data['bizname'];
-					$this->eBLists[]=new eblistviewer($data);
+					$this->eBListsData[]=$data;
+					$this->eBLists[]=new eblistviewer($this->eBListsData[$index]);
 					break;
 				case 'eBoard':
+					$index=count($this->eBoardsData);
 					$data=array();
-					$this->eBoards[0][]=$data;
 					$data['UID']=$cat['bizUID'];
 					$data['parent']=$this;
-					$data['bizname']=count($this->eBoards)-1;
+					$data['bizname']=$index;
 					$data['fullname']=$this->_fullname."_".$data['bizname'];
-					$this->eBoards[]=new eblineviewer($data);
+					$this->eBoardsData[]=$data;
+					$this->eBoards[]=new eblineviewer($this->eBoardsData[$index]);
 					break;
 				default:
 					break;
-			}
-		}
+			}//switch
+		}//foreach
 	}
 
     /*     * **************************MESSAGE HANDELING*************************** */
 
     function message($to, $message, $info) {
+		echo "\n##".$this->_fullname." : (".$to.", ".$message.", ".$info.") ##\n";
         if ($to != $this->_fullname) {
             //pass msg to childs
 			$this->myCat->message($to, $message, $info);
-			foreach($this->eBoards as &$eB)
+			foreach($this->eBoards as $i=>&$eB)
 				$eB->message($to, $message, $info);
-			foreach($this->eBLists as &$eL)
+			foreach($this->eBLists as $i=>&$eL)
 				$eL->message($to, $message, $info);
             return;
         }
@@ -218,9 +183,9 @@ class eblistviewer
         }
 		*/
 		$this->myCat->broadcast(&$msg, &$info);
-		foreach($this->eBoards as &$eB)
+		foreach($this->eBoards as $i=>&$eB)
 			$eB->broadcast(&$msg, &$info);
-		foreach($this->eBLists as &$eL)
+		foreach($this->eBLists as $i=>&$eL)
 			$eL->broadcast(&$msg, &$info);
       switch($msg)
       {
@@ -241,15 +206,15 @@ class eblistviewer
     function show($echo)
     {
 		$Content=$this->showContent(false);
-		$formNam=$this->_fullname;
+		$formName=$this->_fullname;
 		$msgTarget=$this->_fullname;
 		$Lable=$this->myCat->lable;
 
         $this->html= '
-			<form name="' . $formNam . '" method="post">
+			<form name="' . $formName . '" method="post">
 	            <input type="hidden" name="_message" value="click" />
 				<input type = "hidden" name="_target" value="' . $msgTarget . '" />
-				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $formNam . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
 			' . $Content;
 		if($echo)
@@ -261,11 +226,9 @@ class eblistviewer
 	function showContent($echo){
 		$html='';
 		if($this->expanded){
-			if(is_array(eBLists))
-			foreach($this->eBLists as &$L)
+			foreach($this->eBLists as $i=>&$L)
 				$html = $html.$L->show(false);
-			if(is_array(eBoards))
-			foreach($this->eBoards as &$B)
+			foreach($this->eBoards as $i=>&$B)
 				$html = $html.$B->show(false);
 		}
 		if($echo)

@@ -40,15 +40,15 @@ class eblineviewer
 
     /*     * **************************CONSTRUCTOR*************************** */
 
-    function __construct($data) {
+    function __construct(&$data) {
 		if (!isset($data['sleep'])) {
             $data['sleep'] = true;
-            initialize($data);
+            $this->initialize($data);
         }
-        wakeup($data);
+        $this->wakeup($data);
 	}
 
-	function initialize($data){
+	function initialize(&$data){
 		/* *** In this biz we have arrays of bizes so we skip the array way of initializing bizes
         foreach($this->bizes as $bizname=>$biz)
         {
@@ -70,7 +70,7 @@ class eblineviewer
 		}
 	}
 
-	function wakeup($data){
+	function wakeup(&$data){
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
 		$this->_parent = &$data["parent"];
@@ -81,7 +81,7 @@ class eblineviewer
         }
 		*/
 		$this->UID=&$data["UID"];
-		$this->myCat=new category(&$data['myCat']);
+		$this->myCat=new category($data['myCat']);
 	}
 
     /*     * **************************MESSAGE HANDELING*************************** */
