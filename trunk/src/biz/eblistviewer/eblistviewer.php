@@ -47,11 +47,13 @@ class eblistviewer {
     /*     * **************************CONSTRUCTOR*************************** */
 
     function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-            $data['sleep'] = true;
+
+		  if (!isset($data['sleep']))
+		  {
+				$data['sleep'] = true;
             $this->initialize($data);
         }
-        $this->wakeup($data);
+		  $this->wakeup($data);  
 	}
 
 	function initialize(&$data){
@@ -103,16 +105,22 @@ class eblistviewer {
 		$this->eBoardsData=&$data['eBoards'];
 		$this->eBLists=array();
 		$this->eBoards=array();
-		foreach($data['eBLists'] as $listName=>&$listdata){
-			if(! isset($listdata["bizname"])){
+		
+		foreach($data['eBLists'] as $listName=>&$listdata)
+		{
+			if(! isset($listdata["bizname"]))
+			{
 				$listdata["bizname"]=$listName;
 				$listdata["fullname"]=$this->_fullname."_".$listName;
 				$listdata["parent"]=$this;
 			}
 			$this->eBLists[]=new eblistviewer(&$listdata);
 		}
-		foreach($data['eBoards'] as $eBName=>&$eBdata){
-			if(! isset($eBdata["bizname"])){
+		
+		foreach($data['eBoards'] as $eBName=>&$eBdata)
+		{
+			if(! isset($eBdata["bizname"]))
+			{
 				$eBdata["bizname"]=$eBName;
 				$eBdata["fullname"]=$this->_fullname."_".$eBName;
 				$eBdata["parent"]=$this;
@@ -120,15 +128,21 @@ class eblistviewer {
 			$this->eBoards[]=new eblineviewer(&$eBdata);
 		}
 		if($this->expanded)
+		{
 			$this->loadContent($data);
+		}
 	}
 
 	function loadContent(&$maindata){
 		if((sizeof($maindata['eBLists'])+sizeof($maindata['eBoards']))!=0)
+		{
 			return;// It has loaded once
+		}
 		$con=$this->myCat->backContent();
-		foreach($con as $cat){
-			switch($cat['extra']){
+		foreach($con as $cat)
+		{
+			switch($cat['extra'])
+			{
 				case 'eBList':
 					$index=count($this->eBListsData);
 					$data=array();
@@ -158,21 +172,27 @@ class eblistviewer {
     /*     * **************************MESSAGE HANDELING*************************** */
 
     function message($to, $message, $info) {
-		echo "\n##".$this->_fullname." : (".$to.", ".$message.", ".$info.") ##\n";
-        if ($to != $this->_fullname) {
-            //pass msg to childs
-			$this->myCat->message($to, $message, $info);
-			foreach($this->eBoards as $i=>&$eB)
-				$eB->message($to, $message, $info);
-			foreach($this->eBLists as $i=>&$eL)
-				$eL->message($to, $message, $info);
+		  echo "\n##".$this->_fullname." : (".$to.", ".$message.", ".$info.") ##\n";
+        if ($to != $this->_fullname)
+		  {
+				//pass msg to childs
+				$this->myCat->message($to, $message, $info);
+				foreach($this->eBoards as $i=>&$eB)
+				{
+					 $eB->message($to, $message, $info);
+				}
+				foreach($this->eBLists as $i=>&$eL)
+				{
+					 $eL->message($to, $message, $info);
+				}
             return;
         }
         // handle possible messages for this
-		if($message=="click"){
-			$this->expanded= ! $this->expanded;
-			$this->show(true);
-		}
+		  if($message=="click")
+		  {
+			  $this->expanded= ! $this->expanded;
+			  $this->show(true);
+		  }
     }
 
     function broadcast($msg, $info) {
@@ -205,36 +225,49 @@ class eblistviewer {
 
     function show($echo)
     {
-		$Content=$this->showContent(false);
+		$content=$this->showContent(false);
 		$formName=$this->_fullname;
 		$msgTarget=$this->_fullname;
-		$Lable=$this->myCat->lable;
+		$lable=$this->myCat->lable;
 
         $this->html= '
 			<form name="' . $formName . '" method="post">
-	            <input type="hidden" name="_message" value="click" />
+	         <input type="hidden" name="_message" value="click" />
 				<input type = "hidden" name="_target" value="' . $msgTarget . '" />
-				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+				<input value ="' . $lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
-			' . $Content;
+			' . $content;
+
 		if($echo)
+		{
 			echo osShow($this);
+		}
 		else
+		{
 			return osShow($this);
+		}
     }
 	
 	function showContent($echo){
 		$html='';
 		if($this->expanded){
 			foreach($this->eBLists as $i=>&$L)
+			{
 				$html = $html.$L->show(false);
+			}
 			foreach($this->eBoards as $i=>&$B)
+			{
 				$html = $html.$B->show(false);
+			}
 		}
 		if($echo)
+		{
 			echo $html;
+		}
 		else
+		{
 			return $html;
+		}
 	}
 }
 

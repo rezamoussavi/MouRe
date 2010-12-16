@@ -112,21 +112,25 @@ class eblineviewer
 
     function show($echo)
     {
-		$formName=$this->_fulname;
+		$formName=$this->_fullname;
 		$msgTarget=$this->_fullname;
-		$Lable=$this->myCat->lable;
+		$lable=$this->myCat->lable;
 
         $this->html= '
 			<form name="' . $formName . '" method="post">
 	            <input type="hidden" name="_message" value="click" />
 				<input type = "hidden" name="_target" value="' . $msgTarget . '" />
-				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+				<input value ="' . $lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
 			';
-		if($echo)
-			echo osShow($this);
-		else
-			return osShow($this);
+		  if($echo)
+		  {
+				echo osShow($this);
+		  }
+		  else
+		  {
+				return osShow($this);
+		  }
     }
 }
 
