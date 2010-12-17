@@ -42,7 +42,7 @@ class login
 
     /*     * **************************CONSTRUCTOR*************************** */
 
-    function __construct($data) {
+    function __construct(&$data) {
         $this->_bizname = &$data["bizname"];
         $this->_fullname = &$data["fullname"];
 		$this->_parent = &$data["parent"];
