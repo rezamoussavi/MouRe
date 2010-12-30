@@ -1,0 +1,202 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	12/30/2010
+	Version:1.0
+
+#biz
+	user
+
+#var
+	userUID,email,loggedIn
+
+#message
+	logout,login
+
+#phpfunction
+
+    function logout() {
+        #var.loggedIn = 0;
+        osBroadcast(#msg.logout, array());
+    }
+
+    function isLoggedin() {
+        return #var.loggedIn;
+    }
+
+    function backUID($email) {
+        return #var.userUID;
+    }
+
+    function sendVerificationCode() {
+        #fun.sendEmail(#var.email, "Verify", #fun.createVerificationCode());
+    }
+
+    function validate($verificationCode) {        
+        query("SELECT * FROM #db.info WHERE userUID='" . #var.userUID . "' ;");
+        if ($row = fetch()) {
+            //correct code
+            if ($verificationCode == $row["verificationCode"]) {
+                query("UPDATE #db.info SET verificationCode='0' WHERE userUID = '" . #var.userUID . "';");
+                #var.loggedIn = 1;
+                return TRUE;
+            }
+            //wrong code
+            else
+            {
+                #var.loggedIn = 3;
+                return FALSE;
+            } 
+        }
+        //shouldn't be possible
+        else
+        {
+            echo 'this should really not be possible...';
+        }
+    }
+
+    /*     * **************************General Biz functionality*************************** */
+
+    function login($email, $password) {        
+        //First check if the email even exists in the database...
+        query("SELECT * FROM #db.info WHERE email='" . $email . "' AND biznessUID= '" . osBackBizness() . "';");
+        $row = fetch();
+        
+        //Didn't exist...
+        if (count($row) == 1) {
+            #var.loggedIn = -2;
+            return -2;
+        }
+        //Email did exist
+        else
+        {
+            $hashPassword = #fun.sha1Hash($email,$password);
+            $s = "SELECT * FROM #db.info WHERE email='" . $email . "' AND password='" . $hashPassword . "'  AND biznessUID= '" . osBackBizness() . "';";
+            query($s);
+            
+            if ($row = fetch()) {
+                #var.email = $email;
+                #var.userUID = $row["userUID"];
+                
+                if ($row["verificationCode"] == '0') {
+                    // login succefull
+                    #var.loggedIn = 1;
+                    
+                    // let bizes know we're logged in!
+                    osBroadcast("login", array("email" => #var.email, "userUID" => #var.userUID));
+                    return 1;
+                } else {
+                    //login succefull but need to validation
+                    #var.loggedIn = 2;
+                    return 2;
+                }
+            }
+            else
+            {
+                //login failed
+                #var.loggedIn = -1;
+                return -1; 
+            }
+        }
+        
+    }
+
+    function add($email, $password, $passwordagain) {        
+        //check if the email is already registered 
+        query("SELECT * FROM #db.info WHERE email='" . $email . "' ;");
+        if ($row = fetch())
+        {
+            if ($email == $row["email"]) {
+                return -1; //user already exist
+            }
+        }
+        //if not, proceed! 
+        else
+        {
+            if($password == $passwordagain)
+            {
+                //save the new user in the database
+                $vcode = #fun.createVerificationCode();
+                $hashPassword = #fun.sha1Hash($email,$password);
+                query("INSERT INTO #db.info (email,password,verificationCode,biznessUID) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."');");
+                
+                // A welcome message to the user...
+                $msg = "Welcome! Please verify your account using this code: ".$vcode;
+                
+                //send an email to the user. FIX MAILING FUNCTION!
+                #fun.sendEmail($email, "Welcome to buziness!", $msg);
+                
+                
+                //to get the fresh userUID...
+                query("SELECT * FROM #db.info WHERE email='" . $email . "' ;");
+                if ($row = fetch())
+                    {
+                        #var.userUID = $row['userUID'];
+                    }
+                #var.loggedIn = 2;
+                
+                //All set - user added and logged in!
+                return 1; 
+            }
+            //passwords didn't match...
+            else
+            {
+                return -2;
+            }
+        }
+    }
+
+    function backUIDByEmail($email) {
+        query("SELECT * FROM #db.info WHERE email='" . $email . "' ;");
+        if ($row = fetch()) {
+            return $row["userUID"];
+        } else {
+            return -1;
+        }
+    }
+
+    function sendNewPassword($email) {
+        query("SELECT * FROM #db.info WHERE email='" . $email . "';");
+        if ($row = fetch()) {
+                $password = #fun.generateRandomPassword();
+                $hashPassword = #fun.sha1Hash($email,$password);
+                query("UPDATE #db.info SET password = '" . $hashPassword . "' WHERE email = '" . $email . "';");
+                #fun.sendEmail($email, "New Password", $password);
+                return TRUE; //email succefully sent
+        }
+        return FALSE; //email wasn't found in db
+    }
+
+    /*     * **************************Internal Biz functionality*************************** */
+
+    private function sha1Hash($email,$password) {
+        $hashPassword = sha1($email.$password);
+        return $hashPassword;
+    }
+    private function sendEmail($to, $title, $msgToSend) {
+        /*
+         * Needs to be reworked...
+         */
+        mail($to, $title, $msgToSend, "From: Bizness");
+    }
+
+    private function createRandomChars($toSelectFrom, $length) {
+        $i = 0;
+        $pass = '';
+        while ($i < $length) {
+            $num = rand(0, strlen($toSelectFrom) - 1);
+            $tmp = substr($toSelectFrom, $num, 1);
+            $pass = $pass . $tmp;
+            $i++;
+        }
+        return $pass;
+    }
+
+    private function generateRandomPassword() {
+        $toSelectFrom = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
+        return #fun.createRandomChars($toSelectFrom, 8);
+    }
+
+    private function createVerificationCode() {
+        $toSelectFrom = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return #fun.createRandomChars($toSelectFrom, 10);
+    }

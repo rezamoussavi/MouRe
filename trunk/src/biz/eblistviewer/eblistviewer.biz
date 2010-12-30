@@ -1,0 +1,97 @@
+#comments
+	Author: Reza Moussavi
+	Date:	12/29/2010
+	Version:	1.0
+
+#biz
+	eblistviewer
+
+#var
+	expanded=false,userUID=-1,UID=0,contentLoaded=false
+
+#node
+	category myCat,eblistviewer[] eBLists,eblineviewer[] eBoards
+
+#start
+	init
+
+#frame
+	frm
+
+#message
+	click->onClick, login->onLogin,logout->onLogout
+
+#phpfunction
+
+	function init(){
+		#node.myCat->bookUID(#var.UID);
+	}
+
+	function frm(){
+		if(#var.expanded)
+			#fun.loadContent();
+		$Lable=#node.myCat->lable;
+
+        $html= '
+			<form name="' . #nodeID . '" method="post">
+	            <#msg.click>
+				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . #nodeID . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+			</form>
+			' . #fun.backContent();
+		return $html;
+	}
+
+	function backContent(){
+		$html='';
+		if(#var.expanded){
+			foreach(#var.eBLists as $i=>&$L)
+				$html = $html.$L->_backframe();
+			foreach(#var.eBoards as $j=>&$B)
+				$html = $html.$B->_backframe();
+		}
+		return $html;
+	}
+
+	function bookUID($UID){
+		#var.contentLoaded=false;
+		#node.eBoards[]=null;
+		#node.eBLists[]=null;
+		#var.UID=$UID;
+		#fun.init();
+	}
+
+	function onClick($info){
+		#var.expanded=! #var.expanded;
+		_bookframe(#frame.frm);
+	}
+
+	function onLogin($info){
+		#var.userUID=$info['userUID'];
+		_bookframe(#frame.frm);		
+	}
+
+	function onLogout($info){
+		#var.userUID=-1;
+		_bookframe(#frame.frm);
+	}
+
+	function loadContent(){
+		if(#var.contentLoaded)
+			return;
+		#var.contentLoaded=true;
+		$con=#node.myCat->backContent();
+		foreach($con as $cat){
+			switch($cat['extra']){
+				case 'eBList':
+					#node.eBLists[]=new eblistviewer();
+					end(#node.eBLists)->bookUID($cat['bizUID']);
+					break;
+				case 'eBoard':
+					#node.eBoards[]=new eblineviewer();
+					end(#node.eBoards)->bookUID($cat['bizUID']);
+					break;
+				default:
+					break;
+			}//switch
+		}//foreach
+	}

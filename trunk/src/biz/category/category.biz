@@ -1,0 +1,48 @@
+#comments
+	Author: Reza Moussavi
+	Date:	12/29/2010
+	Version:	1.0
+
+#biz
+	category
+
+#var
+	catUID,lable,type_name
+
+#start
+	init
+
+#phpfunction
+
+	function init(){
+		if(#var.catUID==0){//----ROOT it is
+			query("SELECT c.catUID as catUID, c.Lable AS lable, t.name AS type_name FROM #db.cat AS c,#db.type AS t WHERE c.typeUID=t.typeUID AND c.owner_type ='bizness' AND c.owner_UID='".osBackBizness()."'");
+			if($row=fetch()){
+				#var.catUID=$row['catUID'];
+				#var.lable=$row['lable'];
+				#var.type_name=$row['type_name'];
+			}
+		}else{//---Specific category
+			query("SELECT c.Lable AS lable, t.Name AS type_name FROM #db.cat AS c,#db.type AS t WHERE c.typeUID=t.typeUID AND c.catUID=".#var.catUID);
+			if($row=fetch()){
+				#var.lable=$row['lable'];
+				#var.type_name=$row['type_name'];
+			}
+		}
+	}
+
+	function bookUID($UID){
+		#var.catUID=$UID;
+		#fun.init();
+	}
+
+	function backContent(){
+		$ret=array();
+		if(#var.catUID!=0){
+			query("SELECT co.bizname AS bizname,co.bizUID AS bizUID, co.extra AS extra FROM #db.cat AS c, #db.content AS co WHERE co.catUID=c.catUID AND c.catUID=".#var.catUID);
+			while($row=fetch()){
+				$ret[]=array("bizname"=>$row['bizname'],"bizUID"=>$row['bizUID'],"extra"=>$row['extra']);
+			}
+		}
+		return $ret;
+	}

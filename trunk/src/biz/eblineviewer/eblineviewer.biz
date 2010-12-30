@@ -1,0 +1,49 @@
+#comments
+	Author: Reza Moussavi
+	Date:	12/29/2010
+	Version:	1.0
+
+#biz
+	eblineviewer
+
+#var
+	UID
+
+#node
+	category myCat
+
+#message
+	click->onClick
+
+#start
+	init
+
+#frame
+	frm
+
+#phpfunction
+
+	function init(){
+		#node.myCat->bookUID(#var.UID);
+	}
+
+	function bookUID($UID){
+		#var.UID=$UID;
+		#fun.init();
+	}
+
+	function onClick(){
+		_bookrame(#frame.frm);
+	}
+
+	function frm(){
+		$Lable=#node.myCat->lable;
+
+		$html= '
+			<form name="' . #nodeID . '" method="post">
+				<#msg.click>
+				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . #nodeID . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+			</form>
+			';
+		return $html;
+	}

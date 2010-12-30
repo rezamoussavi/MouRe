@@ -1,0 +1,35 @@
+#comments
+	Author: Reza Moussavi
+	Date:	12/30/2010
+	Version: 1.0
+
+#biz
+	dummie
+
+#var
+   userEmail
+
+#message
+	login->onLogin,logout->onLogout
+
+#frame
+	happy,*sad
+
+#phpfunction
+
+	function onLogin($info){
+		#var.userEmail=$info['email'];
+		_bookframe(#frame.happy);
+	}
+
+	function onLogout($info){
+		_bookframe(#frame.sad);
+	}
+
+	function happy(){
+		return "<h2>:) </h2>". #var.userEmail;
+	}
+
+	function sad(){
+		return '<h2>:( </h2>';
+	}
