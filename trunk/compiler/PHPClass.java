@@ -85,9 +85,11 @@ public class PHPClass {
 			s=s+"\tvar $"+v.name+";\n";
 		s=s+"\n\t//Nodes (bizvars)\n";
 		for(Node n:nodes){
-			if(n.isArray)
-				s=s+"\tvar $"+n.node+"_array_data; ";
-			s=s+"\tvar $"+n.node+";\n";
+			if(!n.isTemp){
+				if(n.isArray)
+					s=s+"\tvar $"+n.node+"_array_data; ";
+				s=s+"\tvar $"+n.node+";\n";
+			}
 		}
 		return s;
 	}
@@ -152,11 +154,13 @@ public class PHPClass {
 		String s="\n\tfunction message($to, $message, $info) {\n" +
 				"\t\tif ($to != $this->_fullname) {\n";
 		for(Node n:nodes){
-			if(n.isArray){
-				s=s+"\t\t\tforeach($this->"+n.node+" as $i=>&$_element)\n" +
+			if(!n.isTemp){
+				if(n.isArray){
+					s=s+"\t\t\tforeach($this->"+n.node+" as $i=>&$_element)\n" +
 					"\t\t\t\t$_element->message($to, $message, $info);\n";
-			}else
-				s=s+"\t\t\t$this->"+n.node+"->message($to, $message, $info);\n";
+				}else
+					s=s+"\t\t\t$this->"+n.node+"->message($to, $message, $info);\n";
+			}
 		}
 		s=s+"\t\t\treturn;\n\t\t}\n" +
 			"\t\tswitch($message){\n";
@@ -189,11 +193,12 @@ public class PHPClass {
 */
 		String s="\n\tfunction broadcast($message, $info) {\n";
 		for(Node n:nodes)
-			if(n.isArray){
-				s=s+"\t\tforeach($this->"+n.node+" as $i=>&$_element)\n" +
+			if(!n.isTemp)
+				if(n.isArray){
+					s=s+"\t\tforeach($this->"+n.node+" as $i=>&$_element)\n" +
 					"\t\t\t$_element->broadcast($message, $info);\n";
-			}else
-				s=s+"\t\t$this->"+n.node+"->broadcast($message, $info);\n";
+				}else
+					s=s+"\t\t$this->"+n.node+"->broadcast($message, $info);\n";
 		s=s+"\t\tswitch($message){\n";
 		for(Message m:messages)
 			if(m.isCallBack()){
@@ -268,19 +273,21 @@ public class PHPClass {
 					"\t\t\t$data['"+v.name+"']="+v.init+";\n";
 			}
 		for(Node n:nodes){
-			if(n.isArray){
-				s=s+"\t\tif(! isset ($data['"+n.node+"_array_data']))\n" +
+			if(!n.isTemp){
+				if(n.isArray){
+					s=s+"\t\tif(! isset ($data['"+n.node+"_array_data']))\n" +
 					"\t\t\t$data['"+n.node+"_array_data']=array();\n";
-			}
-			else{
-				s=s+"\t\tif(! isset ($data['"+n.node+"'])){\n" +
+				}
+				else{
+					s=s+"\t\tif(! isset ($data['"+n.node+"'])){\n" +
 					"\t\t\t$data['"+n.node+"']['fullname']=$this->_fullname.'_"+n.node+"';\n" +
 					"\t\t\t$data['"+n.node+"']['bizname']='"+n.node+"';\n" +
 					"\t\t}\n";
+				}
 			}
 		}
 		s=s+"\t}\n";
-  		return s;
+		return s;
 	}
 	private String HFWakeup(){
 /*
@@ -316,8 +323,9 @@ public class PHPClass {
 			s=s+"\t\t$this->"+v.name+"=&$data['"+v.name+"'];\n";
 		s=s+"\n";
 		for(Node n:nodes){
-			if(n.isArray){
-				s=s+"\n\t\t$this->"+n.node+"=array();\n" +
+			if(!n.isTemp){
+				if(n.isArray){
+					s=s+"\n\t\t$this->"+n.node+"=array();\n" +
 					"\t\t$this->"+n.node+"_array_data=&$data['"+n.node+"_array_data'];\n" +
 					"\t\tforeach($data['"+n.node+"_array_data'] as $na=>&$da){\n"+
 					"\t\t\tif(! isset($da['bizname'])){\n"+
@@ -327,9 +335,10 @@ public class PHPClass {
 					"\t\t\t}\n"+
 					"\t\t\t$this->"+n.node+"[]=new "+n.biz+"($da);\n"+
 					"\t\t}\n";
-			}else{
-				s=s+"\t\t$data['"+n.node+"']['parent']=$this;\n" +
-				"\t\t$this->"+n.node+"=new "+n.biz+"($data['"+n.node+"']);\n";
+				}else{
+					s=s+"\t\t$data['"+n.node+"']['parent']=$this;\n" +
+					"\t\t$this->"+n.node+"=new "+n.biz+"($data['"+n.node+"']);\n";
+				}
 			}
 		}
 		s=s+"\t}\n";

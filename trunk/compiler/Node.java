@@ -3,6 +3,7 @@ public class Node {
 	public String node;
 	public String biz;
 	public boolean isArray;
+	public boolean isTemp;
 
 	public Node(){
 	}
@@ -10,11 +11,15 @@ public class Node {
 	public Node(SecElement se){
 		String s=se.data.trim();
 		int spc=s.indexOf(' ');
+		isTemp=false;
 		if(spc>0){
 			biz=s.substring(0,spc).trim();
 			node=s.substring(spc).trim();
+		}else{
+			biz=s;
+			node="";
+			isTemp=true;
 		}
-//		System.out.println("biz:"+biz+" node:"+node);
 		isArray=false;
 		if(endWithBrackets(biz)){
 			biz=biz.substring(0,biz.length()-2);
@@ -24,7 +29,6 @@ public class Node {
 			node=node.substring(0,node.length()-2);
 			isArray=true;
 		}
-//		System.out.println("biz:"+biz+" node:"+node+"\n");
 	}
 
 	private boolean endWithBrackets(String s){
