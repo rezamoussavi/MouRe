@@ -1,0 +1,44 @@
+#comments
+	Author:		Reza Moussavi
+	Version:	0.1
+
+#biz
+	ebframe
+
+#var
+	cureBUID
+
+#node
+	tabbank tabbar,epostentry entrybar,epostbank epostbar
+
+#message
+	eBoardSelected->onEBoardSelected,
+	tabSelected->onTabSelected,
+	newPostAdded->onNewPostAdded
+
+#frame
+	frm
+
+#phpfunction
+
+	function onEBoardSelected($info){
+		$cat=new category(array("catUID")=>$info['UID']);
+	}
+
+	function onTabSelected($info){
+	}
+
+	function onNewPostAdded($info){
+	}
+
+	function frm(){
+		$tabbar=#node.tabbar->_backframe();
+		$entrybar=#node.entrybar->_backframe();
+		$epostbar=#node.epostbar->_backframe();
+		$html=<<<HTML
+			$tabbar<br>
+			$entrybar<br>
+			$epostbar<br>
+HTML;
+		return $html;
+	}
