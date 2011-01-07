@@ -6,6 +6,7 @@
 	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/6/2011
+	TestApproval: none
 
 */
 require_once '../biz/epost/epost.php';
@@ -149,17 +150,17 @@ class epostviewer {
 			({$this->post->timeStamp})
 			<form name="$prev" method="post">
 				<input type="hidden" name="_message" value="prev" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' />
+				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("$prev")' />
 			</form>
 			{$this->post->edition} / {$this->post->lastedition}
 			<form name="$next" method="post">
 				<input type="hidden" name="_message" value="next" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' />
+				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("$next")' />
 			</form>
 			({$this->post->noOfComments})
 			<form name="$comment" method="post">
 				<input type="hidden" name="_message" value="comment" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' />
+				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comments")' />
 			</form>
 			<hr />
 HTML;

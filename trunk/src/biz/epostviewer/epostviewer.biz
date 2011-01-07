@@ -47,17 +47,17 @@
 			({#node.post->timeStamp})
 			<form name="$prev" method="post">
 				<#msg.prev>
-				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' />
+				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("$prev")' />
 			</form>
 			{#node.post->edition} / {#node.post->lastedition}
 			<form name="$next" method="post">
 				<#msg.next>
-				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' />
+				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("$next")' />
 			</form>
 			({#node.post->noOfComments})
 			<form name="$comment" method="post">
 				<#msg.comment>
-				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' />
+				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comments")' />
 			</form>
 			<hr />
 HTML;

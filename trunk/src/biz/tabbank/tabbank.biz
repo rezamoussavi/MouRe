@@ -1,18 +1,52 @@
 #comments
 	Author:		Reza Moussavi
 	Version:	0.1
-	Date:		1/ /2011
+	Date:		1/7/2011
 	TestApproval: none
 
 #biz
 	tabbank
 
 #var
-	name,UID
+	curTabUID
+
+#node
+	tab[] tab
+
+#message
+	tabselected->onTabSelected
 
 #phpfunction
 
 	// reset the contents
-	// $list=array("name"=>xxxx , "UID"=>xxxx)
+	// $list=array(array("name"=>xxxx , "UID"=>xxxx),...)
 	function booklist($list){
+		#node.tab[]=null;
+		#var.curTabUID=-1;
+		$first=true;
+		foreach($list as $t){
+			#node.tab[]=new tab();
+			end(#node.tab)->title=$t['name'];
+			end(#node.tab)->UID=$t['UID'];
+			if($first){
+				#node.tab[0]->bookSelected(true);
+				$first=false;
+			}
+		}
 	}
+
+	function onTabSelected($info){
+		if(#var.curTabUID==$info['UID']){
+			return;
+		}
+		if(#var.curTabUID!=-1){
+			foreach(#node.tab as $t){
+				if($t->UID==#var.curTabUID){
+					$t->bookSelected(false);
+					break;
+				}
+			}
+		}
+		#var.curTabUID=$info['UID'];
+	}
+

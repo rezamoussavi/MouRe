@@ -19,27 +19,37 @@
 #phpfunction
 
 	function bookSelected($selected){
+		if($var.selected==$selected){
+			return;
+		}
 		$var.selected=$selected;
-		osBroadcast(#msg.tabselected,array("UID"=>#msg.UID));
+		if($selected){
+			osBroadcast(#msg.tabselected,array("UID"=>#msg.UID));
+			_setframe(#frame.selectedframe);
+		}else{
+			_setframe(#frame.notselectedframe);
+		}	
 	}
 
 	function onClick($info){
 		if(!selected){
 			#fun.bookSelected(true);
-			_setframe(#frame.selectedframe);
 		}
 	}
 
 	function notselectedfrm(){
 		$html=<<<HTML
-			[ { #var.title } ]
+			<form name="#nodeID" action="post">
+				<#msg.click>
+				<input type="button" value="{#var.title}" onclick="javascript:sndmsg('#nodeID')">
+			</form>
 HTML;
 		return $html;
 	}
 
 	function selectedfrm(){
 		$html=<<<HTML
-			<b> [[ {#var.title} ]] </b>
+			<input type="button" value="[[ {#var.title} ]]">
 HTML;
 		return $html;
 	}

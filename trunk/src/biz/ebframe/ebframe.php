@@ -140,7 +140,7 @@ class ebframe {
 		$content=$cat->backContent();
 		$ar=array();
 		foreach($content as $c)
-			$ar[]=array("name"=>$cat->backLable($c['bizUID'],"UID"=>$c['bizUID']);
+			$ar[]=array("name"=>$cat->backLable($c['bizUID']),"UID"=>$c['bizUID']);
 		$this->tabbar->booklist($ar);
 	}
 	function onTabSelected($info){

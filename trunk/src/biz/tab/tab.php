@@ -6,6 +6,7 @@
 	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/6/2011
+	TestApproval: none
 
 */
 
@@ -99,24 +100,34 @@ class tab {
 
 
 	function bookSelected($selected){
+		if($var.selected==$selected){
+			return;
+		}
 		$var.selected=$selected;
-		osBroadcast("tabselected",array("UID"=>"UID"));
+		if($selected){
+			osBroadcast("tabselected",array("UID"=>"UID"));
+			_setframe("selectedframe");
+		}else{
+			_setframe("notselectedframe");
+		}	
 	}
 	function onClick($info){
 		if(!selected){
 			$this->bookSelected(true);
-			_setframe("selectedframe");
 		}
 	}
 	function notselectedfrm(){
 		$html=<<<HTML
-			[ { $this->title } ]
+			<form name="$this->_fullname" action="post">
+				<input type="hidden" name="_message" value="click" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+				<input type="button" value="{$this->title}" onclick="javascript:sndmsg('$this->_fullname')">
+			</form>
 HTML;
 		return $html;
 	}
 	function selectedfrm(){
 		$html=<<<HTML
-			<b> [[ {$this->title} ]] </b>
+			<input type="button" value="[[ {$this->title} ]]">
 HTML;
 		return $html;
 	}
