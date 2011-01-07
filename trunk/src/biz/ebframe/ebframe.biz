@@ -1,6 +1,7 @@
 #comments
 	Author:		Reza Moussavi
-	Version:	0.1
+	Version:	1.0
+	TestApproval: none
 
 #biz
 	ebframe
@@ -22,13 +23,22 @@
 #phpfunction
 
 	function onEBoardSelected($info){
-		$cat=new category(array("catUID")=>$info['UID']);
+		#var.cureBUID=$info['UID'];
+		$cat=new category(array("catUID")=>#var.cureBUID);
+		$content=$cat->backContent();
+		$ar=array();
+		foreach($content as $c)
+			$ar[]=array("name"=>$cat->backLable($c['bizUID'],"UID"=>$c['bizUID']);
+		#node.tabbar->booklist($ar);
 	}
 
 	function onTabSelected($info){
+		#node.entrybar->bookPostOwner("category",$info['UID']);
+		#node.epostbar->showBy("category",$info['UID']);
 	}
 
 	function onNewPostAdded($info){
+		#node.epostbar->reload();
 	}
 
 	function frm(){

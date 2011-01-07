@@ -1,6 +1,67 @@
 #comments
 	Author:		Reza Moussavi
 	Version:	0.1
+	Date:		1/6/2011
+	TestApproval: none
 
 #biz
 	epostviewer
+
+#node
+	epost post, epostentry comment
+
+#var
+	showCommentBox=false
+
+#message
+	next->onNext, prev->onPrev, comment->onComment
+
+#frame
+	frm
+
+#phpfunction
+
+	function onNext($info){
+		if(#node.post->next())
+			_setframe(#frame.frm);
+	}
+
+	function onPrev($info){
+		if(#node.post->prev())
+			_setframe(#frame.frm);
+	}
+
+	function onComment($info){
+		#var.showCommentBox=!#var.showCommentBox;
+		_setframe(#frame.frm);
+	}
+
+	function frm(){
+		$next=#nodeID."next";
+		$prev=#nodeID."prev";
+		$comment=#nodeID."comment";
+		$html=<<<HTML
+			<hr />
+			By: {#node.post->author} Title: {#node.post->title} <hr />
+			{#node.post->contents} <hr/>
+			({#node.post->timeStamp})
+			<form name="$prev" method="post">
+				<#msg.prev>
+				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' />
+			</form>
+			{#node.post->edition} / {#node.post->lastedition}
+			<form name="$next" method="post">
+				<#msg.next>
+				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' />
+			</form>
+			({#node.post->noOfComments})
+			<form name="$comment" method="post">
+				<#msg.comment>
+				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' />
+			</form>
+			<hr />
+HTML;
+		if(showCommentBox)
+			$html.="<hr>".#node.comment->_backframe();
+		return $html;
+	}

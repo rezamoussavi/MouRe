@@ -31,6 +31,17 @@
 		}
 	}
 
+	// A Global-Special function
+	function backLable($UID){
+		if($UID==0)
+			return #var.lable;
+		$ret=array();
+		query("SELECT c.Lable AS lable, t.Name AS type_name FROM #db.cat AS c,#db.type AS t WHERE c.typeUID=t.typeUID AND c.catUID=".$UID);
+		if($row=fetch())
+			$ret[]=("lable"=>$row['lable'],"type_name"=>$row['type_name']);
+		return $ret;
+	}
+
 	function bookUID($UID){
 		#var.catUID=$UID;
 		#fun.init();

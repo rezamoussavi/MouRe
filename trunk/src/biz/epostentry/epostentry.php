@@ -1,12 +1,14 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author:		Reza Moussavi
 	Version:	0.1
+	Date:		1/4/2011
 
 */
+require_once '../biz/epost/epost.php';
 
 class epostentry {
 
@@ -17,6 +19,8 @@ class epostentry {
 	var $_curFrame;
 
 	//Variables
+	var $ownerName;
+	var $ownerUID;
 
 	//Nodes (bizvars)
 
@@ -31,6 +35,8 @@ class epostentry {
 	}
 
 	function _initialize(&$data){
+		if(! isset ($data['curFrame']))
+			$data['curFrame']=frm;
 	}
 
 	function _wakeup(&$data){
@@ -39,6 +45,8 @@ class epostentry {
 		$this->_parent = &$data['parent'];
 		$this->_curFrame = &$data['curFrame'];
 
+		$this->ownerName=&$data['ownerName'];
+		$this->ownerUID=&$data['ownerUID'];
 
 	}
 
@@ -47,6 +55,9 @@ class epostentry {
 			return;
 		}
 		switch($message){
+			case 'stickit':
+				$this->onStickIt($info);
+				break;
 			default:
 				break;
 		}
@@ -54,6 +65,9 @@ class epostentry {
 
 	function broadcast($message, $info) {
 		switch($message){
+			case 'stickit':
+				$this->onStickIt($info);
+				break;
 			default:
 				break;
 		}
@@ -73,6 +87,34 @@ class epostentry {
 			echo $html;
 		else
 			return $html;
+	}
+
+
+//########################################
+//         YOUR FUNCTIONS GOES HERE
+//########################################
+
+
+	function bookPostOwner($ownerName,$ownerUID){
+		$this->ownerName=$ownerName;
+		$this->ownerUID=$ownerUID;
+	}
+	function frm(){
+		$html=<<<HTML
+		<FORM name="$this->_fullname" method="POST">
+			<input type="hidden" name="_message" value="stickit" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+			Content:<br />
+			<input type="text" name="content" /><br />
+			Title <input type="input" name="title" />
+			<input value ="Stick It!" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")' class="press" style="margin-top: 10px; margin-right: 0px;" />
+		</FORM>
+HTML;
+		return $html;
+	}
+	function onStickIt($info){
+		$ep=new epost(array());
+		$ep->addpost(array("title"=>$info['title'],"content"=>$info['content'],"ownerbiz"=>$this->ownerName,"ownerbizUID"=>$this->ownerUID));
+		osBroadcast("newPostAdded",array());
 	}
 
 }

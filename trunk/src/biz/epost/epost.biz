@@ -1,0 +1,29 @@
+#comments
+	Author:		Reza Moussavi
+	Version:	0.1
+	Date:		1/ /2011
+	TestApproval: none
+
+#biz
+	epost
+
+#var
+	author,title,content,
+	edition=0,lastedition=0,noOfComments=0,
+	timeStamp="00:00 1/1/1"
+
+#phpfunction
+
+	function addpost($data){
+		//$data=> content, title, ownerbiz, ownerbizUID
+	}
+
+	function next(){
+		//goto next edition if there is any
+		return false;
+	}
+
+	function prev(){
+		//goto previous edition if there is any
+		return false;
+	}

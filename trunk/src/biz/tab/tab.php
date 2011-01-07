@@ -1,10 +1,11 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author:		Reza Moussavi
 	Version:	0.1
+	Date:		1/6/2011
 
 */
 
@@ -17,6 +18,9 @@ class tab {
 	var $_curFrame;
 
 	//Variables
+	var $selected;
+	var $title;
+	var $UID;
 
 	//Nodes (bizvars)
 
@@ -31,6 +35,10 @@ class tab {
 	}
 
 	function _initialize(&$data){
+		if(! isset ($data['curFrame']))
+			$data['curFrame']=notselectedfrm;
+		if(! isset ($data['selected']))
+			$data['selected']=false;
 	}
 
 	function _wakeup(&$data){
@@ -39,6 +47,9 @@ class tab {
 		$this->_parent = &$data['parent'];
 		$this->_curFrame = &$data['curFrame'];
 
+		$this->selected=&$data['selected'];
+		$this->title=&$data['title'];
+		$this->UID=&$data['UID'];
 
 	}
 
@@ -47,6 +58,9 @@ class tab {
 			return;
 		}
 		switch($message){
+			case 'click':
+				$this->onClick($info);
+				break;
 			default:
 				break;
 		}
@@ -54,6 +68,9 @@ class tab {
 
 	function broadcast($message, $info) {
 		switch($message){
+			case 'click':
+				$this->onClick($info);
+				break;
 			default:
 				break;
 		}
@@ -73,6 +90,35 @@ class tab {
 			echo $html;
 		else
 			return $html;
+	}
+
+
+//########################################
+//         YOUR FUNCTIONS GOES HERE
+//########################################
+
+
+	function bookSelected($selected){
+		$var.selected=$selected;
+		osBroadcast("tabselected",array("UID"=>"UID"));
+	}
+	function onClick($info){
+		if(!selected){
+			$this->bookSelected(true);
+			_setframe("selectedframe");
+		}
+	}
+	function notselectedfrm(){
+		$html=<<<HTML
+			[ { $this->title } ]
+HTML;
+		return $html;
+	}
+	function selectedfrm(){
+		$html=<<<HTML
+			<b> [[ {$this->title} ]] </b>
+HTML;
+		return $html;
 	}
 
 }

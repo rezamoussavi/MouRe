@@ -1,16 +1,14 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.0
 
 	Author:		Reza Moussavi
 	Version:	0.1
-	Date:		1/ /2011
-	TestApproval: none
 
 */
 
-class tools {
+class postbank {
 
 	//Mandatory Variables for a biz
 	var $_bizname;

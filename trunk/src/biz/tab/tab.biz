@@ -1,6 +1,45 @@
 #comments
 	Author:		Reza Moussavi
 	Version:	0.1
+	Date:		1/6/2011
+	TestApproval: none
 
 #biz
 	tab
+
+#var
+	selected=false,title,UID
+
+#message
+	click->onClick,tabselected
+
+#frame
+	selectedfrm,*notselectedfrm
+
+#phpfunction
+
+	function bookSelected($selected){
+		$var.selected=$selected;
+		osBroadcast(#msg.tabselected,array("UID"=>#msg.UID));
+	}
+
+	function onClick($info){
+		if(!selected){
+			#fun.bookSelected(true);
+			_setframe(#frame.selectedframe);
+		}
+	}
+
+	function notselectedfrm(){
+		$html=<<<HTML
+			[ { #var.title } ]
+HTML;
+		return $html;
+	}
+
+	function selectedfrm(){
+		$html=<<<HTML
+			<b> [[ {#var.title} ]] </b>
+HTML;
+		return $html;
+	}

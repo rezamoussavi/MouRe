@@ -1,6 +1,47 @@
 #comments
 	Author:		Reza Moussavi
 	Version:	0.1
+	Date:		1/4/2011
+	TestApproval: none
 
 #biz
 	epostentry
+
+#var
+	ownerName,ownerUID
+
+#frame
+	frm
+
+#message
+	stickit->onStickIt,
+	newPostAdded
+
+#node
+	epost
+
+#phpfunction
+
+	function bookPostOwner($ownerName,$ownerUID){
+		#var.ownerName=$ownerName;
+		#var.ownerUID=$ownerUID;
+	}
+
+	function frm(){
+		$html=<<<HTML
+		<FORM name="#nodeID" method="POST">
+			<#msg.stickit>
+			Content:<br />
+			<input type="text" name="content" /><br />
+			Title <input type="input" name="title" />
+			<input value ="Stick It!" type = "button" onclick = 'JavaScript:sndmsg("#nodeID")' class="press" style="margin-top: 10px; margin-right: 0px;" />
+		</FORM>
+HTML;
+		return $html;
+	}
+
+	function onStickIt($info){
+		$ep=new epost(array());
+		$ep->addpost(array("title"=>$info['title'],"content"=>$info['content'],"ownerbiz"=>#var.ownerName,"ownerbizUID"=>#var.ownerUID));
+		osBroadcast(#msg.newPostAdded,array());
+	}

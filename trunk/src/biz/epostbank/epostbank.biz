@@ -1,0 +1,16 @@
+#comments
+	Author:		Reza Moussavi
+	Version:	0.1
+	Date:		1/ /2011
+	TestApproval: none
+
+#biz
+	epostbank
+
+#phpfunction
+
+	function showBy($ownerName,$ownerUID){
+	}
+
+	function reload(){
+	}

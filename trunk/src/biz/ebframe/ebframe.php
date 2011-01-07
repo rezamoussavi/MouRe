@@ -1,12 +1,16 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author:		Reza Moussavi
-	Version:	0.1
+	Version:	1.0
+	TestApproval: none
 
 */
+require_once '../biz/tabbank/tabbank.php';
+require_once '../biz/epostentry/epostentry.php';
+require_once '../biz/epostbank/epostbank.php';
 
 class ebframe {
 
@@ -17,8 +21,12 @@ class ebframe {
 	var $_curFrame;
 
 	//Variables
+	var $cureBUID;
 
 	//Nodes (bizvars)
+	var $tabbar;
+	var $entrybar;
+	var $epostbar;
 
 	function __construct(&$data) {
 		if (!isset($data['sleep'])) {
@@ -31,6 +39,20 @@ class ebframe {
 	}
 
 	function _initialize(&$data){
+		if(! isset ($data['curFrame']))
+			$data['curFrame']=frm;
+		if(! isset ($data['tabbar'])){
+			$data['tabbar']['fullname']=$this->_fullname.'_tabbar';
+			$data['tabbar']['bizname']='tabbar';
+		}
+		if(! isset ($data['entrybar'])){
+			$data['entrybar']['fullname']=$this->_fullname.'_entrybar';
+			$data['entrybar']['bizname']='entrybar';
+		}
+		if(! isset ($data['epostbar'])){
+			$data['epostbar']['fullname']=$this->_fullname.'_epostbar';
+			$data['epostbar']['bizname']='epostbar';
+		}
 	}
 
 	function _wakeup(&$data){
@@ -39,21 +61,52 @@ class ebframe {
 		$this->_parent = &$data['parent'];
 		$this->_curFrame = &$data['curFrame'];
 
+		$this->cureBUID=&$data['cureBUID'];
 
+		$data['tabbar']['parent']=$this;
+		$this->tabbar=new tabbank($data['tabbar']);
+		$data['entrybar']['parent']=$this;
+		$this->entrybar=new epostentry($data['entrybar']);
+		$data['epostbar']['parent']=$this;
+		$this->epostbar=new epostbank($data['epostbar']);
 	}
 
 	function message($to, $message, $info) {
 		if ($to != $this->_fullname) {
+			$this->tabbar->message($to, $message, $info);
+			$this->entrybar->message($to, $message, $info);
+			$this->epostbar->message($to, $message, $info);
 			return;
 		}
 		switch($message){
+			case 'eBoardSelected':
+				$this->onEBoardSelected($info);
+				break;
+			case 'tabSelected':
+				$this->onTabSelected($info);
+				break;
+			case 'newPostAdded':
+				$this->onNewPostAdded($info);
+				break;
 			default:
 				break;
 		}
 	}
 
 	function broadcast($message, $info) {
+		$this->tabbar->broadcast($message, $info);
+		$this->entrybar->broadcast($message, $info);
+		$this->epostbar->broadcast($message, $info);
 		switch($message){
+			case 'eBoardSelected':
+				$this->onEBoardSelected($info);
+				break;
+			case 'tabSelected':
+				$this->onTabSelected($info);
+				break;
+			case 'newPostAdded':
+				$this->onNewPostAdded($info);
+				break;
 			default:
 				break;
 		}
@@ -73,6 +126,40 @@ class ebframe {
 			echo $html;
 		else
 			return $html;
+	}
+
+
+//########################################
+//         YOUR FUNCTIONS GOES HERE
+//########################################
+
+
+	function onEBoardSelected($info){
+		$this->cureBUID=$info['UID'];
+		$cat=new category(array("catUID")=>$this->cureBUID);
+		$content=$cat->backContent();
+		$ar=array();
+		foreach($content as $c)
+			$ar[]=array("name"=>$cat->backLable($c['bizUID'],"UID"=>$c['bizUID']);
+		$this->tabbar->booklist($ar);
+	}
+	function onTabSelected($info){
+		$this->entrybar->bookPostOwner("category",$info['UID']);
+		$this->epostbar->showBy("category",$info['UID']);
+	}
+	function onNewPostAdded($info){
+		$this->epostbar->reload();
+	}
+	function frm(){
+		$tabbar=$this->tabbar->_backframe();
+		$entrybar=$this->entrybar->_backframe();
+		$epostbar=$this->epostbar->_backframe();
+		$html=<<<HTML
+			$tabbar<br>
+			$entrybar<br>
+			$epostbar<br>
+HTML;
+		return $html;
 	}
 
 }

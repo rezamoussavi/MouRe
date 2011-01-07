@@ -1,6 +1,18 @@
 #comments
 	Author:		Reza Moussavi
 	Version:	0.1
+	Date:		1/ /2011
+	TestApproval: none
 
 #biz
 	tabbank
+
+#var
+	name,UID
+
+#phpfunction
+
+	// reset the contents
+	// $list=array("name"=>xxxx , "UID"=>xxxx)
+	function booklist($list){
+	}
