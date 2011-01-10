@@ -1,16 +1,51 @@
 #comments
 	Author:		Reza Moussavi
 	Version:	0.1
-	Date:		1/ /2011
+	Date:		1/10/2011
 	TestApproval: none
 
 #biz
 	epostbank
 
+#var
+	curUID=-1
+
+#node
+	fullepostviewer[] posts,category
+
+#frame
+	frm
+
 #phpfunction
 
+	function frm(){
+		$posts='';
+		foreach(#node.posts as $p){
+			$posts.=$p->_backframe()."<br>";
+		}
+		$html=<<<PHTML
+			$posts
+PHTML;
+		return $html;
+	}
+
 	function showBy($ownerName,$ownerUID){
+		if(#var.curUID==$ownerUID){
+			return;
+		}
+		#var.curUID=$ownerUID;
+		#fun.reload();
+		_setframe(#frame.frm);
 	}
 
 	function reload(){
+		$cat=new category(array());
+		$content=$cat->backContentOf(#var.curUID);
+		#node.posts[]=null;
+		foreach($content as $c){
+			if($c['bizname']=='epost'){
+				#node.posts[]=new fullepostviewer();
+				end(#node.posts[])->bookUID($c['bizUID']);
+			}
+		}
 	}

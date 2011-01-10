@@ -1,8 +1,70 @@
 #comments
 	Author:		Reza Moussavi
 	Version:	0.1
-	Date:		1/ /2011
+	Date:		1/10/2011
 	TestApproval: none
 
 #biz
-	postbank
+	fullepostviewer
+
+#node
+	epostviewer post, fullepostviewer[] comments
+
+#var
+	expanded=false,UID=-1,isLoaded=false;
+
+#message
+	expand=onExpand
+
+#frame
+	frm
+
+#start
+	init
+
+#phpfunction
+
+	function bookUID($UID){
+		#node.post->bookUID(#var.UID);
+	}
+
+	function bookExpanded($expanded){
+		if(! #var.isLoaded && $expanded){
+			#fun.loadComments();
+		}
+		#var.expanded=$expanded;
+	}
+
+	function loadComments(){
+		$comments=#node.post->backCommentsUID();
+		#node.comments[]=null;
+		foreach($comments as $c){
+			#node.comments[]=new fullepostviewer();
+			end(#node.comments)->bookUID($c);
+		}
+		#var.isLoaded=true;
+	}
+
+	function onExpand($info){
+		#fun.bookExpanded(!#var.expanded);
+	}
+
+	function frm(){
+		$post=#node.post->_backframe();
+		#var.expanded? $sign='[-]' : $sign='[+]' ;
+		$comments=' ';
+		if(#var.expanded){
+			foreach(#node.comments as c){
+				$comments.=c->_backframe();
+			}
+		}
+		$html=<<<PHTML
+			$post<br>
+			<form name="{#nodeID}" method="post">
+				<#msg.expand>
+				<input value ="$sign" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' />
+			</form><br>
+			$comments<br>
+PHTML;
+		return $html;
+	}

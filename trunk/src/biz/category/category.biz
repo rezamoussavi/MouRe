@@ -47,6 +47,11 @@
 		#fun.init();
 	}
 
+	function backContentOf($UID){
+		#fun.bookUID($UID);
+		#fun.backContent();
+	}
+
 	function backContent(){
 		$ret=array();
 		if(#var.catUID!=0){

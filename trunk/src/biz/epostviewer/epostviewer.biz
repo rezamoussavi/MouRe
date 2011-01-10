@@ -11,7 +11,7 @@
 	epost post, epostentry comment
 
 #var
-	showCommentBox=false
+	showCommentBox=false,UID=-1
 
 #message
 	next->onNext, prev->onPrev, comment->onComment
@@ -20,6 +20,15 @@
 	frm
 
 #phpfunction
+
+	function backCommentsUID(){
+		return #node.post->backCommentsUID();
+	}
+
+	function bookUID($UID){
+		#var.UID=$UID;
+		#node.post->bookUID($UID);
+	}
 
 	function onNext($info){
 		if(#node.post->next())
