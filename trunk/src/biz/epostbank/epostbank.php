@@ -1,12 +1,16 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author:		Reza Moussavi
 	Version:	0.1
+	Date:		1/10/2011
+	TestApproval: none
 
 */
+require_once '../biz/fullepostviewer/fullepostviewer.php';
+require_once '../biz/category/category.php';
 
 class epostbank {
 
@@ -17,8 +21,10 @@ class epostbank {
 	var $_curFrame;
 
 	//Variables
+	var $curUID;
 
 	//Nodes (bizvars)
+	var $posts_array_data; 	var $posts;
 
 	function __construct(&$data) {
 		if (!isset($data['sleep'])) {
@@ -31,6 +37,12 @@ class epostbank {
 	}
 
 	function _initialize(&$data){
+		if(! isset ($data['curFrame']))
+			$data['curFrame']=frm;
+		if(! isset ($data['curUID']))
+			$data['curUID']=-1;
+		if(! isset ($data['posts_array_data']))
+			$data['posts_array_data']=array();
 	}
 
 	function _wakeup(&$data){
@@ -39,11 +51,25 @@ class epostbank {
 		$this->_parent = &$data['parent'];
 		$this->_curFrame = &$data['curFrame'];
 
+		$this->curUID=&$data['curUID'];
 
+
+		$this->posts=array();
+		$this->posts_array_data=&$data['posts_array_data'];
+		foreach($data['posts_array_data'] as $na=>&$da){
+			if(! isset($da['bizname'])){
+				$da['bizname']=$na;
+				$da['fullname']=$this->_fullname."_".$na;
+				$da['parent']=$this;
+			}
+			$this->posts[]=new fullepostviewer($da);
+		}
 	}
 
 	function message($to, $message, $info) {
 		if ($to != $this->_fullname) {
+			foreach($this->posts as $i=>&$_element)
+				$_element->message($to, $message, $info);
 			return;
 		}
 		switch($message){
@@ -53,6 +79,8 @@ class epostbank {
 	}
 
 	function broadcast($message, $info) {
+		foreach($this->posts as $i=>&$_element)
+			$_element->broadcast($message, $info);
 		switch($message){
 			default:
 				break;
@@ -73,6 +101,53 @@ class epostbank {
 			echo $html;
 		else
 			return $html;
+	}
+
+
+//########################################
+//         YOUR FUNCTIONS GOES HERE
+//########################################
+
+
+	function frm(){
+		$posts='';
+		foreach($this->posts as $p){
+			$posts.=$p->_backframe()."<br>";
+		}
+		$html=<<<PHTML
+			$posts
+PHTML;
+		return $html;
+	}
+	function showBy($ownerName,$ownerUID){
+		if($this->curUID==$ownerUID){
+			return;
+		}
+		$this->curUID=$ownerUID;
+		$this->reload();
+		_setframe("frm");
+	}
+	function reload(){
+		$cat=new category(array());
+		$content=$cat->backContentOf($this->curUID);
+		
+		// Empty the array
+		$this->posts_array_data=array();
+		$this->posts=array();
+		foreach($content as $c){
+			if($c['bizname']=='epost'){
+				
+				// Add new Node to the array
+				$_index=count($this->posts_array_data);
+				$_data=array();
+				$_data['parent']=$this;
+				$_data['bizname']=$_index;
+				$_data['fullname']=$this->_fullname.'_'.$_index;
+				$this->posts_array_data[]=$_data;
+				$this->posts[]=new  fullepostviewer($this->posts_array_data[$_index]);
+				end($this->posts[])->bookUID($c['bizUID']);
+			}
+		}
 	}
 
 }

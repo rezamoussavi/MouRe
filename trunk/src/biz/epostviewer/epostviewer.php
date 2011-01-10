@@ -22,6 +22,7 @@ class epostviewer {
 
 	//Variables
 	var $showCommentBox;
+	var $UID;
 
 	//Nodes (bizvars)
 	var $post;
@@ -42,6 +43,8 @@ class epostviewer {
 			$data['curFrame']=frm;
 		if(! isset ($data['showCommentBox']))
 			$data['showCommentBox']=false;
+		if(! isset ($data['UID']))
+			$data['UID']=-1;
 		if(! isset ($data['post'])){
 			$data['post']['fullname']=$this->_fullname.'_post';
 			$data['post']['bizname']='post';
@@ -59,6 +62,7 @@ class epostviewer {
 		$this->_curFrame = &$data['curFrame'];
 
 		$this->showCommentBox=&$data['showCommentBox'];
+		$this->UID=&$data['UID'];
 
 		$data['post']['parent']=$this;
 		$this->post=new epost($data['post']);
@@ -127,6 +131,13 @@ class epostviewer {
 //########################################
 
 
+	function backCommentsUID(){
+		return $this->post->backCommentsUID();
+	}
+	function bookUID($UID){
+		$this->UID=$UID;
+		$this->post->bookUID($UID);
+	}
 	function onNext($info){
 		if($this->post->next())
 			_setframe("frm");

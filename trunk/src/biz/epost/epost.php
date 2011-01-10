@@ -1,10 +1,12 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author:		Reza Moussavi
 	Version:	0.1
+	Date:		1/10/2011
+	TestApproval: none
 
 */
 
@@ -17,6 +19,14 @@ class epost {
 	var $_curFrame;
 
 	//Variables
+	var $UID;
+	var $author;
+	var $title;
+	var $content;
+	var $edition;
+	var $lastedition;
+	var $noOfComments;
+	var $timeStamp;
 
 	//Nodes (bizvars)
 
@@ -31,6 +41,16 @@ class epost {
 	}
 
 	function _initialize(&$data){
+		if(! isset ($data['UID']))
+			$data['UID']=-1;
+		if(! isset ($data['edition']))
+			$data['edition']=0;
+		if(! isset ($data['lastedition']))
+			$data['lastedition']=0;
+		if(! isset ($data['noOfComments']))
+			$data['noOfComments']=0;
+		if(! isset ($data['timeStamp']))
+			$data['timeStamp']="20101231235959";
 	}
 
 	function _wakeup(&$data){
@@ -39,6 +59,14 @@ class epost {
 		$this->_parent = &$data['parent'];
 		$this->_curFrame = &$data['curFrame'];
 
+		$this->UID=&$data['UID'];
+		$this->author=&$data['author'];
+		$this->title=&$data['title'];
+		$this->content=&$data['content'];
+		$this->edition=&$data['edition'];
+		$this->lastedition=&$data['lastedition'];
+		$this->noOfComments=&$data['noOfComments'];
+		$this->timeStamp=&$data['timeStamp'];
 
 	}
 
@@ -73,6 +101,34 @@ class epost {
 			echo $html;
 		else
 			return $html;
+	}
+
+
+//########################################
+//         YOUR FUNCTIONS GOES HERE
+//########################################
+
+
+	function backCommentsUID(){
+		if($this->UID==-1){
+			return;
+		}
+		$ret=array();
+		//
+		return $ret;
+	}
+	function bookUID($UID){
+	}
+	function addpost($data){
+		//$data=> content, title, ownerbiz, ownerbizUID
+	}
+	function next(){
+		//goto next edition if there is any
+		return false;
+	}
+	function prev(){
+		//goto previous edition if there is any
+		return false;
 	}
 
 }

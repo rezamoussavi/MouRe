@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author: Reza Moussavi
 	Date:	12/29/2010
@@ -67,9 +67,12 @@ class category {
 		}
 	}
 
-	function _setframe($frame){
+	function _bookframe($frame){
 		$this->_curFrame=$frame;
 		$this->show(true);
+	}
+	function _backframe(){
+		return $this->show(false);
 	}
 
 	function show($echo){
@@ -102,9 +105,23 @@ class category {
 			}
 		}
 	}
+	// A Global-Special function
+	function backLable($UID){
+		if($UID==0)
+			return $this->lable;
+		$ret=array();
+		query("SELECT c.Lable AS lable, t.Name AS type_name FROM category_cat AS c,category_type AS t WHERE c.typeUID=t.typeUID AND c.catUID=".$UID);
+		if($row=fetch())
+			$ret[]=("lable"=>$row['lable'],"type_name"=>$row['type_name']);
+		return $ret;
+	}
 	function bookUID($UID){
 		$this->catUID=$UID;
 		$this->init();
+	}
+	function backContentOf($UID){
+		$this->bookUID($UID);
+		$this->backContent();
 	}
 	function backContent(){
 		$ret=array();
