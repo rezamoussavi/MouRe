@@ -16,8 +16,8 @@
 	frm
 
 #message
-	login->onLogin,
-	logout->onLogout,
+	loginBtn->onLoginBtn,
+	logoutBtn->onLogoutBtn,
 	displaySignupForm->onDisplaySignupForm,
 	requestNewPassword->onRequestNewPassword,
 	displayForgotForm->onDisplayForgotForm,
@@ -27,12 +27,12 @@
 
 #phpfunction
 
-	function onLogin($info){
+	function onLoginBtn($info){
 		#node.userShow->login($info['email'], $info['password']);
 		_bookframe(#frame.frm);
 	}
 
-	function onLogout($info){
+	function onLogoutBtn($info){
 		#node.userShow->logout();
 		_bookframe(#frame.frm);
 	}
@@ -166,7 +166,7 @@
 
 			<div style="width: 50px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
 			<div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" /> <br />
-			<#msg.login>
+			<#msg.loginBtn>
 			<div style="width: 180px;">
 			<input value ="Login" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 50px;" />
 			</div>
@@ -280,7 +280,7 @@
 		$html = '<h5>You need to validate your account. Check your email!</h5>';
 		$html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
 			<form name="' . $formNameLogout . '" method="post" >
-				<#msg.logout>
+				<#msg.logoutBtn>
 				<input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameLogout . '")\'  style="margin-top: 0px;"><br />
 			</form>
 
@@ -300,7 +300,7 @@
 
 		$html = "<h2>Welcome sir!</h2>";
 		$html .= '<form name="' . $formName . '" method="post" >
-				<#msg.logout>
+				<#msg.logoutBtn>
 				<input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  class="press" style="margin-top: 0px;"><br />
 				</form>';
 		return $html;

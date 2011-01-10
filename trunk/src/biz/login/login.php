@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author:	Reza Moussavi
 	Date:	12/30/2010
@@ -63,11 +63,11 @@ class login {
 			return;
 		}
 		switch($message){
-			case 'login':
-				$this->onLogin($info);
+			case 'loginBtn':
+				$this->onLoginBtn($info);
 				break;
-			case 'logout':
-				$this->onLogout($info);
+			case 'logoutBtn':
+				$this->onLogoutBtn($info);
 				break;
 			case 'displaySignupForm':
 				$this->onDisplaySignupForm($info);
@@ -95,11 +95,11 @@ class login {
 	function broadcast($message, $info) {
 		$this->userShow->broadcast($message, $info);
 		switch($message){
-			case 'login':
-				$this->onLogin($info);
+			case 'loginBtn':
+				$this->onLoginBtn($info);
 				break;
-			case 'logout':
-				$this->onLogout($info);
+			case 'logoutBtn':
+				$this->onLogoutBtn($info);
 				break;
 			case 'displaySignupForm':
 				$this->onDisplaySignupForm($info);
@@ -146,11 +146,11 @@ class login {
 //########################################
 
 
-	function onLogin($info){
+	function onLoginBtn($info){
 		$this->userShow->login($info['email'], $info['password']);
 		$this->_bookframe("frm");
 	}
-	function onLogout($info){
+	function onLogoutBtn($info){
 		$this->userShow->logout();
 		$this->_bookframe("frm");
 	}
@@ -266,7 +266,7 @@ class login {
 		<form name="' . $formName . '" method="post" >
 			<div style="width: 50px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
 			<div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" /> <br />
-			<input type="hidden" name="_message" value="login" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+			<input type="hidden" name="_message" value="loginBtn" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
 			<div style="width: 180px;">
 			<input value ="Login" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 50px;" />
 			</div>
@@ -363,7 +363,7 @@ class login {
 		$html = '<h5>You need to validate your account. Check your email!</h5>';
 		$html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
 			<form name="' . $formNameLogout . '" method="post" >
-				<input type="hidden" name="_message" value="logout" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+				<input type="hidden" name="_message" value="logoutBtn" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
 				<input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameLogout . '")\'  style="margin-top: 0px;"><br />
 			</form>
 			<h5>' . $failmsg . '</h5>
@@ -380,7 +380,7 @@ class login {
 		$formName = $this->_fullname."logout";
 		$html = "<h2>Welcome sir!</h2>";
 		$html .= '<form name="' . $formName . '" method="post" >
-				<input type="hidden" name="_message" value="logout" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+				<input type="hidden" name="_message" value="logoutBtn" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
 				<input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  class="press" style="margin-top: 0px;"><br />
 				</form>';
 		return $html;
