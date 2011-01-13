@@ -12,11 +12,24 @@ public class compiler {
 	String FileName;
 
 	public static void main(String[] args) {
+		String input="";
+		while(!input.equalsIgnoreCase("exit")){
+			System.out.print("command> ");
+			input=getInput();
+			loadAndCompile(input);
+		}
+	}
+
+	public static String getInput(){
 		Scanner scan= new Scanner(System.in);
+		return scan.nextLine();
+	}
+
+	public static void loadAndCompile(String fname){
 		BufferedReader br;
-		String FileName=scan.nextLine();
+		String FileName=fname;
 		if(FileName.length()<20){
-			FileName="C:\\MouRe\\trunk\\src\\biz\\"+FileName+"\\"+FileName;
+			FileName="C:\\MouReBackup\\trunk\\src\\biz\\"+fname+"\\"+fname;
 		}
 		try {
 			br=new BufferedReader(new FileReader( new File(FileName+".biz")));
@@ -26,11 +39,11 @@ public class compiler {
 		}
 		try {
 			new compiler(br,FileName);
+			br.close();
 		} catch (IOException e) {
 			System.out.println("ERROR while reading file: "+e.toString());
-		}
+		}		
 	}
-
 	public compiler(BufferedReader br,String File) throws IOException{
 		this.FileName=File+".php";
 		PHPClass php=new PHPClass();
@@ -41,7 +54,7 @@ public class compiler {
 			line=br.readLine();
 			if(isNewSection(line)){
 				if(sec!=null){
-					sections.add(sec);
+//					sections.add(sec);
 					php.applySection(sec);
 				}
 				sec=new Section(line);
@@ -53,7 +66,7 @@ public class compiler {
 		sections.add(sec);
 		php.applySection(sec);
 //		transfer();
-		System.out.println(php);
+		System.out.println("\tCompiled");
 		FileWriter fw=new FileWriter(FileName);
 		fw.write(php.toString());
 		fw.close();

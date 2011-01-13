@@ -26,7 +26,7 @@ public class PHPLine {
 			msg=line.substring(i+6,eom);
 			line=line.substring(0,i)
 				+"<input type=\"hidden\" name=\"_message\" value=\""+msg+"\" />"
-				+"<input type = \"hidden\" name=\"_target\" value=\"' . $this->_fullname . '\" />"
+				+"<input type = \"hidden\" name=\"_target\" value=\"{$this->_fullname}\" />"
 				+line.substring(eom+1);
 			i=line.indexOf("<#msg.");
 		}

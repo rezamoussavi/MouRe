@@ -48,7 +48,7 @@ public class PHPClass {
 		}else if(sec.name.equalsIgnoreCase("phpfunction")){
 			functions=sec.elements.get(0).data;
 		}else if(sec.name.equalsIgnoreCase("comments")){
-			comments="/*\n\tCompiled by bizLang compiler version 1.0\n\n"+sec.elements.get(0).data+"\n*/\n";
+			comments="/*\n\tCompiled by bizLang compiler version 1.01\n\n"+sec.elements.get(0).data+"\n*/\n";
 		}
 	}
 
@@ -258,7 +258,7 @@ public class PHPClass {
 		if(! isset ($data['nodes_array_data']))
 			$data['nodes_array_data']=array();
 		if(! isset ($data['node'])){
-			$data['node']['fullname']=$this->_fullname."_node";
+			$data['node']['fullname']=$data['fullname']."_node";
 			$data['node']['bizname']="node";
 		}
 	}
@@ -266,7 +266,7 @@ public class PHPClass {
 		String s="\n\tfunction _initialize(&$data){\n";
 		if(frames.size()>0)
 				s=s+"\t\tif(! isset ($data['curFrame']))\n" +
-				"\t\t\t$data['curFrame']="+frames.get(0)+";\n";
+				"\t\t\t$data['curFrame']='"+frames.get(0)+"';\n";
 		for(Var v:vars)
 			if(v.isInit()){
 				s=s+"\t\tif(! isset ($data['"+v.name+"']))\n" +
@@ -280,7 +280,7 @@ public class PHPClass {
 				}
 				else{
 					s=s+"\t\tif(! isset ($data['"+n.node+"'])){\n" +
-					"\t\t\t$data['"+n.node+"']['fullname']=$this->_fullname.'_"+n.node+"';\n" +
+					"\t\t\t$data['"+n.node+"']['fullname']=$data['fullname'].'_"+n.node+"';\n" +
 					"\t\t\t$data['"+n.node+"']['bizname']='"+n.node+"';\n" +
 					"\t\t}\n";
 				}
