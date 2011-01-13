@@ -37,9 +37,9 @@ class login {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=frm;
+			$data['curFrame']='frm';
 		if(! isset ($data['userShow'])){
-			$data['userShow']['fullname']=$this->_fullname.'_userShow';
+			$data['userShow']['fullname']=$data['fullname'].'_userShow';
 			$data['userShow']['bizname']='userShow';
 		}
 	}
@@ -260,28 +260,28 @@ class login {
 				break;
 		}
 		//pack html variable
-		$html =
-		'<h2>Login</h2>
-		<h5>' . $modehtml . '</h5>
-		<form name="' . $formName . '" method="post" >
-			<div style="width: 50px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
-			<div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" /> <br />
-			<input type="hidden" name="_message" value="loginBtn" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-			<div style="width: 180px;">
-			<input value ="Login" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press" style="margin-top: 10px; margin-right: 50px;" />
-			</div>
-		</form>
-		<form name="' . $formNameSignup . '" method="post" >
-			<input type="hidden" name="_message" value="displaySignupForm" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-			<span>No account yet?</span>
-			<input value ="sign up!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameSignup . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
-		</form>
-		<form name="' . $formNameForgot . '" method="post" >
-			<input type="hidden" name="_message" value="displayForgotForm" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-			<span>Password lost?</span>
-			<input value ="get a new!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameForgot . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
-		</form>
-		';
+		$html =<<<PHTML
+			<h2>Login</h2>
+			<h5>$modehtml</h5>
+			<form name="$formName" method="post" >
+				<div style="width: 50px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
+				<div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" /> <br />
+				<input type="hidden" name="_message" value="loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<div style="width: 180px;">
+				<input value ="Login" type = "button" onclick = 'JavaScript:sndmsg("$formName")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				</div>
+			</form>
+			<form name="$formNameSignup" method="post" >
+				<input type="hidden" name="_message" value="displaySignupForm" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<span>No account yet?</span>
+				<input value ="sign up!" type = "button" onclick = 'JavaScript:sndmsg("$formNameSignup")' class="press" style="margin-top: 10px; margin-right: 0px;" />
+			</form>
+			<form name="$formNameForgot" method="post" >
+				<input type="hidden" name="_message" value="displayForgotForm" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<span>Password lost?</span>
+				<input value ="get a new!" type = "button" onclick = 'JavaScript:sndmsg("$formNameForgot")' class="press" style="margin-top: 10px; margin-right: 0px;" />
+			</form>
+PHTML;
 		return $html;
     }
     function showSignupForm(){
@@ -299,22 +299,22 @@ class login {
 				$msg = "The passwords you entered didn't match. Try again!";
 				break;
 		}
-		$html = '
-		<h2>Signup!</h2> 
-		<h5>' .  $msg . '</h5>
-		<form name="' . $formName . '" method="post" >
-			<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
-			<div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" /><br />
-			<div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" /><br />
-			<input type="hidden" name="_message" value="signup" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-			<input value ="sign up!" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press"  style="margin-top: 10px;"><br />
-		</form>
-		<form name="' . $formNameHome . '" method="post" >
-			<input type="hidden" name="_message" value="home" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-			<span>Already a user?</span>
-			<input value ="login!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameHome . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />            
-		</form>
-		';
+		$html =<<<PHTML
+			<h2>Signup!</h2> 
+			<h5>$msg</h5>
+			<form name="$formName" method="post" >
+				<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
+				<div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" /><br />
+				<div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" /><br />
+				<input type="hidden" name="_message" value="signup" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input value ="sign up!" type = "button" onclick = 'JavaScript:sndmsg("$formName")' class="press"  style="margin-top: 10px;"><br />
+			</form>
+			<form name="$formNameHome" method="post" >
+				<input type="hidden" name="_message" value="home" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<span>Already a user?</span>
+				<input value ="login!" type = "button" onclick = 'JavaScript:sndmsg("$formNameHome")' class="press" style="margin-top: 10px; margin-right: 0px;" />
+			</form>
+PHTML;
 		return $html;
 	}
 	function showForgotForm(){
@@ -331,24 +331,26 @@ class login {
 			default:
 				break;
 		}
-		$html = '
-		<h2>Get a new password</h2> 
-		<h5>' .  $msg . '</h5>';
-		if($this->newPasswordSuccess < 1){
-			$html .= '
-			<form name="' . $formName . '" method="post" >
-				<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
-				<input type="hidden" name="_message" value="requestNewPassword" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input value ="send" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\' class="press"  style="margin-top: 10px;"><br />
-			</form>';
-		}
-		$html .= '
-		<form name="' . $formNameHome . '" method="post" >
-			<input type="hidden" name="_message" value="home" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-			<span>Go back </span>
-			<input value ="home" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameHome . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />            
-		</form>
-		';
+		$html = <<<PHTML
+			<h2>Get a new password</h2> 
+			<h5>$msg</h5>
+PHTML;
+			if($this->newPasswordSuccess < 1){
+				$html .= <<<PHTML
+				<form name="$formName" method="post" >
+					<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
+					<input type="hidden" name="_message" value="requestNewPassword" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input value ="send" type = "button" onclick = 'JavaScript:sndmsg("$formName")' class="press"  style="margin-top: 10px;"><br />
+				</form>
+PHTML;
+			}
+			$html .= <<<PHTML
+			<form name="$formNameHome" method="post" >
+				<input type="hidden" name="_message" value="home" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<span>Go back </span>
+				<input value ="home" type = "button" onclick = 'JavaScript:sndmsg("$formNameHome")' class="press" style="margin-top: 10px; margin-right: 0px;" />
+			</form>
+PHTML;
 		return $html;
 	}
     function showValidation($mode){
@@ -361,28 +363,31 @@ class login {
 			$failmsg = "incorrect code.";
 		}
 		$html = '<h5>You need to validate your account. Check your email!</h5>';
-		$html .= '<h3 style="margin-bottom: 2px;">Logout</h3>
-			<form name="' . $formNameLogout . '" method="post" >
-				<input type="hidden" name="_message" value="logoutBtn" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameLogout . '")\'  style="margin-top: 0px;"><br />
+		$html .= <<<PHTML
+			<h3 style="margin-bottom: 2px;">Logout</h3>
+			<form name="$formNameLogout" method="post" >
+				<input type="hidden" name="_message" value="logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formNameLogout")'  style="margin-top: 0px;"><br />
 			</form>
-			<h5>' . $failmsg . '</h5>
-			<form name="' . $formNameValidate . '" method="post" >
+			<h5>$failmsg</h5>
+			<form name="$formNameValidate" method="post" >
 				<div style="width: 100px; margin-top: 10px;">Validation code </div> <input type="input" name="validationCode" /><br />
-				<input type="hidden" name="_message" value="validate" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input value ="Validate!" type = "button" onclick = \'JavaScript:sndmsg("' . $formNameValidate . '")\'  style="margin-top: 10px;"><br />
+				<input type="hidden" name="_message" value="validate" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input value ="Validate!" type = "button" onclick = 'JavaScript:sndmsg("$formNameValidate")'  style="margin-top: 10px;"><br />
 			</form>
-			';
+PHTML;
 		return $html;
 	}
 	function showWelcome(){
 		//important to add the div thingy here so that the ajax knows what to update :)
 		$formName = $this->_fullname."logout";
-		$html = "<h2>Welcome sir!</h2>";
-		$html .= '<form name="' . $formName . '" method="post" >
-				<input type="hidden" name="_message" value="logoutBtn" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input value ="Logout" type = "button" onclick = \'JavaScript:sndmsg("' . $formName . '")\'  class="press" style="margin-top: 0px;"><br />
-				</form>';
+		$html = <<<PHTML
+				<h2>Welcome sir!</h2>
+				<form name="$formName" method="post" >
+					<input type="hidden" name="_message" value="logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formName")'  class="press" style="margin-top: 0px;"><br />
+				</form>
+PHTML;
 		return $html;
 	}
 

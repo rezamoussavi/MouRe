@@ -16,6 +16,10 @@
             <?php $this->myBizes['d1']->show(1); ?>
             <?php $this->myBizes['d2']->show(1); ?>
         </div>
+
+        <div class="banner">
+            <?php $this->myBizes['frm']->show(1); ?>
+        </div>
     </div>
     </div>
 </div>

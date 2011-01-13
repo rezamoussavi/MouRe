@@ -13,7 +13,7 @@
 	category myCat
 
 #message
-	click->onClick
+	clickBtn->onClickBtn
 
 #start
 	init
@@ -32,18 +32,19 @@
 		#fun.init();
 	}
 
-	function onClick(){
-		_bookrame(#frame.frm);
+	function onClickBtn(){
+		osBroadcast(#msg.eBoardSelected,array("UID"=>#var.UID));
+		//_bookrame(#frame.frm);
 	}
 
 	function frm(){
 		$Lable=#node.myCat->lable;
 
-		$html= '
-			<form name="' . #nodeID . '" method="post">
-				<#msg.click>
-				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . #nodeID . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+		$html=<<<PHTML
+			<form name="{#nodeID}" method="post">
+				<#msg.clickBtn>
+				<input value ="$Lable" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
-			';
+PHTML;
 		return $html;
 	}

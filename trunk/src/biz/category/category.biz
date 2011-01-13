@@ -35,10 +35,10 @@
 	function backLable($UID){
 		if($UID==0)
 			return #var.lable;
-		$ret=array();
+		$ret='';
 		query("SELECT c.Lable AS lable, t.Name AS type_name FROM #db.cat AS c,#db.type AS t WHERE c.typeUID=t.typeUID AND c.catUID=".$UID);
 		if($row=fetch())
-			$ret[]=("lable"=>$row['lable'],"type_name"=>$row['type_name']);
+			$ret=$row['lable'];
 		return $ret;
 	}
 
@@ -49,7 +49,7 @@
 
 	function backContentOf($UID){
 		#fun.bookUID($UID);
-		#fun.backContent();
+		return #fun.backContent();
 	}
 
 	function backContent(){

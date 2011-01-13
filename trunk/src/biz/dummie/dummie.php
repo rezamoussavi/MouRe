@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author: Reza Moussavi
 	Date:	12/30/2010
@@ -19,6 +19,7 @@ class dummie {
 
 	//Variables
 	var $userEmail;
+	var $UID;
 
 	//Nodes (bizvars)
 
@@ -34,7 +35,7 @@ class dummie {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=sad;
+			$data['curFrame']='sad';
 	}
 
 	function _wakeup(&$data){
@@ -44,6 +45,7 @@ class dummie {
 		$this->_curFrame = &$data['curFrame'];
 
 		$this->userEmail=&$data['userEmail'];
+		$this->UID=&$data['UID'];
 
 	}
 
@@ -52,11 +54,17 @@ class dummie {
 			return;
 		}
 		switch($message){
+			case 'eBoardSelected':
+				$this->onEBoardSelected($info);
+				break;
 			case 'login':
 				$this->onLogin($info);
 				break;
 			case 'logout':
 				$this->onLogout($info);
+				break;
+			case 'tabselected':
+				$this->onTab($info);
 				break;
 			default:
 				break;
@@ -65,11 +73,17 @@ class dummie {
 
 	function broadcast($message, $info) {
 		switch($message){
+			case 'eBoardSelected':
+				$this->onEBoardSelected($info);
+				break;
 			case 'login':
 				$this->onLogin($info);
 				break;
 			case 'logout':
 				$this->onLogout($info);
+				break;
+			case 'tabselected':
+				$this->onTab($info);
 				break;
 			default:
 				break;
@@ -98,6 +112,14 @@ class dummie {
 //########################################
 
 
+	function onTab($info){
+		$this->userEmail="tab:".$info['UID'];
+		$this->_bookframe("happy");
+	}
+	function onEBoardSelected($info){
+		$this->userEmail="eboard: ".$info['UID'];
+		$this->_bookframe("happy");
+	}
 	function onLogin($info){
 		$this->userEmail=$info['email'];
 		$this->_bookframe("happy");

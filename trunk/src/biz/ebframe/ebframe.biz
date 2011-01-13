@@ -1,5 +1,6 @@
 #comments
 	Author:		Reza Moussavi
+	Date:		1/12/2011
 	Version:	1.0
 	TestApproval: none
 
@@ -10,7 +11,7 @@
 	cureBUID
 
 #node
-	tabbank tabbar,epostentry entrybar,epostbank epostbar
+	tabbank tabbar,epostentry entrybar,epostbank epostbar,category
 
 #message
 	eBoardSelected->onEBoardSelected,
@@ -24,12 +25,19 @@
 
 	function onEBoardSelected($info){
 		#var.cureBUID=$info['UID'];
-		$cat=new category(array("catUID")=>#var.cureBUID);
-		$content=$cat->backContent();
+
+		$_d=array();
+		$cat=new category($_d);
+
+		$content=$cat->backContentOf(#var.cureBUID);
+
 		$ar=array();
-		foreach($content as $c)
-			$ar[]=array("name"=>$cat->backLable($c['bizUID']),"UID"=>$c['bizUID']);
+		foreach($content as $c){
+			$lable=$cat->backLable($c['bizUID']);
+			$ar[]=array("name"=>$lable,"UID"=>$c['bizUID']);
+		}
 		#node.tabbar->booklist($ar);
+		_bookframe(#frame.frm);
 	}
 
 	function onTabSelected($info){
@@ -45,10 +53,11 @@
 		$tabbar=#node.tabbar->_backframe();
 		$entrybar=#node.entrybar->_backframe();
 		$epostbar=#node.epostbar->_backframe();
-		$html=<<<HTML
+		$html=<<<PHTML
+			[{#var.cureBUID}]
 			$tabbar<br>
 			$entrybar<br>
 			$epostbar<br>
-HTML;
+PHTML;
 		return $html;
 	}

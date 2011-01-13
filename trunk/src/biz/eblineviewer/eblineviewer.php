@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author: Reza Moussavi
 	Date:	12/29/2010
@@ -37,9 +37,9 @@ class eblineviewer {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=frm;
+			$data['curFrame']='frm';
 		if(! isset ($data['myCat'])){
-			$data['myCat']['fullname']=$this->_fullname.'_myCat';
+			$data['myCat']['fullname']=$data['fullname'].'_myCat';
 			$data['myCat']['bizname']='myCat';
 		}
 	}
@@ -62,8 +62,8 @@ class eblineviewer {
 			return;
 		}
 		switch($message){
-			case 'click':
-				$this->onClick($info);
+			case 'clickBtn':
+				$this->onClickBtn($info);
 				break;
 			default:
 				break;
@@ -73,8 +73,8 @@ class eblineviewer {
 	function broadcast($message, $info) {
 		$this->myCat->broadcast($message, $info);
 		switch($message){
-			case 'click':
-				$this->onClick($info);
+			case 'clickBtn':
+				$this->onClickBtn($info);
 				break;
 			default:
 				break;
@@ -110,17 +110,18 @@ class eblineviewer {
 		$this->UID=$UID;
 		$this->init();
 	}
-	function onClick(){
-		_bookrame("frm");
+	function onClickBtn(){
+		osBroadcast("eBoardSelected",array("UID"=>$this->UID));
+		//_bookrame("frm");
 	}
 	function frm(){
 		$Lable=$this->myCat->lable;
-		$html= '
-			<form name="' . $this->_fullname . '" method="post">
-				<input type="hidden" name="_message" value="click" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $this->_fullname . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+		$html=<<<PHTML
+			<form name="{$this->_fullname}" method="post">
+				<input type="hidden" name="_message" value="clickBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input value ="$Lable" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
-			';
+PHTML;
 		return $html;
 	}
 

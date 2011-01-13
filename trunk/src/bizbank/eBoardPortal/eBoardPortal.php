@@ -7,7 +7,7 @@
  */
 
 //import bizes
-$bizes = array('login', 'dummie', 'eblistviewer');
+$bizes = array('login', 'dummie', 'eblistviewer', 'ebframe');
 
 $bizpath = '../biz/';
 foreach($bizes as $bizname)
@@ -31,7 +31,8 @@ class eBoardPortal {
     var $bizes = array('login' => 'login',
                        'eblist' => 'eblistviewer',
                        'd1' => 'dummie',
-                       'd2' => 'dummie');
+                       'd2' => 'dummie',
+					   'frm'=> 'ebframe');
     var $myBizes = array();
 
     /*     * **************************CONSTRUCTOR*************************** */

@@ -6,6 +6,7 @@
 	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/4/2011
+	TestApproval: none
 
 */
 require_once '../biz/epost/epost.php';
@@ -36,7 +37,7 @@ class epostentry {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=frm;
+			$data['curFrame']='frm';
 	}
 
 	function _wakeup(&$data){
@@ -102,7 +103,7 @@ class epostentry {
 	function frm(){
 		$html=<<<HTML
 		<FORM name="$this->_fullname" method="POST">
-			<input type="hidden" name="_message" value="stickit" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+			<input type="hidden" name="_message" value="stickit" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 			Content:<br />
 			<input type="text" name="content" /><br />
 			Title <input type="input" name="title" />

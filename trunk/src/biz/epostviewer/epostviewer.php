@@ -40,17 +40,17 @@ class epostviewer {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=frm;
+			$data['curFrame']='frm';
 		if(! isset ($data['showCommentBox']))
 			$data['showCommentBox']=false;
 		if(! isset ($data['UID']))
 			$data['UID']=-1;
 		if(! isset ($data['post'])){
-			$data['post']['fullname']=$this->_fullname.'_post';
+			$data['post']['fullname']=$data['fullname'].'_post';
 			$data['post']['bizname']='post';
 		}
 		if(! isset ($data['comment'])){
-			$data['comment']['fullname']=$this->_fullname.'_comment';
+			$data['comment']['fullname']=$data['fullname'].'_comment';
 			$data['comment']['bizname']='comment';
 		}
 	}
@@ -160,17 +160,17 @@ class epostviewer {
 			{$this->post->contents} <hr/>
 			({$this->post->timeStamp})
 			<form name="$prev" method="post">
-				<input type="hidden" name="_message" value="prev" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+				<input type="hidden" name="_message" value="prev" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("$prev")' />
 			</form>
 			{$this->post->edition} / {$this->post->lastedition}
 			<form name="$next" method="post">
-				<input type="hidden" name="_message" value="next" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+				<input type="hidden" name="_message" value="next" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("$next")' />
 			</form>
 			({$this->post->noOfComments})
 			<form name="$comment" method="post">
-				<input type="hidden" name="_message" value="comment" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+				<input type="hidden" name="_message" value="comment" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comments")' />
 			</form>
 			<hr />

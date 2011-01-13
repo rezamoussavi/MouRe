@@ -32,12 +32,13 @@
 			#fun.loadContent();
 		$Lable=#node.myCat->lable;
 
-        $html= '
-			<form name="' . #nodeID . '" method="post">
+        $html=<<<PHTML
+			<form name="{#nodeID}" method="post">
 	            <#msg.click>
-				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . #nodeID . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+				<input value ="$Lable" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
-			' . #fun.backContent();
+PHTML;
+		$html.= #fun.backContent();
 		return $html;
 	}
 

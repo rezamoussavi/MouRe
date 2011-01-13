@@ -36,6 +36,10 @@ class tabbank {
 	}
 
 	function _initialize(&$data){
+		if(! isset ($data['curFrame']))
+			$data['curFrame']='frm';
+		if(! isset ($data['curTabUID']))
+			$data['curTabUID']=-1;
 		if(! isset ($data['tab_array_data']))
 			$data['tab_array_data']=array();
 	}
@@ -110,6 +114,13 @@ class tabbank {
 //########################################
 
 
+	function frm(){
+		$html=$this->curTabUID." - ";
+		foreach($this->tab as $t){
+			$html.=$t->_backframe();
+		}
+		return $html;
+	}
 	// reset the contents
 	// $list=array(array("name"=>xxxx , "UID"=>xxxx),...)
 	function booklist($list){
@@ -136,6 +147,7 @@ class tabbank {
 				$first=false;
 			}
 		}
+		$this->_bookframe("frm");
 	}
 	function onTabSelected($info){
 		if($this->curTabUID==$info['UID']){

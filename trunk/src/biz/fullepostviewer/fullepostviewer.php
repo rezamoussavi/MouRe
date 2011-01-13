@@ -41,7 +41,7 @@ class fullepostviewer {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=frm;
+			$data['curFrame']='frm';
 		if(! isset ($data['expanded']))
 			$data['expanded']=false;
 		if(! isset ($data['UID']))
@@ -49,7 +49,7 @@ class fullepostviewer {
 		if(! isset ($data['isLoaded']))
 			$data['isLoaded']=false;;
 		if(! isset ($data['post'])){
-			$data['post']['fullname']=$this->_fullname.'_post';
+			$data['post']['fullname']=$data['fullname'].'_post';
 			$data['post']['bizname']='post';
 		}
 		if(! isset ($data['comments_array_data']))
@@ -163,14 +163,14 @@ class fullepostviewer {
 		$this->expanded? $sign='[-]' : $sign='[+]' ;
 		$comments=' ';
 		if($this->expanded){
-			foreach($this->comments as c){
-				$comments.=c->_backframe();
+			foreach($this->comments as $c){
+				$comments.=$c->_backframe();
 			}
 		}
 		$html=<<<PHTML
 			$post<br>
 			<form name="{$this->_fullname}" method="post">
-				<input type="hidden" name="_message" value="expand" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
+				<input type="hidden" name="_message" value="expand" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="$sign" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' />
 			</form><br>
 			$comments<br>

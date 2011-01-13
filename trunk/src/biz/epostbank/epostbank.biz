@@ -35,7 +35,7 @@ PHTML;
 		}
 		#var.curUID=$ownerUID;
 		#fun.reload();
-		_setframe(#frame.frm);
+		_bookframe(#frame.frm);
 	}
 
 	function reload(){

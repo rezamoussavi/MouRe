@@ -7,15 +7,27 @@
 	dummie
 
 #var
-   userEmail
+   userEmail,UID
 
 #message
-	login->onLogin,logout->onLogout
+	eBoardSelected->onEBoardSelected,
+	login->onLogin,logout->onLogout,
+	tabselected->onTab
 
 #frame
 	happy,*sad
 
 #phpfunction
+
+	function onTab($info){
+		#var.userEmail="tab:".$info['UID'];
+		_bookframe(#frame.happy);
+	}
+
+	function onEBoardSelected($info){
+		#var.userEmail="eboard: ".$info['UID'];
+		_bookframe(#frame.happy);
+	}
 
 	function onLogin($info){
 		#var.userEmail=$info['email'];

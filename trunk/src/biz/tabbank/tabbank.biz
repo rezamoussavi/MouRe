@@ -8,7 +8,7 @@
 	tabbank
 
 #var
-	curTabUID
+	curTabUID=-1
 
 #node
 	tab[] tab
@@ -16,7 +16,18 @@
 #message
 	tabselected->onTabSelected
 
+#frame
+	frm
+
 #phpfunction
+
+	function frm(){
+		$html=#var.curTabUID." - ";
+		foreach(#node.tab as $t){
+			$html.=$t->_backframe();
+		}
+		return $html;
+	}
 
 	// reset the contents
 	// $list=array(array("name"=>xxxx , "UID"=>xxxx),...)
@@ -33,6 +44,7 @@
 				$first=false;
 			}
 		}
+		_bookframe(#frame.frm);
 	}
 
 	function onTabSelected($info){

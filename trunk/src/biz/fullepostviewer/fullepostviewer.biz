@@ -54,8 +54,8 @@
 		#var.expanded? $sign='[-]' : $sign='[+]' ;
 		$comments=' ';
 		if(#var.expanded){
-			foreach(#node.comments as c){
-				$comments.=c->_backframe();
+			foreach(#node.comments as $c){
+				$comments.=$c->_backframe();
 			}
 		}
 		$html=<<<PHTML

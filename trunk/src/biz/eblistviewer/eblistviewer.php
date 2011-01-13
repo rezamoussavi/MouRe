@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.0
+	Compiled by bizLang compiler version 1.01
 
 	Author: Reza Moussavi
 	Date:	12/29/2010
@@ -43,7 +43,7 @@ class eblistviewer {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=frm;
+			$data['curFrame']='frm';
 		if(! isset ($data['expanded']))
 			$data['expanded']=false;
 		if(! isset ($data['userUID']))
@@ -53,7 +53,7 @@ class eblistviewer {
 		if(! isset ($data['contentLoaded']))
 			$data['contentLoaded']=false;
 		if(! isset ($data['myCat'])){
-			$data['myCat']['fullname']=$this->_fullname.'_myCat';
+			$data['myCat']['fullname']=$data['fullname'].'_myCat';
 			$data['myCat']['bizname']='myCat';
 		}
 		if(! isset ($data['eBLists_array_data']))
@@ -173,12 +173,13 @@ class eblistviewer {
 		if($this->expanded)
 			$this->loadContent();
 		$Lable=$this->myCat->lable;
-        $html= '
-			<form name="' . $this->_fullname . '" method="post">
-	            <input type="hidden" name="_message" value="click" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input value ="' . $Lable . '" type = "button" onclick = \'JavaScript:sndmsg("' . $this->_fullname . '")\' class="press" style="margin-top: 10px; margin-right: 0px;" />
+        $html=<<<PHTML
+			<form name="{$this->_fullname}" method="post">
+	            <input type="hidden" name="_message" value="click" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input value ="$Lable" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
-			' . $this->backContent();
+PHTML;
+		$html.= $this->backContent();
 		return $html;
 	}
 	function backContent(){

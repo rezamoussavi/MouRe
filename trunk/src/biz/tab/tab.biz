@@ -11,7 +11,7 @@
 	selected=false,title,UID
 
 #message
-	click->onClick,tabselected
+	clicktab->onClicktab,tabselected
 
 #frame
 	selectedfrm,*notselectedfrm
@@ -19,37 +19,47 @@
 #phpfunction
 
 	function bookSelected($selected){
-		if($var.selected==$selected){
+echo "[D03] - ";
+		if(#var.selected==$selected){
 			return;
 		}
-		$var.selected=$selected;
+echo "[D04] - ";
+		#var.selected=$selected;
 		if($selected){
-			osBroadcast(#msg.tabselected,array("UID"=>#msg.UID));
-			_setframe(#frame.selectedframe);
+echo "[D05] - ";
+			osBroadcast(#msg.tabselected,array("UID"=>#var.UID));
+			_bookframe(#frame.selectedfrm);
 		}else{
-			_setframe(#frame.notselectedframe);
+echo "[D06] - ";
+			_bookframe(#frame.notselectedfrm);
 		}	
 	}
 
-	function onClick($info){
-		if(!selected){
+	function onClicktab($info){
+echo "[D01] - ";
+		if(!#var.selected){
+echo "[D02] - ";
 			#fun.bookSelected(true);
 		}
 	}
 
 	function notselectedfrm(){
-		$html=<<<HTML
-			<form name="#nodeID" action="post">
-				<#msg.click>
-				<input type="button" value="{#var.title}" onclick="javascript:sndmsg('#nodeID')">
+		$mark=#var.selected?"{T}":"{F}";
+		$caption=#var.title.$mark.#var.UID;
+		$html=<<<PHTML
+			<form name="{#nodeID}" action="post">
+				<#msg.clicktab>
+				<input type="button" value="$caption" onclick='JavaScript:sndmsg("{#nodeID}")' class="press" />
 			</form>
-HTML;
+PHTML;
 		return $html;
 	}
 
 	function selectedfrm(){
-		$html=<<<HTML
-			<input type="button" value="[[ {#var.title} ]]">
-HTML;
+		$mark=#var.selected?"{T}":"{F}";
+		$caption=#var.title.$mark.#var.UID;
+		$html=<<<PHTML
+			<input type="button" value="[[ $caption ]]" class="press" />
+PHTML;
 		return $html;
 	}

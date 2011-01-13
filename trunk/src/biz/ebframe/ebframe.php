@@ -4,6 +4,7 @@
 	Compiled by bizLang compiler version 1.01
 
 	Author:		Reza Moussavi
+	Date:		1/12/2011
 	Version:	1.0
 	TestApproval: none
 
@@ -11,6 +12,7 @@
 require_once '../biz/tabbank/tabbank.php';
 require_once '../biz/epostentry/epostentry.php';
 require_once '../biz/epostbank/epostbank.php';
+require_once '../biz/category/category.php';
 
 class ebframe {
 
@@ -40,17 +42,17 @@ class ebframe {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=frm;
+			$data['curFrame']='frm';
 		if(! isset ($data['tabbar'])){
-			$data['tabbar']['fullname']=$this->_fullname.'_tabbar';
+			$data['tabbar']['fullname']=$data['fullname'].'_tabbar';
 			$data['tabbar']['bizname']='tabbar';
 		}
 		if(! isset ($data['entrybar'])){
-			$data['entrybar']['fullname']=$this->_fullname.'_entrybar';
+			$data['entrybar']['fullname']=$data['fullname'].'_entrybar';
 			$data['entrybar']['bizname']='entrybar';
 		}
 		if(! isset ($data['epostbar'])){
-			$data['epostbar']['fullname']=$this->_fullname.'_epostbar';
+			$data['epostbar']['fullname']=$data['fullname'].'_epostbar';
 			$data['epostbar']['bizname']='epostbar';
 		}
 	}
@@ -136,12 +138,16 @@ class ebframe {
 
 	function onEBoardSelected($info){
 		$this->cureBUID=$info['UID'];
-		$cat=new category(array("catUID")=>$this->cureBUID);
-		$content=$cat->backContent();
+		$_d=array();
+		$cat=new category($_d);
+		$content=$cat->backContentOf($this->cureBUID);
 		$ar=array();
-		foreach($content as $c)
-			$ar[]=array("name"=>$cat->backLable($c['bizUID']),"UID"=>$c['bizUID']);
+		foreach($content as $c){
+			$lable=$cat->backLable($c['bizUID']);
+			$ar[]=array("name"=>$lable,"UID"=>$c['bizUID']);
+		}
 		$this->tabbar->booklist($ar);
+		$this->_bookframe("frm");
 	}
 	function onTabSelected($info){
 		$this->entrybar->bookPostOwner("category",$info['UID']);
@@ -154,11 +160,12 @@ class ebframe {
 		$tabbar=$this->tabbar->_backframe();
 		$entrybar=$this->entrybar->_backframe();
 		$epostbar=$this->epostbar->_backframe();
-		$html=<<<HTML
+		$html=<<<PHTML
+			[{$this->cureBUID}]
 			$tabbar<br>
 			$entrybar<br>
 			$epostbar<br>
-HTML;
+PHTML;
 		return $html;
 	}
 

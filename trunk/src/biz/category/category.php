@@ -109,10 +109,10 @@ class category {
 	function backLable($UID){
 		if($UID==0)
 			return $this->lable;
-		$ret=array();
+		$ret='';
 		query("SELECT c.Lable AS lable, t.Name AS type_name FROM category_cat AS c,category_type AS t WHERE c.typeUID=t.typeUID AND c.catUID=".$UID);
 		if($row=fetch())
-			$ret[]=("lable"=>$row['lable'],"type_name"=>$row['type_name']);
+			$ret=$row['lable'];
 		return $ret;
 	}
 	function bookUID($UID){
@@ -121,7 +121,7 @@ class category {
 	}
 	function backContentOf($UID){
 		$this->bookUID($UID);
-		$this->backContent();
+		return $this->backContent();
 	}
 	function backContent(){
 		$ret=array();

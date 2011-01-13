@@ -38,7 +38,7 @@ class epostbank {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=frm;
+			$data['curFrame']='frm';
 		if(! isset ($data['curUID']))
 			$data['curUID']=-1;
 		if(! isset ($data['posts_array_data']))

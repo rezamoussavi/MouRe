@@ -37,7 +37,7 @@ class tab {
 
 	function _initialize(&$data){
 		if(! isset ($data['curFrame']))
-			$data['curFrame']=notselectedfrm;
+			$data['curFrame']='notselectedfrm';
 		if(! isset ($data['selected']))
 			$data['selected']=false;
 	}
@@ -59,8 +59,8 @@ class tab {
 			return;
 		}
 		switch($message){
-			case 'click':
-				$this->onClick($info);
+			case 'clicktab':
+				$this->onClicktab($info);
 				break;
 			default:
 				break;
@@ -69,8 +69,8 @@ class tab {
 
 	function broadcast($message, $info) {
 		switch($message){
-			case 'click':
-				$this->onClick($info);
+			case 'clicktab':
+				$this->onClicktab($info);
 				break;
 			default:
 				break;
@@ -100,35 +100,45 @@ class tab {
 
 
 	function bookSelected($selected){
-		if($var.selected==$selected){
+echo "[D03] - ";
+		if($this->selected==$selected){
 			return;
 		}
-		$var.selected=$selected;
+echo "[D04] - ";
+		$this->selected=$selected;
 		if($selected){
-			osBroadcast("tabselected",array("UID"=>"UID"));
-			_setframe("selectedframe");
+echo "[D05] - ";
+			osBroadcast("tabselected",array("UID"=>$this->UID));
+			$this->_bookframe("selectedfrm");
 		}else{
-			_setframe("notselectedframe");
+echo "[D06] - ";
+			$this->_bookframe("notselectedfrm");
 		}	
 	}
-	function onClick($info){
-		if(!selected){
+	function onClicktab($info){
+echo "[D01] - ";
+		if(!$this->selected){
+echo "[D02] - ";
 			$this->bookSelected(true);
 		}
 	}
 	function notselectedfrm(){
-		$html=<<<HTML
-			<form name="$this->_fullname" action="post">
-				<input type="hidden" name="_message" value="click" /><input type = "hidden" name="_target" value="' . $this->_fullname . '" />
-				<input type="button" value="{$this->title}" onclick="javascript:sndmsg('$this->_fullname')">
+		$mark=$this->selected?"{T}":"{F}";
+		$caption=$this->title.$mark.$this->UID;
+		$html=<<<PHTML
+			<form name="{$this->_fullname}" action="post">
+				<input type="hidden" name="_message" value="clicktab" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="button" value="$caption" onclick='JavaScript:sndmsg("{$this->_fullname}")' class="press" />
 			</form>
-HTML;
+PHTML;
 		return $html;
 	}
 	function selectedfrm(){
-		$html=<<<HTML
-			<input type="button" value="[[ {$this->title} ]]">
-HTML;
+		$mark=$this->selected?"{T}":"{F}";
+		$caption=$this->title.$mark.$this->UID;
+		$html=<<<PHTML
+			<input type="button" value="[[ $caption ]]" class="press" />
+PHTML;
 		return $html;
 	}
 
