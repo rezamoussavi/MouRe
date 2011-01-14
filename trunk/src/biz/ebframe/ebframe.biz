@@ -15,7 +15,7 @@
 
 #message
 	eBoardSelected->onEBoardSelected,
-	tabSelected->onTabSelected,
+	tabselected->onTabSelected,
 	newPostAdded->onNewPostAdded
 
 #frame

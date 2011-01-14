@@ -112,7 +112,7 @@ class epostbank {
 	function frm(){
 		$posts='';
 		foreach($this->posts as $p){
-			$posts.=$p->_backframe()."<br>";
+			$posts.=$p->_backframe()."<hr>";
 		}
 		$html=<<<PHTML
 			$posts
@@ -125,10 +125,11 @@ PHTML;
 		}
 		$this->curUID=$ownerUID;
 		$this->reload();
-		_setframe("frm");
+		$this->_bookframe("frm");
 	}
 	function reload(){
-		$cat=new category(array());
+		$ea=array();
+		$cat=new category($ea);
 		$content=$cat->backContentOf($this->curUID);
 		
 		// Empty the array
@@ -145,7 +146,7 @@ PHTML;
 				$_data['fullname']=$this->_fullname.'_'.$_index;
 				$this->posts_array_data[]=$_data;
 				$this->posts[]=new  fullepostviewer($this->posts_array_data[$_index]);
-				end($this->posts[])->bookUID($c['bizUID']);
+				end($this->posts)->bookUID($c['bizUID']);
 			}
 		}
 	}

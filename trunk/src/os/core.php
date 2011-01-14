@@ -1,10 +1,25 @@
 <?php
+	date_default_timezone_set('GMT');
 	if(isset($_GET['kill']))
 		unset($_SESSION['bizbank']);
 
 
 	if(!isset($_SESSION['bizbank'])){
 		$_SESSION['bizbank']=array();
+	}
+
+	if(!isset($_SESSION['user'])){
+		$_SESSION['user']['UID']=-1;
+		$_SESSION['user']['Email']='';
+		$_SESSION['user']['Name']='';
+	}
+
+	function osBookUser($user){
+		$_SESSION['user']=$user;
+	}
+
+	function osBackUser(){
+		return $_SESSION['user'];
 	}
 
 	function osBroadcast($msg,$info){

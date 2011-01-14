@@ -133,6 +133,10 @@ class category {
 		}
 		return $ret;
 	}
+	function addContent($data){
+		//$data=(catUID,bizname,bizUID,extra)
+		query('insert into category_content values('.$data['catUID'].',"'.$data['bizname'].'",'.$data['bizUID'].',"'.$data['extra'].'")');
+	}
 
 }
 

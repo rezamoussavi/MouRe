@@ -137,18 +137,19 @@ class epostviewer {
 	function bookUID($UID){
 		$this->UID=$UID;
 		$this->post->bookUID($UID);
+		$this->comment->bookPostOwner("epost",$UID);
 	}
 	function onNext($info){
 		if($this->post->next())
-			_setframe("frm");
+			$this->_bookframe("frm");
 	}
 	function onPrev($info){
 		if($this->post->prev())
-			_setframe("frm");
+			$this->_bookframe("frm");
 	}
 	function onComment($info){
 		$this->showCommentBox=!$this->showCommentBox;
-		_setframe("frm");
+		$this->_bookframe("frm");
 	}
 	function frm(){
 		$next=$this->_fullname."next";
@@ -157,26 +158,26 @@ class epostviewer {
 		$html=<<<HTML
 			<hr />
 			By: {$this->post->author} Title: {$this->post->title} <hr />
-			{$this->post->contents} <hr/>
+			{$this->post->content} <hr/>
 			({$this->post->timeStamp})
-			<form name="$prev" method="post">
+			<form name="$prev" method="post" style="display:inline">
 				<input type="hidden" name="_message" value="prev" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("$prev")' />
+				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("$prev")'  class="press"/>
 			</form>
 			{$this->post->edition} / {$this->post->lastedition}
-			<form name="$next" method="post">
+			<form name="$next" method="post" style="display:inline">
 				<input type="hidden" name="_message" value="next" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("$next")' />
+				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("$next")'  class="press"/>
 			</form>
 			({$this->post->noOfComments})
-			<form name="$comment" method="post">
+			<form name="$comment" method="post" style="display:inline">
 				<input type="hidden" name="_message" value="comment" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comments")' />
+				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comment")'  class="press"/>
 			</form>
 			<hr />
 HTML;
-		if(showCommentBox)
-			$html.="<hr>".$this->comment->_backframe();
+		if($this->showCommentBox)
+			$html.='<div style="margin-left:50px;"><hr>'.$this->comment->_backframe().'</div>';
 		return $html;
 	}
 

@@ -33,7 +33,6 @@ class fullepostviewer {
 			$data['sleep'] = true;
 			$this->_initialize($data);
 			$this->_wakeup($data);
-			$this->init(); //Customized Initializing
 		}else{
 			$this->_wakeup($data);
 		}
@@ -89,6 +88,9 @@ class fullepostviewer {
 			return;
 		}
 		switch($message){
+			case 'expand':
+				$this->onExpand($info);
+				break;
 			default:
 				break;
 		}
@@ -99,6 +101,9 @@ class fullepostviewer {
 		foreach($this->comments as $i=>&$_element)
 			$_element->broadcast($message, $info);
 		switch($message){
+			case 'expand':
+				$this->onExpand($info);
+				break;
 			default:
 				break;
 		}
@@ -127,13 +132,18 @@ class fullepostviewer {
 
 
 	function bookUID($UID){
+		$this->UID=$UID;
 		$this->post->bookUID($this->UID);
+	}
+	function onExpand($info){
+		$this->bookExpanded(!$this->expanded);
 	}
 	function bookExpanded($expanded){
 		if(! $this->isLoaded && $expanded){
 			$this->loadComments();
 		}
 		$this->expanded=$expanded;
+		$this->_bookframe("frm");
 	}
 	function loadComments(){
 		$comments=$this->post->backCommentsUID();
@@ -155,25 +165,29 @@ class fullepostviewer {
 		}
 		$this->isLoaded=true;
 	}
-	function onExpand($info){
-		$this->bookExpanded(!$this->expanded);
-	}
 	function frm(){
 		$post=$this->post->_backframe();
 		$this->expanded? $sign='[-]' : $sign='[+]' ;
-		$comments=' ';
+		$comments='<div style="margin-left:75px;">';
 		if($this->expanded){
 			foreach($this->comments as $c){
 				$comments.=$c->_backframe();
 			}
 		}
+		$comments.='</div>';
+		if($this->post->post->noOfComments>0){
+			$sign=<<<PHTML
+				<form name="{$this->_fullname}" method="post">
+					<input type="hidden" name="_message" value="expand" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input value ="$sign" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press"/>
+				</form><br>
+PHTML;
+		}else{
+			$sign='';
+		}
 		$html=<<<PHTML
 			$post<br>
-			<form name="{$this->_fullname}" method="post">
-				<input type="hidden" name="_message" value="expand" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input value ="$sign" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' />
-			</form><br>
-			$comments<br>
+			$sign $comments<br>
 PHTML;
 		return $html;
 	}

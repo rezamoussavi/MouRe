@@ -32,6 +32,12 @@ div.login
    float: left;
 }
 
+div.ebframe
+{
+   width: 400px;
+   float: left;
+}
+
 div.banner
 {
    width: 520px;

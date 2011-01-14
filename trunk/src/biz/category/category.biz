@@ -55,10 +55,15 @@
 	function backContent(){
 		$ret=array();
 		if(#var.catUID!=0){
-			query("SELECT co.bizname AS bizname,co.bizUID AS bizUID, co.extra AS extra FROM #db.cat AS c, #db.content AS co WHERE co.catUID=c.catUID AND c.catUID=".#var.catUID);
+			query("SELECT co.bizname AS bizname,co.bizUID AS bizUID, co.extra AS extra FROM #db.content AS co WHERE co.catUID==".#var.catUID);
 			while($row=fetch()){
 				$ret[]=array("bizname"=>$row['bizname'],"bizUID"=>$row['bizUID'],"extra"=>$row['extra']);
 			}
 		}
 		return $ret;
+	}
+
+	function addContent($data){
+		//$data=(catUID,bizname,bizUID,extra)
+		query('insert into #db.content values('.$data['catUID'].',"'.$data['bizname'].'",'.$data['bizUID'].',"'.$data['extra'].'")');
 	}

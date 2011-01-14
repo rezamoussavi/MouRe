@@ -8,35 +8,149 @@
 	epost
 
 #var
-	UID=-1,
+	UID=-1,authorUID=-1,
 	author,title,content,
 	edition=0,lastedition=0,noOfComments=0,
 	timeStamp="20101231235959"
 
+#node
+	category
+
 #phpfunction
+
+	function bookUID($UID){
+		if(#var.UID==$UID){
+			return;
+		}
+		$q= 'select ';
+
+		$q.='p.title as title, ';
+		$q.='p.author_UID as authorUID, ';
+		$q.='p.author_name as author, ';
+		$q.='p.latestEditionNo as lastedition, ';
+		$q.='p.numberOfComments as noOfComments, ';
+		$q.='c.content as content, ';
+		$q.='c.editionNo as edition, ';
+		$q.='c.timestamp as timeStamp ';
+
+		$q.='from #db.epost as p join #db.content as c ';
+		$q.='ON p.epostUID=c.epostUID ';
+		$q.='where p.latestEditionNo=c.editionNo and p.epostUID='.$UID;
+
+		query($q);
+		$row=fetch();
+		if(! $row)
+			return false;
+		#var.UID=$UID;
+		#var.authorUID=$row['authorUID'];
+		#var.author=$row['author'];
+		#var.title=$row['title'];
+		#var.content=$row['content'];
+		#var.edition=$row['edition'];
+		#var.lastedition=$row['lastedition'];
+		#var.noOfComments=$row['noOfComments'];
+		#var.timeStamp=$row['timeStamp'];
+
+		return true;
+	}
 
 	function backCommentsUID(){
 		if(#var.UID==-1){
 			return;
 		}
+		//array of UIDs
+		query("select commentUID as UID from #db.comments where epostUID='" . #var.UID . "'");
 		$ret=array();
-		//
+		while($a=fetch()){
+			$ret[]=$a['UID'];
+		}
 		return $ret;
 	}
 
-	function bookUID($UID){
+	function addpost($data){//return boolean as successfullness
+		// NOTE: $data=> (title,content,ownerbiz,ownerbizUID)
+
+		// backUser (from os)
+		$user=osBackUser();
+		if(!$user)
+			return false;
+
+		// insert post in epost
+		$q ='insert into #db.epost';
+		$q.='(title,author_UID,author_name,owner_biz,owner_bizUID,latestEditionNo,numberOfComments) ';
+		$q.='values("'. $data['title'] .'","'. $user['UID'] .'","'. $user['name'] .'","'. $data['ownerbiz'] .'",'. $data['ownerbizUID'] .',1,0)';
+		query($q);
+		$UID=mysql_insert_id();
+
+		// insert a row in category (if needed)
+		if($data['ownerbiz']=="category"){
+			$ea=array();
+			$cat=new category($ea);
+			$cat->addcontent(array("catUID"=>$data['ownerbizUID'],"bizname"=>"epost","bizUID"=>$UID,"extra"=>""));
+		}
+
+		// insert a row in comments (if needed)
+		if($data['ownerbiz']=="epost"){
+			$q ='insert into #db.comments';
+			$q.='(epostUID,commentUID) ';
+			$q.='values("'. $data['ownerbizUID'] .'","'. $UID .'")';
+			query($q);
+
+		}
+		// insert content
+		$q ='insert into #db.content';
+		$q.='(epostUID,content,editionNo,timestamp) ';
+		$q.='values("' .$UID. '","' .$data['content']. '",1,"'. date(YmdHis) .'")';
+		$q.='';
+		query($q);
+
+		// update numberOfComments by sending this UID
+		#fun.increaseNumberOfComments($UID);
+		return true;
 	}
 
-	function addpost($data){
-		//$data=> content, title, ownerbiz, ownerbizUID
+	function increaseNumberOfComments($UID){//increase number of comments of parent of this UID
+		$w=#fun.fetchOwner($UID);
+		if($w){
+			if($w['owner']=="epost"){
+				//update $w['ownerUID'].numberOfComments
+				query('update #db.epost set numberOfComments=numberOfComments+1 where epostUID='.$w['ownerUID']);
+
+				//its parent as well
+				#fun.increaseNumberOfComments($w['ownerUID']);
+			}
+		}
+	}
+
+	function fetchOwner($UID){
+		query('select owner_biz as owner, owner_bizUID as ownerUID from #db.epost where epostUID='.$UID);
+		return fetch();
 	}
 
 	function next(){
 		//goto next edition if there is any
-		return false;
+		if(#var.lastedition==#var.edition)
+			return false;
+		qurey('select * from #db.content where epostUID='.#var.UID.' and editionNo='.#var.edition+1);
+		$e=fetch();
+		if(!$e)
+			return false;
+		#var.content=$e['content'];
+		#var.timeStamp=$e['timestamp'];
+		#var.edition++;
+		return true;
 	}
 
 	function prev(){
 		//goto previous edition if there is any
-		return false;
+		if(#var.edition>1)
+			return false;
+		qurey('select * from #db.content where epostUID='.#var.UID.' and editionNo='.#var.edition-1);
+		$e=fetch();
+		if(!$e)
+			return false;
+		#var.content=$e['content'];
+		#var.timeStamp=$e['timestamp'];
+		#var.edition--;
+		return true;
 	}

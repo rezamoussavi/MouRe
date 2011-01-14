@@ -105,7 +105,7 @@ class epostentry {
 		<FORM name="$this->_fullname" method="POST">
 			<input type="hidden" name="_message" value="stickit" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 			Content:<br />
-			<input type="text" name="content" /><br />
+			<textarea name="content" rows="2" cols="25"></textarea><br />
 			Title <input type="input" name="title" />
 			<input value ="Stick It!" type = "button" onclick = 'JavaScript:sndmsg("$this->_fullname")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 		</FORM>
@@ -113,7 +113,8 @@ HTML;
 		return $html;
 	}
 	function onStickIt($info){
-		$ep=new epost(array());
+		$emptyarray=array();
+		$ep=new epost($emptyarray);
 		$ep->addpost(array("title"=>$info['title'],"content"=>$info['content'],"ownerbiz"=>$this->ownerName,"ownerbizUID"=>$this->ownerUID));
 		osBroadcast("newPostAdded",array());
 	}

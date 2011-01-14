@@ -100,25 +100,19 @@ class tab {
 
 
 	function bookSelected($selected){
-echo "[D03] - ";
 		if($this->selected==$selected){
 			return;
 		}
-echo "[D04] - ";
 		$this->selected=$selected;
 		if($selected){
-echo "[D05] - ";
 			osBroadcast("tabselected",array("UID"=>$this->UID));
 			$this->_bookframe("selectedfrm");
 		}else{
-echo "[D06] - ";
 			$this->_bookframe("notselectedfrm");
 		}	
 	}
 	function onClicktab($info){
-echo "[D01] - ";
 		if(!$this->selected){
-echo "[D02] - ";
 			$this->bookSelected(true);
 		}
 	}

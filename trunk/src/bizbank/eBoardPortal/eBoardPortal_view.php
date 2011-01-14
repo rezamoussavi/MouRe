@@ -17,7 +17,7 @@
             <?php $this->myBizes['d2']->show(1); ?>
         </div>
 
-        <div class="banner">
+        <div class="ebframe">
             <?php $this->myBizes['frm']->show(1); ?>
         </div>
     </div>

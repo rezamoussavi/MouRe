@@ -17,6 +17,7 @@
     function logout() {
         #var.loggedIn = 0;
         osBroadcast(#msg.logout, array());
+		osBookUser(array());
     }
 
     function isLoggedin() {
@@ -83,6 +84,7 @@
                     
                     // let bizes know we're logged in!
                     osBroadcast("login", array("email" => #var.email, "userUID" => #var.userUID));
+					osBookUser(array("email" => #var.email, "UID" => #var.userUID, "name"=>#var.email));
                     return 1;
                 } else {
                     //login succefull but need to validation

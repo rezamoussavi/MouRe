@@ -84,7 +84,7 @@ class ebframe {
 			case 'eBoardSelected':
 				$this->onEBoardSelected($info);
 				break;
-			case 'tabSelected':
+			case 'tabselected':
 				$this->onTabSelected($info);
 				break;
 			case 'newPostAdded':
@@ -103,7 +103,7 @@ class ebframe {
 			case 'eBoardSelected':
 				$this->onEBoardSelected($info);
 				break;
-			case 'tabSelected':
+			case 'tabselected':
 				$this->onTabSelected($info);
 				break;
 			case 'newPostAdded':

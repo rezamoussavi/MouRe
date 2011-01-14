@@ -28,21 +28,22 @@
 	function bookUID($UID){
 		#var.UID=$UID;
 		#node.post->bookUID($UID);
+		#node.comment->bookPostOwner("epost",$UID);
 	}
 
 	function onNext($info){
 		if(#node.post->next())
-			_setframe(#frame.frm);
+			_bookframe(#frame.frm);
 	}
 
 	function onPrev($info){
 		if(#node.post->prev())
-			_setframe(#frame.frm);
+			_bookframe(#frame.frm);
 	}
 
 	function onComment($info){
 		#var.showCommentBox=!#var.showCommentBox;
-		_setframe(#frame.frm);
+		_bookframe(#frame.frm);
 	}
 
 	function frm(){
@@ -52,25 +53,25 @@
 		$html=<<<HTML
 			<hr />
 			By: {#node.post->author} Title: {#node.post->title} <hr />
-			{#node.post->contents} <hr/>
+			{#node.post->content} <hr/>
 			({#node.post->timeStamp})
-			<form name="$prev" method="post">
+			<form name="$prev" method="post" style="display:inline">
 				<#msg.prev>
-				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("$prev")' />
+				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("$prev")'  class="press"/>
 			</form>
 			{#node.post->edition} / {#node.post->lastedition}
-			<form name="$next" method="post">
+			<form name="$next" method="post" style="display:inline">
 				<#msg.next>
-				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("$next")' />
+				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("$next")'  class="press"/>
 			</form>
 			({#node.post->noOfComments})
-			<form name="$comment" method="post">
+			<form name="$comment" method="post" style="display:inline">
 				<#msg.comment>
-				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comments")' />
+				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comment")'  class="press"/>
 			</form>
 			<hr />
 HTML;
-		if(showCommentBox)
-			$html.="<hr>".#node.comment->_backframe();
+		if(#var.showCommentBox)
+			$html.='<div style="margin-left:50px;"><hr>'.#node.comment->_backframe().'</div>';
 		return $html;
 	}

@@ -14,18 +14,20 @@
 	expanded=false,UID=-1,isLoaded=false;
 
 #message
-	expand=onExpand
+	expand->onExpand
 
 #frame
 	frm
 
-#start
-	init
-
 #phpfunction
 
 	function bookUID($UID){
+		#var.UID=$UID;
 		#node.post->bookUID(#var.UID);
+	}
+
+	function onExpand($info){
+		#fun.bookExpanded(!#var.expanded);
 	}
 
 	function bookExpanded($expanded){
@@ -33,6 +35,7 @@
 			#fun.loadComments();
 		}
 		#var.expanded=$expanded;
+		_bookframe(#frame.frm);
 	}
 
 	function loadComments(){
@@ -45,26 +48,29 @@
 		#var.isLoaded=true;
 	}
 
-	function onExpand($info){
-		#fun.bookExpanded(!#var.expanded);
-	}
-
 	function frm(){
 		$post=#node.post->_backframe();
 		#var.expanded? $sign='[-]' : $sign='[+]' ;
-		$comments=' ';
+		$comments='<div style="margin-left:75px;">';
 		if(#var.expanded){
 			foreach(#node.comments as $c){
 				$comments.=$c->_backframe();
 			}
 		}
+		$comments.='</div>';
+		if(#node.post->post->noOfComments>0){
+			$sign=<<<PHTML
+				<form name="{#nodeID}" method="post">
+					<#msg.expand>
+					<input value ="$sign" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press"/>
+				</form><br>
+PHTML;
+		}else{
+			$sign='';
+		}
 		$html=<<<PHTML
 			$post<br>
-			<form name="{#nodeID}" method="post">
-				<#msg.expand>
-				<input value ="$sign" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' />
-			</form><br>
-			$comments<br>
+			$sign $comments<br>
 PHTML;
 		return $html;
 	}

@@ -91,6 +91,7 @@ class user {
     function logout() {
         $this->loggedIn = 0;
         osBroadcast("logout", array());
+		osBookUser(array());
     }
     function isLoggedin() {
         return $this->loggedIn;
@@ -151,6 +152,7 @@ class user {
                     
                     // let bizes know we're logged in!
                     osBroadcast("login", array("email" => $this->email, "userUID" => $this->userUID));
+					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "name"=>$this->email));
                     return 1;
                 } else {
                     //login succefull but need to validation
