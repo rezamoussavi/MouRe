@@ -7,6 +7,10 @@
 	Version:	0.1
 	Date:		1/6/2011
 	TestApproval: none
+	-------------------
+	NOTE: untill we dont support css in biz
+		please add replace following line in compiled php in show function
+		$html='<div id="' . $this->_fullname . '" style="display:inline;">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 
 */
 
@@ -86,7 +90,7 @@ class tab {
 	}
 
 	function show($echo){
-		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<div id="' . $this->_fullname . '" style="display:inline;">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($echo)
 			echo $html;
 		else
@@ -117,21 +121,17 @@ class tab {
 		}
 	}
 	function notselectedfrm(){
-		$mark=$this->selected?"{T}":"{F}";
-		$caption=$this->title.$mark.$this->UID;
 		$html=<<<PHTML
-			<form name="{$this->_fullname}" action="post">
+			<form name="{$this->_fullname}" action="post" style="display:inline;">
 				<input type="hidden" name="_message" value="clicktab" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input type="button" value="$caption" onclick='JavaScript:sndmsg("{$this->_fullname}")' class="press" />
+				<input type="button" value="{$this->title}" onclick='JavaScript:sndmsg("{$this->_fullname}")' class="press" />
 			</form>
 PHTML;
 		return $html;
 	}
 	function selectedfrm(){
-		$mark=$this->selected?"{T}":"{F}";
-		$caption=$this->title.$mark.$this->UID;
 		$html=<<<PHTML
-			<input type="button" value="[[ $caption ]]" class="press" />
+			<input type="button" value="[{$this->title}]" class="press" />
 PHTML;
 		return $html;
 	}

@@ -22,7 +22,7 @@
 #phpfunction
 
 	function frm(){
-		$html=#var.curTabUID." - ";
+		$html='';
 		foreach(#node.tab as $t){
 			$html.=$t->_backframe();
 		}

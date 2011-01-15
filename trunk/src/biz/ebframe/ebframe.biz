@@ -54,7 +54,6 @@
 		$entrybar=#node.entrybar->_backframe();
 		$epostbar=#node.epostbar->_backframe();
 		$html=<<<PHTML
-			[{#var.cureBUID}]
 			$tabbar<br>
 			$entrybar<br>
 			$epostbar<br>

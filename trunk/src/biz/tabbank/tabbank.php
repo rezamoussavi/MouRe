@@ -115,7 +115,7 @@ class tabbank {
 
 
 	function frm(){
-		$html=$this->curTabUID." - ";
+		$html='';
 		foreach($this->tab as $t){
 			$html.=$t->_backframe();
 		}

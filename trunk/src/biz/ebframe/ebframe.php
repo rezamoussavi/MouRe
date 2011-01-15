@@ -161,7 +161,6 @@ class ebframe {
 		$entrybar=$this->entrybar->_backframe();
 		$epostbar=$this->epostbar->_backframe();
 		$html=<<<PHTML
-			[{$this->cureBUID}]
 			$tabbar<br>
 			$entrybar<br>
 			$epostbar<br>
