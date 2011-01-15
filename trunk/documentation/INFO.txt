@@ -1,1 +1,2 @@
 Documentation goes in this directory!
+BizLang manual placed in google docs
