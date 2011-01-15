@@ -4,6 +4,10 @@
 	Compiled by bizLang compiler version 1.01
 
 	Author: Reza Moussavi
+	Date:	1/15/2011
+	Version:	1.1
+	----------------------
+	Author: Reza Moussavi
 	Date:	12/29/2010
 	Version:	1.0
 
@@ -183,14 +187,14 @@ PHTML;
 		return $html;
 	}
 	function backContent(){
-		$html='';
+		$html='<div style="margin-left:10px;">';
 		if($this->expanded){
 			foreach($this->eBLists as $i=>&$L)
-				$html = $html.$L->_backframe();
+				$html .= $L->_backframe();
 			foreach($this->eBoards as $j=>&$B)
-				$html = $html.$B->_backframe();
+				$html .= $B->_backframe();
 		}
-		return $html;
+		return $html.'</div>';
 	}
 	function bookUID($UID){
 		$this->contentLoaded=false;
