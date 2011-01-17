@@ -50,10 +50,22 @@
 		$next=#nodeID."next";
 		$prev=#nodeID."prev";
 		$comment=#nodeID."comment";
-		$html=<<<HTML
-			<hr />
-			By: {#node.post->author} Title: {#node.post->title} <hr />
-			{#node.post->content} <hr/>
+
+		$header=<<<PHTML
+			<div style="float:left;display:inline;">
+				{#node.post->title}
+			</div>
+			<div style="float:right;display:inline;">
+				By: {#node.post->author}
+			</div>
+			<br />
+PHTML;
+		$body=<<<PHTML
+			<div style="border-style:dashed;border-width:1px;">
+				{#node.post->content}
+			</div><br />
+PHTML;
+		$footer=<<<PHTML
 			({#node.post->timeStamp})
 			<form name="$prev" method="post" style="display:inline">
 				<#msg.prev>
@@ -69,9 +81,10 @@
 				<#msg.comment>
 				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comment")'  class="press"/>
 			</form>
-			<hr />
-HTML;
+PHTML;
+		$comments='';
 		if(#var.showCommentBox)
-			$html.='<div style="margin-left:50px;"><hr>'.#node.comment->_backframe().'</div>';
+			$comments='<div style="margin-left:50px;"><br/>'.#node.comment->_backframe().'</div>';
+		$html=$header.$body.$footer.$comments;
 		return $html;
 	}

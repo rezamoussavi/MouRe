@@ -150,7 +150,7 @@ class epost {
 			return;
 		}
 		//array of UIDs
-		query("select commentUID as UID from epost_comments where epostUID='" . $this->UID . "'");
+		query("select commentUID as UID from epost_comments where epostUID=" . $this->UID);
 		$ret=array();
 		while($a=fetch()){
 			$ret[]=$a['UID'];

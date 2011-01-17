@@ -63,14 +63,14 @@
 				<form name="{#nodeID}" method="post">
 					<#msg.expand>
 					<input value ="$sign" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press"/>
-				</form><br>
+				</form>
 PHTML;
 		}else{
 			$sign='';
 		}
 		$html=<<<PHTML
-			$post<br>
-			$sign $comments<br>
+			<hr /> $post
+			$sign $comments
 PHTML;
 		return $html;
 	}

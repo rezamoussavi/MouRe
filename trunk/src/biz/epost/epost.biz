@@ -59,7 +59,7 @@
 			return;
 		}
 		//array of UIDs
-		query("select commentUID as UID from #db.comments where epostUID='" . #var.UID . "'");
+		query("select commentUID as UID from #db.comments where epostUID=" . #var.UID);
 		$ret=array();
 		while($a=fetch()){
 			$ret[]=$a['UID'];

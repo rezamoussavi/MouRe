@@ -180,14 +180,14 @@ class fullepostviewer {
 				<form name="{$this->_fullname}" method="post">
 					<input type="hidden" name="_message" value="expand" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 					<input value ="$sign" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press"/>
-				</form><br>
+				</form>
 PHTML;
 		}else{
 			$sign='';
 		}
 		$html=<<<PHTML
-			$post<br>
-			$sign $comments<br>
+			<hr /> $post
+			$sign $comments
 PHTML;
 		return $html;
 	}

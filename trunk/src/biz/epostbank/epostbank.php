@@ -112,7 +112,7 @@ class epostbank {
 	function frm(){
 		$posts='';
 		foreach($this->posts as $p){
-			$posts.=$p->_backframe()."<hr>";
+			$posts.=$p->_backframe();
 		}
 		$html=<<<PHTML
 			$posts

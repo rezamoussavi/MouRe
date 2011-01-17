@@ -21,7 +21,7 @@
 	function frm(){
 		$posts='';
 		foreach(#node.posts as $p){
-			$posts.=$p->_backframe()."<hr>";
+			$posts.=$p->_backframe();
 		}
 		$html=<<<PHTML
 			$posts

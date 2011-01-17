@@ -155,10 +155,21 @@ class epostviewer {
 		$next=$this->_fullname."next";
 		$prev=$this->_fullname."prev";
 		$comment=$this->_fullname."comment";
-		$html=<<<HTML
-			<hr />
-			By: {$this->post->author} Title: {$this->post->title} <hr />
-			{$this->post->content} <hr/>
+		$header=<<<PHTML
+			<div style="float:left;display:inline;">
+				{$this->post->title}
+			</div>
+			<div style="float:right;display:inline;">
+				By: {$this->post->author}
+			</div>
+			<br />
+PHTML;
+		$body=<<<PHTML
+			<div style="border-style:dashed;border-width:1px;">
+				{$this->post->content}
+			</div><br />
+PHTML;
+		$footer=<<<PHTML
 			({$this->post->timeStamp})
 			<form name="$prev" method="post" style="display:inline">
 				<input type="hidden" name="_message" value="prev" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
@@ -174,10 +185,11 @@ class epostviewer {
 				<input type="hidden" name="_message" value="comment" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comment")'  class="press"/>
 			</form>
-			<hr />
-HTML;
+PHTML;
+		$comments='';
 		if($this->showCommentBox)
-			$html.='<div style="margin-left:50px;"><hr>'.$this->comment->_backframe().'</div>';
+			$comments='<div style="margin-left:50px;"><br/>'.$this->comment->_backframe().'</div>';
+		$html=$header.$body.$footer.$comments;
 		return $html;
 	}
 
