@@ -55,7 +55,7 @@
 	function backContent(){
 		$ret=array();
 		if(#var.catUID!=0){
-			query("SELECT co.bizname AS bizname,co.bizUID AS bizUID, co.extra AS extra FROM #db.content AS co WHERE co.catUID==".#var.catUID);
+			query("SELECT co.bizname AS bizname,co.bizUID AS bizUID, co.extra AS extra FROM #db.content AS co WHERE co.catUID=".#var.catUID);
 			while($row=fetch()){
 				$ret[]=array("bizname"=>$row['bizname'],"bizUID"=>$row['bizUID'],"extra"=>$row['extra']);
 			}

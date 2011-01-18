@@ -39,13 +39,13 @@ PHTML;
 	}
 
 	function reload(){
-		$ea=array();
-		$cat=new category($ea);
+		$cat=new category("temp");
 		$content=$cat->backContentOf(#var.curUID);
-		#node.posts[]=null;
+		#node.posts=array();
+		$id=0;
 		foreach($content as $c){
 			if($c['bizname']=='epost'){
-				#node.posts[]=new fullepostviewer();
+				#node.posts[]=new fullepostviewer(#nodeID.$id++);
 				end(#node.posts)->bookUID($c['bizUID']);
 			}
 		}

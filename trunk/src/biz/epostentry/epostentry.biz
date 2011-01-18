@@ -41,8 +41,7 @@ HTML;
 	}
 
 	function onStickIt($info){
-		$emptyarray=array();
-		$ep=new epost($emptyarray);
+		$ep=new epost("temp");
 		$ep->addpost(array("title"=>$info['title'],"content"=>$info['content'],"ownerbiz"=>#var.ownerName,"ownerbizUID"=>#var.ownerUID));
 		osBroadcast(#msg.newPostAdded,array());
 	}

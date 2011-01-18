@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author:		Reza Moussavi
 	Version:	0.1
@@ -14,9 +14,7 @@ require_once '../biz/tab/tab.php';
 class tabbank {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
@@ -25,44 +23,15 @@ class tabbank {
 	//Nodes (bizvars)
 	var $tab_array_data; 	var $tab;
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-		}else{
-			$this->_wakeup($data);
-		}
-	}
-
-	function _initialize(&$data){
-		if(! isset ($data['curFrame']))
-			$data['curFrame']='frm';
-		if(! isset ($data['curTabUID']))
-			$data['curTabUID']=-1;
-		if(! isset ($data['tab_array_data']))
-			$data['tab_array_data']=array();
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->curTabUID=&$data['curTabUID'];
-
-
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->_curFrame='frm';
 		$this->tab=array();
-		$this->tab_array_data=&$data['tab_array_data'];
-		foreach($data['tab_array_data'] as $na=>&$da){
-			if(! isset($da['bizname'])){
-				$da['bizname']=$na;
-				$da['fullname']=$this->_fullname."_".$na;
-				$da['parent']=$this;
-			}
-			$this->tab[]=new tab($da);
-		}
+		$this->curTabUID=-1;
+	}
+
+	function __sleep(){
+		return array('_fullname', '_curFrame','curTabUID','tab');
 	}
 
 	function message($to, $message, $info) {
@@ -124,22 +93,12 @@ class tabbank {
 	// reset the contents
 	// $list=array(array("name"=>xxxx , "UID"=>xxxx),...)
 	function booklist($list){
-		
-		// Empty the array
-		$this->tab_array_data=array();
 		$this->tab=array();
 		$this->curTabUID=-1;
 		$first=true;
+		$id=0;
 		foreach($list as $t){
-			
-			// Add new Node to the array
-			$_index=count($this->tab_array_data);
-			$_data=array();
-			$_data['parent']=$this;
-			$_data['bizname']=$_index;
-			$_data['fullname']=$this->_fullname.'_'.$_index;
-			$this->tab_array_data[]=$_data;
-			$this->tab[]=new  tab($this->tab_array_data[$_index]);
+			$this->tab[]=new tab($this->_fullname.$id++);
 			end($this->tab)->title=$t['name'];
 			end($this->tab)->UID=$t['UID'];
 			if($first){

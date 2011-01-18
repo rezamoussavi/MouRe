@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author:	Reza Moussavi
 	Date:	12/30/2010
@@ -13,9 +13,7 @@ require_once '../biz/user/user.php';
 class login {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
@@ -25,36 +23,14 @@ class login {
 	//Nodes (bizvars)
 	var $userShow;
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-		}else{
-			$this->_wakeup($data);
-		}
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->_curFrame='frm';
+		$this->userShow=new user($this->_fullname.'_userShow');
 	}
 
-	function _initialize(&$data){
-		if(! isset ($data['curFrame']))
-			$data['curFrame']='frm';
-		if(! isset ($data['userShow'])){
-			$data['userShow']['fullname']=$data['fullname'].'_userShow';
-			$data['userShow']['bizname']='userShow';
-		}
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->signupSuccess=&$data['signupSuccess'];
-		$this->newPasswordSuccess=&$data['newPasswordSuccess'];
-
-		$data['userShow']['parent']=$this;
-		$this->userShow=new user($data['userShow']);
+	function __sleep(){
+		return array('_fullname', '_curFrame','signupSuccess','newPasswordSuccess','userShow');
 	}
 
 	function message($to, $message, $info) {

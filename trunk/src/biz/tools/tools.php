@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author:		Reza Moussavi
 	Version:	0.1
@@ -13,35 +13,19 @@
 class tools {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
 
 	//Nodes (bizvars)
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-		}else{
-			$this->_wakeup($data);
-		}
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
 	}
 
-	function _initialize(&$data){
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-
+	function __sleep(){
+		return array('_fullname', '_curFrame');
 	}
 
 	function message($to, $message, $info) {

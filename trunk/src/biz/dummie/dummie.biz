@@ -7,17 +7,23 @@
 	dummie
 
 #var
-   userEmail,UID
+   userEmail,UID,debug="<hr>DEBUG:"
 
 #message
+	debug->onDebug,
 	eBoardSelected->onEBoardSelected,
 	login->onLogin,logout->onLogout,
 	tabselected->onTab
 
 #frame
-	happy,*sad
+	happy,*sad,debug
 
 #phpfunction
+
+	function onDebug($info){
+		#var.debug.=$info['debug'].'<br>';
+		_bookframe(#frame.debug);
+	}
 
 	function onTab($info){
 		#var.userEmail="tab:".$info['UID'];
@@ -44,4 +50,8 @@
 
 	function sad(){
 		return '<h2>:( </h2>';
+	}
+
+	function debug(){
+		return "<font color=red>".#var.debug."</font>";
 	}

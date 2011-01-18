@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author: Reza Moussavi
 	Date:	12/30/2010
@@ -12,41 +12,24 @@
 class dummie {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
 	var $userEmail;
 	var $UID;
+	var $debug;
 
 	//Nodes (bizvars)
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-		}else{
-			$this->_wakeup($data);
-		}
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->_curFrame='sad';
+		$this->debug="<hr>DEBUG:";
 	}
 
-	function _initialize(&$data){
-		if(! isset ($data['curFrame']))
-			$data['curFrame']='sad';
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->userEmail=&$data['userEmail'];
-		$this->UID=&$data['UID'];
-
+	function __sleep(){
+		return array('_fullname', '_curFrame','userEmail','UID','debug');
 	}
 
 	function message($to, $message, $info) {
@@ -54,6 +37,9 @@ class dummie {
 			return;
 		}
 		switch($message){
+			case 'debug':
+				$this->onDebug($info);
+				break;
 			case 'eBoardSelected':
 				$this->onEBoardSelected($info);
 				break;
@@ -73,6 +59,9 @@ class dummie {
 
 	function broadcast($message, $info) {
 		switch($message){
+			case 'debug':
+				$this->onDebug($info);
+				break;
 			case 'eBoardSelected':
 				$this->onEBoardSelected($info);
 				break;
@@ -112,6 +101,10 @@ class dummie {
 //########################################
 
 
+	function onDebug($info){
+		$this->debug.=$info['debug'].'<br>';
+		$this->_bookframe("debug");
+	}
 	function onTab($info){
 		$this->userEmail="tab:".$info['UID'];
 		$this->_bookframe("happy");
@@ -132,6 +125,9 @@ class dummie {
 	}
 	function sad(){
 		return '<h2>:( </h2>';
+	}
+	function debug(){
+		return "<font color=red>".$this->debug."</font>";
 	}
 
 }

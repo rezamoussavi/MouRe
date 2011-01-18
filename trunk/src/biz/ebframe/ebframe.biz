@@ -26,11 +26,9 @@
 	function onEBoardSelected($info){
 		#var.cureBUID=$info['UID'];
 
-		$_d=array();
-		$cat=new category($_d);
+		$cat=new category("temp");
 
 		$content=$cat->backContentOf(#var.cureBUID);
-
 		$ar=array();
 		foreach($content as $c){
 			$lable=$cat->backLable($c['bizUID']);

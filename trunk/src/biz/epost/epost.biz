@@ -84,8 +84,7 @@
 
 		// insert a row in category (if needed)
 		if($data['ownerbiz']=="category"){
-			$ea=array();
-			$cat=new category($ea);
+			$cat=new category("temp");
 			$cat->addcontent(array("catUID"=>$data['ownerbizUID'],"bizname"=>"epost","bizUID"=>$UID,"extra"=>""));
 		}
 

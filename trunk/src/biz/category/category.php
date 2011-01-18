@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author: Reza Moussavi
 	Date:	12/29/2010
@@ -12,9 +12,7 @@
 class category {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
@@ -24,30 +22,13 @@ class category {
 
 	//Nodes (bizvars)
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-			$this->init(); //Customized Initializing
-		}else{
-			$this->_wakeup($data);
-		}
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->init(); //Customized Initializing
 	}
 
-	function _initialize(&$data){
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->catUID=&$data['catUID'];
-		$this->lable=&$data['lable'];
-		$this->type_name=&$data['type_name'];
-
+	function __sleep(){
+		return array('_fullname', '_curFrame','catUID','lable','type_name');
 	}
 
 	function message($to, $message, $info) {
@@ -126,7 +107,7 @@ class category {
 	function backContent(){
 		$ret=array();
 		if($this->catUID!=0){
-			query("SELECT co.bizname AS bizname,co.bizUID AS bizUID, co.extra AS extra FROM category_cat AS c, category_content AS co WHERE co.catUID=c.catUID AND c.catUID=".$this->catUID);
+			query("SELECT co.bizname AS bizname,co.bizUID AS bizUID, co.extra AS extra FROM category_content AS co WHERE co.catUID=".$this->catUID);
 			while($row=fetch()){
 				$ret[]=array("bizname"=>$row['bizname'],"bizUID"=>$row['bizUID'],"extra"=>$row['extra']);
 			}

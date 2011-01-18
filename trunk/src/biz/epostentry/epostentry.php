@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author:		Reza Moussavi
 	Version:	0.1
@@ -14,9 +14,7 @@ require_once '../biz/epost/epost.php';
 class epostentry {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
@@ -25,30 +23,13 @@ class epostentry {
 
 	//Nodes (bizvars)
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-		}else{
-			$this->_wakeup($data);
-		}
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->_curFrame='frm';
 	}
 
-	function _initialize(&$data){
-		if(! isset ($data['curFrame']))
-			$data['curFrame']='frm';
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->ownerName=&$data['ownerName'];
-		$this->ownerUID=&$data['ownerUID'];
-
+	function __sleep(){
+		return array('_fullname', '_curFrame','ownerName','ownerUID');
 	}
 
 	function message($to, $message, $info) {
@@ -113,8 +94,7 @@ HTML;
 		return $html;
 	}
 	function onStickIt($info){
-		$emptyarray=array();
-		$ep=new epost($emptyarray);
+		$ep=new epost("temp");
 		$ep->addpost(array("title"=>$info['title'],"content"=>$info['content'],"ownerbiz"=>$this->ownerName,"ownerbizUID"=>$this->ownerUID));
 		osBroadcast("newPostAdded",array());
 	}

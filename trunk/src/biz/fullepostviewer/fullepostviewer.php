@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author:		Reza Moussavi
 	Version:	0.1
@@ -14,9 +14,7 @@ require_once '../biz/epostviewer/epostviewer.php';
 class fullepostviewer {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
@@ -28,56 +26,18 @@ class fullepostviewer {
 	var $post;
 	var $comments_array_data; 	var $comments;
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-		}else{
-			$this->_wakeup($data);
-		}
-	}
-
-	function _initialize(&$data){
-		if(! isset ($data['curFrame']))
-			$data['curFrame']='frm';
-		if(! isset ($data['expanded']))
-			$data['expanded']=false;
-		if(! isset ($data['UID']))
-			$data['UID']=-1;
-		if(! isset ($data['isLoaded']))
-			$data['isLoaded']=false;;
-		if(! isset ($data['post'])){
-			$data['post']['fullname']=$data['fullname'].'_post';
-			$data['post']['bizname']='post';
-		}
-		if(! isset ($data['comments_array_data']))
-			$data['comments_array_data']=array();
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->expanded=&$data['expanded'];
-		$this->UID=&$data['UID'];
-		$this->isLoaded=&$data['isLoaded'];
-
-		$data['post']['parent']=$this;
-		$this->post=new epostviewer($data['post']);
-
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->_curFrame='frm';
+		$this->post=new epostviewer($this->_fullname.'_post');
 		$this->comments=array();
-		$this->comments_array_data=&$data['comments_array_data'];
-		foreach($data['comments_array_data'] as $na=>&$da){
-			if(! isset($da['bizname'])){
-				$da['bizname']=$na;
-				$da['fullname']=$this->_fullname."_".$na;
-				$da['parent']=$this;
-			}
-			$this->comments[]=new fullepostviewer($da);
-		}
+		$this->expanded=false;
+		$this->UID=-1;
+		$this->isLoaded=false;;
+	}
+
+	function __sleep(){
+		return array('_fullname', '_curFrame','expanded','UID','isLoaded','post','comments');
 	}
 
 	function message($to, $message, $info) {
@@ -147,20 +107,10 @@ class fullepostviewer {
 	}
 	function loadComments(){
 		$comments=$this->post->backCommentsUID();
-		
-		// Empty the array
-		$this->comments_array_data=array();
 		$this->comments=array();
+		$id=0;
 		foreach($comments as $c){
-			
-			// Add new Node to the array
-			$_index=count($this->comments_array_data);
-			$_data=array();
-			$_data['parent']=$this;
-			$_data['bizname']=$_index;
-			$_data['fullname']=$this->_fullname.'_'.$_index;
-			$this->comments_array_data[]=$_data;
-			$this->comments[]=new  fullepostviewer($this->comments_array_data[$_index]);
+			$this->comments[]=new fullepostviewer($this->_fullname.$id++);
 			end($this->comments)->bookUID($c);
 		}
 		$this->isLoaded=true;

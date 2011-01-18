@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author:		Reza Moussavi
 	Version:	0.1
@@ -15,9 +15,7 @@ require_once '../biz/epostentry/epostentry.php';
 class epostviewer {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
@@ -28,46 +26,17 @@ class epostviewer {
 	var $post;
 	var $comment;
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-		}else{
-			$this->_wakeup($data);
-		}
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->_curFrame='frm';
+		$this->post=new epost($this->_fullname.'_post');
+		$this->comment=new epostentry($this->_fullname.'_comment');
+		$this->showCommentBox=false;
+		$this->UID=-1;
 	}
 
-	function _initialize(&$data){
-		if(! isset ($data['curFrame']))
-			$data['curFrame']='frm';
-		if(! isset ($data['showCommentBox']))
-			$data['showCommentBox']=false;
-		if(! isset ($data['UID']))
-			$data['UID']=-1;
-		if(! isset ($data['post'])){
-			$data['post']['fullname']=$data['fullname'].'_post';
-			$data['post']['bizname']='post';
-		}
-		if(! isset ($data['comment'])){
-			$data['comment']['fullname']=$data['fullname'].'_comment';
-			$data['comment']['bizname']='comment';
-		}
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->showCommentBox=&$data['showCommentBox'];
-		$this->UID=&$data['UID'];
-
-		$data['post']['parent']=$this;
-		$this->post=new epost($data['post']);
-		$data['comment']['parent']=$this;
-		$this->comment=new epostentry($data['comment']);
+	function __sleep(){
+		return array('_fullname', '_curFrame','showCommentBox','UID','post','comment');
 	}
 
 	function message($to, $message, $info) {

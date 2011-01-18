@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author: Reza Moussavi
 	Date:	12/29/2010
@@ -13,9 +13,7 @@ require_once '../biz/category/category.php';
 class eblineviewer {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
@@ -24,36 +22,15 @@ class eblineviewer {
 	//Nodes (bizvars)
 	var $myCat;
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-			$this->init(); //Customized Initializing
-		}else{
-			$this->_wakeup($data);
-		}
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->_curFrame='frm';
+		$this->myCat=new category($this->_fullname.'_myCat');
+		$this->init(); //Customized Initializing
 	}
 
-	function _initialize(&$data){
-		if(! isset ($data['curFrame']))
-			$data['curFrame']='frm';
-		if(! isset ($data['myCat'])){
-			$data['myCat']['fullname']=$data['fullname'].'_myCat';
-			$data['myCat']['bizname']='myCat';
-		}
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->UID=&$data['UID'];
-
-		$data['myCat']['parent']=$this;
-		$this->myCat=new category($data['myCat']);
+	function __sleep(){
+		return array('_fullname', '_curFrame','UID','myCat');
 	}
 
 	function message($to, $message, $info) {

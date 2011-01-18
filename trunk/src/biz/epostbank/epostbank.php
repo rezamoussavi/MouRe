@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author:		Reza Moussavi
 	Version:	0.1
@@ -15,9 +15,7 @@ require_once '../biz/category/category.php';
 class epostbank {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
@@ -26,44 +24,15 @@ class epostbank {
 	//Nodes (bizvars)
 	var $posts_array_data; 	var $posts;
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-		}else{
-			$this->_wakeup($data);
-		}
-	}
-
-	function _initialize(&$data){
-		if(! isset ($data['curFrame']))
-			$data['curFrame']='frm';
-		if(! isset ($data['curUID']))
-			$data['curUID']=-1;
-		if(! isset ($data['posts_array_data']))
-			$data['posts_array_data']=array();
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->curUID=&$data['curUID'];
-
-
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->_curFrame='frm';
 		$this->posts=array();
-		$this->posts_array_data=&$data['posts_array_data'];
-		foreach($data['posts_array_data'] as $na=>&$da){
-			if(! isset($da['bizname'])){
-				$da['bizname']=$na;
-				$da['fullname']=$this->_fullname."_".$na;
-				$da['parent']=$this;
-			}
-			$this->posts[]=new fullepostviewer($da);
-		}
+		$this->curUID=-1;
+	}
+
+	function __sleep(){
+		return array('_fullname', '_curFrame','curUID','posts');
 	}
 
 	function message($to, $message, $info) {
@@ -128,24 +97,13 @@ PHTML;
 		$this->_bookframe("frm");
 	}
 	function reload(){
-		$ea=array();
-		$cat=new category($ea);
+		$cat=new category("temp");
 		$content=$cat->backContentOf($this->curUID);
-		
-		// Empty the array
-		$this->posts_array_data=array();
 		$this->posts=array();
+		$id=0;
 		foreach($content as $c){
 			if($c['bizname']=='epost'){
-				
-				// Add new Node to the array
-				$_index=count($this->posts_array_data);
-				$_data=array();
-				$_data['parent']=$this;
-				$_data['bizname']=$_index;
-				$_data['fullname']=$this->_fullname.'_'.$_index;
-				$this->posts_array_data[]=$_data;
-				$this->posts[]=new  fullepostviewer($this->posts_array_data[$_index]);
+				$this->posts[]=new fullepostviewer($this->_fullname.$id++);
 				end($this->posts)->bookUID($c['bizUID']);
 			}
 		}

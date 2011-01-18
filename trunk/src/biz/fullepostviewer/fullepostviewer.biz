@@ -40,9 +40,10 @@
 
 	function loadComments(){
 		$comments=#node.post->backCommentsUID();
-		#node.comments[]=null;
+		#node.comments=array();
+		$id=0;
 		foreach($comments as $c){
-			#node.comments[]=new fullepostviewer();
+			#node.comments[]=new fullepostviewer(#nodeID.$id++);
 			end(#node.comments)->bookUID($c);
 		}
 		#var.isLoaded=true;

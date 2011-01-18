@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.01
+	Compiled by bizLang compiler version 1.02
 
 	Author:		Reza Moussavi
 	Date:		1/12/2011
@@ -17,9 +17,7 @@ require_once '../biz/category/category.php';
 class ebframe {
 
 	//Mandatory Variables for a biz
-	var $_bizname;
 	var $_fullname;
-	var $_parent;
 	var $_curFrame;
 
 	//Variables
@@ -30,47 +28,16 @@ class ebframe {
 	var $entrybar;
 	var $epostbar;
 
-	function __construct(&$data) {
-		if (!isset($data['sleep'])) {
-			$data['sleep'] = true;
-			$this->_initialize($data);
-			$this->_wakeup($data);
-		}else{
-			$this->_wakeup($data);
-		}
+	function __construct($fullname) {
+		$this->_fullname=$fullname;
+		$this->_curFrame='frm';
+		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
+		$this->entrybar=new epostentry($this->_fullname.'_entrybar');
+		$this->epostbar=new epostbank($this->_fullname.'_epostbar');
 	}
 
-	function _initialize(&$data){
-		if(! isset ($data['curFrame']))
-			$data['curFrame']='frm';
-		if(! isset ($data['tabbar'])){
-			$data['tabbar']['fullname']=$data['fullname'].'_tabbar';
-			$data['tabbar']['bizname']='tabbar';
-		}
-		if(! isset ($data['entrybar'])){
-			$data['entrybar']['fullname']=$data['fullname'].'_entrybar';
-			$data['entrybar']['bizname']='entrybar';
-		}
-		if(! isset ($data['epostbar'])){
-			$data['epostbar']['fullname']=$data['fullname'].'_epostbar';
-			$data['epostbar']['bizname']='epostbar';
-		}
-	}
-
-	function _wakeup(&$data){
-		$this->_bizname = &$data['bizname'];
-		$this->_fullname = &$data['fullname'];
-		$this->_parent = &$data['parent'];
-		$this->_curFrame = &$data['curFrame'];
-
-		$this->cureBUID=&$data['cureBUID'];
-
-		$data['tabbar']['parent']=$this;
-		$this->tabbar=new tabbank($data['tabbar']);
-		$data['entrybar']['parent']=$this;
-		$this->entrybar=new epostentry($data['entrybar']);
-		$data['epostbar']['parent']=$this;
-		$this->epostbar=new epostbank($data['epostbar']);
+	function __sleep(){
+		return array('_fullname', '_curFrame','cureBUID','tabbar','entrybar','epostbar');
 	}
 
 	function message($to, $message, $info) {
@@ -138,8 +105,7 @@ class ebframe {
 
 	function onEBoardSelected($info){
 		$this->cureBUID=$info['UID'];
-		$_d=array();
-		$cat=new category($_d);
+		$cat=new category("temp");
 		$content=$cat->backContentOf($this->cureBUID);
 		$ar=array();
 		foreach($content as $c){

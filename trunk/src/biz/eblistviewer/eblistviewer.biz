@@ -59,8 +59,8 @@ PHTML;
 
 	function bookUID($UID){
 		#var.contentLoaded=false;
-		#node.eBoards[]=null;
-		#node.eBLists[]=null;
+		#node.eBoards=array();
+		#node.eBLists=array();
 		#var.UID=$UID;
 		#fun.init();
 	}
@@ -70,29 +70,20 @@ PHTML;
 		_bookframe(#frame.frm);
 	}
 
-	function onLogin($info){
-		#var.userUID=$info['userUID'];
-		_bookframe(#frame.frm);		
-	}
-
-	function onLogout($info){
-		#var.userUID=-1;
-		_bookframe(#frame.frm);
-	}
-
 	function loadContent(){
 		if(#var.contentLoaded)
 			return;
 		#var.contentLoaded=true;
 		$con=#node.myCat->backContent();
+		$id=0;
 		foreach($con as $cat){
 			switch($cat['extra']){
 				case 'eBList':
-					#node.eBLists[]=new eblistviewer();
+					#node.eBLists[]=new eblistviewer(#nodeID.$id++);
 					end(#node.eBLists)->bookUID($cat['bizUID']);
 					break;
 				case 'eBoard':
-					#node.eBoards[]=new eblineviewer();
+					#node.eBoards[]=new eblineviewer(#nodeID.$id++);;
 					end(#node.eBoards)->bookUID($cat['bizUID']);
 					break;
 				default:
