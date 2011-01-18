@@ -1,17 +1,28 @@
 <?php
 	date_default_timezone_set('GMT');
-	if(isset($_GET['kill']))
-		unset($_SESSION['bizbank']);
-
-
-	if(!isset($_SESSION['bizbank'])){
-		$_SESSION['bizbank']=array();
+	require_once "../bizbank/eBoardPortal/eBoardPortal.php";
+	$bizbank=NULL;
+	if(isset($_GET['kill'])){
+		$_SESSION['bizbank']=NULL;
+		$bizbank=NULL;
 	}
+
+	if($_SESSION['bizbank']!=NULL)
+		$bizbank=unserialize($_SESSION['bizbank']);
+	else
+		$bizbank=new eBoardPortal("eBoardPortal");
 
 	if(!isset($_SESSION['user'])){
 		$_SESSION['user']['UID']=-1;
 		$_SESSION['user']['Email']='';
 		$_SESSION['user']['Name']='';
+	}
+
+	function osRegMsg($fullname,$message){
+		if(!isset($_SESSION['broadcast'][$message])){
+			$_SESSION['broadcast'][$message]=array();
+		}
+		$_SESSION['broadcast'][$message][]=$fullname;
 	}
 
 	function osBookUser($user){
