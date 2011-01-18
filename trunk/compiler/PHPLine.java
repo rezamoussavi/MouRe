@@ -7,14 +7,12 @@ public class PHPLine {
 
 	public static String parse(String line){
 		line=nodeFrame(line);//Should be before toThisTags
-		line=nodeArray(line);//Should be before toThisTags
 		line=messageInForms(line);//Should be before toThisTags
 		line=toThisTags(line);
 		line=dbTags(line);
 		line=toStringTags(line);
 		line=nodeIDTag(line);
 		line=replace(line, "_bookframe", "$this->_bookframe",false);
-//		line=replace(line, "_backframe", "$this->_backframe",false);
 		return line;
 	}
 
@@ -48,56 +46,57 @@ public class PHPLine {
 		return line;
 	}
 
-	private static String nodeArray(String line){
-		int tabs=0,doti=-1,EOLi,EQi,nodeTagi=line.indexOf("#node.");
-		String nodeAr="",afterEq="";
-		if(nodeTagi==-1)//if there is no '#node.'
-			return line;
-		EOLi=line.indexOf(";",nodeTagi);
-		EQi=line.indexOf("=", nodeTagi);
-		if(nodeTagi!=-1)
-			doti=line.substring(nodeTagi).indexOf(".")+nodeTagi+1;
-		if(EOLi!=-1 && EQi<EOLi && EQi>nodeTagi && doti!=-1){//there is #node.XXXXX=YYYY;
-			tabs=countTabs(line);
-			afterEq=line.substring(EQi+1,EOLi).trim();
-			nodeAr=line.substring(doti,EQi).trim();
-			if(nodeAr.endsWith("[]"))
-				nodeAr=nodeAr.substring(0,nodeAr.length()-2);
-			if(afterEq.equalsIgnoreCase("null")){
-				line=line.substring(0,nodeTagi)+"\n"+tabs(tabs)+"// Empty the array\n"+tabs(tabs)+
-					"$this->"+nodeAr+"_array_data=array();\n"+tabs(tabs)
-					+"$this->"+nodeAr+"=array();"
-					+line.substring(EOLi+1);
-			}else if(afterEq.startsWith("new")){
-				String biz=afterEq.substring(3).substring(0,afterEq.indexOf("(")-3);
-				String codes="\n"+tabs(tabs)+"// Add new Node to the array\n" +
-								tabs(tabs)+"$_index=count($this->"+nodeAr+"_array_data);\n" +
-								tabs(tabs)+"$_data=array();\n" +
-								tabs(tabs)+"$_data['parent']=$this;\n" +
-								tabs(tabs)+"$_data['bizname']=$_index;\n" +
-								tabs(tabs)+"$_data['fullname']=$this->_fullname.'_'.$_index;\n" +
-								tabs(tabs)+"$this->"+nodeAr+"_array_data[]=$_data;\n" +
-								tabs(tabs)+"$this->"+nodeAr+"[]=new "+biz+"($this->"+nodeAr+"_array_data[$_index]);";
-				line=line.substring(0,nodeTagi)+codes+line.substring(EOLi+1);
-			}
-		}
+//	private static String nodeArray(String line){
+//		int tabs=0,doti=-1,EOLi,EQi,nodeTagi=line.indexOf("#node.");
+//		String nodeAr="",afterEq="";
+//		if(nodeTagi==-1)//if there is no '#node.'
+//			return line;
+//		EOLi=line.indexOf(";",nodeTagi);
+//		EQi=line.indexOf("=", nodeTagi);
+//		if(nodeTagi!=-1)
+//			doti=line.substring(nodeTagi).indexOf(".")+nodeTagi+1;
+//		if(EOLi!=-1 && EQi<EOLi && EQi>nodeTagi && doti!=-1){//there is #node.XXXXX=YYYY;
+//			tabs=countTabs(line);
+//			afterEq=line.substring(EQi+1,EOLi).trim();
+//			nodeAr=line.substring(doti,EQi).trim();
+//			if(nodeAr.endsWith("[]"))
+//				nodeAr=nodeAr.substring(0,nodeAr.length()-2);
+//			if(afterEq.equalsIgnoreCase("null")){
+//				line=line.substring(0,nodeTagi)+"\n"+tabs(tabs)+"// Empty the array\n"+tabs(tabs)+
+//					"$this->"+nodeAr+"_array_data=array();\n"+tabs(tabs)
+//					+"$this->"+nodeAr+"=array();"
+//					+line.substring(EOLi+1);
+//			}else if(afterEq.startsWith("new")){
+//				String biz=afterEq.substring(3).substring(0,afterEq.indexOf("(")-3);
+//				String codes="\n"+tabs(tabs)+"// Add new Node to the array\n" +
+//								tabs(tabs)+"$_index=count($this->"+nodeAr+"_array_data);\n" +
+//								tabs(tabs)+"$_data=array();\n" +
+//								tabs(tabs)+"$_data['parent']=$this;\n" +
+//								tabs(tabs)+"$_data['bizname']=$_index;\n" +
+//								tabs(tabs)+"$_data['fullname']=$this->_fullname.'_'.$_index;\n" +
+//								tabs(tabs)+"$this->"+nodeAr+"_array_data[]=$_data;\n" +
+//								tabs(tabs)+"$this->"+nodeAr+"[]=new "+biz+"($this->"+nodeAr+"_array_data[$_index]);";
+//				line=line.substring(0,nodeTagi)+codes+line.substring(EOLi+1);
+//			}
+//		}
+//
+//		return line;
+//	}
 
-		return line;
-	}
+//	private static int countTabs(String line){
+//		int tabs=0;
+//		while(line.substring(tabs).startsWith("\t"))
+//			tabs++;
+//		return tabs;
+//	}
 
-	private static int countTabs(String line){
-		int tabs=0;
-		while(line.substring(tabs).startsWith("\t"))
-			tabs++;
-		return tabs;
-	}
+//	private static String tabs(int count){
+//		String tabs="";
+//		for(int i=0;i<count;i++)
+//			tabs=tabs+"\t";
+//		return tabs;
+//	}
 
-	private static String tabs(int count){
-		String tabs="";
-		for(int i=0;i<count;i++)
-			tabs=tabs+"\t";
-		return tabs;
-	}
 	private static String nodeIDTag(String line){
 		return replace(line,"#nodeID","$this->_fullname");
 	}
