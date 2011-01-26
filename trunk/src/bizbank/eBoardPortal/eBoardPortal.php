@@ -20,6 +20,7 @@ class eBoardPortal {
 
     //all of our biz classes should define these two variable
     var $_bizbankname;
+	var $_fullname;
 
     /*     * **************************FIELDS*************************** */
     //CALSS FIELDS
@@ -37,19 +38,12 @@ class eBoardPortal {
 
     /*     * **************************CONSTRUCTOR*************************** */
 
-    function __construct($data) {
-        $this->_bizbankname = "eBoardPortal";
+    function __construct($fullname) {
+        $this->_fullname = $fullname;
         
         foreach($this->bizes as $bizname=>$biz)
         {
-            if (!(isset($data[$bizname]))) {
-                
-                $data[$bizname]['fullname'] = ($this->_bizbankname . "_" . $bizname); //$this->user
-                $data[$bizname]['bizname'] = $bizname;
-                $data[$bizname]['parent'] = $this;
-                
-            }
-            $this->myBizes[$bizname] = new $biz(&$data[$bizname]);
+            $this->myBizes[$bizname] = new $biz($this->_fullname."_".$bizname);
         }
         
         $this->bizness_id = 1;

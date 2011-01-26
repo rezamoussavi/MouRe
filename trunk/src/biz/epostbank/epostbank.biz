@@ -1,11 +1,19 @@
 #comments
 	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
+	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/10/2011
 	TestApproval: none
 
 #biz
 	epostbank
+
+#family
+	epost
 
 #var
 	curUID=-1
@@ -20,7 +28,7 @@
 
 	function frm(){
 		$posts='';
-		foreach(#node.posts as $p){
+		foreach(#node->posts as $p){
 			$posts.=$p->_backframe();
 		}
 		$html=<<<PHTML
@@ -30,23 +38,23 @@ PHTML;
 	}
 
 	function showBy($ownerName,$ownerUID){
-		if(#var.curUID==$ownerUID){
+		if(#var->curUID==$ownerUID){
 			return;
 		}
-		#var.curUID=$ownerUID;
-		#fun.reload();
-		_bookframe(#frame.frm);
+		#var->curUID=$ownerUID;
+		#fun->reload();
+		_bookframe(#frame->frm);
 	}
 
 	function reload(){
 		$cat=new category("temp");
-		$content=$cat->backContentOf(#var.curUID);
-		#node.posts=array();
+		$content=$cat->backContentOf(#var->curUID);
+		#node->posts=array();
 		$id=0;
 		foreach($content as $c){
 			if($c['bizname']=='epost'){
-				#node.posts[]=new fullepostviewer(#nodeID.$id++);
-				end(#node.posts)->bookUID($c['bizUID']);
+				#node->posts[]=new fullepostviewer(#nodeID.$id++);
+				end(#node->posts)->bookUID($c['bizUID']);
 			}
 		}
 	}

@@ -1,8 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/4/2011
@@ -37,7 +44,7 @@ class epostentry {
 			return;
 		}
 		switch($message){
-			case 'stickit':
+			case 'frame_stickit':
 				$this->onStickIt($info);
 				break;
 			default:
@@ -47,7 +54,7 @@ class epostentry {
 
 	function broadcast($message, $info) {
 		switch($message){
-			case 'stickit':
+			case 'frame_stickit':
 				$this->onStickIt($info);
 				break;
 			default:
@@ -65,6 +72,8 @@ class epostentry {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
@@ -84,7 +93,7 @@ class epostentry {
 	function frm(){
 		$html=<<<HTML
 		<FORM name="$this->_fullname" method="POST">
-			<input type="hidden" name="_message" value="stickit" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+			<input type="hidden" name="_message" value="frame_stickit" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 			Content:<br />
 			<textarea name="content" rows="2" cols="25"></textarea><br />
 			Title <input type="input" name="title" />
@@ -96,7 +105,7 @@ HTML;
 	function onStickIt($info){
 		$ep=new epost("temp");
 		$ep->addpost(array("title"=>$info['title'],"content"=>$info['content'],"ownerbiz"=>$this->ownerName,"ownerbizUID"=>$this->ownerUID));
-		osBroadcast("newPostAdded",array());
+		osBroadcast("epost_newPostAdded",array());
 	}
 
 }

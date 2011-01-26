@@ -1,11 +1,19 @@
 #comments
 	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
+	Author:		Reza Moussavi
 	Date:		1/12/2011
 	Version:	1.0
 	TestApproval: none
 
 #biz
 	ebframe
+
+#family
+	eboard
 
 #var
 	cureBUID
@@ -14,9 +22,9 @@
 	tabbank tabbar,epostentry entrybar,epostbank epostbar,category
 
 #message
-	eBoardSelected->onEBoardSelected,
-	tabselected->onTabSelected,
-	newPostAdded->onNewPostAdded
+	eboard->eBoardSelected=onEBoardSelected,
+	tab->tabselected=onTabSelected,
+	epost->newPostAdded=onNewPostAdded
 
 #frame
 	frm
@@ -24,33 +32,33 @@
 #phpfunction
 
 	function onEBoardSelected($info){
-		#var.cureBUID=$info['UID'];
+		#var->cureBUID=$info['UID'];
 
 		$cat=new category("temp");
 
-		$content=$cat->backContentOf(#var.cureBUID);
+		$content=$cat->backContentOf(#var->cureBUID);
 		$ar=array();
 		foreach($content as $c){
 			$lable=$cat->backLable($c['bizUID']);
 			$ar[]=array("name"=>$lable,"UID"=>$c['bizUID']);
 		}
-		#node.tabbar->booklist($ar);
-		_bookframe(#frame.frm);
+		#node->tabbar->booklist($ar);
+		_bookframe(#frame->frm);
 	}
 
 	function onTabSelected($info){
-		#node.entrybar->bookPostOwner("category",$info['UID']);
-		#node.epostbar->showBy("category",$info['UID']);
+		#node->entrybar->bookPostOwner("category",$info['UID']);
+		#node->epostbar->showBy("category",$info['UID']);
 	}
 
 	function onNewPostAdded($info){
-		#node.epostbar->reload();
+		#node->epostbar->reload();
 	}
 
 	function frm(){
-		$tabbar=#node.tabbar->_backframe();
-		$entrybar=#node.entrybar->_backframe();
-		$epostbar=#node.epostbar->_backframe();
+		$tabbar=#node->tabbar->_backframe();
+		$entrybar=#node->entrybar->_backframe();
+		$epostbar=#node->epostbar->_backframe();
 		$html=<<<PHTML
 			$tabbar<br>
 			$entrybar<br>

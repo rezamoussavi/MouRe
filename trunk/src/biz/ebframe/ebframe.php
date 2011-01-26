@@ -1,8 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author:		Reza Moussavi
 	Date:		1/12/2011
 	Version:	1.0
@@ -48,13 +55,13 @@ class ebframe {
 			return;
 		}
 		switch($message){
-			case 'eBoardSelected':
+			case 'eboard_eBoardSelected':
 				$this->onEBoardSelected($info);
 				break;
-			case 'tabselected':
+			case 'tab_tabselected':
 				$this->onTabSelected($info);
 				break;
-			case 'newPostAdded':
+			case 'epost_newPostAdded':
 				$this->onNewPostAdded($info);
 				break;
 			default:
@@ -67,13 +74,13 @@ class ebframe {
 		$this->entrybar->broadcast($message, $info);
 		$this->epostbar->broadcast($message, $info);
 		switch($message){
-			case 'eBoardSelected':
+			case 'eboard_eBoardSelected':
 				$this->onEBoardSelected($info);
 				break;
-			case 'tabselected':
+			case 'tab_tabselected':
 				$this->onTabSelected($info);
 				break;
-			case 'newPostAdded':
+			case 'epost_newPostAdded':
 				$this->onNewPostAdded($info);
 				break;
 			default:
@@ -91,6 +98,8 @@ class ebframe {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else

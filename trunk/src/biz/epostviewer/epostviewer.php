@@ -1,8 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/6/2011
@@ -46,13 +53,13 @@ class epostviewer {
 			return;
 		}
 		switch($message){
-			case 'next':
+			case 'frame_next':
 				$this->onNext($info);
 				break;
-			case 'prev':
+			case 'frame_prev':
 				$this->onPrev($info);
 				break;
-			case 'comment':
+			case 'frame_comment':
 				$this->onComment($info);
 				break;
 			default:
@@ -64,13 +71,13 @@ class epostviewer {
 		$this->post->broadcast($message, $info);
 		$this->comment->broadcast($message, $info);
 		switch($message){
-			case 'next':
+			case 'frame_next':
 				$this->onNext($info);
 				break;
-			case 'prev':
+			case 'frame_prev':
 				$this->onPrev($info);
 				break;
-			case 'comment':
+			case 'frame_comment':
 				$this->onComment($info);
 				break;
 			default:
@@ -88,6 +95,8 @@ class epostviewer {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
@@ -141,17 +150,17 @@ PHTML;
 		$footer=<<<PHTML
 			({$this->post->timeStamp})
 			<form name="$prev" method="post" style="display:inline">
-				<input type="hidden" name="_message" value="prev" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_prev" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("$prev")'  class="press"/>
 			</form>
 			{$this->post->edition} / {$this->post->lastedition}
 			<form name="$next" method="post" style="display:inline">
-				<input type="hidden" name="_message" value="next" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_next" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("$next")'  class="press"/>
 			</form>
 			({$this->post->noOfComments})
 			<form name="$comment" method="post" style="display:inline">
-				<input type="hidden" name="_message" value="comment" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_comment" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comment")'  class="press"/>
 			</form>
 PHTML;

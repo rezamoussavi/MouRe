@@ -1,5 +1,10 @@
 #comments
 	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
+	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/6/2011
 	TestApproval: none
@@ -11,11 +16,14 @@
 #biz
 	tab
 
+#family
+	tab
+
 #var
 	selected=false,title,UID
 
 #message
-	clicktab->onClicktab,tabselected
+	frame->clicktab=onClicktab,tabselected
 
 #frame
 	selectedfrm,*notselectedfrm
@@ -23,29 +31,29 @@
 #phpfunction
 
 	function bookSelected($selected){
-		if(#var.selected==$selected){
+		if(#var->selected==$selected){
 			return;
 		}
-		#var.selected=$selected;
+		#var->selected=$selected;
 		if($selected){
-			osBroadcast(#msg.tabselected,array("UID"=>#var.UID));
-			_bookframe(#frame.selectedfrm);
+			osBroadcast(#msg->tabselected,array("UID"=>#var->UID));
+			_bookframe(#frame->selectedfrm);
 		}else{
-			_bookframe(#frame.notselectedfrm);
+			_bookframe(#frame->notselectedfrm);
 		}	
 	}
 
 	function onClicktab($info){
-		if(!#var.selected){
-			#fun.bookSelected(true);
+		if(!#var->selected){
+			#fun->bookSelected(true);
 		}
 	}
 
 	function notselectedfrm(){
 		$html=<<<PHTML
 			<form name="{#nodeID}" action="post" style="display:inline;">
-				<#msg.clicktab>
-				<input type="button" value="{#var.title}" onclick='JavaScript:sndmsg("{#nodeID}")' class="press" />
+				<#msg->clicktab>
+				<input type="button" value="{#var->title}" onclick='JavaScript:sndmsg("{#nodeID}")' class="press" />
 			</form>
 PHTML;
 		return $html;
@@ -53,7 +61,7 @@ PHTML;
 
 	function selectedfrm(){
 		$html=<<<PHTML
-			<input type="button" value="[{#var.title}]" class="press" />
+			<input type="button" value="[{#var->title}]" class="press" />
 PHTML;
 		return $html;
 	}

@@ -1,11 +1,19 @@
 #comments
 	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
+	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/6/2011
 	TestApproval: none
 
 #biz
 	epostviewer
+
+#family
+	epost
 
 #node
 	epost post, epostentry comment
@@ -14,7 +22,7 @@
 	showCommentBox=false,UID=-1
 
 #message
-	next->onNext, prev->onPrev, comment->onComment
+	frame->next=onNext, frame->prev=onPrev, frame->comment=onComment
 
 #frame
 	frm
@@ -22,28 +30,28 @@
 #phpfunction
 
 	function backCommentsUID(){
-		return #node.post->backCommentsUID();
+		return #node->post->backCommentsUID();
 	}
 
 	function bookUID($UID){
-		#var.UID=$UID;
-		#node.post->bookUID($UID);
-		#node.comment->bookPostOwner("epost",$UID);
+		#var->UID=$UID;
+		#node->post->bookUID($UID);
+		#node->comment->bookPostOwner("epost",$UID);
 	}
 
 	function onNext($info){
-		if(#node.post->next())
-			_bookframe(#frame.frm);
+		if(#node->post->next())
+			_bookframe(#frame->frm);
 	}
 
 	function onPrev($info){
-		if(#node.post->prev())
-			_bookframe(#frame.frm);
+		if(#node->post->prev())
+			_bookframe(#frame->frm);
 	}
 
 	function onComment($info){
-		#var.showCommentBox=!#var.showCommentBox;
-		_bookframe(#frame.frm);
+		#var->showCommentBox=!#var->showCommentBox;
+		_bookframe(#frame->frm);
 	}
 
 	function frm(){
@@ -53,38 +61,38 @@
 
 		$header=<<<PHTML
 			<div style="float:left;display:inline;">
-				{#node.post->title}
+				{#node->post->title}
 			</div>
 			<div style="float:right;display:inline;">
-				By: {#node.post->author}
+				By: {#node->post->author}
 			</div>
 			<br />
 PHTML;
 		$body=<<<PHTML
 			<div style="border-style:dashed;border-width:1px;">
-				{#node.post->content}
+				{#node->post->content}
 			</div><br />
 PHTML;
 		$footer=<<<PHTML
-			({#node.post->timeStamp})
+			({#node->post->timeStamp})
 			<form name="$prev" method="post" style="display:inline">
-				<#msg.prev>
+				<#msg->prev>
 				<input value ="<" type = "button" onclick = 'JavaScript:sndmsg("$prev")'  class="press"/>
 			</form>
-			{#node.post->edition} / {#node.post->lastedition}
+			{#node->post->edition} / {#node->post->lastedition}
 			<form name="$next" method="post" style="display:inline">
-				<#msg.next>
+				<#msg->next>
 				<input value =">" type = "button" onclick = 'JavaScript:sndmsg("$next")'  class="press"/>
 			</form>
-			({#node.post->noOfComments})
+			({#node->post->noOfComments})
 			<form name="$comment" method="post" style="display:inline">
-				<#msg.comment>
+				<#msg->comment>
 				<input value ="Comment" type = "button" onclick = 'JavaScript:sndmsg("$comment")'  class="press"/>
 			</form>
 PHTML;
 		$comments='';
-		if(#var.showCommentBox)
-			$comments='<div style="margin-left:50px;"><br/>'.#node.comment->_backframe().'</div>';
+		if(#var->showCommentBox)
+			$comments='<div style="margin-left:50px;"><br/>'.#node->comment->_backframe().'</div>';
 		$html=$header.$body.$footer.$comments;
 		return $html;
 	}

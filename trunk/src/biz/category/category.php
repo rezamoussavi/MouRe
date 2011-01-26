@@ -1,8 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author: Reza Moussavi
 	Date:	12/29/2010
 	Version:	1.0
@@ -58,6 +65,8 @@ class category {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else

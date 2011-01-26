@@ -1,10 +1,18 @@
 #comments
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author: Reza Moussavi
 	Date:	12/29/2010
 	Version:	1.0
 
 #biz
 	eblineviewer
+
+#family
+	eboard
 
 #var
 	UID
@@ -13,7 +21,7 @@
 	category myCat
 
 #message
-	clickBtn->onClickBtn
+	frame->clickBtn=onClickBtn
 
 #start
 	init
@@ -24,25 +32,25 @@
 #phpfunction
 
 	function init(){
-		#node.myCat->bookUID(#var.UID);
+		#node->myCat->bookUID(#var->UID);
 	}
 
 	function bookUID($UID){
-		#var.UID=$UID;
-		#fun.init();
+		#var->UID=$UID;
+		#fun->init();
 	}
 
 	function onClickBtn(){
-		osBroadcast(#msg.eBoardSelected,array("UID"=>#var.UID));
-		//_bookrame(#frame.frm);
+		osBroadcast(#msg->eBoardSelected,array("UID"=>#var->UID));
+		//_bookrame(#frame->frm);
 	}
 
 	function frm(){
-		$Lable=#node.myCat->lable;
+		$Lable=#node->myCat->lable;
 
 		$html=<<<PHTML
 			<form name="{#nodeID}" method="post">
-				<#msg.clickBtn>
+				<#msg->clickBtn>
 				<input value ="$Lable" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
 PHTML;

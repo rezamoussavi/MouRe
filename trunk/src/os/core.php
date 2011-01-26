@@ -18,6 +18,23 @@
 		$_SESSION['user']['Name']='';
 	}
 
+	function osBackLink($node,$curLink,$linkto){
+		$ret="?";
+		if(! isset($_SESSION['osLink']))
+			$_SESSION['osLink']=array();
+		$_SESSION['osLink'][$node]=$curLink;
+		foreach($_SESSION['osLink'] as $n=>$v){
+			if($ret!="?"){
+				$ret.="&";
+			}
+			if($n==$node)
+				$ret.=$n."=".$linkto;
+			else
+				$ret.=$n."=".$v;
+		}
+		return $ret;
+	}
+
 	function osRegMsg($fullname,$message){
 		if(!isset($_SESSION['broadcast'][$message])){
 			$_SESSION['broadcast'][$message]=array();

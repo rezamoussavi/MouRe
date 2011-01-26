@@ -14,7 +14,6 @@
  
         <div class="helpinfo">
             <?php $this->myBizes['d1']->show(1); ?>
-            <?php $this->myBizes['d2']->show(1); ?>
         </div>
 
         <div class="ebframe">

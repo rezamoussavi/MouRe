@@ -1,4 +1,9 @@
 #comments
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author: Reza Moussavi
 	Date:	12/30/2010
 	Version: 1.0
@@ -6,14 +11,17 @@
 #biz
 	dummie
 
+#family
+	null
+
 #var
    userEmail,UID,debug="<hr>DEBUG:"
 
 #message
-	debug->onDebug,
-	eBoardSelected->onEBoardSelected,
-	login->onLogin,logout->onLogout,
-	tabselected->onTab
+	global->debug=onDebug,
+	eboard->eBoardSelected=onEBoardSelected,
+	user->login=onLogin,user->logout=onLogout,
+	tab->tabselected=onTab
 
 #frame
 	happy,*sad,debug
@@ -21,31 +29,35 @@
 #phpfunction
 
 	function onDebug($info){
-		#var.debug.=$info['debug'].'<br>';
-		_bookframe(#frame.debug);
+		if($info['debug']=="kill"){
+			#var->debug="<hr>DEBUG:";
+		}else{
+			#var->debug.=$info['debug'].'<br>';
+		}
+		_bookframe(#frame->debug);
 	}
 
 	function onTab($info){
-		#var.userEmail="tab:".$info['UID'];
-		_bookframe(#frame.happy);
+		#var->userEmail="tab:".$info['UID'];
+		_bookframe(#frame->happy);
 	}
 
 	function onEBoardSelected($info){
-		#var.userEmail="eboard: ".$info['UID'];
-		_bookframe(#frame.happy);
+		#var->userEmail="eboard: ".$info['UID'];
+		_bookframe(#frame->happy);
 	}
 
 	function onLogin($info){
-		#var.userEmail=$info['email'];
-		_bookframe(#frame.happy);
+		#var->userEmail=$info['email'];
+		_bookframe(#frame->happy);
 	}
 
 	function onLogout($info){
-		_bookframe(#frame.sad);
+		_bookframe(#frame->sad);
 	}
 
 	function happy(){
-		return "<h2>:) </h2>". #var.userEmail;
+		return "<h2>:) </h2>". #var->userEmail;
 	}
 
 	function sad(){
@@ -53,5 +65,5 @@
 	}
 
 	function debug(){
-		return "<font color=red>".#var.debug."</font>";
+		return "<font color=red>".#var->debug."</font>";
 	}

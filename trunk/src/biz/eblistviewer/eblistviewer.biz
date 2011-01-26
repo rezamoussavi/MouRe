@@ -1,5 +1,9 @@
 #comments
 	Author: Reza Moussavi
+	Date:	1/25/2011
+	Version:	1.2
+	----------------------
+	Author: Reza Moussavi
 	Date:	1/15/2011
 	Version:	1.1
 	----------------------
@@ -10,8 +14,11 @@
 #biz
 	eblistviewer
 
+#family
+	eboard
+
 #var
-	expanded=false,userUID=-1,UID=0,contentLoaded=false
+	expanded=false,userUID=-1,UID=0,contentLoaded=false,curLink="close",linkto="open"
 
 #node
 	category myCat,eblistviewer[] eBLists,eblineviewer[] eBoards
@@ -23,68 +30,88 @@
 	frm
 
 #message
-	click->onClick, login->onLogin,logout->onLogout
+	frame->click=onClick,
+	client->open=onOpen,
+	client->close=onClose
 
 #phpfunction
 
+	function onOpen($info){
+		#var->expanded=false;
+		#var->linkto="close";
+		#var->curLink="open";
+		#fun->onClick(array());
+	}
+
+	function onClose($info){
+		#var->expanded=true;
+		#var->linkto="open";
+		#var->curLink="close";
+		#fun->onClick(array());
+	}
+
 	function init(){
-		#node.myCat->bookUID(#var.UID);
+		#node->myCat->bookUID(#var->UID);
 	}
 
 	function frm(){
-		if(#var.expanded)
-			#fun.loadContent();
-		$Lable=#node.myCat->lable;
+		if(#var->expanded)
+			#fun->loadContent();
+		$Lable=#node->myCat->lable;
+		$link=osBackLink(#var->curLink,#var->linkto);
 
-        $html=<<<PHTML
+        $html_old=<<<PHTML
 			<form name="{#nodeID}" method="post">
-	            <#msg.click>
+	            <#msg->click>
 				<input value ="$Lable" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
 PHTML;
-		$html.= #fun.backContent();
+        $html=<<<PHTML
+				<input value="$Lable" type = "button" onClick="window.location='$link'" class="press">
+PHTML;
+		$html.= #fun->backContent();
 		return $html;
 	}
 
 	function backContent(){
 		$html='<div style="margin-left:10px;">';
-		if(#var.expanded){
-			foreach(#var.eBLists as $i=>&$L)
+		if(#var->expanded){
+			foreach(#var->eBLists as $i=>&$L)
 				$html .= $L->_backframe();
-			foreach(#var.eBoards as $j=>&$B)
+			foreach(#var->eBoards as $j=>&$B)
 				$html .= $B->_backframe();
 		}
 		return $html.'</div>';
 	}
 
 	function bookUID($UID){
-		#var.contentLoaded=false;
-		#node.eBoards=array();
-		#node.eBLists=array();
-		#var.UID=$UID;
-		#fun.init();
+		#var->contentLoaded=false;
+		#node->eBoards=array();
+		#node->eBLists=array();
+		#var->UID=$UID;
+		#fun->init();
 	}
 
 	function onClick($info){
-		#var.expanded=! #var.expanded;
-		_bookframe(#frame.frm);
+		#var->expanded=! #var->expanded;
+		_bookframe(#frame->frm);
 	}
 
 	function loadContent(){
-		if(#var.contentLoaded)
+		if(#var->contentLoaded)
 			return;
-		#var.contentLoaded=true;
-		$con=#node.myCat->backContent();
+		#var->contentLoaded=true;
+		$con=#node->myCat->backContent();
 		$id=0;
 		foreach($con as $cat){
 			switch($cat['extra']){
 				case 'eBList':
-					#node.eBLists[]=new eblistviewer(#nodeID.$id++);
-					end(#node.eBLists)->bookUID($cat['bizUID']);
+					#node->eBLists[]=new eblistviewer(#nodeID.$id++);
+					end(#node->eBLists)->bookUID($cat['bizUID']);
 					break;
 				case 'eBoard':
-					#node.eBoards[]=new eblineviewer(#nodeID.$id++);;
-					end(#node.eBoards)->bookUID($cat['bizUID']);
+					#node->eBoards[]=new eblineviewer(#nodeID.$id++);;
+					end(#node->eBoards)->bookUID($cat['bizUID']);
 					break;
 				default:
 					break;

@@ -1,8 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author: Reza Moussavi
 	Date:	12/30/2010
 	Version: 1.0
@@ -37,19 +44,19 @@ class dummie {
 			return;
 		}
 		switch($message){
-			case 'debug':
+			case 'global_debug':
 				$this->onDebug($info);
 				break;
-			case 'eBoardSelected':
+			case 'eboard_eBoardSelected':
 				$this->onEBoardSelected($info);
 				break;
-			case 'login':
+			case 'user_login':
 				$this->onLogin($info);
 				break;
-			case 'logout':
+			case 'user_logout':
 				$this->onLogout($info);
 				break;
-			case 'tabselected':
+			case 'tab_tabselected':
 				$this->onTab($info);
 				break;
 			default:
@@ -59,19 +66,19 @@ class dummie {
 
 	function broadcast($message, $info) {
 		switch($message){
-			case 'debug':
+			case 'global_debug':
 				$this->onDebug($info);
 				break;
-			case 'eBoardSelected':
+			case 'eboard_eBoardSelected':
 				$this->onEBoardSelected($info);
 				break;
-			case 'login':
+			case 'user_login':
 				$this->onLogin($info);
 				break;
-			case 'logout':
+			case 'user_logout':
 				$this->onLogout($info);
 				break;
-			case 'tabselected':
+			case 'tab_tabselected':
 				$this->onTab($info);
 				break;
 			default:
@@ -89,6 +96,8 @@ class dummie {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
@@ -102,7 +111,11 @@ class dummie {
 
 
 	function onDebug($info){
-		$this->debug.=$info['debug'].'<br>';
+		if($info['debug']=="kill"){
+			$this->debug="<hr>DEBUG:";
+		}else{
+			$this->debug.=$info['debug'].'<br>';
+		}
 		$this->_bookframe("debug");
 	}
 	function onTab($info){

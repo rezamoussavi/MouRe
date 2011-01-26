@@ -1,8 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author:	Reza Moussavi
 	Date:	12/30/2010
 	Version:1.0
@@ -39,28 +46,28 @@ class login {
 			return;
 		}
 		switch($message){
-			case 'loginBtn':
+			case 'frame_loginBtn':
 				$this->onLoginBtn($info);
 				break;
-			case 'logoutBtn':
+			case 'frame_logoutBtn':
 				$this->onLogoutBtn($info);
 				break;
-			case 'displaySignupForm':
+			case 'frame_displaySignupForm':
 				$this->onDisplaySignupForm($info);
 				break;
-			case 'requestNewPassword':
+			case 'frame_requestNewPassword':
 				$this->onRequestNewPassword($info);
 				break;
-			case 'displayForgotForm':
+			case 'frame_displayForgotForm':
 				$this->onDisplayForgotForm($info);
 				break;
-			case 'signup':
+			case 'frame_signup':
 				$this->onSignup($info);
 				break;
-			case 'validate':
+			case 'frame_validate':
 				$this->onValidate($info);
 				break;
-			case 'home':
+			case 'frame_home':
 				$this->onHome($info);
 				break;
 			default:
@@ -71,28 +78,28 @@ class login {
 	function broadcast($message, $info) {
 		$this->userShow->broadcast($message, $info);
 		switch($message){
-			case 'loginBtn':
+			case 'frame_loginBtn':
 				$this->onLoginBtn($info);
 				break;
-			case 'logoutBtn':
+			case 'frame_logoutBtn':
 				$this->onLogoutBtn($info);
 				break;
-			case 'displaySignupForm':
+			case 'frame_displaySignupForm':
 				$this->onDisplaySignupForm($info);
 				break;
-			case 'requestNewPassword':
+			case 'frame_requestNewPassword':
 				$this->onRequestNewPassword($info);
 				break;
-			case 'displayForgotForm':
+			case 'frame_displayForgotForm':
 				$this->onDisplayForgotForm($info);
 				break;
-			case 'signup':
+			case 'frame_signup':
 				$this->onSignup($info);
 				break;
-			case 'validate':
+			case 'frame_validate':
 				$this->onValidate($info);
 				break;
-			case 'home':
+			case 'frame_home':
 				$this->onHome($info);
 				break;
 			default:
@@ -110,6 +117,8 @@ class login {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
@@ -154,7 +163,7 @@ class login {
 			switch($signup){
 				case 1:
 					$this->signupSuccess = 1;
-					#nde.userShow->loggedIn = 2;
+					$this->userShow->loggedIn = 2;
 					break;
 				case -1:
 					$this->signupSuccess = -1;
@@ -242,18 +251,18 @@ class login {
 			<form name="$formName" method="post" >
 				<div style="width: 50px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
 				<div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" /> <br />
-				<input type="hidden" name="_message" value="loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<div style="width: 180px;">
 				<input value ="Login" type = "button" onclick = 'JavaScript:sndmsg("$formName")' class="press" style="margin-top: 10px; margin-right: 50px;" />
 				</div>
 			</form>
 			<form name="$formNameSignup" method="post" >
-				<input type="hidden" name="_message" value="displaySignupForm" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_displaySignupForm" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<span>No account yet?</span>
 				<input value ="sign up!" type = "button" onclick = 'JavaScript:sndmsg("$formNameSignup")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
 			<form name="$formNameForgot" method="post" >
-				<input type="hidden" name="_message" value="displayForgotForm" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_displayForgotForm" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<span>Password lost?</span>
 				<input value ="get a new!" type = "button" onclick = 'JavaScript:sndmsg("$formNameForgot")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
@@ -282,11 +291,11 @@ PHTML;
 				<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
 				<div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" /><br />
 				<div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" /><br />
-				<input type="hidden" name="_message" value="signup" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_signup" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="sign up!" type = "button" onclick = 'JavaScript:sndmsg("$formName")' class="press"  style="margin-top: 10px;"><br />
 			</form>
 			<form name="$formNameHome" method="post" >
-				<input type="hidden" name="_message" value="home" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_home" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<span>Already a user?</span>
 				<input value ="login!" type = "button" onclick = 'JavaScript:sndmsg("$formNameHome")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
@@ -315,14 +324,14 @@ PHTML;
 				$html .= <<<PHTML
 				<form name="$formName" method="post" >
 					<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
-					<input type="hidden" name="_message" value="requestNewPassword" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input type="hidden" name="_message" value="frame_requestNewPassword" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 					<input value ="send" type = "button" onclick = 'JavaScript:sndmsg("$formName")' class="press"  style="margin-top: 10px;"><br />
 				</form>
 PHTML;
 			}
 			$html .= <<<PHTML
 			<form name="$formNameHome" method="post" >
-				<input type="hidden" name="_message" value="home" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_home" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<span>Go back </span>
 				<input value ="home" type = "button" onclick = 'JavaScript:sndmsg("$formNameHome")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
@@ -342,13 +351,13 @@ PHTML;
 		$html .= <<<PHTML
 			<h3 style="margin-bottom: 2px;">Logout</h3>
 			<form name="$formNameLogout" method="post" >
-				<input type="hidden" name="_message" value="logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formNameLogout")'  style="margin-top: 0px;"><br />
 			</form>
 			<h5>$failmsg</h5>
 			<form name="$formNameValidate" method="post" >
 				<div style="width: 100px; margin-top: 10px;">Validation code </div> <input type="input" name="validationCode" /><br />
-				<input type="hidden" name="_message" value="validate" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_validate" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="Validate!" type = "button" onclick = 'JavaScript:sndmsg("$formNameValidate")'  style="margin-top: 10px;"><br />
 			</form>
 PHTML;
@@ -360,7 +369,7 @@ PHTML;
 		$html = <<<PHTML
 				<h2>Welcome sir!</h2>
 				<form name="$formName" method="post" >
-					<input type="hidden" name="_message" value="logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input type="hidden" name="_message" value="frame_logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 					<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formName")'  class="press" style="margin-top: 0px;"><br />
 				</form>
 PHTML;

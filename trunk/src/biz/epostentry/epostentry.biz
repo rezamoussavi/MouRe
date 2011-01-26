@@ -1,11 +1,19 @@
 #comments
 	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
+	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/4/2011
 	TestApproval: none
 
 #biz
 	epostentry
+
+#family
+	epost
 
 #var
 	ownerName,ownerUID
@@ -14,7 +22,7 @@
 	frm
 
 #message
-	stickit->onStickIt,
+	frame->stickit=onStickIt,
 	newPostAdded
 
 #node
@@ -23,14 +31,14 @@
 #phpfunction
 
 	function bookPostOwner($ownerName,$ownerUID){
-		#var.ownerName=$ownerName;
-		#var.ownerUID=$ownerUID;
+		#var->ownerName=$ownerName;
+		#var->ownerUID=$ownerUID;
 	}
 
 	function frm(){
 		$html=<<<HTML
 		<FORM name="#nodeID" method="POST">
-			<#msg.stickit>
+			<#msg->stickit>
 			Content:<br />
 			<textarea name="content" rows="2" cols="25"></textarea><br />
 			Title <input type="input" name="title" />
@@ -42,6 +50,6 @@ HTML;
 
 	function onStickIt($info){
 		$ep=new epost("temp");
-		$ep->addpost(array("title"=>$info['title'],"content"=>$info['content'],"ownerbiz"=>#var.ownerName,"ownerbizUID"=>#var.ownerUID));
-		osBroadcast(#msg.newPostAdded,array());
+		$ep->addpost(array("title"=>$info['title'],"content"=>$info['content'],"ownerbiz"=>#var->ownerName,"ownerbizUID"=>#var->ownerUID));
+		osBroadcast(#msg->newPostAdded,array());
 	}

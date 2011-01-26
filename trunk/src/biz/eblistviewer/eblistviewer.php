@@ -1,8 +1,14 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author: Reza Moussavi
+	Date:	1/25/2011
+	Version:	1.2
+	----------------------
 	Author: Reza Moussavi
 	Date:	1/15/2011
 	Version:	1.1
@@ -26,6 +32,8 @@ class eblistviewer {
 	var $userUID;
 	var $UID;
 	var $contentLoaded;
+	var $curLink;
+	var $linkto;
 
 	//Nodes (bizvars)
 	var $myCat;
@@ -42,11 +50,13 @@ class eblistviewer {
 		$this->userUID=-1;
 		$this->UID=0;
 		$this->contentLoaded=false;
+		$this->curLink="close";
+		$this->linkto="open";
 		$this->init(); //Customized Initializing
 	}
 
 	function __sleep(){
-		return array('_fullname', '_curFrame','expanded','userUID','UID','contentLoaded','myCat','eBLists','eBoards');
+		return array('_fullname', '_curFrame','expanded','userUID','UID','contentLoaded','curLink','linkto','myCat','eBLists','eBoards');
 	}
 
 	function message($to, $message, $info) {
@@ -59,14 +69,14 @@ class eblistviewer {
 			return;
 		}
 		switch($message){
-			case 'click':
+			case 'frame_click':
 				$this->onClick($info);
 				break;
-			case 'login':
-				$this->onLogin($info);
+			case 'client_open':
+				$this->onOpen($info);
 				break;
-			case 'logout':
-				$this->onLogout($info);
+			case 'client_close':
+				$this->onClose($info);
 				break;
 			default:
 				break;
@@ -80,14 +90,14 @@ class eblistviewer {
 		foreach($this->eBoards as $i=>&$_element)
 			$_element->broadcast($message, $info);
 		switch($message){
-			case 'click':
+			case 'frame_click':
 				$this->onClick($info);
 				break;
-			case 'login':
-				$this->onLogin($info);
+			case 'client_open':
+				$this->onOpen($info);
 				break;
-			case 'logout':
-				$this->onLogout($info);
+			case 'client_close':
+				$this->onClose($info);
 				break;
 			default:
 				break;
@@ -104,6 +114,8 @@ class eblistviewer {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
@@ -116,6 +128,18 @@ class eblistviewer {
 //########################################
 
 
+	function onOpen($info){
+		$this->expanded=false;
+		$this->linkto="close";
+		$this->curLink="open";
+		$this->onClick(array());
+	}
+	function onClose($info){
+		$this->expanded=true;
+		$this->linkto="open";
+		$this->curLink="close";
+		$this->onClick(array());
+	}
 	function init(){
 		$this->myCat->bookUID($this->UID);
 	}
@@ -123,11 +147,15 @@ class eblistviewer {
 		if($this->expanded)
 			$this->loadContent();
 		$Lable=$this->myCat->lable;
-        $html=<<<PHTML
+		$link=osBackLink($this->_fullname,$this->curLink,$this->linkto);
+        $html_old=<<<PHTML
 			<form name="{$this->_fullname}" method="post">
-	            <input type="hidden" name="_message" value="click" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+	            <input type="hidden" name="_message" value="frame_click" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="$Lable" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
+PHTML;
+        $html=<<<PHTML
+				<input value="$Lable" type = "button" onClick="window.location='$link'" class="press">
 PHTML;
 		$html.= $this->backContent();
 		return $html;

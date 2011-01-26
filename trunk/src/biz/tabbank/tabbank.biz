@@ -1,11 +1,19 @@
 #comments
 	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------------
+	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/7/2011
 	TestApproval: none
 
 #biz
 	tabbank
+
+#family
+	tab
 
 #var
 	curTabUID=-1
@@ -14,7 +22,7 @@
 	tab[] tab
 
 #message
-	tabselected->onTabSelected
+	tab->tabselected=onTabSelected
 
 #frame
 	frm
@@ -23,7 +31,7 @@
 
 	function frm(){
 		$html='';
-		foreach(#node.tab as $t){
+		foreach(#node->tab as $t){
 			$html.=$t->_backframe();
 		}
 		return $html;
@@ -32,34 +40,34 @@
 	// reset the contents
 	// $list=array(array("name"=>xxxx , "UID"=>xxxx),...)
 	function booklist($list){
-		#node.tab=array();
-		#var.curTabUID=-1;
+		#node->tab=array();
+		#var->curTabUID=-1;
 		$first=true;
 		$id=0;
 		foreach($list as $t){
-			#node.tab[]=new tab(#nodeID.$id++);
-			end(#node.tab)->title=$t['name'];
-			end(#node.tab)->UID=$t['UID'];
+			#node->tab[]=new tab(#nodeID.$id++);
+			end(#node->tab)->title=$t['name'];
+			end(#node->tab)->UID=$t['UID'];
 			if($first){
-				#node.tab[0]->bookSelected(true);
+				#node->tab[0]->bookSelected(true);
 				$first=false;
 			}
 		}
-		_bookframe(#frame.frm);
+		_bookframe(#frame->frm);
 	}
 
 	function onTabSelected($info){
-		if(#var.curTabUID==$info['UID']){
+		if(#var->curTabUID==$info['UID']){
 			return;
 		}
-		if(#var.curTabUID!=-1){
-			foreach(#node.tab as $t){
-				if($t->UID==#var.curTabUID){
+		if(#var->curTabUID!=-1){
+			foreach(#node->tab as $t){
+				if($t->UID==#var->curTabUID){
 					$t->bookSelected(false);
 					break;
 				}
 			}
 		}
-		#var.curTabUID=$info['UID'];
+		#var->curTabUID=$info['UID'];
 	}
 

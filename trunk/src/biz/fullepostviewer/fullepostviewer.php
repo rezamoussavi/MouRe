@@ -1,8 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/10/2011
@@ -48,7 +55,7 @@ class fullepostviewer {
 			return;
 		}
 		switch($message){
-			case 'expand':
+			case 'frame_expand':
 				$this->onExpand($info);
 				break;
 			default:
@@ -61,7 +68,7 @@ class fullepostviewer {
 		foreach($this->comments as $i=>&$_element)
 			$_element->broadcast($message, $info);
 		switch($message){
-			case 'expand':
+			case 'frame_expand':
 				$this->onExpand($info);
 				break;
 			default:
@@ -79,6 +86,8 @@ class fullepostviewer {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
@@ -128,7 +137,7 @@ class fullepostviewer {
 		if($this->post->post->noOfComments>0){
 			$sign=<<<PHTML
 				<form name="{$this->_fullname}" method="post">
-					<input type="hidden" name="_message" value="expand" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input type="hidden" name="_message" value="frame_expand" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 					<input value ="$sign" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press"/>
 				</form>
 PHTML;

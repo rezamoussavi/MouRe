@@ -1,8 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author: Reza Moussavi
 	Date:	12/29/2010
 	Version:	1.0
@@ -39,7 +46,7 @@ class eblineviewer {
 			return;
 		}
 		switch($message){
-			case 'clickBtn':
+			case 'frame_clickBtn':
 				$this->onClickBtn($info);
 				break;
 			default:
@@ -50,7 +57,7 @@ class eblineviewer {
 	function broadcast($message, $info) {
 		$this->myCat->broadcast($message, $info);
 		switch($message){
-			case 'clickBtn':
+			case 'frame_clickBtn':
 				$this->onClickBtn($info);
 				break;
 			default:
@@ -68,6 +75,8 @@ class eblineviewer {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
@@ -88,14 +97,14 @@ class eblineviewer {
 		$this->init();
 	}
 	function onClickBtn(){
-		osBroadcast("eBoardSelected",array("UID"=>$this->UID));
+		osBroadcast("eboard_eBoardSelected",array("UID"=>$this->UID));
 		//_bookrame("frm");
 	}
 	function frm(){
 		$Lable=$this->myCat->lable;
 		$html=<<<PHTML
 			<form name="{$this->_fullname}" method="post">
-				<input type="hidden" name="_message" value="clickBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_clickBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="$Lable" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press" style="margin-top: 10px; margin-right: 0px;" />
 			</form>
 PHTML;

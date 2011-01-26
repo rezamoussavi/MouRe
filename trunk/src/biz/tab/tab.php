@@ -1,8 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
 
+	{Family included}
+
+	Author:		Reza Moussavi
+	Version:	1.1
+	Date:		1/26/2011
+	TestApproval: none
+	-------------------
 	Author:		Reza Moussavi
 	Version:	0.1
 	Date:		1/6/2011
@@ -42,7 +49,7 @@ class tab {
 			return;
 		}
 		switch($message){
-			case 'clicktab':
+			case 'frame_clicktab':
 				$this->onClicktab($info);
 				break;
 			default:
@@ -52,7 +59,7 @@ class tab {
 
 	function broadcast($message, $info) {
 		switch($message){
-			case 'clicktab':
+			case 'frame_clicktab':
 				$this->onClicktab($info);
 				break;
 			default:
@@ -69,7 +76,9 @@ class tab {
 	}
 
 	function show($echo){
-		$html='<div id="' . $this->_fullname . '" style="display:inline;">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
@@ -88,7 +97,7 @@ class tab {
 		}
 		$this->selected=$selected;
 		if($selected){
-			osBroadcast("tabselected",array("UID"=>$this->UID));
+			osBroadcast("tab_tabselected",array("UID"=>$this->UID));
 			$this->_bookframe("selectedfrm");
 		}else{
 			$this->_bookframe("notselectedfrm");
@@ -102,7 +111,7 @@ class tab {
 	function notselectedfrm(){
 		$html=<<<PHTML
 			<form name="{$this->_fullname}" action="post" style="display:inline;">
-				<input type="hidden" name="_message" value="clicktab" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" name="_message" value="frame_clicktab" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input type="button" value="{$this->title}" onclick='JavaScript:sndmsg("{$this->_fullname}")' class="press" />
 			</form>
 PHTML;

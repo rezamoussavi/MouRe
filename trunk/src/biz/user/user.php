@@ -1,11 +1,13 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
+
+	{Family included}
 
 	Author:	Reza Moussavi
-	Date:	12/30/2010
-	Version:1.0
+	Date:	1/26/2010
+	Version:1.2
 
 */
 
@@ -57,6 +59,8 @@ class user {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
@@ -71,7 +75,7 @@ class user {
 
     function logout() {
         $this->loggedIn = 0;
-        osBroadcast("logout", array());
+        osBroadcast("use_logout", array());
 		osBookUser(array());
     }
     function isLoggedin() {

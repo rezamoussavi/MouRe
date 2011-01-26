@@ -1,7 +1,9 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.02
+	Compiled by bizLang compiler version 1.1
+
+	{Family included}
 
 	Author:		Reza Moussavi
 	Version:	0.1
@@ -71,6 +73,8 @@ class epost {
 
 	function show($echo){
 		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
 		if($echo)
 			echo $html;
 		else
