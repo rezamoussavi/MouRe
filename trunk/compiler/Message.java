@@ -13,14 +13,15 @@ public class Message {
 		fun="";
 		String s=se.data.trim();
 		if(s.length()>0){
-			int eq=s.indexOf("->");
+			int eq=s.indexOf("=");
 			if(eq==-1){
 				msg=s;
 			}else{
 				msg=s.substring(0,eq).trim();
-				fun=s.substring(eq+2).trim();
+				fun=s.substring(eq+1).trim();
 			}
 		}
+		msg=msg.replaceAll("->", "_").replaceAll(" _", "_").replaceAll("_ ", "_");
 	}
 
 	public boolean isCallBack(){

@@ -3,20 +3,25 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class compiler {
 
-	public ArrayList<Section> sections;
 	String FileName;
 
 	public static void main(String[] args) {
+		List<String> bizes=Arrays.asList("category","dummie","ebframe","eblineviewer","eblistviewer","epost","epostbank","epostentry","epostviewer","fullepostviewer","login","tab","tabbank","tools","user");
 		String input="";
 		while(!input.equalsIgnoreCase("exit")){
 			System.out.print("command> ");
 			input=getInput();
-			loadAndCompile(input);
+			if(input.equalsIgnoreCase("all"))
+				for(String s:bizes)
+					loadAndCompile(s);
+			else
+				loadAndCompile(input);
 		}
 	}
 
@@ -26,6 +31,7 @@ public class compiler {
 	}
 
 	public static void loadAndCompile(String fname){
+		System.out.print("\t"+fname+"...");
 		BufferedReader br;
 		String FileName=fname;
 		if(FileName.length()<20){
@@ -47,14 +53,12 @@ public class compiler {
 	public compiler(BufferedReader br,String File) throws IOException{
 		this.FileName=File+".php";
 		PHPClass php=new PHPClass();
-		sections=new ArrayList<Section>();
 		Section sec=null;
 		String line="";
 		while(br.ready()){
 			line=br.readLine();
 			if(isNewSection(line)){
 				if(sec!=null){
-//					sections.add(sec);
 					php.applySection(sec);
 				}
 				sec=new Section(line);
@@ -63,21 +67,12 @@ public class compiler {
 			if(line.length()>0)
 				sec.add(line);
 		}
-		sections.add(sec);
 		php.applySection(sec);
-//		transfer();
-		System.out.println("\tCompiled");
+		System.out.println(" Compiled!");
 		FileWriter fw=new FileWriter(FileName);
 		fw.write(php.toString());
 		fw.close();
 	}
-
-//	public void transfer(){
-//		PHPClass php=new PHPClass();
-//		for(Section sec:sections)
-//			php.applySection(sec);
-//		System.out.println(php);
-//	}
 
 	public boolean isNewSection(String line){
 		if(line.length()>0)
