@@ -1,9 +1,10 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.1
-
-	{Family included}
+	Compiled by bizLang compiler version 1.3 (Jan 2 2011) By Reza Moussavi
+	1.1: {Family included}
+	1.2: {flatten sleep session}
+	1.3: {direct message sending}
 
 	Author:		Reza Moussavi
 	Version:	1.1
@@ -22,6 +23,7 @@ class login {
 	//Mandatory Variables for a biz
 	var $_fullname;
 	var $_curFrame;
+	var $_tmpNode;
 
 	//Variables
 	var $signupSuccess;
@@ -31,52 +33,57 @@ class login {
 	var $userShow;
 
 	function __construct($fullname) {
+		$this->_tmpNode=false;
+		if($fullname==null){
+			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
+			$this->_tmpNode=true;
+		}
 		$this->_fullname=$fullname;
-		$this->_curFrame='frm';
+		if(!isset($_SESSION['osNodes'][$fullname])){
+			$_SESSION['osNodes'][$fullname]=array();
+			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['frame_loginBtn'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_logoutBtn'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_displaySignupForm'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_requestNewPassword'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_displayForgotForm'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_signup'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_validate'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_home'][$this->_fullname]=true;
+		}
+
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
 		$this->userShow=new user($this->_fullname.'_userShow');
+
+		if(!isset($_SESSION['osNodes'][$fullname]['signupSuccess']))
+			$_SESSION['osNodes'][$fullname]['signupSuccess']='';
+		$this->signupSuccess=&$_SESSION['osNodes'][$fullname]['signupSuccess'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['newPasswordSuccess']))
+			$_SESSION['osNodes'][$fullname]['newPasswordSuccess']='';
+		$this->newPasswordSuccess=&$_SESSION['osNodes'][$fullname]['newPasswordSuccess'];
+
+		$_SESSION['osNodes'][$fullname]['node']=$this;
+		$_SESSION['osNodes'][$fullname]['biz']=login;
 	}
 
-	function __sleep(){
-		return array('_fullname', '_curFrame','signupSuccess','newPasswordSuccess','userShow');
+	function sleep(){
+		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
 	}
 
-	function message($to, $message, $info) {
-		if ($to != $this->_fullname) {
-			$this->userShow->message($to, $message, $info);
-			return;
-		}
-		switch($message){
-			case 'frame_loginBtn':
-				$this->onLoginBtn($info);
-				break;
-			case 'frame_logoutBtn':
-				$this->onLogoutBtn($info);
-				break;
-			case 'frame_displaySignupForm':
-				$this->onDisplaySignupForm($info);
-				break;
-			case 'frame_requestNewPassword':
-				$this->onRequestNewPassword($info);
-				break;
-			case 'frame_displayForgotForm':
-				$this->onDisplayForgotForm($info);
-				break;
-			case 'frame_signup':
-				$this->onSignup($info);
-				break;
-			case 'frame_validate':
-				$this->onValidate($info);
-				break;
-			case 'frame_home':
-				$this->onHome($info);
-				break;
-			default:
-				break;
-		}
+	function __destruct() {
+		if($this->_tmpNode or !isset($_SESSION['osNodes'][$this->_fullname]['slept']))
+			unset($_SESSION['osNodes'][$this->_fullname]);
+		else
+			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
 	}
 
-	function broadcast($message, $info) {
-		$this->userShow->broadcast($message, $info);
+
+	function message($message, $info) {
 		switch($message){
 			case 'frame_loginBtn':
 				$this->onLoginBtn($info);

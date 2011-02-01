@@ -3,14 +3,18 @@
 	require_once "../bizbank/eBoardPortal/eBoardPortal.php";
 	$bizbank=NULL;
 	if(isset($_GET['kill'])){
-		$_SESSION['bizbank']=NULL;
+		$_SESSION['osNodes']=array();
 		$bizbank=NULL;
 	}
 
-	if($_SESSION['bizbank']!=NULL)
-		$bizbank=unserialize($_SESSION['bizbank']);
-	else
-		$bizbank=new eBoardPortal("eBoardPortal");
+	if(!isset($_SESSION['osNodes'])){
+		$_SESSION['osNodes']=array();
+	}
+
+	// if(! isset($_POST['_message'])){
+		// $bizbank=new eBoardPortal("");
+	// }
+		$bizbank=new eBoardPortal("");
 
 	if(!isset($_SESSION['user'])){
 		$_SESSION['user']['UID']=-1;
@@ -51,12 +55,21 @@
 	}
 
 	function osBroadcast($msg,$info){
-		global $bizbank;
-		$bizbank->broadcast($msg,$info);
+		foreach($_SESSION['osMsg'][$msg] as $node=>$v){
+			osMessage($node,$msg,$info);
+		}
 	}
 	function osMessage($to,$msg,$info){
-		global $bizbank;
-		$bizbank->message($to,$msg,$info);
+		$node=$_SESSION['osNodes'][$to]['node'];
+		if(!$node){
+			$biz=$_SESSION['osNodes'][$to]['biz'];
+			if($biz){
+				$node=new $biz($to);
+				$_SESSION['osNodes'][$to]['node']=$node;
+			}
+		}
+		if($node)
+			$node->message($msg,$info);
 	}
 	function osBackBizness(){
 		return 1;

@@ -1,9 +1,10 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.1
-
-	{Family included}
+	Compiled by bizLang compiler version 1.3 (Jan 2 2011) By Reza Moussavi
+	1.1: {Family included}
+	1.2: {flatten sleep session}
+	1.3: {direct message sending}
 
 	Author:		Reza Moussavi
 	Version:	1.1
@@ -26,6 +27,7 @@ class ebframe {
 	//Mandatory Variables for a biz
 	var $_fullname;
 	var $_curFrame;
+	var $_tmpNode;
 
 	//Variables
 	var $cureBUID;
@@ -36,43 +38,52 @@ class ebframe {
 	var $epostbar;
 
 	function __construct($fullname) {
+		$this->_tmpNode=false;
+		if($fullname==null){
+			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
+			$this->_tmpNode=true;
+		}
 		$this->_fullname=$fullname;
-		$this->_curFrame='frm';
+		if(!isset($_SESSION['osNodes'][$fullname])){
+			$_SESSION['osNodes'][$fullname]=array();
+			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['eboard_eBoardSelected'][$this->_fullname]=true;
+			$_SESSION['osMsg']['tab_tabselected'][$this->_fullname]=true;
+			$_SESSION['osMsg']['epost_newPostAdded'][$this->_fullname]=true;
+		}
+
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
 		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
+
 		$this->entrybar=new epostentry($this->_fullname.'_entrybar');
+
 		$this->epostbar=new epostbank($this->_fullname.'_epostbar');
+
+		if(!isset($_SESSION['osNodes'][$fullname]['cureBUID']))
+			$_SESSION['osNodes'][$fullname]['cureBUID']='';
+		$this->cureBUID=&$_SESSION['osNodes'][$fullname]['cureBUID'];
+
+		$_SESSION['osNodes'][$fullname]['node']=$this;
+		$_SESSION['osNodes'][$fullname]['biz']=ebframe;
 	}
 
-	function __sleep(){
-		return array('_fullname', '_curFrame','cureBUID','tabbar','entrybar','epostbar');
+	function sleep(){
+		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
 	}
 
-	function message($to, $message, $info) {
-		if ($to != $this->_fullname) {
-			$this->tabbar->message($to, $message, $info);
-			$this->entrybar->message($to, $message, $info);
-			$this->epostbar->message($to, $message, $info);
-			return;
-		}
-		switch($message){
-			case 'eboard_eBoardSelected':
-				$this->onEBoardSelected($info);
-				break;
-			case 'tab_tabselected':
-				$this->onTabSelected($info);
-				break;
-			case 'epost_newPostAdded':
-				$this->onNewPostAdded($info);
-				break;
-			default:
-				break;
-		}
+	function __destruct() {
+		if($this->_tmpNode or !isset($_SESSION['osNodes'][$this->_fullname]['slept']))
+			unset($_SESSION['osNodes'][$this->_fullname]);
+		else
+			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
 	}
 
-	function broadcast($message, $info) {
-		$this->tabbar->broadcast($message, $info);
-		$this->entrybar->broadcast($message, $info);
-		$this->epostbar->broadcast($message, $info);
+
+	function message($message, $info) {
 		switch($message){
 			case 'eboard_eBoardSelected':
 				$this->onEBoardSelected($info);
@@ -114,7 +125,7 @@ class ebframe {
 
 	function onEBoardSelected($info){
 		$this->cureBUID=$info['UID'];
-		$cat=new category("temp");
+		$cat=new category("");
 		$content=$cat->backContentOf($this->cureBUID);
 		$ar=array();
 		foreach($content as $c){

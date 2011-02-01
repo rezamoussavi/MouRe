@@ -25,11 +25,7 @@
 		require_once "ajax.php";
 	}
 
-	foreach($_SESSION['osNodes'] as $bizname=>$val){
-		if($val['node']!=NULL)
-			if(is_object($val['node'])){
-				$val['node']->sleep();
-			}
-	}
+	$_SESSION['osNodes']=array();
+	$_SESSION['osNodes']['bizbank']=serialize($bizbank);
 
 ?>

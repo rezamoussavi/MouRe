@@ -1,9 +1,10 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.1
-
-	{Family included}
+	Compiled by bizLang compiler version 1.3 (Jan 2 2011) By Reza Moussavi
+	1.1: {Family included}
+	1.2: {flatten sleep session}
+	1.3: {direct message sending}
 
 	Author:		Reza Moussavi
 	Version:	1.1
@@ -23,42 +24,64 @@ class tabbank {
 	//Mandatory Variables for a biz
 	var $_fullname;
 	var $_curFrame;
+	var $_tmpNode;
 
 	//Variables
 	var $curTabUID;
 
 	//Nodes (bizvars)
-	var $tab_array_data; 	var $tab;
+	var $tab; // array of biz
 
 	function __construct($fullname) {
+		$this->_tmpNode=false;
+		if($fullname==null){
+			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
+			$this->_tmpNode=true;
+		}
 		$this->_fullname=$fullname;
-		$this->_curFrame='frm';
+		if(!isset($_SESSION['osNodes'][$fullname])){
+			$_SESSION['osNodes'][$fullname]=array();
+			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['tab_tabselected'][$this->_fullname]=true;
+		}
+
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
+		//handle arrays
 		$this->tab=array();
-		$this->curTabUID=-1;
+		if(!isset($_SESSION['osNodes'][$fullname]['tab']))
+			$_SESSION['osNodes'][$fullname]['tab']=array();
+		foreach($_SESSION['osNodes'][$fullname]['tab'] as $arrfn)
+			$this->tab[]=new tab($arrfn);
+
+		if(!isset($_SESSION['osNodes'][$fullname]['curTabUID']))
+			$_SESSION['osNodes'][$fullname]['curTabUID']=-1;
+		$this->curTabUID=&$_SESSION['osNodes'][$fullname]['curTabUID'];
+
+		$_SESSION['osNodes'][$fullname]['node']=$this;
+		$_SESSION['osNodes'][$fullname]['biz']=tabbank;
 	}
 
-	function __sleep(){
-		return array('_fullname', '_curFrame','curTabUID','tab');
-	}
-
-	function message($to, $message, $info) {
-		if ($to != $this->_fullname) {
-			foreach($this->tab as $i=>&$_element)
-				$_element->message($to, $message, $info);
-			return;
+	function sleep(){
+		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
+		$_SESSION['osNodes'][$this->_fullname]['tab']=array();
+		foreach($this->tab as $node){
+			$_SESSION['osNodes'][$this->_fullname]['tab'][]=$node->_fullname;
 		}
-		switch($message){
-			case 'tab_tabselected':
-				$this->onTabSelected($info);
-				break;
-			default:
-				break;
-		}
 	}
 
-	function broadcast($message, $info) {
-		foreach($this->tab as $i=>&$_element)
-			$_element->broadcast($message, $info);
+	function __destruct() {
+		if($this->_tmpNode or !isset($_SESSION['osNodes'][$this->_fullname]['slept']))
+			unset($_SESSION['osNodes'][$this->_fullname]);
+		else
+			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+	}
+
+
+	function message($message, $info) {
 		switch($message){
 			case 'tab_tabselected':
 				$this->onTabSelected($info);
@@ -104,16 +127,11 @@ class tabbank {
 	function booklist($list){
 		$this->tab=array();
 		$this->curTabUID=-1;
-		$first=true;
 		$id=0;
 		foreach($list as $t){
 			$this->tab[]=new tab($this->_fullname.$id++);
 			end($this->tab)->title=$t['name'];
 			end($this->tab)->UID=$t['UID'];
-			if($first){
-				$this->tab[0]->bookSelected(true);
-				$first=false;
-			}
 		}
 		$this->_bookframe("frm");
 	}
@@ -121,12 +139,9 @@ class tabbank {
 		if($this->curTabUID==$info['UID']){
 			return;
 		}
-		if($this->curTabUID!=-1){
-			foreach($this->tab as $t){
-				if($t->UID==$this->curTabUID){
-					$t->bookSelected(false);
-					break;
-				}
+		foreach($this->tab as $t){
+			if($t->UID!=$info['UID']){
+				$t->bookSelected(false);
 			}
 		}
 		$this->curTabUID=$info['UID'];

@@ -1,9 +1,10 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.1
-
-	{Family included}
+	Compiled by bizLang compiler version 1.3 (Jan 2 2011) By Reza Moussavi
+	1.1: {Family included}
+	1.2: {flatten sleep session}
+	1.3: {direct message sending}
 
 	Author:		Reza Moussavi
 	Version:	0.1
@@ -18,6 +19,7 @@ class epost {
 	//Mandatory Variables for a biz
 	var $_fullname;
 	var $_curFrame;
+	var $_tmpNode;
 
 	//Variables
 	var $UID;
@@ -33,30 +35,70 @@ class epost {
 	//Nodes (bizvars)
 
 	function __construct($fullname) {
+		$this->_tmpNode=false;
+		if($fullname==null){
+			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
+			$this->_tmpNode=true;
+		}
 		$this->_fullname=$fullname;
-		$this->UID=-1;
-		$this->authorUID=-1;
-		$this->edition=0;
-		$this->lastedition=0;
-		$this->noOfComments=0;
-		$this->timeStamp="20101231235959";
-	}
-
-	function __sleep(){
-		return array('_fullname', '_curFrame','UID','authorUID','author','title','content','edition','lastedition','noOfComments','timeStamp');
-	}
-
-	function message($to, $message, $info) {
-		if ($to != $this->_fullname) {
-			return;
+		if(!isset($_SESSION['osNodes'][$fullname])){
+			$_SESSION['osNodes'][$fullname]=array();
+			//If any message need to be registered will placed here
 		}
-		switch($message){
-			default:
-				break;
-		}
+
+		if(!isset($_SESSION['osNodes'][$fullname]['UID']))
+			$_SESSION['osNodes'][$fullname]['UID']=-1;
+		$this->UID=&$_SESSION['osNodes'][$fullname]['UID'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['authorUID']))
+			$_SESSION['osNodes'][$fullname]['authorUID']=-1;
+		$this->authorUID=&$_SESSION['osNodes'][$fullname]['authorUID'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['author']))
+			$_SESSION['osNodes'][$fullname]['author']='';
+		$this->author=&$_SESSION['osNodes'][$fullname]['author'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['title']))
+			$_SESSION['osNodes'][$fullname]['title']='';
+		$this->title=&$_SESSION['osNodes'][$fullname]['title'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['content']))
+			$_SESSION['osNodes'][$fullname]['content']='';
+		$this->content=&$_SESSION['osNodes'][$fullname]['content'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['edition']))
+			$_SESSION['osNodes'][$fullname]['edition']=0;
+		$this->edition=&$_SESSION['osNodes'][$fullname]['edition'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['lastedition']))
+			$_SESSION['osNodes'][$fullname]['lastedition']=0;
+		$this->lastedition=&$_SESSION['osNodes'][$fullname]['lastedition'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['noOfComments']))
+			$_SESSION['osNodes'][$fullname]['noOfComments']=0;
+		$this->noOfComments=&$_SESSION['osNodes'][$fullname]['noOfComments'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['timeStamp']))
+			$_SESSION['osNodes'][$fullname]['timeStamp']="20101231235959";
+		$this->timeStamp=&$_SESSION['osNodes'][$fullname]['timeStamp'];
+
+		$_SESSION['osNodes'][$fullname]['node']=$this;
+		$_SESSION['osNodes'][$fullname]['biz']=epost;
 	}
 
-	function broadcast($message, $info) {
+	function sleep(){
+		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
+	}
+
+	function __destruct() {
+		if($this->_tmpNode or !isset($_SESSION['osNodes'][$this->_fullname]['slept']))
+			unset($_SESSION['osNodes'][$this->_fullname]);
+		else
+			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+	}
+
+
+	function message($message, $info) {
 		switch($message){
 			default:
 				break;

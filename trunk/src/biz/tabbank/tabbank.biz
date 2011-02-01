@@ -42,16 +42,11 @@
 	function booklist($list){
 		#node->tab=array();
 		#var->curTabUID=-1;
-		$first=true;
 		$id=0;
 		foreach($list as $t){
 			#node->tab[]=new tab(#nodeID.$id++);
 			end(#node->tab)->title=$t['name'];
 			end(#node->tab)->UID=$t['UID'];
-			if($first){
-				#node->tab[0]->bookSelected(true);
-				$first=false;
-			}
 		}
 		_bookframe(#frame->frm);
 	}
@@ -60,12 +55,9 @@
 		if(#var->curTabUID==$info['UID']){
 			return;
 		}
-		if(#var->curTabUID!=-1){
-			foreach(#node->tab as $t){
-				if($t->UID==#var->curTabUID){
-					$t->bookSelected(false);
-					break;
-				}
+		foreach(#node->tab as $t){
+			if($t->UID!=$info['UID']){
+				$t->bookSelected(false);
 			}
 		}
 		#var->curTabUID=$info['UID'];

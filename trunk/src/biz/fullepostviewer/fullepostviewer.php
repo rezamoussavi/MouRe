@@ -1,9 +1,10 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.1
-
-	{Family included}
+	Compiled by bizLang compiler version 1.3 (Jan 2 2011) By Reza Moussavi
+	1.1: {Family included}
+	1.2: {flatten sleep session}
+	1.3: {direct message sending}
 
 	Author:		Reza Moussavi
 	Version:	1.1
@@ -23,6 +24,7 @@ class fullepostviewer {
 	//Mandatory Variables for a biz
 	var $_fullname;
 	var $_curFrame;
+	var $_tmpNode;
 
 	//Variables
 	var $expanded;
@@ -31,42 +33,68 @@ class fullepostviewer {
 
 	//Nodes (bizvars)
 	var $post;
-	var $comments_array_data; 	var $comments;
+	var $comments; // array of biz
 
 	function __construct($fullname) {
+		$this->_tmpNode=false;
+		if($fullname==null){
+			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
+			$this->_tmpNode=true;
+		}
 		$this->_fullname=$fullname;
-		$this->_curFrame='frm';
+		if(!isset($_SESSION['osNodes'][$fullname])){
+			$_SESSION['osNodes'][$fullname]=array();
+			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['frame_expand'][$this->_fullname]=true;
+		}
+
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
 		$this->post=new epostviewer($this->_fullname.'_post');
+
+		//handle arrays
 		$this->comments=array();
-		$this->expanded=false;
-		$this->UID=-1;
-		$this->isLoaded=false;;
+		if(!isset($_SESSION['osNodes'][$fullname]['comments']))
+			$_SESSION['osNodes'][$fullname]['comments']=array();
+		foreach($_SESSION['osNodes'][$fullname]['comments'] as $arrfn)
+			$this->comments[]=new fullepostviewer($arrfn);
+
+		if(!isset($_SESSION['osNodes'][$fullname]['expanded']))
+			$_SESSION['osNodes'][$fullname]['expanded']=false;
+		$this->expanded=&$_SESSION['osNodes'][$fullname]['expanded'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['UID']))
+			$_SESSION['osNodes'][$fullname]['UID']=-1;
+		$this->UID=&$_SESSION['osNodes'][$fullname]['UID'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['isLoaded']))
+			$_SESSION['osNodes'][$fullname]['isLoaded']=false;;
+		$this->isLoaded=&$_SESSION['osNodes'][$fullname]['isLoaded'];
+
+		$_SESSION['osNodes'][$fullname]['node']=$this;
+		$_SESSION['osNodes'][$fullname]['biz']=fullepostviewer;
 	}
 
-	function __sleep(){
-		return array('_fullname', '_curFrame','expanded','UID','isLoaded','post','comments');
-	}
-
-	function message($to, $message, $info) {
-		if ($to != $this->_fullname) {
-			$this->post->message($to, $message, $info);
-			foreach($this->comments as $i=>&$_element)
-				$_element->message($to, $message, $info);
-			return;
+	function sleep(){
+		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
+		$_SESSION['osNodes'][$this->_fullname]['comments']=array();
+		foreach($this->comments as $node){
+			$_SESSION['osNodes'][$this->_fullname]['comments'][]=$node->_fullname;
 		}
-		switch($message){
-			case 'frame_expand':
-				$this->onExpand($info);
-				break;
-			default:
-				break;
-		}
 	}
 
-	function broadcast($message, $info) {
-		$this->post->broadcast($message, $info);
-		foreach($this->comments as $i=>&$_element)
-			$_element->broadcast($message, $info);
+	function __destruct() {
+		if($this->_tmpNode or !isset($_SESSION['osNodes'][$this->_fullname]['slept']))
+			unset($_SESSION['osNodes'][$this->_fullname]);
+		else
+			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+	}
+
+
+	function message($message, $info) {
 		switch($message){
 			case 'frame_expand':
 				$this->onExpand($info);

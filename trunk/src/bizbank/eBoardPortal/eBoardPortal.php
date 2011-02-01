@@ -32,7 +32,6 @@ class eBoardPortal {
     var $bizes = array('login' => 'login',
                        'eblist' => 'eblistviewer',
                        'd1' => 'dummie',
-                       'd2' => 'dummie',
 					   'frm'=> 'ebframe');
     var $myBizes = array();
 
@@ -43,7 +42,7 @@ class eBoardPortal {
         
         foreach($this->bizes as $bizname=>$biz)
         {
-            $this->myBizes[$bizname] = new $biz($this->_fullname."_".$bizname);
+            $this->myBizes[$bizname] = new $biz($bizname);
         }
         
         $this->bizness_id = 1;
@@ -71,6 +70,9 @@ class eBoardPortal {
             $abiz->broadcast(&$msg, &$info);
         }
     }
+
+	function sleep(){
+	}
 
     /*     * **************************HTML HANDELING*************************** */
 

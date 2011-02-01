@@ -9,7 +9,7 @@ public class Var {
 
 	public Var(SecElement se){
 		name="";
-		init="";
+		init="''";
 		String s=se.data.trim();
 		if(s.length()>0){
 			int eq=s.indexOf('=');
