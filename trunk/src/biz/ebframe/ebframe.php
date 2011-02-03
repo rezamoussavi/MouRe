@@ -68,7 +68,7 @@ class ebframe {
 		$this->cureBUID=&$_SESSION['osNodes'][$fullname]['cureBUID'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=ebframe;
+		$_SESSION['osNodes'][$fullname]['biz']='ebframe';
 	}
 
 	function sleep(){
@@ -80,6 +80,7 @@ class ebframe {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

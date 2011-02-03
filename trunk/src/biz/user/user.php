@@ -51,7 +51,7 @@ class user {
 		$this->loggedIn=&$_SESSION['osNodes'][$fullname]['loggedIn'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=user;
+		$_SESSION['osNodes'][$fullname]['biz']='user';
 	}
 
 	function sleep(){
@@ -63,6 +63,7 @@ class user {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

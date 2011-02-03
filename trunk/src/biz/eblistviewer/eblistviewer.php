@@ -104,7 +104,7 @@ class eblistviewer {
 
 		$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=eblistviewer;
+		$_SESSION['osNodes'][$fullname]['biz']='eblistviewer';
 	}
 
 	function sleep(){
@@ -124,6 +124,7 @@ class eblistviewer {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

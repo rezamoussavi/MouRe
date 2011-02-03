@@ -75,7 +75,7 @@ class fullepostviewer {
 		$this->isLoaded=&$_SESSION['osNodes'][$fullname]['isLoaded'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=fullepostviewer;
+		$_SESSION['osNodes'][$fullname]['biz']='fullepostviewer';
 	}
 
 	function sleep(){
@@ -91,6 +91,7 @@ class fullepostviewer {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

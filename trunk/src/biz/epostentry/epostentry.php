@@ -59,7 +59,7 @@ class epostentry {
 		$this->ownerUID=&$_SESSION['osNodes'][$fullname]['ownerUID'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=epostentry;
+		$_SESSION['osNodes'][$fullname]['biz']='epostentry';
 	}
 
 	function sleep(){
@@ -71,6 +71,7 @@ class epostentry {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

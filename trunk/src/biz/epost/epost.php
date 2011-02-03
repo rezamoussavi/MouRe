@@ -83,7 +83,7 @@ class epost {
 		$this->timeStamp=&$_SESSION['osNodes'][$fullname]['timeStamp'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=epost;
+		$_SESSION['osNodes'][$fullname]['biz']='epost';
 	}
 
 	function sleep(){
@@ -95,6 +95,7 @@ class epost {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

@@ -62,7 +62,7 @@ class epostbank {
 		$this->curUID=&$_SESSION['osNodes'][$fullname]['curUID'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=epostbank;
+		$_SESSION['osNodes'][$fullname]['biz']='epostbank';
 	}
 
 	function sleep(){
@@ -78,6 +78,7 @@ class epostbank {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

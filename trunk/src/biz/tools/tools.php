@@ -37,7 +37,7 @@ class tools {
 		}
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=tools;
+		$_SESSION['osNodes'][$fullname]['biz']='tools';
 	}
 
 	function sleep(){
@@ -49,6 +49,7 @@ class tools {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

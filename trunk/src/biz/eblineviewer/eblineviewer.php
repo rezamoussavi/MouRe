@@ -57,7 +57,7 @@ class eblineviewer {
 
 		$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=eblineviewer;
+		$_SESSION['osNodes'][$fullname]['biz']='eblineviewer';
 	}
 
 	function sleep(){
@@ -69,6 +69,7 @@ class eblineviewer {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

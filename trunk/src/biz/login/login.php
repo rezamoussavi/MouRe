@@ -68,7 +68,7 @@ class login {
 		$this->newPasswordSuccess=&$_SESSION['osNodes'][$fullname]['newPasswordSuccess'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=login;
+		$_SESSION['osNodes'][$fullname]['biz']='login';
 	}
 
 	function sleep(){
@@ -80,6 +80,7 @@ class login {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

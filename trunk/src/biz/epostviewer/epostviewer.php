@@ -68,7 +68,7 @@ class epostviewer {
 		$this->UID=&$_SESSION['osNodes'][$fullname]['UID'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=epostviewer;
+		$_SESSION['osNodes'][$fullname]['biz']='epostviewer';
 	}
 
 	function sleep(){
@@ -80,6 +80,7 @@ class epostviewer {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

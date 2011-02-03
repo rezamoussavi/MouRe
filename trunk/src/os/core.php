@@ -11,10 +11,9 @@
 		$_SESSION['osNodes']=array();
 	}
 
-	// if(! isset($_POST['_message'])){
-		// $bizbank=new eBoardPortal("");
-	// }
+	if(! isset($_POST['_message'])){
 		$bizbank=new eBoardPortal("");
+	}
 
 	if(!isset($_SESSION['user'])){
 		$_SESSION['user']['UID']=-1;
@@ -39,13 +38,6 @@
 		return $ret;
 	}
 
-	function osRegMsg($fullname,$message){
-		if(!isset($_SESSION['broadcast'][$message])){
-			$_SESSION['broadcast'][$message]=array();
-		}
-		$_SESSION['broadcast'][$message][]=$fullname;
-	}
-
 	function osBookUser($user){
 		$_SESSION['user']=$user;
 	}
@@ -60,22 +52,28 @@
 		}
 	}
 	function osMessage($to,$msg,$info){
-		$node=$_SESSION['osNodes'][$to]['node'];
-		if(!$node){
+		if(!isset($_SESSION['osNodes'][$to])){
+			return;
+		}
+		if(!isset($_SESSION['osNodes'][$to]['node'])){
 			$biz=$_SESSION['osNodes'][$to]['biz'];
 			if($biz){
 				$node=new $biz($to);
-				$_SESSION['osNodes'][$to]['node']=$node;
 			}
+		}else{
+			$node=$_SESSION['osNodes'][$to]['node'];
 		}
-		if($node)
+		if($node){
 			$node->message($msg,$info);
+		}
 	}
+
 	function osBackBizness(){
 		return 1;
 		global $bizbank;
 		return $bizbank->bizness_id;
 	}
+
 	function osBackBizbank(){
 		return 1;
 		global $bizbank;

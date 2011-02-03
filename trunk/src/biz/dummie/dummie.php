@@ -66,7 +66,7 @@ class dummie {
 		$this->debug=&$_SESSION['osNodes'][$fullname]['debug'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=dummie;
+		$_SESSION['osNodes'][$fullname]['biz']='dummie';
 	}
 
 	function sleep(){
@@ -78,6 +78,7 @@ class dummie {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

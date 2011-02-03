@@ -67,18 +67,23 @@ class tab {
 		$this->UID=&$_SESSION['osNodes'][$fullname]['UID'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=tab;
+		$_SESSION['osNodes'][$fullname]['biz']='tab';
 	}
 
 	function sleep(){
+		if($this->_fullname=="frm_tabbar0")
+			echo "<hr>tabbar0 going to sleep<hr>";
 		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
 	}
 
 	function __destruct() {
+		if($this->_fullname=="frm_tabbar0")
+			echo "<hr>tabbar0 going to be Destructed<hr>";
 		if($this->_tmpNode or !isset($_SESSION['osNodes'][$this->_fullname]['slept']))
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

@@ -62,7 +62,7 @@ class tabbank {
 		$this->curTabUID=&$_SESSION['osNodes'][$fullname]['curTabUID'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']=tabbank;
+		$_SESSION['osNodes'][$fullname]['biz']='tabbank';
 	}
 
 	function sleep(){
@@ -78,6 +78,7 @@ class tabbank {
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
 			unset($_SESSION['osNodes'][$this->_fullname]['slept']);
+			unset($_SESSION['osNodes'][$this->_fullname]['node']);
 	}
 
 

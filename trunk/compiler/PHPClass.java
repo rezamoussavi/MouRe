@@ -209,7 +209,7 @@ public class PHPClass {
 		if(startFunName.trim().length()>0)
 			s+="\t\t$this->"+startFunName+"(); //Customized Initializing\n";
 		s+= "\t\t$_SESSION['osNodes'][$fullname]['node']=$this;\n" +
-			"\t\t$_SESSION['osNodes'][$fullname]['biz']="+Name+";\n" +
+			"\t\t$_SESSION['osNodes'][$fullname]['biz']='"+Name+"';\n" +
 		"\t}\n\n" +
 		"\tfunction sleep(){\n" +
 		"\t\t$_SESSION['osNodes'][$this->_fullname]['slept']=true;\n";
@@ -224,6 +224,7 @@ public class PHPClass {
 		"\t\t\tunset($_SESSION['osNodes'][$this->_fullname]);\n" +
 		"\t\telse\n" +
 		"\t\t\tunset($_SESSION['osNodes'][$this->_fullname]['slept']);\n"+
+		"\t\t\tunset($_SESSION['osNodes'][$this->_fullname]['node']);\n"+
 		"\t}\n\n";
 		return s;
 	}
@@ -253,83 +254,6 @@ public class PHPClass {
 		return s;
 	}
 
-	private String HFMessage_old(){
-		/*
-		    function message($to, $message, $info) {
-		        if ($to != $this->_fullname) {
-					$this->myCat->message($to, $message, $info);
-					foreach($this->eBoards as $i=>&$eB)
-						$eB->message($to, $message, $info);
-		            return;
-		        }
-		        switch($message){
-		        	case "msg1":
-		        		$this->msg1callbackFun($info);
-		        		break;
-		        	default:
-		        		break;
-		        }
-		    }
-		 */
-		String s="\n\tfunction message($to, $message, $info) {\n" +
-		"\t\tif ($to != $this->_fullname) {\n";
-		for(Node n:nodes){
-			if(!n.isTemp){
-				if(n.isArray){
-					s+="\t\t\tforeach($this->"+n.node+" as $i=>&$_element)\n" +
-					"\t\t\t\t$_element->message($to, $message, $info);\n";
-				}else
-					s+="\t\t\t$this->"+n.node+"->message($to, $message, $info);\n";
-			}
-		}
-		s+="\t\t\treturn;\n\t\t}\n" +
-		"\t\tswitch($message){\n";
-		for(Message m:messages)
-			if(m.isCallBack()){
-				s+="\t\t\tcase '"+m.msg+"':\n" +
-				"\t\t\t\t$this->"+m.fun+"($info);\n" +
-				"\t\t\t\tbreak;\n";
-			}
-		s+="\t\t\tdefault:\n\t\t\t\tbreak;\n\t\t}\n" +
-		"\t}\n";
-		return s;
-	}
-
-	private String HFBroadcast(){
-		/*
-	function broadcast($message, $info) {
-		$this->myCat->broadcast($message, $info);
-		foreach($this->eBoards as $i=>&$eB)
-			$eB->message($to, $message, $info);
-
-        switch($message){
-        	case "msg1":
-        		$this->msg1callbackFun($info);
-        		break;
-        	default:
-        		break;
-        }
-	}
-		 */
-		String s="\n\tfunction broadcast($message, $info) {\n";
-		for(Node n:nodes)
-			if(!n.isTemp)
-				if(n.isArray){
-					s+="\t\tforeach($this->"+n.node+" as $i=>&$_element)\n" +
-					"\t\t\t$_element->broadcast($message, $info);\n";
-				}else
-					s+="\t\t$this->"+n.node+"->broadcast($message, $info);\n";
-		s+="\t\tswitch($message){\n";
-		for(Message m:messages)
-			if(m.isCallBack()){
-				s+="\t\t\tcase '"+m.msg+"':\n" +
-				"\t\t\t\t$this->"+m.fun+"($info);\n" +
-				"\t\t\t\tbreak;\n";
-			}
-		s+="\t\t\tdefault:\n\t\t\t\tbreak;\n\t\t}\n" +
-		"\t}\n";
-		return s;
-	}
 
 	private String HFShow(){
 		/*
