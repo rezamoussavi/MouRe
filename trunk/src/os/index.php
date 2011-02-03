@@ -24,15 +24,5 @@
 		$bizbank->show();
 		require_once "ajax.php";
 	}
-echo "<hr>Sleeping among ".count($_SESSION['osNodes'])." bizes";
-$sindex=0;
-	foreach($_SESSION['osNodes'] as $bizname=>$val){
-if($bizname=="frm_tabbar0") echo "#1 : ".$_SESSION['osNodes']['frm_tabbar0']['title']." - ".$_SESSION['osNodes']['frm_tabbar0']['UID']."<br>";
-		if($val['node']!=NULL)
-			if(is_object($val['node'])){
-				$sindex++;
-				$val['node']->sleep();
-			}
-	}
-echo "<br> $sindex bizes went to sleep<hr>";
+
 ?>

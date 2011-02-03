@@ -2,6 +2,7 @@
 	date_default_timezone_set('GMT');
 	require_once "../bizbank/eBoardPortal/eBoardPortal.php";
 	$bizbank=NULL;
+	$node=NULL;
 	if(isset($_GET['kill'])){
 		$_SESSION['osNodes']=array();
 		$bizbank=NULL;
@@ -52,6 +53,7 @@
 		}
 	}
 	function osMessage($to,$msg,$info){
+		global $node;
 		if(!isset($_SESSION['osNodes'][$to])){
 			return;
 		}
