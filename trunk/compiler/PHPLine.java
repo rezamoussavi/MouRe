@@ -15,6 +15,8 @@ public class PHPLine {
 		line=replace(line, "_bookframe", "$this->_bookframe",false);
 		line=replace(line, "osBackLink(", "osBackLink($this->_fullname,",false);
 		line=replace(line, "osBackLink (", "osBackLink($this->_fullname,",false);
+		line=replace(line, "osBackLinkInfo(", "osBackLinkInfo($this->_fullname,",false);
+		line=replace(line, "osBackLinkInfo (", "osBackLinkInfo($this->_fullname,",false);
 		return line;
 	}
 

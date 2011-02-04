@@ -31,22 +31,21 @@
 
 #message
 	frame->click=onClick,
-	client->open=onOpen,
-	client->close=onClose
+	client->page=onPage
 
 #phpfunction
 
-	function onOpen($info){
-		#var->expanded=false;
-		#var->linkto="close";
-		#var->curLink="open";
-		#fun->onClick(array());
-	}
-
-	function onClose($info){
-		#var->expanded=true;
-		#var->linkto="open";
-		#var->curLink="close";
+	function onPage($info){
+		if($info['state']=="open"){
+			#var->expanded=false;
+			#var->linkto="close";
+			#var->curLink="open";
+		}
+		else if($info['state']=="close"){
+			#var->expanded=true;
+			#var->linkto="open";
+			#var->curLink="close";
+		}
 		#fun->onClick(array());
 	}
 
@@ -58,7 +57,7 @@
 		if(#var->expanded)
 			#fun->loadContent();
 		$Lable=#node->myCat->lable;
-		$link=osBackLink(#var->curLink,#var->linkto);
+		$link=osBackLinkInfo("page",array("state"=>#var->curLink),"page",array("state"=>#var->linkto));
 
         $html_old=<<<PHTML
 			<form name="{#nodeID}" method="post">

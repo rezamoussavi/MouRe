@@ -1,11 +1,12 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.3.5 (Feb 3 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 1.4 (Feb 4 2011) By Reza Moussavi
 	1.1: {Family included}
 	1.2: {flatten sleep session}
 	1.3: {direct message sending}
 	1.3.5: {sleep and decunstructed merged + _tmpNode_ added to fix a bug}
+	1.4: {multi parameter in link message}
 
 	Author: Reza Moussavi
 	Date:	1/25/2011
@@ -54,8 +55,7 @@ class eblistviewer {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['frame_click'][$this->_fullname]=true;
-			$_SESSION['osMsg']['client_open'][$this->_fullname]=true;
-			$_SESSION['osMsg']['client_close'][$this->_fullname]=true;
+			$_SESSION['osMsg']['client_page'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -141,11 +141,8 @@ class eblistviewer {
 			case 'frame_click':
 				$this->onClick($info);
 				break;
-			case 'client_open':
-				$this->onOpen($info);
-				break;
-			case 'client_close':
-				$this->onClose($info);
+			case 'client_page':
+				$this->onPage($info);
 				break;
 			default:
 				break;
@@ -176,16 +173,17 @@ class eblistviewer {
 //########################################
 
 
-	function onOpen($info){
-		$this->expanded=false;
-		$this->linkto="close";
-		$this->curLink="open";
-		$this->onClick(array());
-	}
-	function onClose($info){
-		$this->expanded=true;
-		$this->linkto="open";
-		$this->curLink="close";
+	function onPage($info){
+		if($info['state']=="open"){
+			$this->expanded=false;
+			$this->linkto="close";
+			$this->curLink="open";
+		}
+		else if($info['state']=="close"){
+			$this->expanded=true;
+			$this->linkto="open";
+			$this->curLink="close";
+		}
 		$this->onClick(array());
 	}
 	function init(){
@@ -195,7 +193,7 @@ class eblistviewer {
 		if($this->expanded)
 			$this->loadContent();
 		$Lable=$this->myCat->lable;
-		$link=osBackLink($this->_fullname,$this->curLink,$this->linkto);
+		$link=osBackLinkInfo($this->_fullname,"page",array("state"=>$this->curLink),"page",array("state"=>$this->linkto));
         $html_old=<<<PHTML
 			<form name="{$this->_fullname}" method="post">
 	            <input type="hidden" name="_message" value="frame_click" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
