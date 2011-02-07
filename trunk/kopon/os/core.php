@@ -1,6 +1,6 @@
 <?php
 	date_default_timezone_set('GMT');
-	require_once "../bizbank/eBoardPortal/eBoardPortal.php";
+	require_once "../bizbank/kopon/kopon.php";
 	$bizbank=NULL;
 	$node=NULL;
 	if(isset($_GET['kill'])){
@@ -13,7 +13,7 @@
 	}
 
 	if(! isset($_POST['_message'])){
-		$bizbank=new eBoardPortal("");
+		$bizbank=new kopon("");
 	}
 
 	if(!isset($_SESSION['user'])){
