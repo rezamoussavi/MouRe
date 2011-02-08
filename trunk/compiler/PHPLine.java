@@ -12,6 +12,9 @@ public class PHPLine {
 		line=dbTags(line);
 		line=toStringTags(line);
 		line=nodeIDTag(line);
+		line=replace(line, "<PHTML>", "<<<PHTMLCODE\n",false);
+		line=replace(line, "</PHTML>;", "\nPHTMLCODE;\n",false);
+		line=replace(line, "</PHTML>", "\nPHTMLCODE;\n",false);
 		line=replace(line, "_bookframe", "$this->_bookframe",false);
 		line=replace(line, "osBackLink(", "osBackLink($this->_fullname,",false);
 		line=replace(line, "osBackLink (", "osBackLink($this->_fullname,",false);
