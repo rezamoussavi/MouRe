@@ -1,0 +1,24 @@
+#comments
+	Author: Max Mirkia
+	Date:	2/7/2010
+	Version: 0.1
+#biz
+	productlistviewer
+
+
+#family
+	product
+
+
+#node
+        product product,productviewer productViewer
+
+
+#message
+	client->page=onPage
+
+
+#phpfunction
+        function onPage($info){
+
+}

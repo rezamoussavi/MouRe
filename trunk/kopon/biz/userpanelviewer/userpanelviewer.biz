@@ -1,0 +1,25 @@
+#comments
+	Author: Max Mirkia
+	Date:	2/7/2010
+	Version: 0.1
+#biz
+	userpanelviewer
+
+
+#family
+	userpage
+
+
+#node
+        usertab userTab
+
+
+#message
+	userTab->tabChanged=ontabChanged
+
+
+#phpfunction
+        function onTabChanged($info){
+
+}
+
