@@ -1,0 +1,18 @@
+#comments
+	Author: Reza Moussavi
+	Date:	02/07/2011
+	Version: 0.1
+
+#biz
+	tab
+
+#family
+	tab
+
+#phpfunction
+
+	function bookLabel($label){//String
+	}
+
+	function bookSelected($selected){//boolean
+	}
