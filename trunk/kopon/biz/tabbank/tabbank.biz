@@ -1,5 +1,10 @@
 #comments
-	Author: Max Mirkia
+
+        Author: Max Mirkia
+	Date:	2/14/2010
+	Version: 1.0
+        ------------------
+        Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
 #biz
@@ -7,36 +12,44 @@
 
 
 #family
-	product
+	tab
 
 
 #node
-        tab tab
+        tab[] tab
 
+#frame
+        frm
 
 #message
-	client->main=onMain
-        client->previous=onPrevious
-        client->how=onHow
-        client->cpanle=onCpanel
-        client->myAccount=onMyAccount
-
+	tab->tabChanged=onTabChanged
 
 #phpfunction
+
     function bookContent($content){//String[]
-}
-    function onMain($info){
+        #node->tab=array();
+        $id=0;
+        foreach($content as $c){
+            #node->tab[]=new tab(#nodeID.$c);
+            end(#node->tab)->title=$c;
+        }
+        _bookframe(#frame->frm);
+    }
 
-}
-    function onPrevious($info){
+    function frm(){
+		$html='';
+		foreach(#node->tab as $t){
+			$html.=$t->_backframe();
+		}
+		return $html;
+    }
 
-}
-    function onHow($info){
-
-}
-    function onCpanel($info){
-
-}
-    function onMyAccount($info){
-
-}
+    function onTabChanged($info){
+        foreah(#node->tab as $t){
+            if($t->backLabel()==$info['tabName']){
+                $t->bookSelected(true);
+            }else{
+                $t->bookSelected(false);
+            }
+        }
+    }
