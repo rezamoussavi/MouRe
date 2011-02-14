@@ -1,5 +1,9 @@
 #comments
 	Author: Reza Moussavi
+	Date:	02/10/2011
+	Version: 0.2
+	---------------------
+	Author: Reza Moussavi
 	Date:	02/07/2011
 	Version: 0.1
 
@@ -11,11 +15,46 @@
 
 #node
 	tabbank tabbar
+	multipageviewer pages
+
+#start
+	init
 
 #message
 	user->logedin=onLogedin
+	user->logedout=onLogedout
+
+#frame
+	frm
 
 #phpfunction
 
+	function init(){
+		$tab=array("Main","Previous","How");
+		if(osIsAdmin()){
+			$tab[]="CPanel";
+		}
+		if(osBackUser()!=-1){
+			$tab[]="MyAcc";
+		}
+		#node->tabbar->bookContent($tab);
+	}
+
 	function onLogedin($info){
+		#fun->init();
+		_bookFrame(#frame->frm);
+	}
+
+	function onLogedout($info){
+		#fun->init();
+		_bookFrame(#frame->frm);
+	}
+
+	function frm(){
+		$tab=#node->tabbar->_backFrame();
+		$pages=#node->pages->_backFrame();
+		$html=<PHTML>
+			$tab <br> $pages
+		<PHTML>;
+		return $html;
 	}

@@ -1,5 +1,9 @@
 #comments
 	Author: Reza Moussavi
+	Date:	02/10/2011
+	Version: 0.2
+	---------------------
+	Author: Reza Moussavi
 	Date:	02/07/2011
 	Version: 0.1
 
@@ -9,16 +13,68 @@
 #family
 	product
 
+#var
+	large=true
+
 #node
 	product product
 
+#frame
+	frmLarge,frmSmall
+
 #phpfunction
 
-	function bookSmal(){
+	function bookSmall(){
+		#var->large=false;
 	}
 
 	function bookLarge(){
+		#var->large=true;
 	}
 
 	function bookProductUID($UID){
+		#node->product->bookProductUID($UID);
+		if(#var->large){
+			_bookFrame(#frame->frmLarge);
+		}else{
+			_bookFrame(#frame->frmSmall);
+		}
+	}
+
+	function frmLarge(){
+		$title=#node->product->backTitle();
+		$description=#node->product->backDesription();
+		$price=#node->product->backPrice();
+		$image=#node->product->backImage();
+		$t=#node->product->backRemainingTime();
+		$discount=#node->product->backDiscount();
+		if($t<1){
+			$time="";
+			$buy="BUY (time out)";
+		}else{
+			$time=$t;
+			$buy="<a href="">BUY</a>";
+		}
+		$html=<PHTML>
+			<center>$title - price:$price you get $discount Discount $buy</center><br>
+			(countdown code here)$time(till here)<br>
+			<img src="$image"/>$Description<hr>
+		</PHTML>;
+		return $html;
+	}
+
+	function frmSmall(){
+		$title=#node->product->backTitle();
+		$description=#node->product->backDesription();
+		$price=#node->product->backPrice();
+		$image=#node->product->backImage();
+		$time=#node->product->backRemainingTime();
+		$discount=#node->product->backDiscount();
+		$html=<PHTML>
+			<center>$title - price:$price you get $discount Discount</center><br>
+			(countdown code here)$time(till here)<br>
+			<img src="$image"/>$Description<hr>
+			
+		</PHTML>;
+		return $html;
 	}
