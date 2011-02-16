@@ -1,5 +1,9 @@
 #comments
 	Author: Reza Moussavi
+	Date:	02/16/2011
+	Version: 1
+	---------------------
+	Author: Reza Moussavi
 	Date:	02/07/2011
 	Version: 0.1
 
@@ -11,5 +15,26 @@
 
 #node
 	usertabbank tabbar
+	userpanelviewer panel
+
+#start
+	init
+
+#frame
+	frm
 
 #phpfunction
+
+	function init(){
+		#node->tabbar->bookContent(array("history","referal","profile"));
+	}
+
+	function frm(){
+		$bar=tabbar->_backframe();
+		$panel=panel->_backframe();
+		$html=<PHTML>
+			$bar
+			$panel
+		</PHTML>;
+		return $html;
+	}

@@ -1,5 +1,9 @@
 #comments
 	Author: Reza Moussavi
+	Date:	02/15/2011
+	Version: 1
+	---------------------
+	Author: Reza Moussavi
 	Date:	02/07/2011
 	Version: 0.1
 
@@ -9,10 +13,50 @@
 #family
 	tab
 
+#var
+	label
+
+#message
+	client->selected=onSelected
+
+#frame
+	frmSelected,*frmNotSelected
+
 #phpfunction
 
+	function onSelected($info){
+		#fun->bookSelected(true);
+	}
+
 	function bookLabel($label){//String
+		#var->label=$label;
+		_bookFrame(#frame->frmNotSelected);
 	}
 
 	function bookSelected($selected){//boolean
+		if($selected){
+			_bookFrame(#frame->frmSelected);
+		}else{
+			_bookFrame(#frame->frmNotSelected);
+		}
 	}
+
+	function backLabel(){
+		return #var->label;
+	}
+
+	function frmSelected(){
+		$html=<PHTML>
+			[{#var->label}]
+		</PHTML>
+		return $html;
+	}
+
+	function frmNotSelected(){
+		$link=osBackLink("","selected");
+		$html=<PHTML>
+			<a href="$link">{#var->label}</a>
+		</PHTML>
+		return $html;
+	}
+
