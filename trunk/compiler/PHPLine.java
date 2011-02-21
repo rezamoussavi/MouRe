@@ -1,13 +1,14 @@
 
 public class PHPLine {
 
-	private static String[] toThisTags={"var","node","fun"};
-	private static String[] toStringTags={"frame","msg"};
+	private static String[] toThisTags={"var","node","fun","function","phpfunction"};
+	private static String[] toStringTags={"frame","frm","msg","message"};
 	private static String validVarChars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
 
 	public static String parse(String line){
 //		line=nodeFrame(line);//Should be before toThisTags
 		line=messageInForms(line);//Should be before toThisTags
+		line=msgInForms(line);//Should be before toThisTags
 		line=toThisTags(line);
 		line=dbTags(line);
 		line=toStringTags(line);
@@ -24,6 +25,21 @@ public class PHPLine {
 	}
 
 	private static String messageInForms(String line){
+		int eom=0,i=line.indexOf("<#message->");
+		String msg="";
+		while(i!=-1){//there is a "<#message->"
+			eom=endOfWordIndex(line.substring(i+11))+i+11;
+			msg=line.substring(i+11,eom);
+			line=line.substring(0,i)
+				+"<input type=\"hidden\" name=\"_message\" value=\"frame_"+msg+"\" />"
+				+"<input type = \"hidden\" name=\"_target\" value=\"{$this->_fullname}\" />"
+				+line.substring(eom+1);
+			i=line.indexOf("<#message->");
+		}
+		return line;
+	}
+
+	private static String msgInForms(String line){
 		int eom=0,i=line.indexOf("<#msg->");
 		String msg="";
 		while(i!=-1){//there is a "<#msg->"
