@@ -1,4 +1,9 @@
 #comments
+
+        Author: Max Mirkia
+	Date:	2/14/2010
+	Version: 1.0
+        ------------------
 	Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
@@ -11,14 +16,41 @@
 
 
 #node
-        product product,productviewer productViewer
+	product, productviewer[] productViewers
 
+#frame
+	*frmSmallMode,frmBigMode
 
 #message
-	client->page=onPage
+	client->mode=onMode
 
+#start
+	init
 
 #phpfunction
-        function onPage($info){
 
-}
+	function init(){
+		$product = array();
+		$products = $product->backAllUID();
+		$i=0;
+		foreach($products as $p){
+			#node->productViewers[] = new productViewer(#nodeID.$i++);
+			end(#node->productViewers)->bookUID($p);
+		}
+	}
+
+	function onMode($info){
+		
+	}
+	
+	function frmBigMode(){
+		$html=<PHTML>
+			
+		</PHTML>
+		return $html;
+	}
+	
+	function frmSmallMode(){
+	
+	}
+	
