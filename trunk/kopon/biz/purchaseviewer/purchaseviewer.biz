@@ -1,0 +1,40 @@
+#comments
+	Author: Reza Moussavi
+	Date:	02/22/2011
+	Version: 1.0
+
+#biz
+	purchaseviewer
+
+#family
+	purchase
+
+#node
+	productviewer productV, purchase purchase
+
+#frame
+	frm
+
+#phpfunction
+
+	function frm(){
+		$time=#node->purchase->backTime();
+		$date=#node->purchase->backDate();
+		$price=#node->purchase->backPrice();
+		$status=#node->purchase->backStatus();
+		$prd=#node->productV->_backFrame();
+		$html=<PHTML>
+			$prd<br />
+			Time: $time<br />
+			Date: $date<br />
+			Price: $price<br />
+			Status: $Status
+		</PHTML>
+		return $html;
+	}
+
+	function bookUID($UID){
+		#node->productV->bookUID($UID);
+		#node->productV->bookSmall();
+		#node->purchase->bookUID($UID);
+	}
