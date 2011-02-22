@@ -1,6 +1,11 @@
 #comments
+
 	Author: Max Mirkia
-	Date:	2/7/2010
+	Date:	2/14/2011
+	Version: 1.0
+	------------------
+	Author: Max Mirkia
+	Date:	2/7/2011
 	Version: 0.1
 #biz
 	usertabbank
@@ -11,16 +16,40 @@
 
 
 #node
-        usertab userTab
+        usertab[] usertab
 
+#frame
+        frm
 
 #message
-	userTab->tabChanged=ontabChanged
-
+	usertab->usertabChanged=onUserTabChanged
 
 #phpfunction
-        function onTabChanged($info){
 
-}
-        function bookContent(){
-}
+    function bookContent($content){//String[]
+        #node->usertab=array();
+        $id=0;
+        foreach($content as $c){
+            #node->usertab[]=new usertab(#nodeID.$c);
+            end(#node->usertab)->title=$c;
+        }
+        _bookframe(#frame->frm);
+    }
+
+    function frm(){
+		$html='';
+		foreach(#node->usertab as $t){
+			$html.=$t->_backframe();
+		}
+		return $html;
+    }
+
+    function onUserTabChanged($info){
+        foreah(#node->usertab as $t){
+            if($t->backLabel()==$info['usertabName']){
+                $t->bookSelected(true);
+            }else{
+                $t->bookSelected(false);
+            }
+        }
+    }

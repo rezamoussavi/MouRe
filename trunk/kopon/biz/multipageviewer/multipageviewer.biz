@@ -35,36 +35,40 @@
 	}
 
 	function frmMain($info){
+		$toShow = #node->productviewer->_backFrame()
 		$html=<PHTML>
-			{#node->productviewer->_backFrame()}
+			$toShow
 		</PHTML>
 		return $html;
 	}
 
 	function frmPrevious($info){
+		$toShow = #node->productlistviewer->_backFrame()  
 		$html=<PHTML>
-			{#node->productlistviewer->_backFrame()}
+			$toShow
 		</PHTML>
 		return $html;
 	}
 
 	function frmHow($info){
 		$html=<PHTML>
-			
+			How to 
 		</PHTML>
 		return $html;
 	}
 
 	function frmCPanle($info){
+		$toShow = #node->adminpanel->_backFrame()
 		$html=<PHTML>
-			{#node->adminpanel->_backFrame()}							
+			$toShow
 		</PHTML>
 		return $html;
 	}
 
 	function frmMyAccount($info){
+		$toShow = #node->userpanel->_backFrame()
 		$html=<PHTML>
-			{#node->userpanel->_backFrame()}				
+ 			$toShow				
 		</PHTML>
 		return $html;
 	}
