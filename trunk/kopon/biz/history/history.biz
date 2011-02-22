@@ -28,8 +28,9 @@
 		$p=new purchase();
 		$pUIDs=$p->backAllUID();
 		#node->purchases=array();
+		$i=1;
 		foreach($pUIDs as $pUID){
-			#node->purchases[]=new purchaseviewer();
+			#node->purchases[]=new purchaseviewer(#nodeID.$i++);
 			end(#node->purchases)->bookUID($pUID);
 		}
 	}

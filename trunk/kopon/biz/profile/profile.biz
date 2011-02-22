@@ -1,5 +1,9 @@
 #comments
 	Author: Reza Moussavi
+	Date:	02/21/2011
+	Version: 1
+	---------------------
+	Author: Reza Moussavi
 	Date:	02/07/2011
 	Version: 0.1
 
@@ -10,6 +14,68 @@
 	user
 
 #node
-	user user
+	user
+
+#message
+	client->applyChanges=onApplyChanges
+	client->cancelChanges=onCancelChanges
+	?????->editInfo=onEditInfo
+#frame
+	frmView,frmEdit
 
 #phpfunction
+
+	function frmView(){
+		$html='';
+		$uUID=osBackUser();
+		if($uUID==-1){
+			$html=<PHTML>
+				User not loggedin.
+			</PHTML>
+		}else{
+			$u=new user();
+			$u->bookUID($uUID);
+			$html=<PHTML>
+				Name: {$u->backName()}<br>
+				email: {$u->backEmail()}<br>
+				Address: {$u->backAddress()}<br>
+				Birth Date: {$u->backBDate()}<br>
+				<FORM name="{#nodeID}" method="post">
+					<#msg->editInfo>
+					<input value ="Edit" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				</FORM>
+			</PHTML>
+		}
+		return $html;
+	}
+
+	function frmEdit(){
+		$html=<PHTML>
+			<FORM name="{#nodeID}" method="post">
+				<#msg->applyChanges>
+				Name: <input type="input" name="Name"><br />
+				Address: <input type="input" name="Address"><br />
+				Birth Date: <input type="input" name="BDate"><br />
+				New Password: <input type="password" name="NewPassword"><br />
+				Confirm Password: <input type="password" name="ConfirmPassword"><br />
+				Old Password: <input type="password" name="OldPassword"><br />
+				<input value ="Apply" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+			</FORM>
+			<FORM name="{#nodeID}cancel" method="post">
+				<#msg->cancelChanges>
+				<input value ="Cancel" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}cancel")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+			</FORM>			
+		</PHTML>
+		return $html;
+	}
+
+	function onApplyChanges($info){
+		// $info indexes: Name, Address,BDate, NewPassword, ConfirmPassword, OldPassword
+	}
+
+	function onCancelChanges($info){
+		_bookFrame(#frm->);
+	}
+
+	function onEditInfo($info){
+	}
