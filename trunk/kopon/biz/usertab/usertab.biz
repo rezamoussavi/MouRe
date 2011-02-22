@@ -1,5 +1,9 @@
 #comments
 	Author: Reza Moussavi
+	Date:	02/22/2011
+	Version: 1.0
+	---------------------
+	Author: Reza Moussavi
 	Date:	02/07/2011
 	Version: 0.1
 
@@ -9,10 +13,47 @@
 #family
 	usertab
 
+#frame
+	frmSelected,*frmNotSelected
+
+#var
+	label="-",isSelected=false
+
+#message
+	client->selected=onSelected
+	tabChanged
+
 #phpfunction
 
-	function bookLabel(){
+	function onSelected($info){
+		#var->isSelected=true;
+		$d=array("tabName"=>#var->label);
+		osBroadcast(#msg->tabChanged,$d);
+		_bookFrame(#frm->frmSelected);
 	}
 
-	function bookSelected(){
+	function frmNotSelected(){
+		$d=array("page"=>#var->label);
+		$link=osBackLink("","selected");
+		$html=<PHTML>
+			<a href="$link">{#var->label}</a>
+		</PHTML>
+		return $html;
+	}
+
+	function frmSelected(){
+		$html=<PHTML>
+			[[{#var->label}]]
+		</PHTML>
+		return $html;
+	}
+
+	function bookLabel($s){
+		#var->label=$s;
+		_bookFrame(#var->isSelected?#frm->frmSelected:#frm->frmNotSelected);
+	}
+
+	function bookSelected($b){
+		#var->isSelected=$b;
+		_bookFrame(#var->isSelected?#frm->frmSelected:#frm->frmNotSelected);
 	}

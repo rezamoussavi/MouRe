@@ -10,6 +10,10 @@
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
 	Author: Reza Moussavi
+	Date:	02/22/2011
+	Version: 1.0
+	---------------------
+	Author: Reza Moussavi
 	Date:	02/07/2011
 	Version: 0.1
 
@@ -23,6 +27,8 @@ class usertab {
 	var $_tmpNode;
 
 	//Variables
+	var $label;
+	var $isSelected;
 
 	//Nodes (bizvars)
 
@@ -36,7 +42,21 @@ class usertab {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['client_selected'][$this->_fullname]=true;
 		}
+
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frmNotSelected';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['label']))
+			$_SESSION['osNodes'][$fullname]['label']="-";
+		$this->label=&$_SESSION['osNodes'][$fullname]['label'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['isSelected']))
+			$_SESSION['osNodes'][$fullname]['isSelected']=false;
+		$this->isSelected=&$_SESSION['osNodes'][$fullname]['isSelected'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='usertab';
@@ -56,6 +76,9 @@ class usertab {
 
 	function message($message, $info) {
 		switch($message){
+			case 'client_selected':
+				$this->onSelected($info);
+				break;
 			default:
 				break;
 		}
@@ -85,9 +108,39 @@ class usertab {
 //########################################
 
 
-	function bookLabel(){
+	function onSelected($info){
+		$this->isSelected=true;
+		$d=array("tabName"=>$this->label);
+		osBroadcast("usertab_tabChanged",$d);
+		_bookFrame("frmSelected");
 	}
-	function bookSelected(){
+	function frmNotSelected(){
+		$d=array("page"=>$this->label);
+		$link=osBackLink($this->_fullname,"","selected");
+		$html=<<<PHTMLCODE
+
+			<a href="$link">{$this->label}</a>
+		
+PHTMLCODE;
+
+		return $html;
+	}
+	function frmSelected(){
+		$html=<<<PHTMLCODE
+
+			[[{$this->label}]]
+		
+PHTMLCODE;
+
+		return $html;
+	}
+	function bookLabel($s){
+		$this->label=$s;
+		_bookFrame($this->isSelected?"frmSelected":"frmNotSelected");
+	}
+	function bookSelected($b){
+		$this->isSelected=$b;
+		_bookFrame($this->isSelected?"frmSelected":"frmNotSelected");
 	}
 
 }
