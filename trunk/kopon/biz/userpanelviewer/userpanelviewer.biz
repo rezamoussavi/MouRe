@@ -1,5 +1,9 @@
 #comments
 	Author: Max Mirkia
+	Date:	2/22/2010
+	Version: 1.0
+	------------------
+	Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
 #biz
@@ -11,15 +15,39 @@
 
 
 #node
-        usertab userTab
+	usertab usertab,profile profile,referal referal,history history
 
+#frame
+	*frmProfile,frmReferal,frmHistory
 
 #message
-	userTab->tabChanged=ontabChanged
+	usertab->usertabChanged=onTabChanged
 
 
 #phpfunction
-        function onTabChanged($info){
+	function onusertabChanged($info){
+		_bookframe(#frame->frm.['tabName']);
+	}
 
-}
+	function frmProfile($info){
+		$toShow = #node->profile->_backFrame()
+		$html=<PHTML>
+			$toShow
+		</PHTML>
+		return $html;
+	}
 
+	function frmReferal($info){
+		$toShow = #node->referal->_backFrame()  
+		$html=<PHTML>
+			$toShow
+		</PHTML>
+		return $html;
+	}
+
+	function frmHistory($info){
+		$html=<PHTML>
+			How to 
+		</PHTML>
+		return $html;
+	}
