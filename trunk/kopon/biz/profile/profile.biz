@@ -64,18 +64,29 @@
 			<FORM name="{#nodeID}cancel" method="post">
 				<#msg->cancelChanges>
 				<input value ="Cancel" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}cancel")' class="press" style="margin-top: 10px; margin-right: 50px;" />
-			</FORM>			
+			</FORM>
 		</PHTML>
 		return $html;
 	}
 
 	function onApplyChanges($info){
-		// $info indexes: Name, Address,BDate, NewPassword, ConfirmPassword, OldPassword
+		// $info indexes: Name, Address, BDate, NewPassword, ConfirmPassword, OldPassword
+		$uUID=osBackUser();
+		if($uUID>0){
+			$u=new user();
+			$u->bookUID($uUID);
+			$u->bookName($info['Name']);
+			$u->bookAddress($info['Address']);
+			$u->bookBDate($info['BDate']);
+			$u->bookPassword($info['NewPassword']);
+		}
+		_bookFrame(#frm->frmView);
 	}
 
 	function onCancelChanges($info){
-		_bookFrame(#frm->);
+		_bookFrame(#frm->frmView);
 	}
 
 	function onEditInfo($info){
+		_bookFrame(#frm->frmEdit);
 	}
