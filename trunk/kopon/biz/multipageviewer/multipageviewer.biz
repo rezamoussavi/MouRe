@@ -1,5 +1,9 @@
 #comments
 	Author: Max Mirkia
+	Date:	2/21/2010
+	Version: 1.0
+	------------------
+	Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
 #biz
@@ -11,8 +15,10 @@
 
 
 #node
-        tab tab
+	tab tab,productviewer productviewer,productlistviewer productlistviewer, adminpanel adminpanel, userpanel userpanel
 
+#frame
+	*frmMain,frmPrevious, frmHow, frmCPanel,frmMyAccount
 
 #message
 	tab->tabChanged=onTabChanged
@@ -20,9 +26,45 @@
 
 
 #phpfunction
-        function onTabChanged($info){
+	function onTabChanged($info){
+		_bookframe(#frame->frm.['tabName']);
+	}
 
-}
-        function onPage($info){
+	function onPage($info){
 
-}
+	}
+
+	function frmMain($info){
+		$html=<PHTML>
+			{#node->productviewer->_backFrame()}
+		</PHTML>
+		return $html;
+	}
+
+	function frmPrevious($info){
+		$html=<PHTML>
+			{#node->productlistviewer->_backFrame()}
+		</PHTML>
+		return $html;
+	}
+
+	function frmHow($info){
+		$html=<PHTML>
+			
+		</PHTML>
+		return $html;
+	}
+
+	function frmCPanle($info){
+		$html=<PHTML>
+			{#node->adminpanel->_backFrame()}							
+		</PHTML>
+		return $html;
+	}
+
+	function frmMyAccount($info){
+		$html=<PHTML>
+			{#node->userpanel->_backFrame()}				
+		</PHTML>
+		return $html;
+	}
