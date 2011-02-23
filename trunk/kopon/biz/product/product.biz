@@ -8,70 +8,101 @@
 
 #family
 	product
+	
+#var
+	title, description, price, image, discount, startTime, endTime, icon
+	
 
 
 #phpfunction
-        function backTitle(){
+	function backTitle(){
+		return #var->title;
+	}
 
-}
+	function bookTitle($title){
+		#var->title = $title;
+	}
+	
+	function backDescription(){
+		return #var->description;
+	}
+	
+	function bookDescription($description){
+		#var->description = $description;
+	}
+	
+	function bookPrice($price){
+		#var->price = $price;
+	}
+	
+	function backPrice(){
+		return #var->price;
+	}
+	
+	function bookImage(){
 
-        function bookTitle(){
+	}
+	
+	function backImage(){
 
-}
-        function backDescription(){
+	}
+	
+	function bookRemainingTime(){
 
-}
-        function bookDescription(){
+	}
+	
+	function backRemainingTime(){
 
-}
-        function bookPrice(){
+	}
+	
+	function bookDiscount($discount){
+		#var->discount = $discount;
+	}
+	
+	function backDiscount(){
+		return #var->discount;
+	}
+	
+	function bookProductUID($UID){
+		//query()
+		if($row = fetch()){
+			#var->title = $row[''];
+			#var->discount = $row[''];
+			#var->description = $row[''];
+			#var->startTime = $row[''];
+			#var->endTime = $row[''];
+			#var->price = $row[''];
+		}
+	}
+	
+	function backProductUID(){
 
-}
-        function backPrice(){
+	}
+	
+	function bookStartTime($startTime){
+		#var->startTime = $startTime;
+	}
+	
+	function backStartTime(){
+		return #var->startTime;
+	}
+	
+	function backEndTime(){
+		return #var->endTime;
+	}
+	
+	function bookEndTime($endTime){
+		#var->endTime = $endTime;
+	}
+	
+	function backIcon(){
 
-}
-        function bookImage(){
+	}
+	
+	function bookIcon(){
 
-}
-        function backImage(){
+	}
+	
+	function backAllUID(){
 
-}
-        function bookRemainingTime(){
-
-}
-        function backRemainingTime(){
-
-}
-        function bookDiscount(){
-
-}
-        function backDiscount(){
-
-}
-        function bookProductUID(){
-
-}
-        function backProductUID(){
-
-}
-        function bookStartTime(){
-
-}
-        function backStartTime(){
-
-}
-        function backEndTime(){
-
-}
-        function bookEndTime(){
-
-}
-        function backIcon(){
-
-}
-        function bookIcon(){
-
-}
-        function backAllUID(){
-
-}
+	}
