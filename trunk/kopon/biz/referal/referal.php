@@ -24,6 +24,11 @@ class referal {
 			//If any message need to be registered will placed here
 		}
 
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='referal';
 	}
@@ -63,6 +68,21 @@ class referal {
 			echo $html;
 		else
 			return $html;
+	}
+
+
+//########################################
+//         YOUR FUNCTIONS GOES HERE
+//########################################
+
+
+	function frm(){
+		return <<<PHTMLCODE
+
+			[REFERAL]
+		
+PHTMLCODE;
+
 	}
 
 }

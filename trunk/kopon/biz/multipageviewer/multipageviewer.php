@@ -127,7 +127,7 @@ class multipageviewer {
 	}
 	function onPage($info){
 	}
-	function frmMain($info){
+	function frmMain(){
 		$toShow = $this->productviewer->_backFrame();
 		$html=<<<PHTMLCODE
 
@@ -137,7 +137,7 @@ PHTMLCODE;
 
 		return $html;
 	}
-	function frmPrevious($info){
+	function frmPrevious(){
 		$toShow = $this->productlistviewer->_backFrame();
 		$html=<<<PHTMLCODE
 
@@ -147,7 +147,7 @@ PHTMLCODE;
 
 		return $html;
 	}
-	function frmHow($info){
+	function frmHow(){
 		$html=<<<PHTMLCODE
 
 			How to 
@@ -156,7 +156,7 @@ PHTMLCODE;
 
 		return $html;
 	}
-	function frmCPanle($info){
+	function frmCPanle(){
 		$toShow = $this->adminpanel->_backFrame();
 		$html=<<<PHTMLCODE
 
@@ -166,7 +166,7 @@ PHTMLCODE;
 
 		return $html;
 	}
-	function frmMyAccount($info){
+	function frmMyAccount(){
 		$toShow = $this->userpanel->_backFrame();
 		$html=<<<PHTMLCODE
 

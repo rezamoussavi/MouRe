@@ -1,2 +1,12 @@
 #biz
 	referal
+#frame
+	frm
+
+#phpfunction
+
+	function frm(){
+		return <PHTML>
+			[REFERAL]
+		</PHTML>
+	}

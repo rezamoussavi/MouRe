@@ -119,7 +119,7 @@ class productviewer {
 	}
 	function frmLarge(){
 		$title=$this->product->backTitle();
-		$description=$this->product->backDesription();
+		$description=$this->product->backDescription();
 		$price=$this->product->backPrice();
 		$image=$this->product->backImage();
 		$t=$this->product->backRemainingTime();

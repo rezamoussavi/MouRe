@@ -43,7 +43,7 @@
 
 	function frmLarge(){
 		$title=#node->product->backTitle();
-		$description=#node->product->backDesription();
+		$description=#node->product->backDescription();
 		$price=#node->product->backPrice();
 		$image=#node->product->backImage();
 		$t=#node->product->backRemainingTime();

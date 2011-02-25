@@ -34,7 +34,7 @@
 
 	}
 
-	function frmMain($info){
+	function frmMain(){
 		$toShow = #node->productviewer->_backFrame();
 		$html=<PHTML>
 			$toShow
@@ -42,7 +42,7 @@
 		return $html;
 	}
 
-	function frmPrevious($info){
+	function frmPrevious(){
 		$toShow = #node->productlistviewer->_backFrame();
 		$html=<PHTML>
 			$toShow
@@ -50,14 +50,14 @@
 		return $html;
 	}
 
-	function frmHow($info){
+	function frmHow(){
 		$html=<PHTML>
 			How to 
 		</PHTML>
 		return $html;
 	}
 
-	function frmCPanle($info){
+	function frmCPanle(){
 		$toShow = #node->adminpanel->_backFrame();
 		$html=<PHTML>
 			$toShow
@@ -65,7 +65,7 @@
 		return $html;
 	}
 
-	function frmMyAccount($info){
+	function frmMyAccount(){
 		$toShow = #node->userpanel->_backFrame();
 		$html=<PHTML>
  			$toShow				
