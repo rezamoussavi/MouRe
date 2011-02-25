@@ -9,19 +9,18 @@
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
-	Author: Reza Moussavi
-	Date:	02/10/2011
-	Version: 0.2
-	---------------------
-	Author: Reza Moussavi
-	Date:	02/07/2011
+	Author: Max Mirkia
+	Date:	2/14/2011
+	Version: 1.0
+	------------------
+	Author: Max Mirkia
+	Date:	2/7/2011
 	Version: 0.1
 
 */
-require_once '../biz/tabbank/tabbank.php';
-require_once '../biz/multipageviewer/multipageviewer.php';
+require_once '../biz/usertab/usertab.php';
 
-class mainviewer {
+class usertabbank {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -31,8 +30,7 @@ class mainviewer {
 	//Variables
 
 	//Nodes (bizvars)
-	var $tabbar;
-	var $pages;
+	var $usertab; // array of biz
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -44,8 +42,7 @@ class mainviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['user_logedin'][$this->_fullname]=true;
-			$_SESSION['osMsg']['user_logedout'][$this->_fullname]=true;
+			$_SESSION['osMsg']['usertab_usertabChanged'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -53,20 +50,30 @@ class mainviewer {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
+		//handle arrays
+		$this->usertab=array();
+		if(!isset($_SESSION['osNodes'][$fullname]['usertab']))
+			$_SESSION['osNodes'][$fullname]['usertab']=array();
+		foreach($_SESSION['osNodes'][$fullname]['usertab'] as $arrfn)
+			$this->usertab[]=new usertab($arrfn);
 
-		$this->pages=new multipageviewer($this->_fullname.'_pages');
-
-		$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='mainviewer';
+		$_SESSION['osNodes'][$fullname]['biz']='usertabbank';
 	}
 
 	function sleep(){
 		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
+		$_SESSION['osNodes'][$this->_fullname]['usertab']=array();
+		foreach($this->usertab as $node){
+			$_SESSION['osNodes'][$this->_fullname]['usertab'][]=$node->_fullname;
+		}
 	}
 
 	function __destruct() {
+		$_SESSION['osNodes'][$this->_fullname]['usertab']=array();
+		foreach($this->usertab as $node){
+			$_SESSION['osNodes'][$this->_fullname]['usertab'][]=$node->_fullname;
+		}
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -76,11 +83,8 @@ class mainviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'user_logedin':
-				$this->onLogedin($info);
-				break;
-			case 'user_logedout':
-				$this->onLogedout($info);
+			case 'usertab_usertabChanged':
+				$this->onUserTabChanged($info);
 				break;
 			default:
 				break;
@@ -111,35 +115,31 @@ class mainviewer {
 //########################################
 
 
-	function init(){
-		$tab=array("Main","Previous","How");
-		if(osIsAdmin()){
-			$tab[]="CPanel";
+    function bookContent($content){//String[]
+        $this->usertab=array();
+        $id=0;
+        foreach($content as $c){
+            $this->usertab[]=new usertab($this->_fullname.$c);
+            end($this->usertab)->title=$c;
+        }
+        $this->_bookframe("frm");
+    }
+    function frm(){
+		$html='';
+		foreach($this->usertab as $t){
+			$html.=$t->_backframe();
 		}
-		if(osBackUser()!=-1){
-			$tab[]="MyAcc";
-		}
-		$this->tabbar->bookContent($tab);
-	}
-	function onLogedin($info){
-		$this->init();
-		_bookFrame("frm");
-	}
-	function onLogedout($info){
-		$this->init();
-		_bookFrame("frm");
-	}
-	function frm(){
-		$tab=$this->tabbar->_backFrame();
-		$pages=$this->pages->_backFrame();
-		$html=<<<PHTMLCODE
-
-			$tab <br> $pages
-		
-PHTMLCODE;
-
 		return $html;
-	}
+    }
+    function onUserTabChanged($info){
+        foreah($this->usertab as $t){
+            if($t->backLabel()==$info['usertabName']){
+                $t->bookSelected(true);
+            }else{
+                $t->bookSelected(false);
+            }
+        }
+    }
 
 }
 

@@ -9,19 +9,19 @@
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
-	Author: Reza Moussavi
-	Date:	02/10/2011
-	Version: 0.2
-	---------------------
-	Author: Reza Moussavi
-	Date:	02/07/2011
+        Author: Max Mirkia
+	Date:	2/14/2010
+	Version: 1.0
+        ------------------
+	Author: Max Mirkia
+	Date:	2/7/2010
 	Version: 0.1
 
 */
-require_once '../biz/tabbank/tabbank.php';
-require_once '../biz/multipageviewer/multipageviewer.php';
+require_once '../biz/product/product.php';
+require_once '../biz/productviewer/productviewer.php';
 
-class mainviewer {
+class productlistviewer {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -31,8 +31,7 @@ class mainviewer {
 	//Variables
 
 	//Nodes (bizvars)
-	var $tabbar;
-	var $pages;
+	var $productViewers; // array of biz
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -44,29 +43,39 @@ class mainviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['user_logedin'][$this->_fullname]=true;
-			$_SESSION['osMsg']['user_logedout'][$this->_fullname]=true;
+			$_SESSION['osMsg']['client_mode'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
-			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frmSmallMode';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
-
-		$this->pages=new multipageviewer($this->_fullname.'_pages');
+		//handle arrays
+		$this->productViewers=array();
+		if(!isset($_SESSION['osNodes'][$fullname]['productViewers']))
+			$_SESSION['osNodes'][$fullname]['productViewers']=array();
+		foreach($_SESSION['osNodes'][$fullname]['productViewers'] as $arrfn)
+			$this->productViewers[]=new productviewer($arrfn);
 
 		$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='mainviewer';
+		$_SESSION['osNodes'][$fullname]['biz']='productlistviewer';
 	}
 
 	function sleep(){
 		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
+		$_SESSION['osNodes'][$this->_fullname]['productViewers']=array();
+		foreach($this->productViewers as $node){
+			$_SESSION['osNodes'][$this->_fullname]['productViewers'][]=$node->_fullname;
+		}
 	}
 
 	function __destruct() {
+		$_SESSION['osNodes'][$this->_fullname]['productViewers']=array();
+		foreach($this->productViewers as $node){
+			$_SESSION['osNodes'][$this->_fullname]['productViewers'][]=$node->_fullname;
+		}
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -76,11 +85,8 @@ class mainviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'user_logedin':
-				$this->onLogedin($info);
-				break;
-			case 'user_logedout':
-				$this->onLogedout($info);
+			case 'client_mode':
+				$this->onMode($info);
 				break;
 			default:
 				break;
@@ -112,34 +118,32 @@ class mainviewer {
 
 
 	function init(){
-		$tab=array("Main","Previous","How");
-		if(osIsAdmin()){
-			$tab[]="CPanel";
+		$product = array();
+		$products = $product->backAllUID();
+		$i=0;
+		foreach($products as $p){
+			$this->productViewers[] = new productViewer($this->_fullname.$i++);
+			end($this->productViewers)->bookUID($p);
 		}
-		if(osBackUser()!=-1){
-			$tab[]="MyAcc";
-		}
-		$this->tabbar->bookContent($tab);
 	}
-	function onLogedin($info){
-		$this->init();
-		_bookFrame("frm");
+	function onMode($info){
+		
 	}
-	function onLogedout($info){
-		$this->init();
-		_bookFrame("frm");
-	}
-	function frm(){
-		$tab=$this->tabbar->_backFrame();
-		$pages=$this->pages->_backFrame();
+	
+	function frmBigMode(){
 		$html=<<<PHTMLCODE
 
-			$tab <br> $pages
+			
 		
 PHTMLCODE;
 
 		return $html;
 	}
+	
+	function frmSmallMode(){
+	
+	}
+	
 
 }
 

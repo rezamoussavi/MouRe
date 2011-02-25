@@ -45,7 +45,7 @@
     }
 
     function onTabChanged($info){
-        foreah(#node->tab as $t){
+        foreach(#node->tab as $t){
             if($t->backLabel()==$info['tabName']){
                 $t->bookSelected(true);
             }else{

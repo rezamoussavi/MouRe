@@ -55,6 +55,6 @@
 		$pages=#node->pages->_backFrame();
 		$html=<PHTML>
 			$tab <br> $pages
-		<PHTML>;
+		</PHTML>;
 		return $html;
 	}

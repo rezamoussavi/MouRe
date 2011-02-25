@@ -9,19 +9,18 @@
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
-	Author: Reza Moussavi
-	Date:	02/10/2011
-	Version: 0.2
-	---------------------
-	Author: Reza Moussavi
-	Date:	02/07/2011
+        Author: Max Mirkia
+	Date:	2/14/2010
+	Version: 1.0
+        ------------------
+        Author: Max Mirkia
+	Date:	2/7/2010
 	Version: 0.1
 
 */
-require_once '../biz/tabbank/tabbank.php';
-require_once '../biz/multipageviewer/multipageviewer.php';
+require_once '../biz/tab/tab.php';
 
-class mainviewer {
+class tabbank {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -31,8 +30,7 @@ class mainviewer {
 	//Variables
 
 	//Nodes (bizvars)
-	var $tabbar;
-	var $pages;
+	var $tab; // array of biz
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -44,8 +42,7 @@ class mainviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['user_logedin'][$this->_fullname]=true;
-			$_SESSION['osMsg']['user_logedout'][$this->_fullname]=true;
+			$_SESSION['osMsg']['tab_tabChanged'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -53,20 +50,30 @@ class mainviewer {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
+		//handle arrays
+		$this->tab=array();
+		if(!isset($_SESSION['osNodes'][$fullname]['tab']))
+			$_SESSION['osNodes'][$fullname]['tab']=array();
+		foreach($_SESSION['osNodes'][$fullname]['tab'] as $arrfn)
+			$this->tab[]=new tab($arrfn);
 
-		$this->pages=new multipageviewer($this->_fullname.'_pages');
-
-		$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='mainviewer';
+		$_SESSION['osNodes'][$fullname]['biz']='tabbank';
 	}
 
 	function sleep(){
 		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
+		$_SESSION['osNodes'][$this->_fullname]['tab']=array();
+		foreach($this->tab as $node){
+			$_SESSION['osNodes'][$this->_fullname]['tab'][]=$node->_fullname;
+		}
 	}
 
 	function __destruct() {
+		$_SESSION['osNodes'][$this->_fullname]['tab']=array();
+		foreach($this->tab as $node){
+			$_SESSION['osNodes'][$this->_fullname]['tab'][]=$node->_fullname;
+		}
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -76,11 +83,8 @@ class mainviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'user_logedin':
-				$this->onLogedin($info);
-				break;
-			case 'user_logedout':
-				$this->onLogedout($info);
+			case 'tab_tabChanged':
+				$this->onTabChanged($info);
 				break;
 			default:
 				break;
@@ -111,35 +115,31 @@ class mainviewer {
 //########################################
 
 
-	function init(){
-		$tab=array("Main","Previous","How");
-		if(osIsAdmin()){
-			$tab[]="CPanel";
+    function bookContent($content){//String[]
+        $this->tab=array();
+        $id=0;
+        foreach($content as $c){
+            $this->tab[]=new tab($this->_fullname.$c);
+            end($this->tab)->title=$c;
+        }
+        $this->_bookframe("frm");
+    }
+    function frm(){
+		$html='';
+		foreach($this->tab as $t){
+			$html.=$t->_backframe();
 		}
-		if(osBackUser()!=-1){
-			$tab[]="MyAcc";
-		}
-		$this->tabbar->bookContent($tab);
-	}
-	function onLogedin($info){
-		$this->init();
-		_bookFrame("frm");
-	}
-	function onLogedout($info){
-		$this->init();
-		_bookFrame("frm");
-	}
-	function frm(){
-		$tab=$this->tabbar->_backFrame();
-		$pages=$this->pages->_backFrame();
-		$html=<<<PHTMLCODE
-
-			$tab <br> $pages
-		
-PHTMLCODE;
-
 		return $html;
-	}
+    }
+    function onTabChanged($info){
+        foreach($this->tab as $t){
+            if($t->backLabel()==$info['tabName']){
+                $t->bookSelected(true);
+            }else{
+                $t->bookSelected(false);
+            }
+        }
+    }
 
 }
 

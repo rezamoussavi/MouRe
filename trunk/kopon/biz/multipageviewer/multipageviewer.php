@@ -9,19 +9,22 @@
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
-	Author: Reza Moussavi
-	Date:	02/10/2011
-	Version: 0.2
-	---------------------
-	Author: Reza Moussavi
-	Date:	02/07/2011
+	Author: Max Mirkia
+	Date:	2/21/2010
+	Version: 1.0
+	------------------
+	Author: Max Mirkia
+	Date:	2/7/2010
 	Version: 0.1
 
 */
-require_once '../biz/tabbank/tabbank.php';
-require_once '../biz/multipageviewer/multipageviewer.php';
+require_once '../biz/tab/tab.php';
+require_once '../biz/productviewer/productviewer.php';
+require_once '../biz/productlistviewer/productlistviewer.php';
+require_once '../biz/adminpanel/adminpanel.php';
+require_once '../biz/userpanel/userpanel.php';
 
-class mainviewer {
+class multipageviewer {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -31,8 +34,11 @@ class mainviewer {
 	//Variables
 
 	//Nodes (bizvars)
-	var $tabbar;
-	var $pages;
+	var $tab;
+	var $productviewer;
+	var $productlistviewer;
+	var $adminpanel;
+	var $userpanel;
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -44,22 +50,27 @@ class mainviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['user_logedin'][$this->_fullname]=true;
-			$_SESSION['osMsg']['user_logedout'][$this->_fullname]=true;
+			$_SESSION['osMsg']['tab_tabChanged'][$this->_fullname]=true;
+			$_SESSION['osMsg']['client_page'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
-			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frmMain';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
+		$this->tab=new tab($this->_fullname.'_tab');
 
-		$this->pages=new multipageviewer($this->_fullname.'_pages');
+		$this->productviewer=new productviewer($this->_fullname.'_productviewer');
 
-		$this->init(); //Customized Initializing
+		$this->productlistviewer=new productlistviewer($this->_fullname.'_productlistviewer');
+
+		$this->adminpanel=new adminpanel($this->_fullname.'_adminpanel');
+
+		$this->userpanel=new userpanel($this->_fullname.'_userpanel');
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='mainviewer';
+		$_SESSION['osNodes'][$fullname]['biz']='multipageviewer';
 	}
 
 	function sleep(){
@@ -76,11 +87,11 @@ class mainviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'user_logedin':
-				$this->onLogedin($info);
+			case 'tab_tabChanged':
+				$this->onTabChanged($info);
 				break;
-			case 'user_logedout':
-				$this->onLogedout($info);
+			case 'client_page':
+				$this->onPage($info);
 				break;
 			default:
 				break;
@@ -111,30 +122,55 @@ class mainviewer {
 //########################################
 
 
-	function init(){
-		$tab=array("Main","Previous","How");
-		if(osIsAdmin()){
-			$tab[]="CPanel";
-		}
-		if(osBackUser()!=-1){
-			$tab[]="MyAcc";
-		}
-		$this->tabbar->bookContent($tab);
+	function onTabChanged($info){
+		$this->_bookframe("frm".['tabName']);
 	}
-	function onLogedin($info){
-		$this->init();
-		_bookFrame("frm");
+	function onPage($info){
 	}
-	function onLogedout($info){
-		$this->init();
-		_bookFrame("frm");
-	}
-	function frm(){
-		$tab=$this->tabbar->_backFrame();
-		$pages=$this->pages->_backFrame();
+	function frmMain($info){
+		$toShow = $this->productviewer->_backFrame()
 		$html=<<<PHTMLCODE
 
-			$tab <br> $pages
+			$toShow
+		
+PHTMLCODE;
+
+		return $html;
+	}
+	function frmPrevious($info){
+		$toShow = $this->productlistviewer->_backFrame()  
+		$html=<<<PHTMLCODE
+
+			$toShow
+		
+PHTMLCODE;
+
+		return $html;
+	}
+	function frmHow($info){
+		$html=<<<PHTMLCODE
+
+			How to 
+		
+PHTMLCODE;
+
+		return $html;
+	}
+	function frmCPanle($info){
+		$toShow = $this->adminpanel->_backFrame()
+		$html=<<<PHTMLCODE
+
+			$toShow
+		
+PHTMLCODE;
+
+		return $html;
+	}
+	function frmMyAccount($info){
+		$toShow = $this->userpanel->_backFrame()
+		$html=<<<PHTMLCODE
+
+ 			$toShow				
 		
 PHTMLCODE;
 
