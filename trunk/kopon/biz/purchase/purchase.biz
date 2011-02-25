@@ -11,8 +11,8 @@
 
 #phpfunction
         function backAllUID(){
-
-}
+			return array();
+		}
         function bookPurchase(){
-}
+		}
 

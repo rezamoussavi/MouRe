@@ -39,13 +39,13 @@
 		return #var->price;
 	}
 	
-	function bookImage($tempPath,$){
+	function bookImage($tempPath){
 		move_uploaded_file($tempPath,
 			"biz/product" . "b" . #var->UID . ".jpg");
 	}
 	
 	function backImage(){
-		"biz/product" . "b" . #var->UID . ".jpg");	
+		return "biz/product" . "b" . #var->UID . ".jpg";	
 	}
 	
 	function backRemainingTime(){
@@ -94,14 +94,14 @@
 	}
 	
 	function backIcon(){
-		"biz/product" . "b" . #var->UID . ".jpg");
+		return "biz/product" . "i" . #var->UID . ".jpg";
 	}
 	
 	function bookIcon($tempPath){
 		move_uploaded_file($tempPath,
-			"biz/product" . "b" . #var->UID . ".jpg");		
+			"biz/product" . "i" . #var->UID . ".jpg");		
 	}
 	
 	function backAllUID(){
-	return array();
+		return array();
 	}

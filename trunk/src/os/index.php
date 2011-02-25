@@ -21,7 +21,7 @@
 			}
 			$_SESSION['silentmode']=false;
 		}
-		$bizbank->show();
+		$bizbank->show(true);
 		require_once "ajax.php";
 	}
 

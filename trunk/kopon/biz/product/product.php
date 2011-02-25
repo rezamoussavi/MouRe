@@ -153,13 +153,13 @@ class product {
 		return $this->price;
 	}
 	
-	function bookImage($tempPath,$){
+	function bookImage($tempPath){
 		move_uploaded_file($tempPath,
 			"biz/product" . "b" . $this->UID . ".jpg");
 	}
 	
 	function backImage(){
-		"biz/product" . "b" . $this->UID . ".jpg");	
+		return "biz/product" . "b" . $this->UID . ".jpg";	
 	}
 	
 	function backRemainingTime(){
@@ -208,16 +208,16 @@ class product {
 	}
 	
 	function backIcon(){
-		"biz/product" . "b" . $this->UID . ".jpg");
+		return "biz/product" . "i" . $this->UID . ".jpg";
 	}
 	
 	function bookIcon($tempPath){
 		move_uploaded_file($tempPath,
-			"biz/product" . "b" . $this->UID . ".jpg");		
+			"biz/product" . "i" . $this->UID . ".jpg");		
 	}
 	
 	function backAllUID(){
-	return array();
+		return array();
 	}
 
 }

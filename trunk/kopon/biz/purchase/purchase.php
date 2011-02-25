@@ -86,9 +86,10 @@ class purchase {
 
 
         function backAllUID(){
-}
+			return array();
+		}
         function bookPurchase(){
-}
+		}
 
 }
 

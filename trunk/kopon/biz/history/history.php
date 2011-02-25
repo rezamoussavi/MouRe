@@ -100,7 +100,7 @@ class history {
 
 
 	function init(){
-		$p=new purchase();
+		$p=new purchase("");
 		$pUIDs=$p->backAllUID();
 		$this->purchases=array();
 		$i=1;
