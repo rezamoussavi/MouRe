@@ -9,16 +9,13 @@
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
-	Author: Reza Moussavi
-	Date:	02/25/2011
-	Version: 1.0
+	Author: Max Mirkia
+	Date:	2/7/2010
+	Version: 0.1
 
 */
-require_once '../biz/mainviewer/mainviewer.php';
-require_once '../biz/login/login.php';
-require_once '../biz/referal/referal.php';
 
-class kopon {
+class purchase {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -28,9 +25,6 @@ class kopon {
 	//Variables
 
 	//Nodes (bizvars)
-	var $main;
-	var $login;
-	var $referal;
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -44,19 +38,8 @@ class kopon {
 			//If any message need to be registered will placed here
 		}
 
-		//default frame if exists
-		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
-			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
-		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
-
-		$this->main=new mainviewer($this->_fullname.'_main');
-
-		$this->login=new login($this->_fullname.'_login');
-
-		$this->referal=new referal($this->_fullname.'_referal');
-
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='kopon';
+		$_SESSION['osNodes'][$fullname]['biz']='purchase';
 	}
 
 	function sleep(){
@@ -102,18 +85,10 @@ class kopon {
 //########################################
 
 
-	function frm(){
-		$main=$this->main->_backFrame();
-		$referal=$this->referal->_backFrame();
-		$login=$this->login->_backFrame();
-		return <<<PHTMLCODE
-
-			$referal $login<br />
-			$main
-		
-PHTMLCODE;
-
-	}
+        function backAllUID(){
+}
+        function bookPurchase(){
+}
 
 }
 
