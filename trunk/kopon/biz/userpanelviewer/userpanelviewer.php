@@ -115,10 +115,10 @@ class userpanelviewer {
 
 
 	function onusertabChanged($info){
-		$this->_bookframe("frm".['tabName']);
+		$this->_bookframe("frm".$info['tabName']);
 	}
 	function frmProfile($info){
-		$toShow = $this->profile->_backFrame()
+		$toShow = $this->profile->_backFrame();
 		$html=<<<PHTMLCODE
 
 			$toShow
@@ -128,7 +128,7 @@ PHTMLCODE;
 		return $html;
 	}
 	function frmReferal($info){
-		$toShow = $this->referal->_backFrame()  
+		$toShow = $this->referal->_backFrame();
 		$html=<<<PHTMLCODE
 
 			$toShow

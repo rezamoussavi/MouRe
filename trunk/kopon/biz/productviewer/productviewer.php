@@ -129,7 +129,7 @@ class productviewer {
 			$buy="BUY (time out)";
 		}else{
 			$time=$t;
-			$buy="<a href="">BUY</a>";
+			$buy='<a href="">BUY</a>';
 		}
 		$html=<<<PHTMLCODE
 

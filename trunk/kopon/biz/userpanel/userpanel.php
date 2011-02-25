@@ -107,8 +107,8 @@ class userpanel {
 		$this->tabbar->bookContent(array("history","referal","profile"));
 	}
 	function frm(){
-		$bar=tabbar->_backframe();
-		$panel=panel->_backframe();
+		$bar=$this->tabbar->_backframe();
+		$panel=$this->panel->_backframe();
 		$html=<<<PHTMLCODE
 
 			$bar

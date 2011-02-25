@@ -30,8 +30,8 @@
 	}
 
 	function frm(){
-		$bar=tabbar->_backframe();
-		$panel=panel->_backframe();
+		$bar=#node->tabbar->_backframe();
+		$panel=#node->panel->_backframe();
 		$html=<PHTML>
 			$bar
 			$panel

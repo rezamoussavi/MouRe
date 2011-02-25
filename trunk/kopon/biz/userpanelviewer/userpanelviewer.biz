@@ -26,11 +26,11 @@
 
 #phpfunction
 	function onusertabChanged($info){
-		_bookframe(#frame->frm.['tabName']);
+		_bookframe(#frame->frm.$info['tabName']);
 	}
 
 	function frmProfile($info){
-		$toShow = #node->profile->_backFrame()
+		$toShow = #node->profile->_backFrame();
 		$html=<PHTML>
 			$toShow
 		</PHTML>
@@ -38,7 +38,7 @@
 	}
 
 	function frmReferal($info){
-		$toShow = #node->referal->_backFrame()  
+		$toShow = #node->referal->_backFrame();
 		$html=<PHTML>
 			$toShow
 		</PHTML>

@@ -132,7 +132,7 @@ class usertabbank {
 		return $html;
     }
     function onUserTabChanged($info){
-        foreah($this->usertab as $t){
+        foreach($this->usertab as $t){
             if($t->backLabel()==$info['usertabName']){
                 $t->bookSelected(true);
             }else{

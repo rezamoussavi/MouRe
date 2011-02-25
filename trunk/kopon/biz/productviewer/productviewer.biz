@@ -53,7 +53,7 @@
 			$buy="BUY (time out)";
 		}else{
 			$time=$t;
-			$buy="<a href="">BUY</a>";
+			$buy='<a href="">BUY</a>';
 		}
 		$html=<PHTML>
 			<center>$title - price:$price you get $discount Discount $buy</center><br>

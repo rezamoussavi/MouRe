@@ -123,12 +123,12 @@ class multipageviewer {
 
 
 	function onTabChanged($info){
-		$this->_bookframe("frm".['tabName']);
+		$this->_bookframe("frm".$info['tabName']);
 	}
 	function onPage($info){
 	}
 	function frmMain($info){
-		$toShow = $this->productviewer->_backFrame()
+		$toShow = $this->productviewer->_backFrame();
 		$html=<<<PHTMLCODE
 
 			$toShow
@@ -138,7 +138,7 @@ PHTMLCODE;
 		return $html;
 	}
 	function frmPrevious($info){
-		$toShow = $this->productlistviewer->_backFrame()  
+		$toShow = $this->productlistviewer->_backFrame();
 		$html=<<<PHTMLCODE
 
 			$toShow
@@ -157,7 +157,7 @@ PHTMLCODE;
 		return $html;
 	}
 	function frmCPanle($info){
-		$toShow = $this->adminpanel->_backFrame()
+		$toShow = $this->adminpanel->_backFrame();
 		$html=<<<PHTMLCODE
 
 			$toShow
@@ -167,7 +167,7 @@ PHTMLCODE;
 		return $html;
 	}
 	function frmMyAccount($info){
-		$toShow = $this->userpanel->_backFrame()
+		$toShow = $this->userpanel->_backFrame();
 		$html=<<<PHTMLCODE
 
  			$toShow				

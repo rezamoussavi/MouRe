@@ -27,7 +27,7 @@
 
 #phpfunction
 	function onTabChanged($info){
-		_bookframe(#frame->frm.['tabName']);
+		_bookframe(#frame->frm.$info['tabName']);
 	}
 
 	function onPage($info){
@@ -35,7 +35,7 @@
 	}
 
 	function frmMain($info){
-		$toShow = #node->productviewer->_backFrame()
+		$toShow = #node->productviewer->_backFrame();
 		$html=<PHTML>
 			$toShow
 		</PHTML>
@@ -43,7 +43,7 @@
 	}
 
 	function frmPrevious($info){
-		$toShow = #node->productlistviewer->_backFrame()  
+		$toShow = #node->productlistviewer->_backFrame();
 		$html=<PHTML>
 			$toShow
 		</PHTML>
@@ -58,7 +58,7 @@
 	}
 
 	function frmCPanle($info){
-		$toShow = #node->adminpanel->_backFrame()
+		$toShow = #node->adminpanel->_backFrame();
 		$html=<PHTML>
 			$toShow
 		</PHTML>
@@ -66,7 +66,7 @@
 	}
 
 	function frmMyAccount($info){
-		$toShow = #node->userpanel->_backFrame()
+		$toShow = #node->userpanel->_backFrame();
 		$html=<PHTML>
  			$toShow				
 		</PHTML>
