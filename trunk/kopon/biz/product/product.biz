@@ -103,5 +103,5 @@
 	}
 	
 	function backAllUID(){
-
+	return array();
 	}

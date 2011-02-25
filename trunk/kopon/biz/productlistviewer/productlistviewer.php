@@ -118,7 +118,7 @@ class productlistviewer {
 
 
 	function init(){
-		$product = array();
+		$product = new product("");
 		$products = $product->backAllUID();
 		$i=0;
 		foreach($products as $p){

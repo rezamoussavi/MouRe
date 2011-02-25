@@ -23,6 +23,7 @@ class product {
 	var $_tmpNode;
 
 	//Variables
+	var $UID;
 	var $title;
 	var $description;
 	var $price;
@@ -45,6 +46,10 @@ class product {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 		}
+
+		if(!isset($_SESSION['osNodes'][$fullname]['UID']))
+			$_SESSION['osNodes'][$fullname]['UID']='';
+		$this->UID=&$_SESSION['osNodes'][$fullname]['UID'];
 
 		if(!isset($_SESSION['osNodes'][$fullname]['title']))
 			$_SESSION['osNodes'][$fullname]['title']='';
@@ -148,16 +153,17 @@ class product {
 		return $this->price;
 	}
 	
-	function bookImage(){
+	function bookImage($tempPath,$){
+		move_uploaded_file($tempPath,
+			"biz/product" . "b" . $this->UID . ".jpg");
 	}
 	
 	function backImage(){
-	}
-	
-	function bookRemainingTime(){
+		"biz/product" . "b" . $this->UID . ".jpg");	
 	}
 	
 	function backRemainingTime(){
+		return $this->endTime - $this->startTime;
 	}
 	
 	function bookDiscount($discount){
@@ -171,6 +177,7 @@ class product {
 	function bookProductUID($UID){
 		//query()
 		if($row = fetch()){
+			$this->UID = $row[''];
 			$this->title = $row[''];
 			$this->discount = $row[''];
 			$this->description = $row[''];
@@ -181,6 +188,7 @@ class product {
 	}
 	
 	function backProductUID(){
+		$this->UID;
 	}
 	
 	function bookStartTime($startTime){
@@ -200,12 +208,16 @@ class product {
 	}
 	
 	function backIcon(){
+		"biz/product" . "b" . $this->UID . ".jpg");
 	}
 	
-	function bookIcon(){
+	function bookIcon($tempPath){
+		move_uploaded_file($tempPath,
+			"biz/product" . "b" . $this->UID . ".jpg");		
 	}
 	
 	function backAllUID(){
+	return array();
 	}
 
 }
