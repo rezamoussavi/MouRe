@@ -10,7 +10,7 @@
 	product
 	
 #var
-	title, description, price, image, discount, startTime, endTime, icon
+	UID, title, description, price, image, discount, startTime, endTime, icon
 	
 
 
@@ -39,20 +39,17 @@
 		return #var->price;
 	}
 	
-	function bookImage(){
-
+	function bookImage($tempPath,$){
+		move_uploaded_file($tempPath,
+			"biz/product" . "b" . #var->UID . ".jpg");
 	}
 	
 	function backImage(){
-
-	}
-	
-	function bookRemainingTime(){
-
+		"biz/product" . "b" . #var->UID . ".jpg");	
 	}
 	
 	function backRemainingTime(){
-
+		return #var->endTime - #var->startTime;
 	}
 	
 	function bookDiscount($discount){
@@ -66,6 +63,7 @@
 	function bookProductUID($UID){
 		//query()
 		if($row = fetch()){
+			#var->UID = $row[''];
 			#var->title = $row[''];
 			#var->discount = $row[''];
 			#var->description = $row[''];
@@ -76,7 +74,7 @@
 	}
 	
 	function backProductUID(){
-
+		#var->UID;
 	}
 	
 	function bookStartTime($startTime){
@@ -96,11 +94,12 @@
 	}
 	
 	function backIcon(){
-
+		"biz/product" . "b" . #var->UID . ".jpg");
 	}
 	
-	function bookIcon(){
-
+	function bookIcon($tempPath){
+		move_uploaded_file($tempPath,
+			"biz/product" . "b" . #var->UID . ".jpg");		
 	}
 	
 	function backAllUID(){
