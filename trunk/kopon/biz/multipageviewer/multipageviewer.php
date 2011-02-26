@@ -18,7 +18,6 @@
 	Version: 0.1
 
 */
-require_once '../biz/tab/tab.php';
 require_once '../biz/productviewer/productviewer.php';
 require_once '../biz/productlistviewer/productlistviewer.php';
 require_once '../biz/adminpanel/adminpanel.php';
@@ -34,7 +33,6 @@ class multipageviewer {
 	//Variables
 
 	//Nodes (bizvars)
-	var $tab;
 	var $productviewer;
 	var $productlistviewer;
 	var $adminpanel;
@@ -54,12 +52,11 @@ class multipageviewer {
 			$_SESSION['osMsg']['client_page'][$this->_fullname]=true;
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmMain';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
-
-		$this->tab=new tab($this->_fullname.'_tab');
 
 		$this->productviewer=new productviewer($this->_fullname.'_productviewer');
 
@@ -73,11 +70,7 @@ class multipageviewer {
 		$_SESSION['osNodes'][$fullname]['biz']='multipageviewer';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -128,7 +121,7 @@ class multipageviewer {
 	function onPage($info){
 	}
 	function frmMain(){
-		$toShow = $this->productviewer->_backFrame();
+		$toShow = $this->productviewer->_backframe();
 		$html=<<<PHTMLCODE
 
 			$toShow
@@ -138,7 +131,7 @@ PHTMLCODE;
 		return $html;
 	}
 	function frmPrevious(){
-		$toShow = $this->productlistviewer->_backFrame();
+		$toShow = $this->productlistviewer->_backframe();
 		$html=<<<PHTMLCODE
 
 			$toShow
@@ -157,7 +150,7 @@ PHTMLCODE;
 		return $html;
 	}
 	function frmCPanle(){
-		$toShow = $this->adminpanel->_backFrame();
+		$toShow = $this->adminpanel->_backframe();
 		$html=<<<PHTMLCODE
 
 			$toShow
@@ -166,8 +159,8 @@ PHTMLCODE;
 
 		return $html;
 	}
-	function frmMyAccount(){
-		$toShow = $this->userpanel->_backFrame();
+	function frmMyAcc(){
+		$toShow = $this->userpanel->_backframe();
 		$html=<<<PHTMLCODE
 
  			$toShow				

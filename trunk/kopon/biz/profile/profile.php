@@ -43,9 +43,10 @@ class profile {
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['client_applyChanges'][$this->_fullname]=true;
 			$_SESSION['osMsg']['client_cancelChanges'][$this->_fullname]=true;
-			$_SESSION['osMsg']['?????_editInfo'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_editInfo'][$this->_fullname]=true;
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmView';
@@ -55,11 +56,7 @@ class profile {
 		$_SESSION['osNodes'][$fullname]['biz']='profile';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -75,7 +72,7 @@ class profile {
 			case 'client_cancelChanges':
 				$this->onCancelChanges($info);
 				break;
-			case '?????_editInfo':
+			case 'frame_editInfo':
 				$this->onEditInfo($info);
 				break;
 			default:
@@ -118,7 +115,7 @@ class profile {
 PHTMLCODE;
 
 		}else{
-			$u=new user();
+			$u=new user("");
 			$u->bookUID($uUID);
 			$html=<<<PHTMLCODE
 
@@ -162,20 +159,20 @@ PHTMLCODE;
 		// $info indexes: Name, Address, BDate, NewPassword, ConfirmPassword, OldPassword
 		$uUID=osBackUser();
 		if($uUID>0){
-			$u=new user();
+			$u=new user("");
 			$u->bookUID($uUID);
 			$u->bookName($info['Name']);
 			$u->bookAddress($info['Address']);
 			$u->bookBDate($info['BDate']);
 			$u->bookPassword($info['NewPassword']);
 		}
-		_bookFrame("frmView");
+		$this->_bookframe("frmView");
 	}
 	function onCancelChanges($info){
-		_bookFrame("frmView");
+		$this->_bookframe("frmView");
 	}
 	function onEditInfo($info){
-		_bookFrame("frmEdit");
+		$this->_bookframe("frmEdit");
 	}
 
 }

@@ -45,6 +45,7 @@ class productviewer {
 			//If any message need to be registered will placed here
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmLarge';
@@ -60,11 +61,7 @@ class productviewer {
 		$_SESSION['osNodes'][$fullname]['biz']='productviewer';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -112,9 +109,9 @@ class productviewer {
 	function bookProductUID($UID){
 		$this->product->bookProductUID($UID);
 		if($this->large){
-			_bookFrame("frmLarge");
+			$this->_bookframe("frmLarge");
 		}else{
-			_bookFrame("frmSmall");
+			$this->_bookframe("frmSmall");
 		}
 	}
 	function frmLarge(){
@@ -135,7 +132,7 @@ class productviewer {
 
 			<center>$title - price:$price you get $discount Discount $buy</center><br>
 			(countdown code here)$time(till here)<br>
-			<img src="$image"/>$Description<hr>
+			<img src="$image"/>$description<hr>
 		
 PHTMLCODE;
 

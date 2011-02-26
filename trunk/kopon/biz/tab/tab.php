@@ -44,6 +44,7 @@ class tab {
 			$_SESSION['osMsg']['client_selected'][$this->_fullname]=true;
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmNotSelected';
@@ -57,11 +58,7 @@ class tab {
 		$_SESSION['osNodes'][$fullname]['biz']='tab';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -105,22 +102,25 @@ class tab {
 
 	function onSelected($info){
 		$this->bookSelected(true);
+		$d=array("tabName"=>$this->label);
+		osBroadcast("tab_tabChanged",$d);
 	}
 	function bookLabel($label){//String
 		$this->label=$label;
-		_bookFrame("frmNotSelected");
+		//$this->_bookframe("frmNotSelected");
 	}
 	function bookSelected($selected){//boolean
 		if($selected){
-			_bookFrame("frmSelected");
+			$this->_bookframe("frmSelected");
 		}else{
-			_bookFrame("frmNotSelected");
+			$this->_bookframe("frmNotSelected");
 		}
 	}
 	function backLabel(){
 		return $this->label;
 	}
 	function frmSelected(){
+		osBackLink($this->_fullname,"selected","");
 		$html=<<<PHTMLCODE
 
 			[{$this->label}]

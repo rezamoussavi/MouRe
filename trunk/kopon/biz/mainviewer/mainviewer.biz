@@ -34,7 +34,8 @@
 		if(osIsAdmin()){
 			$tab[]="CPanel";
 		}
-		if(osBackUser()!=-1){
+		$user=osBackUser();
+		if($user['UID']!=-1){
 			$tab[]="MyAcc";
 		}
 		#node->tabbar->bookContent($tab);

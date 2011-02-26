@@ -31,9 +31,9 @@
         $id=0;
         foreach($content as $c){
             #node->usertab[]=new usertab(#nodeID.$c);
-            end(#node->usertab)->title=$c;
+            end(#node->usertab)->bookLabel($c);
         }
-        _bookframe(#frame->frm);
+        //_bookframe(#frame->frm);
     }
 
     function frm(){

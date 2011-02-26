@@ -46,6 +46,7 @@ class productlistviewer {
 			$_SESSION['osMsg']['client_mode'][$this->_fullname]=true;
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmSmallMode';
@@ -63,16 +64,9 @@ class productlistviewer {
 		$_SESSION['osNodes'][$fullname]['biz']='productlistviewer';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
+	function gotoSleep() {
 		$_SESSION['osNodes'][$this->_fullname]['productViewers']=array();
-		foreach($this->productViewers as $node){
-			$_SESSION['osNodes'][$this->_fullname]['productViewers'][]=$node->_fullname;
-		}
-	}
-
-	function __destruct() {
-		$_SESSION['osNodes'][$this->_fullname]['productViewers']=array();
+		$_SESSION['osNodes'][$this->_fullname]['sleep']=true;
 		foreach($this->productViewers as $node){
 			$_SESSION['osNodes'][$this->_fullname]['productViewers'][]=$node->_fullname;
 		}

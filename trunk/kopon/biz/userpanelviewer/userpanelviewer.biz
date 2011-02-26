@@ -29,7 +29,7 @@
 		_bookframe(#frame->frm.$info['tabName']);
 	}
 
-	function frmProfile($info){
+	function frmProfile(){
 		$toShow = #node->profile->_backFrame();
 		$html=<PHTML>
 			$toShow
@@ -37,7 +37,7 @@
 		return $html;
 	}
 
-	function frmReferal($info){
+	function frmReferal(){
 		$toShow = #node->referal->_backFrame();
 		$html=<PHTML>
 			$toShow
@@ -45,7 +45,7 @@
 		return $html;
 	}
 
-	function frmHistory($info){
+	function frmHistory(){
 		$html=<PHTML>
 			How to 
 		</PHTML>

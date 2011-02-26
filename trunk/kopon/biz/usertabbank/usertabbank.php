@@ -45,6 +45,7 @@ class usertabbank {
 			$_SESSION['osMsg']['usertab_usertabChanged'][$this->_fullname]=true;
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
@@ -61,16 +62,9 @@ class usertabbank {
 		$_SESSION['osNodes'][$fullname]['biz']='usertabbank';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
+	function gotoSleep() {
 		$_SESSION['osNodes'][$this->_fullname]['usertab']=array();
-		foreach($this->usertab as $node){
-			$_SESSION['osNodes'][$this->_fullname]['usertab'][]=$node->_fullname;
-		}
-	}
-
-	function __destruct() {
-		$_SESSION['osNodes'][$this->_fullname]['usertab']=array();
+		$_SESSION['osNodes'][$this->_fullname]['sleep']=true;
 		foreach($this->usertab as $node){
 			$_SESSION['osNodes'][$this->_fullname]['usertab'][]=$node->_fullname;
 		}
@@ -120,9 +114,9 @@ class usertabbank {
         $id=0;
         foreach($content as $c){
             $this->usertab[]=new usertab($this->_fullname.$c);
-            end($this->usertab)->title=$c;
+            end($this->usertab)->bookLabel($c);
         }
-        $this->_bookframe("frm");
+        //$this->_bookframe("frm");
     }
     function frm(){
 		$html='';

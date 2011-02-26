@@ -15,10 +15,10 @@
 
 
 #node
-	tab tab,productviewer productviewer,productlistviewer productlistviewer, adminpanel adminpanel, userpanel userpanel
+	productviewer productviewer,productlistviewer productlistviewer, adminpanel adminpanel, userpanel userpanel
 
 #frame
-	*frmMain,frmPrevious, frmHow, frmCPanel,frmMyAccount
+	*frmMain,frmPrevious, frmHow,frmMyAcc,frmCPanel
 
 #message
 	tab->tabChanged=onTabChanged
@@ -65,7 +65,7 @@
 		return $html;
 	}
 
-	function frmMyAccount(){
+	function frmMyAcc(){
 		$toShow = #node->userpanel->_backFrame();
 		$html=<PHTML>
  			$toShow				

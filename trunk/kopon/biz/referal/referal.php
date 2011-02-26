@@ -24,6 +24,7 @@ class referal {
 			//If any message need to be registered will placed here
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
@@ -33,11 +34,7 @@ class referal {
 		$_SESSION['osNodes'][$fullname]['biz']='referal';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else

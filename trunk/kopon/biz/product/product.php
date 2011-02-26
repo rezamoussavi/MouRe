@@ -47,6 +47,7 @@ class product {
 			//If any message need to be registered will placed here
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		if(!isset($_SESSION['osNodes'][$fullname]['UID']))
 			$_SESSION['osNodes'][$fullname]['UID']='';
 		$this->UID=&$_SESSION['osNodes'][$fullname]['UID'];
@@ -87,11 +88,7 @@ class product {
 		$_SESSION['osNodes'][$fullname]['biz']='product';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else

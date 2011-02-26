@@ -18,10 +18,29 @@
 
 #phpfunction
 
+	function bookUID($UID){
+	}
+
+	function backName(){
+		return '';
+	}
+
+	function backEmail(){
+		return '';
+	}
+
+	function backAddress(){
+		return '';
+	}
+
+	function backBDate(){
+		return '';
+	}
+
     function logout() {
         #var->loggedIn = 0;
         osBroadcast(#msg->logout, array());
-		osBookUser(array());
+		osBookUser(array("email" => "", "UID" => -1, "name"=>""));
     }
 
     function isLoggedin() {

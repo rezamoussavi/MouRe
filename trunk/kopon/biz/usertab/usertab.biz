@@ -29,7 +29,7 @@
 		#var->isSelected=true;
 		$d=array("tabName"=>#var->label);
 		osBroadcast(#msg->tabChanged,$d);
-		_bookFrame(#frm->frmSelected);
+		//_bookFrame(#frm->frmSelected);
 	}
 
 	function frmNotSelected(){
@@ -42,6 +42,7 @@
 	}
 
 	function frmSelected(){
+		osBackLink("selected","");
 		$html=<PHTML>
 			[[{#var->label}]]
 		</PHTML>
@@ -50,7 +51,7 @@
 
 	function bookLabel($s){
 		#var->label=$s;
-		_bookFrame(#var->isSelected?#frm->frmSelected:#frm->frmNotSelected);
+		//_bookFrame(#var->isSelected?#frm->frmSelected:#frm->frmNotSelected);
 	}
 
 	function bookSelected($b){

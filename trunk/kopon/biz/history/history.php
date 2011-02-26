@@ -44,6 +44,7 @@ class history {
 			//If any message need to be registered will placed here
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
@@ -56,11 +57,7 @@ class history {
 		$_SESSION['osNodes'][$fullname]['biz']='history';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -112,7 +109,7 @@ class history {
 	function frm(){
 		$html='';
 		foreach($this->purchases as $p){
-			$pframe=$p->_backFrame();
+			$pframe=$p->_backframe();
 			$html.=<<<PHTMLCODE
 
 				$pframe

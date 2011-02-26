@@ -10,18 +10,15 @@
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
 	Author: Reza Moussavi
-	Date:	02/10/2011
-	Version: 0.2
-	---------------------
-	Author: Reza Moussavi
-	Date:	02/07/2011
-	Version: 0.1
+	Date:	02/25/2011
+	Version: 1.0
 
 */
-require_once '../biz/tabbank/tabbank.php';
-require_once '../biz/multipageviewer/multipageviewer.php';
+require_once '../biz/mainviewer/mainviewer.php';
+require_once '../biz/login/login.php';
+require_once '../biz/referal/referal.php';
 
-class mainviewer {
+class kopon {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -31,8 +28,9 @@ class mainviewer {
 	//Variables
 
 	//Nodes (bizvars)
-	var $tabbar;
-	var $pages;
+	var $main;
+	var $login;
+	var $referal;
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -44,26 +42,24 @@ class mainviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['user_logedin'][$this->_fullname]=true;
-			$_SESSION['osMsg']['user_logedout'][$this->_fullname]=true;
 		}
 
-		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
+		$this->main=new mainviewer($this->_fullname.'_main');
 
-		$this->pages=new multipageviewer($this->_fullname.'_pages');
+		$this->login=new login($this->_fullname.'_login');
 
-		$this->init(); //Customized Initializing
+		$this->referal=new referal($this->_fullname.'_referal');
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='mainviewer';
+		$_SESSION['osNodes'][$fullname]['biz']='kopon';
 	}
 
-	function gotoSleep() {
+	function __destruct() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -73,12 +69,6 @@ class mainviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'user_logedin':
-				$this->onLogedin($info);
-				break;
-			case 'user_logedout':
-				$this->onLogedout($info);
-				break;
 			default:
 				break;
 		}
@@ -108,35 +98,17 @@ class mainviewer {
 //########################################
 
 
-	function init(){
-		$tab=array("Main","Previous","How");
-		if(osIsAdmin()){
-			$tab[]="CPanel";
-		}
-		$user=osBackUser();
-		if($user['UID']!=-1){
-			$tab[]="MyAcc";
-		}
-		$this->tabbar->bookContent($tab);
-	}
-	function onLogedin($info){
-		$this->init();
-		$this->_bookframe("frm");
-	}
-	function onLogedout($info){
-		$this->init();
-		$this->_bookframe("frm");
-	}
 	function frm(){
-		$tab=$this->tabbar->_backframe();
-		$pages=$this->pages->_backframe();
-		$html=<<<PHTMLCODE
+		$main=$this->main->_backframe();
+		$referal=$this->referal->_backframe();
+		$login=$this->login->_backframe();
+		return <<<PHTMLCODE
 
-			$tab <br> $pages
+			$referal $login<br />
+			$main
 		
 PHTMLCODE;
 
-		return $html;
 	}
 
 }

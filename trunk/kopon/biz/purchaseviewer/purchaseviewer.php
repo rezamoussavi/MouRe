@@ -42,6 +42,7 @@ class purchaseviewer {
 			//If any message need to be registered will placed here
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
@@ -55,11 +56,7 @@ class purchaseviewer {
 		$_SESSION['osNodes'][$fullname]['biz']='purchaseviewer';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -103,7 +100,7 @@ class purchaseviewer {
 		$date=$this->purchase->backDate();
 		$price=$this->purchase->backPrice();
 		$status=$this->purchase->backStatus();
-		$prd=$this->productV->_backFrame();
+		$prd=$this->productV->_backframe();
 		$html=<<<PHTMLCODE
 
 			$prd<br />

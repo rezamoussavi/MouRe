@@ -1,26 +1,4 @@
 <?php
-	date_default_timezone_set('GMT');
-	require_once "../bizbank/kopon/kopon.php";
-	$bizbank=NULL;
-	$node=NULL;
-	if(isset($_GET['kill'])){
-		$_SESSION['osNodes']=array();
-		$bizbank=NULL;
-	}
-
-	if(!isset($_SESSION['osNodes'])){
-		$_SESSION['osNodes']=array();
-	}
-
-	if(! isset($_POST['_message'])){
-		$bizbank=new kopon("");
-	}
-
-	if(!isset($_SESSION['user'])){
-		$_SESSION['user']['UID']=-1;
-		$_SESSION['user']['Email']='';
-		$_SESSION['user']['Name']='';
-	}
 
 	function osBackLink($node,$curLink,$linkto){
 		$ar1=array();
@@ -44,6 +22,9 @@
 				$ret.=$n."=".$linkto;
 			else
 				$ret.=$n."=".$v;
+		}
+		if($curLink==null){
+			unset($_SESSION['osLink'][$node]);
 		}
 		return $ret;
 	}
@@ -71,12 +52,17 @@
 	}
 
 	function osBroadcast($msg,$info){
-		foreach($_SESSION['osMsg'][$msg] as $node=>$v){
-			osMessage($node,$msg,$info);
+		if(isset($_SESSION['osMsg'][$msg])){
+			if(count($_SESSION['osMsg'][$msg])>0){
+				foreach($_SESSION['osMsg'][$msg] as $node=>$v){
+					osMessage($node,$msg,$info);
+				}
+			}
 		}
 	}
 	function osMessage($to,$msg,$info){
-		global $node;
+		//global $node;
+		$node=NULL;
 		if(!isset($_SESSION['osNodes'][$to])){
 			return;
 		}

@@ -45,6 +45,7 @@ class usertab {
 			$_SESSION['osMsg']['client_selected'][$this->_fullname]=true;
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmNotSelected';
@@ -62,11 +63,7 @@ class usertab {
 		$_SESSION['osNodes'][$fullname]['biz']='usertab';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -112,7 +109,7 @@ class usertab {
 		$this->isSelected=true;
 		$d=array("tabName"=>$this->label);
 		osBroadcast("usertab_tabChanged",$d);
-		_bookFrame("frmSelected");
+		//$this->_bookframe("frmSelected");
 	}
 	function frmNotSelected(){
 		$d=array("page"=>$this->label);
@@ -126,6 +123,7 @@ PHTMLCODE;
 		return $html;
 	}
 	function frmSelected(){
+		osBackLink($this->_fullname,"selected","");
 		$html=<<<PHTMLCODE
 
 			[[{$this->label}]]
@@ -136,11 +134,11 @@ PHTMLCODE;
 	}
 	function bookLabel($s){
 		$this->label=$s;
-		_bookFrame($this->isSelected?"frmSelected":"frmNotSelected");
+		//$this->_bookframe($this->isSelected?"frmSelected":"frmNotSelected");
 	}
 	function bookSelected($b){
 		$this->isSelected=$b;
-		_bookFrame($this->isSelected?"frmSelected":"frmNotSelected");
+		$this->_bookframe($this->isSelected?"frmSelected":"frmNotSelected");
 	}
 
 }

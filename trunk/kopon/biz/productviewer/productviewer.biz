@@ -58,7 +58,7 @@
 		$html=<PHTML>
 			<center>$title - price:$price you get $discount Discount $buy</center><br>
 			(countdown code here)$time(till here)<br>
-			<img src="$image"/>$Description<hr>
+			<img src="$image"/>$description<hr>
 		</PHTML>;
 		return $html;
 	}

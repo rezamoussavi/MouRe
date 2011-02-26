@@ -19,7 +19,7 @@
 #message
 	client->applyChanges=onApplyChanges
 	client->cancelChanges=onCancelChanges
-	?????->editInfo=onEditInfo
+	frame->editInfo=onEditInfo
 #frame
 	frmView,frmEdit
 
@@ -33,7 +33,7 @@
 				User not loggedin.
 			</PHTML>
 		}else{
-			$u=new user();
+			$u=new user("");
 			$u->bookUID($uUID);
 			$html=<PHTML>
 				Name: {$u->backName()}<br>
@@ -73,7 +73,7 @@
 		// $info indexes: Name, Address, BDate, NewPassword, ConfirmPassword, OldPassword
 		$uUID=osBackUser();
 		if($uUID>0){
-			$u=new user();
+			$u=new user("");
 			$u->bookUID($uUID);
 			$u->bookName($info['Name']);
 			$u->bookAddress($info['Address']);

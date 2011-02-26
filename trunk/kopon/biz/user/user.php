@@ -45,6 +45,7 @@ class user {
 			//If any message need to be registered will placed here
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		if(!isset($_SESSION['osNodes'][$fullname]['userUID']))
 			$_SESSION['osNodes'][$fullname]['userUID']='';
 		$this->userUID=&$_SESSION['osNodes'][$fullname]['userUID'];
@@ -61,11 +62,7 @@ class user {
 		$_SESSION['osNodes'][$fullname]['biz']='user';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -104,10 +101,24 @@ class user {
 //########################################
 
 
+	function bookUID($UID){
+	}
+	function backName(){
+		return '';
+	}
+	function backEmail(){
+		return '';
+	}
+	function backAddress(){
+		return '';
+	}
+	function backBDate(){
+		return '';
+	}
     function logout() {
         $this->loggedIn = 0;
         osBroadcast("user_logout", array());
-		osBookUser(array());
+		osBookUser(array("email" => "", "UID" => -1, "name"=>""));
     }
     function isLoggedin() {
         return $this->loggedIn;

@@ -9,11 +9,11 @@
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
-        Author: Max Mirkia
+	Author: Max Mirkia
 	Date:	2/14/2010
 	Version: 1.0
-        ------------------
-        Author: Max Mirkia
+    ------------------
+    Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
 
@@ -45,6 +45,7 @@ class tabbank {
 			$_SESSION['osMsg']['tab_tabChanged'][$this->_fullname]=true;
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
@@ -61,16 +62,9 @@ class tabbank {
 		$_SESSION['osNodes'][$fullname]['biz']='tabbank';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
+	function gotoSleep() {
 		$_SESSION['osNodes'][$this->_fullname]['tab']=array();
-		foreach($this->tab as $node){
-			$_SESSION['osNodes'][$this->_fullname]['tab'][]=$node->_fullname;
-		}
-	}
-
-	function __destruct() {
-		$_SESSION['osNodes'][$this->_fullname]['tab']=array();
+		$_SESSION['osNodes'][$this->_fullname]['sleep']=true;
 		foreach($this->tab as $node){
 			$_SESSION['osNodes'][$this->_fullname]['tab'][]=$node->_fullname;
 		}
@@ -117,12 +111,10 @@ class tabbank {
 
     function bookContent($content){//String[]
         $this->tab=array();
-        $id=0;
         foreach($content as $c){
             $this->tab[]=new tab($this->_fullname.$c);
-            end($this->tab)->title=$c;
+            end($this->tab)->bookLabel($c);
         }
-        $this->_bookframe("frm");
     }
     function frm(){
 		$html='';
@@ -130,7 +122,7 @@ class tabbank {
 			$html.=$t->_backframe();
 		}
 		return $html;
-    }
+	}
     function onTabChanged($info){
         foreach($this->tab as $t){
             if($t->backLabel()==$info['tabName']){

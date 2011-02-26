@@ -51,6 +51,7 @@ class userpanelviewer {
 			$_SESSION['osMsg']['usertab_usertabChanged'][$this->_fullname]=true;
 		}
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmProfile';
@@ -68,11 +69,7 @@ class userpanelviewer {
 		$_SESSION['osNodes'][$fullname]['biz']='userpanelviewer';
 	}
 
-	function sleep(){
-		$_SESSION['osNodes'][$this->_fullname]['slept']=true;
-	}
-
-	function __destruct() {
+	function gotoSleep() {
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -117,8 +114,8 @@ class userpanelviewer {
 	function onusertabChanged($info){
 		$this->_bookframe("frm".$info['tabName']);
 	}
-	function frmProfile($info){
-		$toShow = $this->profile->_backFrame();
+	function frmProfile(){
+		$toShow = $this->profile->_backframe();
 		$html=<<<PHTMLCODE
 
 			$toShow
@@ -127,8 +124,8 @@ PHTMLCODE;
 
 		return $html;
 	}
-	function frmReferal($info){
-		$toShow = $this->referal->_backFrame();
+	function frmReferal(){
+		$toShow = $this->referal->_backframe();
 		$html=<<<PHTMLCODE
 
 			$toShow
@@ -137,7 +134,7 @@ PHTMLCODE;
 
 		return $html;
 	}
-	function frmHistory($info){
+	function frmHistory(){
 		$html=<<<PHTMLCODE
 
 			How to 
