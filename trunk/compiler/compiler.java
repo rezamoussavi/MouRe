@@ -17,9 +17,12 @@ public class compiler {
 		while(!input.equalsIgnoreCase("exit")){
 			System.out.print("command> ");
 			input=getInput();
-			if(input.equalsIgnoreCase("all"))
+			int ok=0;int err=0;
+			if(input.equalsIgnoreCase("all")){
 				for(String s:bizes)
-					loadAndCompile(s);
+					if(loadAndCompile(s))	ok++; else err++;
+				System.out.println("\n\tTotal:\t\t"+(ok+err)+"\n\tCompiled:\t"+ok+"\n\tError:\t\t"+err+"\n\n");
+			}
 			else
 				loadAndCompile(input);
 		}
@@ -30,7 +33,7 @@ public class compiler {
 		return scan.nextLine();
 	}
 
-	public static void loadAndCompile(String fname){
+	public static boolean loadAndCompile(String fname){
 		System.out.print("\t"+fname+"...");
 		BufferedReader br;
 		String FileName=fname;
@@ -41,13 +44,15 @@ public class compiler {
 			br=new BufferedReader(new FileReader( new File(FileName+".biz")));
 		} catch (Exception e) {
 			System.out.println("ERROR Reading File");
-			return;
+			return false;
 		}
 		try {
 			new compiler(br,FileName);
 			br.close();
+			return true;
 		} catch (IOException e) {
 			System.out.println("ERROR while reading file: "+e.toString());
+			return false;
 		}		
 	}
 	public compiler(BufferedReader br,String File) throws IOException{

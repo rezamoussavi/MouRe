@@ -22,7 +22,7 @@
 */
 
 	function myErrorHandler($errno, $errstr, $errfile, $errline){
-		echo "<hr /> $errno, $errstr, $errfile, $errline <hr />";
+		echo "<hr /><font color=red> bizError:$errno - ERROR:$errstr - FILE:$errfile - LINE:$errline </font><hr />";
 	}
 	set_error_handler("myErrorHandler");
 	date_default_timezone_set('GMT');
@@ -78,11 +78,15 @@
 	}
 
 	foreach($_SESSION['osNodes'] as $node){
-		if(isset($node['sleep']))
-			if(!$node['sleep'])
-				if(isset($node['node']))
-					if(is_object($node['node']))
+		if(isset($node['sleep'])){
+			if(!$node['sleep']){
+				if(isset($node['node'])){
+					if(is_object($node['node'])){
 						$node['node']->gotoSleep();
+					}
+				}
+			}
+		}
 	}
 /***************************************
 	// DEBUG
