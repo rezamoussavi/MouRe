@@ -17,6 +17,8 @@ public class PHPLine {
 		line=replace(line, "</PHTML>;", "\nPHTMLCODE;\n",false);
 		line=replace(line, "</PHTML>", "\nPHTMLCODE;\n",false);
 		line=replace(line, "_bookframe", "$this->_bookframe",false);
+		line=replace(line, "_bookFrame", "$this->_bookframe",false);
+		line=replace(line, "_backFrame", "_backframe",false);
 		line=replace(line, "osBackLink(", "osBackLink($this->_fullname,",false);
 		line=replace(line, "osBackLink (", "osBackLink($this->_fullname,",false);
 		line=replace(line, "osBackLinkInfo(", "osBackLinkInfo($this->_fullname,",false);

@@ -131,11 +131,12 @@ public class PHPClass {
         $this->_fullname=$fullname;
         if(!isset($_SESSION['osNodes'][$fullname])){
         	$_SESSION['osNodes'][$fullname]=array();
-        	
+
         	//for each inMessage as Msg
         	$_SESSION['osMsg'][Msg][$this->_fullname]=true;
         }
 
+		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']="frm";
@@ -156,8 +157,9 @@ public class PHPClass {
         $this->initfun();//which take from start section
 	}
 
-	function __destruct() {
+	function gotoSleep() {
 		$_SESSION['osNodes'][$this->_fullname]['NODES']=array();
+		$_SESSION['osNodes'][$this->_fullname]['sleep']=true;
 		foreach($this->NODES as $node){
 			$_SESSION['osNodes'][$this->_fullname]['NODES'][]=$node->_fullname;
 		}
@@ -181,7 +183,8 @@ public class PHPClass {
 		for(Message m:messages)
 			if(m.isCallBack())
 				s+="\t\t\t$_SESSION['osMsg']['"+m.msg+"'][$this->_fullname]=true;\n";
-		s+="\t\t}\n\n";
+		s+="\t\t}\n\n" +
+			"\t\t$_SESSION['osNodes'][$fullname]['sleep']=false;\n";
 		if(frames.size()>0){
 			s+= "\t\t//default frame if exists\n"+
 			"\t\tif(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))\n"+
@@ -210,20 +213,13 @@ public class PHPClass {
 		s+= "\t\t$_SESSION['osNodes'][$fullname]['node']=$this;\n" +
 			"\t\t$_SESSION['osNodes'][$fullname]['biz']='"+Name+"';\n" +
 		"\t}\n\n" +
-		"\tfunction sleep(){\n" +
-		"\t\t$_SESSION['osNodes'][$this->_fullname]['slept']=true;\n";
+		"\tfunction gotoSleep() {\n";
 		for(Node n:nodes)
 			if(n.isArray)
-				s+= "\t\t$_SESSION['osNodes'][$this->_fullname]['"+n.node+"']=array();\n"+
-				"\t\tforeach($this->"+n.node+" as $node){\n" +
-				"\t\t\t$_SESSION['osNodes'][$this->_fullname]['"+n.node+"'][]=$node->_fullname;\n\t\t}\n";
-		s+= "\t}\n\n" +
-		"\tfunction __destruct() {\n";
-		for(Node n:nodes)
-			if(n.isArray)
-				s+= "\t\t$_SESSION['osNodes'][$this->_fullname]['"+n.node+"']=array();\n"+
-				"\t\tforeach($this->"+n.node+" as $node){\n" +
-				"\t\t\t$_SESSION['osNodes'][$this->_fullname]['"+n.node+"'][]=$node->_fullname;\n\t\t}\n";
+				s+= "\t\t$_SESSION['osNodes'][$this->_fullname]['"+n.node+"']=array();\n" +
+					"\t\t$_SESSION['osNodes'][$this->_fullname]['sleep']=true;\n"+
+					"\t\tforeach($this->"+n.node+" as $node){\n" +
+					"\t\t\t$_SESSION['osNodes'][$this->_fullname]['"+n.node+"'][]=$node->_fullname;\n\t\t}\n";
 		s+= "\t\tif($this->_tmpNode)\n"+
 			"\t\t\tunset($_SESSION['osNodes'][$this->_fullname]);\n" +
 			"\t\telse\n" +

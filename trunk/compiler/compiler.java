@@ -12,7 +12,7 @@ public class compiler {
 	String FileName;
 
 	public static void main(String[] args) {
-		List<String> bizes=Arrays.asList("adminpanel","history","mainviewer","multipageviewer","product","productlistviewer","productviewer","profile","purchace","referal","subscribe","tab","tabbank","userpanel","userpanelviewer","usertab","usertabbank");
+		List<String> bizes=Arrays.asList("adminpanel","history","mainviewer","multipageviewer","product","productlistviewer","productviewer","profile","purchase","purchaseviewer","referal","subscribe","tab","tabbank","userpanel","userpanelviewer","usertab","usertabbank","purchaseviewer","login","user");
 		String input="";
 		while(!input.equalsIgnoreCase("exit")){
 			System.out.print("command> ");
@@ -35,7 +35,7 @@ public class compiler {
 		BufferedReader br;
 		String FileName=fname;
 		if(FileName.length()<20){
-			FileName="C:\\MouReBackup\\trunk\\kopon\\biz\\"+fname+"\\"+fname;
+			FileName="C:\\MouRe\\trunk\\kopon\\biz\\"+fname+"\\"+fname;
 		}
 		try {
 			br=new BufferedReader(new FileReader( new File(FileName+".biz")));
