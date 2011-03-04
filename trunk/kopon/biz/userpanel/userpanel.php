@@ -56,7 +56,8 @@ class userpanel {
 
 		$this->panel=new userpanelviewer($this->_fullname.'_panel');
 
-		$this->init(); //Customized Initializing
+		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
+			$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='userpanel';
 	}
@@ -78,7 +79,7 @@ class userpanel {
 
 	function _bookframe($frame){
 		$this->_curFrame=$frame;
-		$this->show(true);
+		//$this->show(true);
 	}
 	function _backframe(){
 		return $this->show(false);

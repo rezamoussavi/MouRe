@@ -9,6 +9,10 @@
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
+	Author: Reza Moussavi
+	Date:	3/3/2010
+	Version: 0.3
+	------------------
 	Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
@@ -105,7 +109,7 @@ class product {
 
 	function _bookframe($frame){
 		$this->_curFrame=$frame;
-		$this->show(true);
+		//$this->show(true);
 	}
 	function _backframe(){
 		return $this->show(false);
@@ -127,6 +131,27 @@ class product {
 //########################################
 
 
+	function bookProductUID($UID){
+		$date=date("Ymd");
+		$to=$date."2400";
+		$from=$date."0000";
+		if($UID>0){
+			$q="select * from product_product where UID=$UID";
+		}
+		else{
+			$q="select * from product_product where endtime<'$to' and starttime>'$from'";
+		}
+		xquery($this,$q);
+		if($row = fetch()){
+			$this->UID = $row['UID'];
+			$this->title = $row['Title'];
+			$this->discount = $row['Discount'];
+			$this->description = $row['Description'];
+			$this->startTime = $row['StartTime'];
+			$this->endTime = $row['EndTime'];
+			$this->price = $row['Price'];
+		}
+	}
 	function backTitle(){
 		return $this->title;
 	}
@@ -152,11 +177,11 @@ class product {
 	
 	function bookImage($tempPath){
 		move_uploaded_file($tempPath,
-			"biz/product" . "b" . $this->UID . ".jpg");
+			"biz/product/images/" . "b" . $this->UID . ".jpg");
 	}
 	
 	function backImage(){
-		return "biz/product" . "b" . $this->UID . ".jpg";	
+		return "http://".$_SERVER['HTTP_HOST']."/biz/product/images/" . "b" . $this->UID . ".jpg";	
 	}
 	
 	function backRemainingTime(){
@@ -169,19 +194,6 @@ class product {
 	
 	function backDiscount(){
 		return $this->discount;
-	}
-	
-	function bookProductUID($UID){
-		//query()
-		if($row = fetch()){
-			$this->UID = $row[''];
-			$this->title = $row[''];
-			$this->discount = $row[''];
-			$this->description = $row[''];
-			$this->startTime = $row[''];
-			$this->endTime = $row[''];
-			$this->price = $row[''];
-		}
 	}
 	
 	function backProductUID(){
@@ -205,16 +217,23 @@ class product {
 	}
 	
 	function backIcon(){
-		return "biz/product" . "i" . $this->UID . ".jpg";
+		return "http://".$_SERVER['HTTP_HOST']."/biz/product/images/" . "i" . $this->UID . ".jpg";
 	}
 	
 	function bookIcon($tempPath){
 		move_uploaded_file($tempPath,
-			"biz/product" . "i" . $this->UID . ".jpg");		
+			"biz/product/images" . "i" . $this->UID . ".jpg");		
 	}
 	
 	function backAllUID(){
-		return array();
+		$date=date("Ymd");
+		$to=$date."2400";
+		xquery($this,"select UID from product_product where endtime<'$to'");
+		$ret=array();
+		while($d=fetch()){
+			$ret[]=$d['UID'];
+		}
+		return $ret;
 	}
 
 }

@@ -52,7 +52,8 @@ class history {
 
 		$this->purchases=new purchaseviewer($this->_fullname.'_purchases');
 
-		$this->init(); //Customized Initializing
+		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
+			$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='history';
 	}
@@ -74,7 +75,7 @@ class history {
 
 	function _bookframe($frame){
 		$this->_curFrame=$frame;
-		$this->show(true);
+		//$this->show(true);
 	}
 	function _backframe(){
 		return $this->show(false);

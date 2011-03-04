@@ -58,7 +58,8 @@ class mainviewer {
 
 		$this->pages=new multipageviewer($this->_fullname.'_pages');
 
-		$this->init(); //Customized Initializing
+		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
+			$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='mainviewer';
 	}
@@ -86,7 +87,7 @@ class mainviewer {
 
 	function _bookframe($frame){
 		$this->_curFrame=$frame;
-		$this->show(true);
+		//$this->show(true);
 	}
 	function _backframe(){
 		return $this->show(false);

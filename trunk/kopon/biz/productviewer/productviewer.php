@@ -78,7 +78,7 @@ class productviewer {
 
 	function _bookframe($frame){
 		$this->_curFrame=$frame;
-		$this->show(true);
+		//$this->show(true);
 	}
 	function _backframe(){
 		return $this->show(false);
@@ -140,17 +140,16 @@ PHTMLCODE;
 	}
 	function frmSmall(){
 		$title=$this->product->backTitle();
-		$description=$this->product->backDesription();
+		$description=$this->product->backDescription();
 		$price=$this->product->backPrice();
-		$image=$this->product->backImage();
+		$image=$this->product->backIcon();
 		$time=$this->product->backRemainingTime();
 		$discount=$this->product->backDiscount();
 		$html=<<<PHTMLCODE
 
 			<center>$title - price:$price you get $discount Discount</center><br>
 			(countdown code here)$time(till here)<br>
-			<img src="$image"/>$Description<hr>
-			
+			<img src="$image"/>$description<hr>
 		
 PHTMLCODE;
 

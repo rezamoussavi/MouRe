@@ -1,20 +1,45 @@
 #comments
+	Author: Reza Moussavi
+	Date:	3/3/2010
+	Version: 0.3
+	------------------
 	Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
+
 #biz
 	product
-
 
 #family
 	product
 	
 #var
 	UID, title, description, price, image, discount, startTime, endTime, icon
-	
-
 
 #phpfunction
+
+	function bookProductUID($UID){
+		$date=date("Ymd");
+		$to=$date."2400";
+		$from=$date."0000";
+		if($UID>0){
+			$q="select * from #db->product where UID=$UID";
+		}
+		else{
+			$q="select * from #db->product where endtime<'$to' and starttime>'$from'";
+		}
+		xquery($this,$q);
+		if($row = fetch()){
+			#var->UID = $row['UID'];
+			#var->title = $row['Title'];
+			#var->discount = $row['Discount'];
+			#var->description = $row['Description'];
+			#var->startTime = $row['StartTime'];
+			#var->endTime = $row['EndTime'];
+			#var->price = $row['Price'];
+		}
+	}
+
 	function backTitle(){
 		return #var->title;
 	}
@@ -41,11 +66,11 @@
 	
 	function bookImage($tempPath){
 		move_uploaded_file($tempPath,
-			"biz/product" . "b" . #var->UID . ".jpg");
+			"biz/product/images/" . "b" . #var->UID . ".jpg");
 	}
 	
 	function backImage(){
-		return "biz/product" . "b" . #var->UID . ".jpg";	
+		return "http://".$_SERVER['HTTP_HOST']."/biz/product/images/" . "b" . #var->UID . ".jpg";	
 	}
 	
 	function backRemainingTime(){
@@ -58,19 +83,6 @@
 	
 	function backDiscount(){
 		return #var->discount;
-	}
-	
-	function bookProductUID($UID){
-		//query()
-		if($row = fetch()){
-			#var->UID = $row[''];
-			#var->title = $row[''];
-			#var->discount = $row[''];
-			#var->description = $row[''];
-			#var->startTime = $row[''];
-			#var->endTime = $row[''];
-			#var->price = $row[''];
-		}
 	}
 	
 	function backProductUID(){
@@ -94,14 +106,21 @@
 	}
 	
 	function backIcon(){
-		return "biz/product" . "i" . #var->UID . ".jpg";
+		return "http://".$_SERVER['HTTP_HOST']."/biz/product/images/" . "i" . #var->UID . ".jpg";
 	}
 	
 	function bookIcon($tempPath){
 		move_uploaded_file($tempPath,
-			"biz/product" . "i" . #var->UID . ".jpg");		
+			"biz/product/images" . "i" . #var->UID . ".jpg");		
 	}
 	
 	function backAllUID(){
-		return array();
+		$date=date("Ymd");
+		$to=$date."2400";
+		xquery($this,"select UID from #db->product where endtime<'$to'");
+		$ret=array();
+		while($d=fetch()){
+			$ret[]=$d['UID'];
+		}
+		return $ret;
 	}

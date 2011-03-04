@@ -9,10 +9,8 @@
 #biz
 	multipageviewer
 
-
 #family
 	page
-
 
 #node
 	productviewer productviewer,productlistviewer productlistviewer, adminpanel adminpanel, userpanel userpanel
@@ -24,8 +22,15 @@
 	tab->tabChanged=onTabChanged
         client->page=onPage
 
+#start
+	init
 
 #phpfunction
+
+	function init(){
+		#node->productviewer->bookProductUID(0);
+	}
+
 	function onTabChanged($info){
 		_bookframe(#frame->frm.$info['tabName']);
 	}

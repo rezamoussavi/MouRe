@@ -65,16 +65,15 @@
 
 	function frmSmall(){
 		$title=#node->product->backTitle();
-		$description=#node->product->backDesription();
+		$description=#node->product->backDescription();
 		$price=#node->product->backPrice();
-		$image=#node->product->backImage();
+		$image=#node->product->backIcon();
 		$time=#node->product->backRemainingTime();
 		$discount=#node->product->backDiscount();
 		$html=<PHTML>
 			<center>$title - price:$price you get $discount Discount</center><br>
 			(countdown code here)$time(till here)<br>
-			<img src="$image"/>$Description<hr>
-			
+			<img src="$image"/>$description<hr>
 		</PHTML>;
 		return $html;
 	}

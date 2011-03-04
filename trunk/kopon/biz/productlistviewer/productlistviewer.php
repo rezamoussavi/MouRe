@@ -9,10 +9,14 @@
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 
-        Author: Max Mirkia
+	Author: Reza Moussavi
+	Date:	3/3/2010
+	Version: 1.1
+	------------------
+	Author: Max Mirkia
 	Date:	2/14/2010
 	Version: 1.0
-        ------------------
+	------------------
 	Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
@@ -59,7 +63,8 @@ class productlistviewer {
 		foreach($_SESSION['osNodes'][$fullname]['productViewers'] as $arrfn)
 			$this->productViewers[]=new productviewer($arrfn);
 
-		$this->init(); //Customized Initializing
+		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
+			$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='productlistviewer';
 	}
@@ -89,7 +94,7 @@ class productlistviewer {
 
 	function _bookframe($frame){
 		$this->_curFrame=$frame;
-		$this->show(true);
+		//$this->show(true);
 	}
 	function _backframe(){
 		return $this->show(false);
@@ -117,7 +122,8 @@ class productlistviewer {
 		$i=0;
 		foreach($products as $p){
 			$this->productViewers[] = new productViewer($this->_fullname.$i++);
-			end($this->productViewers)->bookUID($p);
+			end($this->productViewers)->bookSmall();
+			end($this->productViewers)->bookProductUID($p);
 		}
 	}
 	function onMode($info){
@@ -127,7 +133,7 @@ class productlistviewer {
 	function frmBigMode(){
 		$html=<<<PHTMLCODE
 
-			
+			[[ BIG MODE ]]
 		
 PHTMLCODE;
 
@@ -135,7 +141,16 @@ PHTMLCODE;
 	}
 	
 	function frmSmallMode(){
-	
+		$html='';
+		foreach($this->productViewers as $pv){
+			$html.=$pv->_backframe();
+		}
+		return <<<PHTMLCODE
+
+			$html
+		
+PHTMLCODE;
+
 	}
 	
 

@@ -1,5 +1,9 @@
 <?php
 
+	function _D($a){
+		echo "<hr />DEBUG: ".$a."<hr />";
+	}
+
 	function osBackLink($node,$curLink,$linkto){
 		$ar1=array();
 		$ar2=array();

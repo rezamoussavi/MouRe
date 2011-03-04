@@ -66,6 +66,8 @@ class multipageviewer {
 
 		$this->userpanel=new userpanel($this->_fullname.'_userpanel');
 
+		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
+			$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='multipageviewer';
 	}
@@ -93,7 +95,7 @@ class multipageviewer {
 
 	function _bookframe($frame){
 		$this->_curFrame=$frame;
-		$this->show(true);
+		//$this->show(true);
 	}
 	function _backframe(){
 		return $this->show(false);
@@ -115,6 +117,9 @@ class multipageviewer {
 //########################################
 
 
+	function init(){
+		$this->productviewer->bookProductUID(0);
+	}
 	function onTabChanged($info){
 		$this->_bookframe("frm".$info['tabName']);
 	}

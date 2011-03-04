@@ -1,19 +1,22 @@
 #comments
 
-        Author: Max Mirkia
+	Author: Reza Moussavi
+	Date:	3/3/2010
+	Version: 1.1
+	------------------
+	Author: Max Mirkia
 	Date:	2/14/2010
 	Version: 1.0
-        ------------------
+	------------------
 	Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
+
 #biz
 	productlistviewer
 
-
 #family
 	product
-
 
 #node
 	product, productviewer[] productViewers
@@ -35,7 +38,8 @@
 		$i=0;
 		foreach($products as $p){
 			#node->productViewers[] = new productViewer(#nodeID.$i++);
-			end(#node->productViewers)->bookUID($p);
+			end(#node->productViewers)->bookSmall();
+			end(#node->productViewers)->bookProductUID($p);
 		}
 	}
 
@@ -45,12 +49,18 @@
 	
 	function frmBigMode(){
 		$html=<PHTML>
-			
+			[[ BIG MODE ]]
 		</PHTML>
 		return $html;
 	}
 	
 	function frmSmallMode(){
-	
+		$html='';
+		foreach(#node->productViewers as $pv){
+			$html.=$pv->_backFrame();
+		}
+		return <PHTML>
+			$html
+		</PHTML>;
 	}
 	
