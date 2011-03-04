@@ -49,6 +49,7 @@ public class Section {
 			elements.get(0).append(line+"\n");
 	}
 
+	@Override
 	public String toString(){
 		return "\n["+name+"]\n"+elements+"\n#################################\n";
 	}

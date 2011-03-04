@@ -1,31 +1,62 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class compiler {
 
-	String FileName;
+	public static String Server;
+	public static String BizFolder;
 
 	public static void main(String[] args) {
-		List<String> bizes=Arrays.asList("adminpanel","history","mainviewer","multipageviewer","product","productlistviewer","productviewer","profile","purchase","purchaseviewer","referal","subscribe","tab","tabbank","userpanel","userpanelviewer","usertab","usertabbank","purchaseviewer","login","user");
+		if(!LoadConfig())
+			return;
+		File Dir=new File(BizFolder);
+		String Dirs[]=Dir.list();
+		ArrayList<String> bizes=new ArrayList<String>();
+		for(int i=0;i<Dirs.length;i++){
+			bizes.add(Dirs[i]);
+			System.out.println("Found ... "+Dirs[i]);
+		}
 		String input="";
 		while(!input.equalsIgnoreCase("exit")){
-			System.out.print("command> ");
+			System.out.print("\ncommand> ");
 			input=getInput();
 			int ok=0;int err=0;
 			if(input.equalsIgnoreCase("all")){
 				for(String s:bizes)
 					if(loadAndCompile(s))	ok++; else err++;
-				System.out.println("\n\tTotal:\t\t"+(ok+err)+"\n\tCompiled:\t"+ok+"\n\tError:\t\t"+err+"\n\n");
+				System.out.print("\n\n\t"+(ok+err)+"\tTotal\n\t"+ok+"\tCompiled/Uploaded\n\t"+err+"\tError");
 			}
 			else
 				loadAndCompile(input);
 		}
+	}
+
+	public static boolean LoadConfig(){
+		String line="";
+		try {
+			BufferedReader br=new BufferedReader(new FileReader(new File("config.ini")));
+			while(line!=null){
+				line= br.readLine();
+				if(line!=null)
+					if(line.trim().equalsIgnoreCase("[server]"))
+						compiler.Server= br.readLine();
+					else if(line.trim().equalsIgnoreCase("[bizfolder]"))
+						compiler.BizFolder= br.readLine();
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("config.ini: file not found / content error!\n"+e.getMessage());
+			return false;
+		} catch (IOException e) {
+			System.out.println("config.ini: reading error!\n"+e.getMessage());
+			return false;
+		}
+		return true;
 	}
 
 	public static String getInput(){
@@ -34,16 +65,13 @@ public class compiler {
 	}
 
 	public static boolean loadAndCompile(String fname){
-		System.out.print("\t"+fname+"...");
+		System.out.print("\n\t"+fname+"...\n\t\t");
 		BufferedReader br;
-		String FileName=fname;
-		if(FileName.length()<20){
-			FileName="C:\\MouRe\\trunk\\kopon\\biz\\"+fname+"\\"+fname;
-		}
+		String FileName=BizFolder+fname+"\\"+fname;
 		try {
 			br=new BufferedReader(new FileReader( new File(FileName+".biz")));
 		} catch (Exception e) {
-			System.out.println("ERROR Reading File");
+			System.out.print("ERROR Reading File");
 			return false;
 		}
 		try {
@@ -51,12 +79,12 @@ public class compiler {
 			br.close();
 			return true;
 		} catch (IOException e) {
-			System.out.println("ERROR while reading file: "+e.toString());
+			System.out.print("ERROR: "+e.getMessage());
 			return false;
 		}		
 	}
+	@SuppressWarnings("static-access")
 	public compiler(BufferedReader br,String File) throws IOException{
-		this.FileName=File+".php";
 		PHPClass php=new PHPClass();
 		Section sec=null;
 		String line="";
@@ -73,10 +101,31 @@ public class compiler {
 				sec.add(line);
 		}
 		php.applySection(sec);
-		System.out.println(" Compiled!");
-		FileWriter fw=new FileWriter(FileName);
+		System.out.print(" Compiled!");
+		//
+		// Saving Compiled File
+		//
+		FileWriter fw=new FileWriter(File+".php");
 		fw.write(php.toString());
 		fw.close();
+		//
+		// Uploading .php file
+		//
+		System.out.print(" - [upload php]...");
+		if(PostFile.Post(Server, php.Name, File+".php"))
+			System.out.print(" Done!");
+		else{
+			throw new IOException("Cannot upload php to Server: <"+Server+">");
+		}
+		//
+		// Uploading .biz file
+		//
+		System.out.print(" - [upload biz]...");
+		if(PostFile.Post(Server, php.Name, File+".biz"))
+			System.out.print(" Done!");
+		else{
+			throw new IOException("Cannot upload biz to Server: <"+Server+">");
+		}
 	}
 
 	public boolean isNewSection(String line){

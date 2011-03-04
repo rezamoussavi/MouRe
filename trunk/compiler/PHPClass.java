@@ -51,13 +51,14 @@ public class PHPClass {
 		}else if(sec.name.equalsIgnoreCase("phpfunction")){
 			functions=sec.elements.get(0).data;
 		}else if(sec.name.equalsIgnoreCase("comments")){
-			comments= "/*\n\tCompiled by bizLang compiler version 1.5 (Feb 21 2011) By Reza Moussavi\n" +
+			comments= "/*\n\tCompiled by bizLang compiler version 2.0 (March 4 2011) By Reza Moussavi\n" +
 			"\t1.1: {Family included}\n" +
 			"\t1.2: {flatten sleep session}\n" +
 			"\t1.3: {direct message sending}\n" +
 			"\t1.3.5: {sleep and decunstructed merged + _tmpNode_ added to fix a bug}\n" +
 			"\t1.4: {multi parameter in link message}\n" +
-			"\t1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}\n\n" +
+			"\t1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}\n" +
+			"\t2.0: {upload bothe biz and php directly to server (ready to use)}\n\n" +
 			sec.elements.get(0).data+"\n*/\n";
 		}
 	}
@@ -154,7 +155,8 @@ public class PHPClass {
 		if(!isset($_SESSION['osNodes'][$fullname]['VAR']))
 			$_SESSION['osNodes'][$fullname]['VAR']=""/initVar;
         $this->var=&$_SESSION['osNodes'][$fullname]['VAR'];
-        $this->initfun();//which take from start section
+        if(!isset($_SESSION['osNodes'][$fullname]['biz']))
+        	$this->initfun();//which take from start section
 	}
 
 	function gotoSleep() {
@@ -209,7 +211,8 @@ public class PHPClass {
 			"\t\t$this->"+v.name+"=&$_SESSION['osNodes'][$fullname]['"+v.name+"'];\n\n";
 		}
 		if(startFunName.trim().length()>0)
-			s+="\t\t$this->"+startFunName+"(); //Customized Initializing\n";
+			s+= "\t\tif(!isset($_SESSION['osNodes'][$fullname]['biz']))\n" +
+				"\t\t\t$this->"+startFunName+"(); //Customized Initializing\n";
 		s+= "\t\t$_SESSION['osNodes'][$fullname]['node']=$this;\n" +
 			"\t\t$_SESSION['osNodes'][$fullname]['biz']='"+Name+"';\n" +
 		"\t}\n\n" +
@@ -259,7 +262,7 @@ public class PHPClass {
 
 	function _bookframe($frame){
 		$this->_curFrame=$frame;
-		$this->show(true);
+		//$this->show(true);
 	}
 
 	function _backframe(){
@@ -279,7 +282,7 @@ public class PHPClass {
 		String s="";
 		s+="\n\tfunction _bookframe($frame){\n" +
 		"\t\t$this->_curFrame=$frame;\n" +
-		"\t\t$this->show(true);\n" +
+		"\t\t//$this->show(true);\n" +
 		"\t}\n" +
 		"\tfunction _backframe(){\n" +
 		"\t\treturn $this->show(false);\n" +
