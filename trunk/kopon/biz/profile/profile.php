@@ -1,13 +1,14 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.5 (Feb 21 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 2.0 (March 4 2011) By Reza Moussavi
 	1.1: {Family included}
 	1.2: {flatten sleep session}
 	1.3: {direct message sending}
 	1.3.5: {sleep and decunstructed merged + _tmpNode_ added to fix a bug}
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
+	2.0: {upload bothe biz and php directly to server (ready to use)}
 
 	Author: Reza Moussavi
 	Date:	02/21/2011
@@ -26,12 +27,14 @@ class profile {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
+	var $_frmChanged;
 
 	//Variables
 
 	//Nodes (bizvars)
 
 	function __construct($fullname) {
+		$this->_frmChanged=false;
 		$this->_tmpNode=false;
 		if($fullname==null){
 			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
@@ -81,7 +84,10 @@ class profile {
 	}
 
 	function _bookframe($frame){
-		$this->_curFrame=$frame;
+		if($frame!=$this->_curFrame){
+			$this->_frmChanged=true;
+			$this->_curFrame=$frame;
+		}
 		//$this->show(true);
 	}
 	function _backframe(){

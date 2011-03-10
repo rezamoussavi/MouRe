@@ -1,13 +1,14 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 1.5 (Feb 21 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 2.0 (March 4 2011) By Reza Moussavi
 	1.1: {Family included}
 	1.2: {flatten sleep session}
 	1.3: {direct message sending}
 	1.3.5: {sleep and decunstructed merged + _tmpNode_ added to fix a bug}
 	1.4: {multi parameter in link message}
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
+	2.0: {upload bothe biz and php directly to server (ready to use)}
 
 	Author: Max Mirkia
 	Date:	2/7/2010
@@ -21,6 +22,7 @@ class purchase {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
+	var $_frmChanged;
 
 	//Variables
 
@@ -59,7 +61,9 @@ class purchase {
 	}
 
 	function _bookframe($frame){
-		$this->_curFrame=$frame;
+		if($frame!=$this->_curFrame){
+			$this->_curFrame=$frame;
+		}
 		//$this->show(true);
 	}
 	function _backframe(){

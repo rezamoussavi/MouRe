@@ -7,6 +7,7 @@ class subscribe {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
+	var $_frmChanged;
 
 	//Variables
 
@@ -45,7 +46,9 @@ class subscribe {
 	}
 
 	function _bookframe($frame){
-		$this->_curFrame=$frame;
+		if($frame!=$this->_curFrame){
+			$this->_curFrame=$frame;
+		}
 		//$this->show(true);
 	}
 	function _backframe(){

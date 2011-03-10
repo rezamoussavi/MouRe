@@ -1,5 +1,9 @@
 #comments
 
+	Author: Reza Moussavi
+	Date:	3/10/2010
+	Version: 1.5
+    ------------------
 	Author: Max Mirkia
 	Date:	2/14/2010
 	Version: 1.0
@@ -7,45 +11,48 @@
     Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
+
 #biz
 	tabbank
 
 #family
 	tab
 
-#node
-    tab[] tab
+#var
+	tabs, curTabName
 
 #frame
     frm
 
 #message
-	tab->tabChanged=onTabChanged
+	client->tab=onTabSelected
 
 #phpfunction
 
     function bookContent($content){//String[]
-        #node->tab=array();
+        #var->tabs=array();
         foreach($content as $c){
-            #node->tab[]=new tab(#nodeID.$c);
-            end(#node->tab)->bookLabel($c);
+            #var->tabs[]=$c;
         }
+		#var->curTabName=#var->tabs[0];
     }
 
     function frm(){
 		$html='';
-		foreach(#node->tab as $t){
-			$html.=$t->_backframe();
+		foreach(#var->tabs as $t){
+			if($t==#var->curTabName){
+				$html.=<PHTML> <b>[[{$t}]]</b> </PHTML>;
+			}else{
+				$link=osBackLinkInfo("tab",array("name"=>#var->curTabName),"tab",array("name"=>$t));
+				$html.=<PHTML>
+					<a href="{$link}">{$t}</a>
+				</PHTML>
+			}
 		}
 		return $html;
 	}
 
-    function onTabChanged($info){
-        foreach(#node->tab as $t){
-            if($t->backLabel()==$info['tabName']){
-                $t->bookSelected(true);
-            }else{
-                $t->bookSelected(false);
-            }
-        }
+    function onTabSelected($info){
+		#var->curTabName=$info["name"];
+		osBroadcast(#msg->tabChanged,array("tabName"=>$info["name"]));
     }

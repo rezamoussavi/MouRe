@@ -7,12 +7,14 @@ class referal {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
+	var $_frmChanged;
 
 	//Variables
 
 	//Nodes (bizvars)
 
 	function __construct($fullname) {
+		$this->_frmChanged=false;
 		$this->_tmpNode=false;
 		if($fullname==null){
 			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
@@ -50,7 +52,10 @@ class referal {
 	}
 
 	function _bookframe($frame){
-		$this->_curFrame=$frame;
+		if($frame!=$this->_curFrame){
+			$this->_frmChanged=true;
+			$this->_curFrame=$frame;
+		}
 		//$this->show(true);
 	}
 	function _backframe(){

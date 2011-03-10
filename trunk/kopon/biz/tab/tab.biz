@@ -16,23 +16,14 @@
 #var
 	label
 
-#message
-	client->selected=onSelected
-
 #frame
 	frmSelected,*frmNotSelected
 
 #phpfunction
 
-	function onSelected($info){
-		#fun->bookSelected(true);
-		$d=array("tabName"=>#var->label);
-		osBroadcast(#msg->tabChanged,$d);
-	}
-
 	function bookLabel($label){//String
 		#var->label=$label;
-		//_bookFrame(#frame->frmNotSelected);
+		_bookFrame(#frame->frmNotSelected);
 	}
 
 	function bookSelected($selected){//boolean
@@ -48,7 +39,6 @@
 	}
 
 	function frmSelected(){
-		osBackLink("selected","");
 		$html=<PHTML>
 			[{#var->label}]
 		</PHTML>
@@ -56,9 +46,8 @@
 	}
 
 	function frmNotSelected(){
-		$link=osBackLink("","selected");
 		$html=<PHTML>
-			<a href="$link">{#var->label}</a>
+			{#var->label}
 		</PHTML>
 		return $html;
 	}
