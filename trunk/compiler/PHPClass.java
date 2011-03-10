@@ -90,6 +90,7 @@ public class PHPClass {
 		"\tvar $_fullname;\n" +
 		"\tvar $_curFrame;\n" +
 		"\tvar $_tmpNode;\n" +
+		"\tvar $_frmChanged;\n" +
 		"\n\t//Variables\n";
 		for(Var v:vars)
 			s+="\tvar $"+v.name+";\n";
@@ -125,6 +126,7 @@ public class PHPClass {
 		/*
 	function __construct($fullname) {
 		$this->_tmpNode=false;
+		$this->_frmChanged=false;//if there is any frame defined for this biz
 		if($fullname==null){
 			$fullname="_tmpNode_".count($_SESSION['osNodes']);
 			$this->_tmpNode=true;
@@ -172,16 +174,18 @@ public class PHPClass {
 	}
 
 		 */
-		String s="\n\tfunction __construct($fullname) {\n" +
-		"\t\t$this->_tmpNode=false;\n"+
-		"\t\tif($fullname==null){\n"+
-		"\t\t\t$fullname='_tmpNode_'.count($_SESSION['osNodes']);\n"+
-		"\t\t\t$this->_tmpNode=true;\n"+
-		"\t\t}\n" +
-		"\t\t$this->_fullname=$fullname;\n" +
-		"\t\tif(!isset($_SESSION['osNodes'][$fullname])){\n" +
-		"\t\t\t$_SESSION['osNodes'][$fullname]=array();\n" +
-		"\t\t\t//If any message need to be registered will placed here\n";
+		String s="\n\tfunction __construct($fullname) {\n";
+		if(frames.size()>0)
+			s+="\t\t$this->_frmChanged=false;\n";
+		s+=	"\t\t$this->_tmpNode=false;\n"+
+			"\t\tif($fullname==null){\n"+
+			"\t\t\t$fullname='_tmpNode_'.count($_SESSION['osNodes']);\n"+
+			"\t\t\t$this->_tmpNode=true;\n"+
+			"\t\t}\n" +
+			"\t\t$this->_fullname=$fullname;\n" +
+			"\t\tif(!isset($_SESSION['osNodes'][$fullname])){\n" +
+			"\t\t\t$_SESSION['osNodes'][$fullname]=array();\n" +
+			"\t\t\t//If any message need to be registered will placed here\n";
 		for(Message m:messages)
 			if(m.isCallBack())
 				s+="\t\t\t$_SESSION['osMsg']['"+m.msg+"'][$this->_fullname]=true;\n";
@@ -261,7 +265,10 @@ public class PHPClass {
 		/*
 
 	function _bookframe($frame){
-		$this->_curFrame=$frame;
+		if($frame!=$this->_curFrame){
+			$this->_frmChanged=true;//if there is any frm defined for this biz
+			$this->_curFrame=$frame;
+		}
 		//$this->show(true);
 	}
 
@@ -281,7 +288,11 @@ public class PHPClass {
 		 */
 		String s="";
 		s+="\n\tfunction _bookframe($frame){\n" +
-		"\t\t$this->_curFrame=$frame;\n" +
+		"\t\tif($frame!=$this->_curFrame){\n";
+		if(frames.size()>0)
+			s+="\t\t\t$this->_frmChanged=true;\n";
+		s+="\t\t\t$this->_curFrame=$frame;\n" +
+		"\t\t}\n" +
 		"\t\t//$this->show(true);\n" +
 		"\t}\n" +
 		"\tfunction _backframe(){\n" +

@@ -25,7 +25,7 @@ public class compiler {
 		String input="";
 		while(!input.equalsIgnoreCase("exit")){
 			System.out.print("\ncommand> ");
-			input=getInput();
+			input=getInput();if(input.equalsIgnoreCase("exit")) break;
 			int ok=0;int err=0;
 			if(input.equalsIgnoreCase("all")){
 				for(String s:bizes)
