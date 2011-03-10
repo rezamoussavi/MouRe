@@ -101,18 +101,18 @@
 	}
 
 	function osParse($s){
-		$to="";
+		$msg="";
 		$ar=array();
 		$i=strpos($s,":");
 		if($i===false){
-			$to=$s;
+			$msg=$s;
 		}
 		else{
-			$to=substr($s,0,$i);
+			$msg=substr($s,0,$i);
 			$params=osParseParams(substr($s,$i+1));
 			$ar=osParseParamVal($params);
 		}
-		return array($to,$ar);
+		return array($msg,$ar);
 	}
 
 	function osParseParams($s){

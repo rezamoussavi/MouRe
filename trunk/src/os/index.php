@@ -1,25 +1,5 @@
 <?php
 	session_start();
-/***************************************
-	// DEBUG
-
-	function echoarr($prev,$a){
-		if(is_array($a)){
-			foreach($a as $k=>$v){
-				echo "<font color=#dddddd>".$prev."</font> <font color=black>=</font> <font color=red>[".$k."]</font><br />";
-				echoarr($prev." -> ".$k,$v);
-			}
-		}else if(is_object($a)){
-			echo "<font color=#dddddd>".$prev."</font> <font color=black>=</font> <font color=yellow>Object</font><br />";
-		}else{
-			echo "<font color=#dddddd>".$prev."</font> <font color=black>=</font> <font color=green>'".$a."'</font><br />";
-		}
-	}
-
-	echo "<hr>";
-	echoarr("_",$_SESSION);
-	echo "<hr>END<br>";
-*/
 
 	function myErrorHandler($errno, $errstr, $errfile, $errline){
 		echo "<hr /><font color=red> bizError:$errno - ERROR:$errstr - FILE:$errfile - LINE:$errline </font><hr />";
@@ -53,6 +33,7 @@
 		$bizbank=new kopon("K");
 	}
 
+	$msgMode=false;
 	$_SESSION['silentmode']=false;
 	if(isset($_POST['_message'])){
 		if($_POST['_target']=="_broadcast"){
@@ -61,13 +42,15 @@
 		else{
 			osMessage($_POST['_target'],$_POST['_message'],$_POST);
 		}
+		$msgMode=true;
 	}else{
 		if(count($_GET)>0){
 			$_SESSION['osLink']=$_GET;
 			unset($_SESSION['osLink']['kill']);
 			$_SESSION['silentmode']=true;
 			foreach($_SESSION['osLink'] as $a=>$b){
-				osMessage($a,"client_".$b,array());
+				$p=osParse($b);
+				osMessage($a,"client_".$p[0],$p[1]);
 			}
 			$_SESSION['silentmode']=false;
 		}
@@ -83,17 +66,13 @@
 				if(isset($node['node'])){
 					if(is_object($node['node'])){
 						$node['node']->gotoSleep();
+						if($msgMode){
+							$node['node']->show(true);
+						}
 					}
 				}
 			}
 		}
 	}
-/***************************************
-	// DEBUG
-
-	echo "<hr>";
-	echoarr("_",$_SESSION);
-	echo "<hr>END<br>";
-*/
 
 ?>
