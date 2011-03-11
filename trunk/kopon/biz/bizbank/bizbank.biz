@@ -4,13 +4,13 @@
 	Version: 0.1
 
 #biz
-	bizbank
+	bizbank:bizbank
 
 #node
 	subscribe S, mainviewer M, login L
 
 #frame
-	frm
+	frm(width:800px; margin:auto;)
 
 #phpfunction
 
@@ -18,8 +18,8 @@
 		$S=#node->S->_backframe();
 		$M=#node->M->_backframe();
 		$L=#node->L->_backframe();
-		return <PHTML>
+		return <PHTML><div style="width:800px; float:left; border: 1px dotted #f5f5f5;">
 			$S
-			$L$M
+			$L$M</div>
 		</PHTML>
 	}

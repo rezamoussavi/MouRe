@@ -8,12 +8,7 @@
 	Date:	2/7/2011
 	Version: 0.1
 #biz
-	usertabbank
-
-
-#family
-	usertab
-
+	usertabbank:usertab
 
 #node
         usertab[] usertab

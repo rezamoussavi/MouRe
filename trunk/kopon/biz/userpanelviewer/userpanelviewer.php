@@ -102,7 +102,19 @@ class userpanelviewer {
 	}
 
 	function show($echo){
-		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$_style='';
+		switch($this->_curFrame){
+			case 'frmProfile':
+				$_style='';
+				break;
+			case 'frmReferal':
+				$_style='';
+				break;
+			case 'frmHistory':
+				$_style='';
+				break;
+		}
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

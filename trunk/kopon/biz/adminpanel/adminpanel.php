@@ -29,6 +29,7 @@ class adminpanel {
 	//Nodes (bizvars)
 
 	function __construct($fullname) {
+		$this->_frmChanged=false;
 		$this->_tmpNode=false;
 		if($fullname==null){
 			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
@@ -41,6 +42,11 @@ class adminpanel {
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='adminpanel';
 	}
@@ -62,6 +68,7 @@ class adminpanel {
 
 	function _bookframe($frame){
 		if($frame!=$this->_curFrame){
+			$this->_frmChanged=true;
 			$this->_curFrame=$frame;
 		}
 		//$this->show(true);
@@ -71,7 +78,13 @@ class adminpanel {
 	}
 
 	function show($echo){
-		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$_style='';
+		switch($this->_curFrame){
+			case 'frm':
+				$_style='';
+				break;
+		}
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -86,6 +99,14 @@ class adminpanel {
 //########################################
 
 
+	function frm(){
+		return <<<PHTMLCODE
+
+			<font color=red>-AdminPanel-</font>
+		
+PHTMLCODE;
+
+	}
 
 }
 

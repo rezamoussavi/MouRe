@@ -13,10 +13,7 @@
 	Version: 0.1
 
 #biz
-	tabbank
-
-#family
-	tab
+	tabbank:tab
 
 #var
 	tabs, curTabName

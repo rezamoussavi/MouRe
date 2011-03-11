@@ -8,10 +8,7 @@
 	Version: 0.1
 
 #biz
-	productviewer
-
-#family
-	product
+	productviewer:product
 
 #var
 	large=true
@@ -20,7 +17,8 @@
 	product product
 
 #frame
-	frmLarge,frmSmall
+	frmLarge(width:595; float:left; border: 1px solid #cccccc;)
+	frmSmall(width:295; float:left; height:250; border: 1px dotted #f0f0f0;)
 
 #phpfunction
 
@@ -56,24 +54,24 @@
 			$buy='<a href="">BUY</a>';
 		}
 		$html=<PHTML>
-			<center>$title - price:$price you get $discount Discount $buy</center><br>
-			(countdown code here)$time(till here)<br>
-			<img src="$image"/>$description<hr>
+			<b><font color=blue>Today's deal:</font> </b>$title
+			<center>price:$price you get %$discount Discount <br />
+			<b>$buy</b><br>
+			<font color=red><h1>$time</h1></font></center><br>
+			<center><img src="$image"/></center>$description
 		</PHTML>;
 		return $html;
 	}
 
 	function frmSmall(){
 		$title=#node->product->backTitle();
-		$description=#node->product->backDescription();
 		$price=#node->product->backPrice();
 		$image=#node->product->backIcon();
-		$time=#node->product->backRemainingTime();
 		$discount=#node->product->backDiscount();
 		$html=<PHTML>
-			<center>$title - price:$price you get $discount Discount</center><br>
-			(countdown code here)$time(till here)<br>
-			<img src="$image"/>$description<hr>
+			<center>$title<br />
+			price:$price you get %$discount Discount</center>
+			<center><img src="$image"/></center>
 		</PHTML>;
 		return $html;
 	}

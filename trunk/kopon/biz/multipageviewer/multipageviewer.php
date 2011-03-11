@@ -108,7 +108,25 @@ class multipageviewer {
 	}
 
 	function show($echo){
-		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$_style='';
+		switch($this->_curFrame){
+			case 'frmMain':
+				$_style='';
+				break;
+			case 'frmPrevious':
+				$_style='';
+				break;
+			case 'frmHow':
+				$_style='';
+				break;
+			case 'frmMyAcc':
+				$_style='';
+				break;
+			case 'frmCPanel':
+				$_style='';
+				break;
+		}
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

@@ -4,10 +4,7 @@
 	Version: 1.0
 
 #biz
-	purchaseviewer
-
-#family
-	purchase
+	purchaseviewer:purchase
 
 #node
 	productviewer productV, purchase purchase

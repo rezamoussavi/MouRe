@@ -8,10 +8,7 @@
 	Version: 0.1
 
 #biz
-	usertab
-
-#family
-	usertab
+	usertab:usertab
 
 #frame
 	frmSelected,*frmNotSelected

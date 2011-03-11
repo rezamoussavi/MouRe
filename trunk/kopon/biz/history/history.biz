@@ -8,10 +8,7 @@
 	Version: 0.1
 
 #biz
-	history
-
-#family
-	purchace
+	history:purchace
 
 #node
 	purchaseviewer purchases

@@ -8,10 +8,7 @@
 	Version: 0.1
 
 #biz
-	product
-
-#family
-	product
+	product:product
 	
 #var
 	UID, title, description, price, image, discount, startTime, endTime, icon

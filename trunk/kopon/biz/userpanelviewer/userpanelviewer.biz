@@ -7,12 +7,7 @@
 	Date:	2/7/2010
 	Version: 0.1
 #biz
-	userpanelviewer
-
-
-#family
-	userpage
-
+	userpanelviewer:userpage
 
 #node
 	usertab usertab,profile profile,referal referal,history history

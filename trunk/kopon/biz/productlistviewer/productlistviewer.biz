@@ -13,10 +13,7 @@
 	Version: 0.1
 
 #biz
-	productlistviewer
-
-#family
-	product
+	productlistviewer:product
 
 #node
 	product, productviewer[] productViewers

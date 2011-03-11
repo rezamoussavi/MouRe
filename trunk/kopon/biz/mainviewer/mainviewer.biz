@@ -10,9 +10,6 @@
 #biz
 	mainviewer
 
-#family
-	null
-
 #node
 	tabbank tabbar
 	multipageviewer pages
@@ -25,7 +22,7 @@
 	user->logedout=onLogedout
 
 #frame
-	frm
+	frm(float:left; width:600;)
 
 #phpfunction
 

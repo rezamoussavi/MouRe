@@ -9,10 +9,7 @@
 	Version:1.0
 
 #biz
-	login
-
-#family
-	user
+	login:user
 
 #node
 	user userShow
@@ -21,7 +18,7 @@
     signupSuccess,newPasswordSuccess
 
 #frame
-	frm
+	frm(float:left; width:200;)
 
 #message
 	frame->loginBtn=onLoginBtn,

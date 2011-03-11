@@ -4,13 +4,10 @@
 	Version: 0.1
 
 #biz
-	subscribe
-
-#family
-	subscribe
+	subscribe:subscribe
 
 #frame
-	frm
+	frm(width:800; float:left; background-color:#f7f7f7; text-align:center;)
 
 #phpfunction
 

@@ -8,10 +8,7 @@
 	Version: 0.1
 
 #biz
-	tab
-
-#family
-	tab
+	tab:tab
 
 #var
 	label

@@ -9,10 +9,7 @@
 	Version: 0.1
 
 #biz
-	multipageviewer
-
-#family
-	page
+	multipageviewer:page
 
 #node
 	productviewer productviewer,productlistviewer productlistviewer, adminpanel adminpanel, userpanel userpanel

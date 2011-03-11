@@ -8,10 +8,7 @@
 	Version: 0.1
 
 #biz
-	profile
-
-#family
-	user
+	profile:user
 
 #node
 	user

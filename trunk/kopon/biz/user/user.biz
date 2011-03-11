@@ -8,10 +8,7 @@
 	Version:1.2
 
 #biz
-	user
-
-#family
-	user
+	user:user
 
 #var
 	userUID,email,loggedIn

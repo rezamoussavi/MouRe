@@ -91,7 +91,16 @@ class productviewer {
 	}
 
 	function show($echo){
-		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$_style='';
+		switch($this->_curFrame){
+			case 'frmLarge':
+				$_style=' style="width:595; float:left; border: 1px solid #cccccc;" ';
+				break;
+			case 'frmSmall':
+				$_style=' style="width:295; float:left; height:250; border: 1px dotted #f0f0f0;" ';
+				break;
+		}
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -136,9 +145,11 @@ class productviewer {
 		}
 		$html=<<<PHTMLCODE
 
-			<center>$title - price:$price you get $discount Discount $buy</center><br>
-			(countdown code here)$time(till here)<br>
-			<img src="$image"/>$description<hr>
+			<b><font color=blue>Today's deal:</font> </b>$title
+			<center>price:$price you get %$discount Discount <br />
+			<b>$buy</b><br>
+			<font color=red><h1>$time</h1></font></center><br>
+			<center><img src="$image"/></center>$description
 		
 PHTMLCODE;
 
@@ -146,16 +157,14 @@ PHTMLCODE;
 	}
 	function frmSmall(){
 		$title=$this->product->backTitle();
-		$description=$this->product->backDescription();
 		$price=$this->product->backPrice();
 		$image=$this->product->backIcon();
-		$time=$this->product->backRemainingTime();
 		$discount=$this->product->backDiscount();
 		$html=<<<PHTMLCODE
 
-			<center>$title - price:$price you get $discount Discount</center><br>
-			(countdown code here)$time(till here)<br>
-			<img src="$image"/>$description<hr>
+			<center>$title<br />
+			price:$price you get %$discount Discount</center>
+			<center><img src="$image"/></center>
 		
 PHTMLCODE;
 

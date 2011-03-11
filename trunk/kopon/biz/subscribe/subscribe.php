@@ -78,7 +78,13 @@ class subscribe {
 	}
 
 	function show($echo){
-		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$_style='';
+		switch($this->_curFrame){
+			case 'frm':
+				$_style=' style="width:800; float:left; background-color:#f7f7f7; text-align:center;" ';
+				break;
+		}
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

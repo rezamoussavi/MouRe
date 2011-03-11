@@ -6,7 +6,13 @@
 #biz
 	adminpanel
 
-#family
-	null
+#frame
+	frm
 
 #phpfunction
+
+	function frm(){
+		return <PHTML>
+			<font color=red>-AdminPanel-</font>
+		</PHTML>;
+	}

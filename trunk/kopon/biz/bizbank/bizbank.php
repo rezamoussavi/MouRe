@@ -90,7 +90,13 @@ class bizbank {
 	}
 
 	function show($echo){
-		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$_style='';
+		switch($this->_curFrame){
+			case 'frm':
+				$_style=' style="width:800px; margin:auto;" ';
+				break;
+		}
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -110,9 +116,9 @@ class bizbank {
 		$M=$this->M->_backframe();
 		$L=$this->L->_backframe();
 		return <<<PHTMLCODE
-
+<div style="width:800px; float:left; border: 1px dotted #f5f5f5;">
 			$S
-			$L$M
+			$L$M</div>
 		
 PHTMLCODE;
 
