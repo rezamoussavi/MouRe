@@ -265,10 +265,8 @@ public class PHPClass {
 		/*
 
 	function _bookframe($frame){
-		if($frame!=$this->_curFrame){
-			$this->_frmChanged=true;//if there is any frm defined for this biz
-			$this->_curFrame=$frame;
-		}
+		$this->_frmChanged=true;//if there is any frm defined for this biz
+		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
 
@@ -287,12 +285,10 @@ public class PHPClass {
     }
 		 */
 		String s="";
-		s+="\n\tfunction _bookframe($frame){\n" +
-		"\t\tif($frame!=$this->_curFrame){\n";
+		s+="\n\tfunction _bookframe($frame){\n";
 		if(frames.size()>0)
-			s+="\t\t\t$this->_frmChanged=true;\n";
-		s+="\t\t\t$this->_curFrame=$frame;\n" +
-		"\t\t}\n" +
+			s+="\t\t$this->_frmChanged=true;\n";
+		s+="\t\t$this->_curFrame=$frame;\n" +
 		"\t\t//$this->show(true);\n" +
 		"\t}\n" +
 		"\tfunction _backframe(){\n" +
