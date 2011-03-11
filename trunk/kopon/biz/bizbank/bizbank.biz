@@ -1,0 +1,25 @@
+#comments
+	Author: Reza Moussavi
+	Date:	03/11/2011
+	Version: 0.1
+
+#biz
+	bizbank
+
+#node
+	subscribe S, mainviewer M, login L
+
+#frame
+	frm
+
+#phpfunction
+
+	function frm(){
+		$S=#node->S->_backframe();
+		$M=#node->M->_backframe();
+		$L=#node->L->_backframe();
+		return <PHTML>
+			$S
+			$L$M
+		</PHTML>
+	}

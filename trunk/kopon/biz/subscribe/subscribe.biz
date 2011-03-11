@@ -1,2 +1,21 @@
+#comments
+	Author: Reza Moussavi
+	Date:	03/11/2011
+	Version: 0.1
+
 #biz
 	subscribe
+
+#family
+	subscribe
+
+#frame
+	frm
+
+#phpfunction
+
+	function frm(){
+		return <PHTML>
+			-SUBSCRIBE!-
+		</PHTML>;
+	}

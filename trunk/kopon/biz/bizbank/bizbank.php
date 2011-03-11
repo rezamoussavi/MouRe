@@ -15,8 +15,11 @@
 	Version: 0.1
 
 */
+require_once '../biz/subscribe/subscribe.php';
+require_once '../biz/mainviewer/mainviewer.php';
+require_once '../biz/login/login.php';
 
-class subscribe {
+class bizbank {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -27,6 +30,9 @@ class subscribe {
 	//Variables
 
 	//Nodes (bizvars)
+	var $S;
+	var $M;
+	var $L;
 
 	function __construct($fullname) {
 		$this->_frmChanged=false;
@@ -47,8 +53,14 @@ class subscribe {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
+		$this->S=new subscribe($this->_fullname.'_S');
+
+		$this->M=new mainviewer($this->_fullname.'_M');
+
+		$this->L=new login($this->_fullname.'_L');
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='subscribe';
+		$_SESSION['osNodes'][$fullname]['biz']='bizbank';
 	}
 
 	function gotoSleep() {
@@ -94,9 +106,13 @@ class subscribe {
 
 
 	function frm(){
+		$S=$this->S->_backframe();
+		$M=$this->M->_backframe();
+		$L=$this->L->_backframe();
 		return <<<PHTMLCODE
 
-			-SUBSCRIBE!-
+			$S
+			$L$M
 		
 PHTMLCODE;
 

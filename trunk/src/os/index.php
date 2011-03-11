@@ -6,7 +6,7 @@
 	}
 	set_error_handler("myErrorHandler");
 	date_default_timezone_set('GMT');
-	require_once "../bizbank/kopon/kopon.php";
+	require_once "../biz/bizbank/bizbank.php";
 	require_once "db.php";
 	require_once "core.php";
 
@@ -30,7 +30,7 @@
 	}
 
 	if(! isset($_POST['_message'])){
-		$bizbank=new kopon("K");
+		$bizbank=new bizbank("B");
 	}
 
 	$msgMode=false;
