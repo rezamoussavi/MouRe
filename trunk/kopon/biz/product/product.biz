@@ -71,7 +71,7 @@
 	}
 	
 	function backRemainingTime(){
-		return #var->endTime - #var->startTime;
+		return #var->endTime - date("YmdHi");
 	}
 	
 	function bookDiscount($discount){

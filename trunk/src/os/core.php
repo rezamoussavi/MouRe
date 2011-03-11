@@ -48,6 +48,7 @@
 	}
 
 	function osBookUser($user){
+		$_SESSION['user']=array("UID"=>-1);
 		$_SESSION['user']=$user;
 	}
 

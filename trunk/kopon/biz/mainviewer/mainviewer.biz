@@ -1,4 +1,5 @@
 #comments
+
 	Author: Reza Moussavi
 	Date:	02/10/2011
 	Version: 0.2
@@ -18,8 +19,8 @@
 	init
 
 #message
-	user->logedin=onLogedin
-	user->logedout=onLogedout
+	user->login=onLogedin
+	user->logout=onLogedout
 
 #frame
 	frm(float:left; width:600;)

@@ -192,7 +192,7 @@ class product {
 	}
 	
 	function backRemainingTime(){
-		return $this->endTime - $this->startTime;
+		return $this->endTime - date("YmdHi");
 	}
 	
 	function bookDiscount($discount){

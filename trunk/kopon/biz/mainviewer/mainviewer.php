@@ -47,8 +47,8 @@ class mainviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['user_logedin'][$this->_fullname]=true;
-			$_SESSION['osMsg']['user_logedout'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
@@ -77,10 +77,10 @@ class mainviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'user_logedin':
+			case 'user_login':
 				$this->onLogedin($info);
 				break;
-			case 'user_logedout':
+			case 'user_logout':
 				$this->onLogedout($info);
 				break;
 			default:
@@ -89,10 +89,8 @@ class mainviewer {
 	}
 
 	function _bookframe($frame){
-		if($frame!=$this->_curFrame){
-			$this->_frmChanged=true;
-			$this->_curFrame=$frame;
-		}
+		$this->_frmChanged=true;
+		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
 	function _backframe(){
