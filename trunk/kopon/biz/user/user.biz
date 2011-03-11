@@ -36,8 +36,8 @@
 
     function logout() {
         #var->loggedIn = 0;
-        osBroadcast(#msg->logout, array());
 		osBookUser(array("email" => "", "UID" => -1, "name"=>""));
+        osBroadcast(#msg->logout, array());
     }
 
     function isLoggedin() {
@@ -103,8 +103,8 @@
                     #var->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-                    osBroadcast("login", array("email" => #var->email, "userUID" => #var->userUID));
 					osBookUser(array("email" => #var->email, "UID" => #var->userUID, "name"=>#var->email));
+                    osBroadcast(#msg->login, array());
                     return 1;
                 } else {
                     //login succefull but need to validation

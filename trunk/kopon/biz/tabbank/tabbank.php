@@ -124,7 +124,10 @@ class tabbank {
         foreach($content as $c){
             $this->tabs[]=$c;
         }
-		$this->curTabName=$this->tabs[0];
+	}
+	function bookSelected($sel){
+		$this->curTabName=$sel;
+		osBroadcast("tab_tabChanged",array("tabName"=>$sel));
     }
     function frm(){
 		$html='';
@@ -147,8 +150,7 @@ PHTMLCODE;
 		return $html;
 	}
     function onTabSelected($info){
-		$this->curTabName=$info["name"];
-		osBroadcast("tab_tabChanged",array("tabName"=>$info["name"]));
+		$this->bookSelected($info["name"]);
     }
 
 }

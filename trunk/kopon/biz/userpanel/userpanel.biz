@@ -18,7 +18,7 @@
 	init
 
 #frame
-	frm
+	frm(width:600; float:left;)
 
 #phpfunction
 

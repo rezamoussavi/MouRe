@@ -31,7 +31,11 @@
         foreach($content as $c){
             #var->tabs[]=$c;
         }
-		#var->curTabName=#var->tabs[0];
+	}
+
+	function bookSelected($sel){
+		#var->curTabName=$sel;
+		osBroadcast(#msg->tabChanged,array("tabName"=>$sel));
     }
 
     function frm(){
@@ -50,6 +54,5 @@
 	}
 
     function onTabSelected($info){
-		#var->curTabName=$info["name"];
-		osBroadcast(#msg->tabChanged,array("tabName"=>$info["name"]));
+		#fun->bookSelected($info["name"]);
     }

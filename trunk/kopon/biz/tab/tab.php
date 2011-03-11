@@ -76,10 +76,8 @@ class tab {
 	}
 
 	function _bookframe($frame){
-		if($frame!=$this->_curFrame){
-			$this->_frmChanged=true;
-			$this->_curFrame=$frame;
-		}
+		$this->_frmChanged=true;
+		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
 	function _backframe(){

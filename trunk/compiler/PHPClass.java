@@ -294,22 +294,24 @@ public class PHPClass {
 		"\tfunction _backframe(){\n" +
 		"\t\treturn $this->show(false);\n" +
 		"\t}\n" +
-		"\n\tfunction show($echo){\n" +
-		"\t\t$_style='';\n" +
-		"\t\tswitch($this->_curFrame){\n";
-		for(Frame f:frames)
-			s+=	"\t\t\tcase '"+f.Name+"':\n" +
+		"\n\tfunction show($echo){\n";
+		if(frames.size()>0){
+			s+="\t\t$_style='';\n" +
+			"\t\tswitch($this->_curFrame){\n";
+			for(Frame f:frames)
+				s+=	"\t\t\tcase '"+f.Name+"':\n" +
 				"\t\t\t\t$_style='"+f.Style+"';\n" +
 				"\t\t\t\tbreak;\n";
-		s+="\t\t}\n" +
-		"\t\t$html='<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
-		"\t\tif($_SESSION['silentmode'])\n" +
-		"\t\t\treturn;\n" +
-		"\t\tif($echo)\n" +
-		"\t\t\techo $html;\n" +
-		"\t\telse\n" +
-		"\t\t\treturn $html;\n" +
-		"\t}\n";
+			s+="\t\t}\n" +
+			"\t\t$html='<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
+			"\t\tif($_SESSION['silentmode'])\n" +
+			"\t\t\treturn;\n" +
+			"\t\tif($echo)\n" +
+			"\t\t\techo $html;\n" +
+			"\t\telse\n" +
+			"\t\t\treturn $html;\n";
+		}
+		s+="\t}\n";
 		return s;
 	}
 

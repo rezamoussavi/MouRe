@@ -2,6 +2,7 @@
 	Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
+
 #biz
 	purchase
 
@@ -10,8 +11,9 @@
 
 #phpfunction
         function backAllUID(){
-			return array();
+			$UIDs=array();
+			return $UIDs;
 		}
-        function bookPurchase(){
+        function bookPurchase($UID){
 		}
 

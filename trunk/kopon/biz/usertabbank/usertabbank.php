@@ -10,6 +10,10 @@
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 	2.0: {upload bothe biz and php directly to server (ready to use)}
 
+	Author: Reza Moussavi
+	Date:	03/11/2011
+	Version: 1.1
+	------------------
 	Author: Max Mirkia
 	Date:	2/14/2011
 	Version: 1.0
@@ -19,7 +23,6 @@
 	Version: 0.1
 
 */
-require_once '../biz/usertab/usertab.php';
 
 class usertabbank {
 
@@ -30,9 +33,10 @@ class usertabbank {
 	var $_frmChanged;
 
 	//Variables
+	var $tabs;
+	var $curTab;
 
 	//Nodes (bizvars)
-	var $usertab; // array of biz
 
 	function __construct($fullname) {
 		$this->_frmChanged=false;
@@ -45,7 +49,7 @@ class usertabbank {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['usertab_usertabChanged'][$this->_fullname]=true;
+			$_SESSION['osMsg']['client_tab'][$this->_fullname]=true;
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
@@ -54,23 +58,19 @@ class usertabbank {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		//handle arrays
-		$this->usertab=array();
-		if(!isset($_SESSION['osNodes'][$fullname]['usertab']))
-			$_SESSION['osNodes'][$fullname]['usertab']=array();
-		foreach($_SESSION['osNodes'][$fullname]['usertab'] as $arrfn)
-			$this->usertab[]=new usertab($arrfn);
+		if(!isset($_SESSION['osNodes'][$fullname]['tabs']))
+			$_SESSION['osNodes'][$fullname]['tabs']='';
+		$this->tabs=&$_SESSION['osNodes'][$fullname]['tabs'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['curTab']))
+			$_SESSION['osNodes'][$fullname]['curTab']='';
+		$this->curTab=&$_SESSION['osNodes'][$fullname]['curTab'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='usertabbank';
 	}
 
 	function gotoSleep() {
-		$_SESSION['osNodes'][$this->_fullname]['usertab']=array();
-		$_SESSION['osNodes'][$this->_fullname]['sleep']=true;
-		foreach($this->usertab as $node){
-			$_SESSION['osNodes'][$this->_fullname]['usertab'][]=$node->_fullname;
-		}
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -80,7 +80,7 @@ class usertabbank {
 
 	function message($message, $info) {
 		switch($message){
-			case 'usertab_usertabChanged':
+			case 'client_tab':
 				$this->onUserTabChanged($info);
 				break;
 			default:
@@ -89,10 +89,8 @@ class usertabbank {
 	}
 
 	function _bookframe($frame){
-		if($frame!=$this->_curFrame){
-			$this->_frmChanged=true;
-			$this->_curFrame=$frame;
-		}
+		$this->_frmChanged=true;
+		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
 	function _backframe(){
@@ -103,7 +101,7 @@ class usertabbank {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style='';
+				$_style=' style="width:595; float:left; background-color:#fafafa; text-align:center;" ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -122,29 +120,33 @@ class usertabbank {
 
 
     function bookContent($content){//String[]
-        $this->usertab=array();
-        $id=0;
+        $this->tabs=array();
         foreach($content as $c){
-            $this->usertab[]=new usertab($this->_fullname.$c);
-            end($this->usertab)->bookLabel($c);
+            $this->tabs[]=$c;
         }
-        //$this->_bookframe("frm");
+        $this->_bookframe("frm");
     }
     function frm(){
 		$html='';
-		foreach($this->usertab as $t){
-			$html.=$t->_backframe();
+		foreach($this->tabs as $t){
+			if($this->curTab==$t){
+				$html.= <<<PHTMLCODE
+ [[ $t ]] 
+PHTMLCODE;
+
+			}else{
+				$link=osBackLinkInfo($this->_fullname,"tab",array("name"=>$this->curTab),"tab",array("name"=>$t));
+				$html.= <<<PHTMLCODE
+ &nbsp; <a href={$link}>$t</a> &nbsp; 
+PHTMLCODE;
+
+			}
 		}
 		return $html;
     }
     function onUserTabChanged($info){
-        foreach($this->usertab as $t){
-            if($t->backLabel()==$info['usertabName']){
-                $t->bookSelected(true);
-            }else{
-                $t->bookSelected(false);
-            }
-        }
+		$this->curTab=$info['name'];
+		$this->_bookframe("frm");
     }
 
 }

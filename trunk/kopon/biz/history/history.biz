@@ -8,10 +8,10 @@
 	Version: 0.1
 
 #biz
-	history:purchace
+	history:purchase
 
 #node
-	purchaseviewer purchases
+	purchaseviewer[] purchases
 
 #start
 	init

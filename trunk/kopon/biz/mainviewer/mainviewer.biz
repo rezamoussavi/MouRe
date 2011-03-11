@@ -28,7 +28,11 @@
 #phpfunction
 
 	function init(){
-		$tab=array("Main","Previous","How");
+		#fun->initTabbar("Main");
+	}
+
+	function initTabbar($def){
+		$tab=array("Main","Previous");
 		if(osIsAdmin()){
 			$tab[]="CPanel";
 		}
@@ -36,16 +40,18 @@
 		if($user['UID']!=-1){
 			$tab[]="MyAcc";
 		}
+		$tab[]="How";
 		#node->tabbar->bookContent($tab);
+		#node->tabbar->bookSelected($def);
 	}
 
 	function onLogedin($info){
-		#fun->init();
+		#fun->initTabbar(#node->tabbar->curTabName);
 		_bookFrame(#frame->frm);
 	}
 
 	function onLogedout($info){
-		#fun->init();
+		#fun->initTabbar(#node->tabbar->curTabName);
 		_bookFrame(#frame->frm);
 	}
 

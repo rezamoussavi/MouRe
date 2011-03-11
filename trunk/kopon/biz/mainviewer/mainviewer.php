@@ -120,7 +120,10 @@ class mainviewer {
 
 
 	function init(){
-		$tab=array("Main","Previous","How");
+		$this->initTabbar("Main");
+	}
+	function initTabbar($def){
+		$tab=array("Main","Previous");
 		if(osIsAdmin()){
 			$tab[]="CPanel";
 		}
@@ -128,14 +131,16 @@ class mainviewer {
 		if($user['UID']!=-1){
 			$tab[]="MyAcc";
 		}
+		$tab[]="How";
 		$this->tabbar->bookContent($tab);
+		$this->tabbar->bookSelected($def);
 	}
 	function onLogedin($info){
-		$this->init();
+		$this->initTabbar($this->tabbar->curTabName);
 		$this->_bookframe("frm");
 	}
 	function onLogedout($info){
-		$this->init();
+		$this->initTabbar($this->tabbar->curTabName);
 		$this->_bookframe("frm");
 	}
 	function frm(){

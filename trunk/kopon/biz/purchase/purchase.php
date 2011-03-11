@@ -61,9 +61,7 @@ class purchase {
 	}
 
 	function _bookframe($frame){
-		if($frame!=$this->_curFrame){
-			$this->_curFrame=$frame;
-		}
+		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
 	function _backframe(){
@@ -71,16 +69,6 @@ class purchase {
 	}
 
 	function show($echo){
-		$_style='';
-		switch($this->_curFrame){
-		}
-		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
-		if($_SESSION['silentmode'])
-			return;
-		if($echo)
-			echo $html;
-		else
-			return $html;
 	}
 
 
@@ -90,9 +78,10 @@ class purchase {
 
 
         function backAllUID(){
-			return array();
+			$UIDs=array();
+			return $UIDs;
 		}
-        function bookPurchase(){
+        function bookPurchase($UID){
 		}
 
 }

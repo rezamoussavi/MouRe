@@ -10,18 +10,18 @@
 	1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}
 	2.0: {upload bothe biz and php directly to server (ready to use)}
 
-	Author: Reza Moussavi
-	Date:	02/16/2011
-	Version: 1
-	---------------------
-	Author: Reza Moussavi
-	Date:	02/07/2011
+	Author: Max Mirkia
+	Date:	2/14/2011
+	Version: 1.0
+	------------------
+	Author: Max Mirkia
+	Date:	2/7/2011
 	Version: 0.1
 
 */
-require_once '../biz/purchaseviewer/purchaseviewer.php';
+require_once '../biz/usertab/usertab.php';
 
-class history {
+class usertabbank {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -32,7 +32,7 @@ class history {
 	//Variables
 
 	//Nodes (bizvars)
-	var $purchases; // array of biz
+	var $usertab; // array of biz
 
 	function __construct($fullname) {
 		$this->_frmChanged=false;
@@ -45,6 +45,7 @@ class history {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['usertab_usertabChanged'][$this->_fullname]=true;
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
@@ -54,23 +55,21 @@ class history {
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
 		//handle arrays
-		$this->purchases=array();
-		if(!isset($_SESSION['osNodes'][$fullname]['purchases']))
-			$_SESSION['osNodes'][$fullname]['purchases']=array();
-		foreach($_SESSION['osNodes'][$fullname]['purchases'] as $arrfn)
-			$this->purchases[]=new purchaseviewer($arrfn);
+		$this->usertab=array();
+		if(!isset($_SESSION['osNodes'][$fullname]['usertab']))
+			$_SESSION['osNodes'][$fullname]['usertab']=array();
+		foreach($_SESSION['osNodes'][$fullname]['usertab'] as $arrfn)
+			$this->usertab[]=new usertab($arrfn);
 
-		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
-			$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='history';
+		$_SESSION['osNodes'][$fullname]['biz']='usertabbank';
 	}
 
 	function gotoSleep() {
-		$_SESSION['osNodes'][$this->_fullname]['purchases']=array();
+		$_SESSION['osNodes'][$this->_fullname]['usertab']=array();
 		$_SESSION['osNodes'][$this->_fullname]['sleep']=true;
-		foreach($this->purchases as $node){
-			$_SESSION['osNodes'][$this->_fullname]['purchases'][]=$node->_fullname;
+		foreach($this->usertab as $node){
+			$_SESSION['osNodes'][$this->_fullname]['usertab'][]=$node->_fullname;
 		}
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
@@ -81,6 +80,9 @@ class history {
 
 	function message($message, $info) {
 		switch($message){
+			case 'usertab_usertabChanged':
+				$this->onUserTabChanged($info);
+				break;
 			default:
 				break;
 		}
@@ -117,29 +119,31 @@ class history {
 //########################################
 
 
-	function init(){
-		$p=new purchase("");
-		$pUIDs=$p->backAllUID();
-		$this->purchases=array();
-		$i=1;
-		foreach($pUIDs as $pUID){
-			$this->purchases[]=new purchaseviewer($this->_fullname.$i++);
-			end($this->purchases)->bookUID($pUID);
-		}
-	}
-	function frm(){
+    function bookContent($content){//String[]
+        $this->usertab=array();
+        $id=0;
+        foreach($content as $c){
+            $this->usertab[]=new usertab($this->_fullname.$c);
+            end($this->usertab)->bookLabel($c);
+        }
+        //$this->_bookframe("frm");
+    }
+    function frm(){
 		$html='';
-		foreach($this->purchases as $p){
-			$pframe=$p->_backframe();
-			$html.=<<<PHTMLCODE
-
-				$pframe
-			
-PHTMLCODE;
-
+		foreach($this->usertab as $t){
+			$html.=$t->_backframe();
 		}
 		return $html;
-	}
+    }
+    function onUserTabChanged($info){
+        foreach($this->usertab as $t){
+            if($t->backLabel()==$info['usertabName']){
+                $t->bookSelected(true);
+            }else{
+                $t->bookSelected(false);
+            }
+        }
+    }
 
 }
 

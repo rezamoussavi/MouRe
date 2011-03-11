@@ -11,8 +11,10 @@ public class compiler {
 
 	public static String Server;
 	public static String BizFolder;
+	public static boolean DoUpload;
 
 	public static void main(String[] args) {
+		DoUpload=true;
 		if(!LoadConfig())
 			return;
 		File Dir=new File(BizFolder);
@@ -61,7 +63,13 @@ public class compiler {
 
 	public static String getInput(){
 		Scanner scan= new Scanner(System.in);
-		return scan.nextLine();
+		String s=scan.nextLine();
+		DoUpload=true;
+		if(s.length()>0) if(s.charAt(0)=='-'){
+			DoUpload=false;
+			s=s.substring(1);
+		}
+		return s;
 	}
 
 	public static boolean loadAndCompile(String fname){
@@ -108,23 +116,25 @@ public class compiler {
 		FileWriter fw=new FileWriter(File+".php");
 		fw.write(php.toString());
 		fw.close();
-		//
-		// Uploading .php file
-		//
-		System.out.print(" - [upload php]...");
-		if(PostFile.Post(Server, php.Name, File+".php"))
-			System.out.print(" Done!");
-		else{
-			throw new IOException("Cannot upload php to Server: <"+Server+">");
-		}
-		//
-		// Uploading .biz file
-		//
-		System.out.print(" - [upload biz]...");
-		if(PostFile.Post(Server, php.Name, File+".biz"))
-			System.out.print(" Done!");
-		else{
-			throw new IOException("Cannot upload biz to Server: <"+Server+">");
+		if(DoUpload){
+			//
+			// Uploading .php file
+			//
+			System.out.print(" - [upload php]...");
+			if(PostFile.Post(Server, php.Name, File+".php"))
+				System.out.print(" Done!");
+			else{
+				throw new IOException("Cannot upload php to Server: <"+Server+">");
+			}
+			//
+			// Uploading .biz file
+			//
+			System.out.print(" - [upload biz]...");
+			if(PostFile.Post(Server, php.Name, File+".biz"))
+				System.out.print(" Done!");
+			else{
+				throw new IOException("Cannot upload biz to Server: <"+Server+">");
+			}
 		}
 	}
 

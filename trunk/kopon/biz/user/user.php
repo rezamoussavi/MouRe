@@ -80,9 +80,7 @@ class user {
 	}
 
 	function _bookframe($frame){
-		if($frame!=$this->_curFrame){
-			$this->_curFrame=$frame;
-		}
+		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
 	function _backframe(){
@@ -90,16 +88,6 @@ class user {
 	}
 
 	function show($echo){
-		$_style='';
-		switch($this->_curFrame){
-		}
-		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
-		if($_SESSION['silentmode'])
-			return;
-		if($echo)
-			echo $html;
-		else
-			return $html;
 	}
 
 
@@ -124,8 +112,8 @@ class user {
 	}
     function logout() {
         $this->loggedIn = 0;
-        osBroadcast("user_logout", array());
 		osBookUser(array("email" => "", "UID" => -1, "name"=>""));
+        osBroadcast("user_logout", array());
     }
     function isLoggedin() {
         return $this->loggedIn;
@@ -185,8 +173,8 @@ class user {
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-                    osBroadcast("login", array("email" => $this->email, "userUID" => $this->userUID));
 					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "name"=>$this->email));
+                    osBroadcast("user_login", array());
                     return 1;
                 } else {
                     //login succefull but need to validation

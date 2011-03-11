@@ -81,10 +81,8 @@ class userpanel {
 	}
 
 	function _bookframe($frame){
-		if($frame!=$this->_curFrame){
-			$this->_frmChanged=true;
-			$this->_curFrame=$frame;
-		}
+		$this->_frmChanged=true;
+		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
 	function _backframe(){
@@ -95,7 +93,7 @@ class userpanel {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style='';
+				$_style=' style="width:600; float:left;" ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';

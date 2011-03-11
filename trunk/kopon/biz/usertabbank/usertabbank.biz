@@ -1,5 +1,9 @@
 #comments
 
+	Author: Reza Moussavi
+	Date:	03/11/2011
+	Version: 1.1
+	------------------
 	Author: Max Mirkia
 	Date:	2/14/2011
 	Version: 1.0
@@ -7,44 +11,43 @@
 	Author: Max Mirkia
 	Date:	2/7/2011
 	Version: 0.1
+
 #biz
 	usertabbank:usertab
 
-#node
-        usertab[] usertab
+#var
+	tabs, curTab
 
 #frame
-        frm
+        frm(width:595; float:left; background-color:#fafafa; text-align:center;)
 
 #message
-	usertab->usertabChanged=onUserTabChanged
+	client->tab=onUserTabChanged
 
 #phpfunction
 
     function bookContent($content){//String[]
-        #node->usertab=array();
-        $id=0;
+        #var->tabs=array();
         foreach($content as $c){
-            #node->usertab[]=new usertab(#nodeID.$c);
-            end(#node->usertab)->bookLabel($c);
+            #var->tabs[]=$c;
         }
-        //_bookframe(#frame->frm);
+        _bookframe(#frame->frm);
     }
 
     function frm(){
 		$html='';
-		foreach(#node->usertab as $t){
-			$html.=$t->_backframe();
+		foreach(#var->tabs as $t){
+			if(#var->curTab==$t){
+				$html.= <PHTML> [[ $t ]] </PHTML>;
+			}else{
+				$link=osBackLinkInfo("tab",array("name"=>#var->curTab),"tab",array("name"=>$t));
+				$html.= <PHTML> &nbsp; <a href={$link}>$t</a> &nbsp; </PHTML>;
+			}
 		}
 		return $html;
     }
 
     function onUserTabChanged($info){
-        foreach(#node->usertab as $t){
-            if($t->backLabel()==$info['usertabName']){
-                $t->bookSelected(true);
-            }else{
-                $t->bookSelected(false);
-            }
-        }
+		#var->curTab=$info['name'];
+		_bookframe(#frame->frm);
     }
