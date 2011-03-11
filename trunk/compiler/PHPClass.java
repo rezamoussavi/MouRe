@@ -6,7 +6,7 @@ public class PHPClass {
 	public ArrayList<Node> nodes;
 	public ArrayList<Var> vars;
 	public ArrayList<Message> messages;
-	public ArrayList<String> frames;
+	public ArrayList<Frame> frames;
 	public String startFunName;
 	public String functions;
 	public String comments;
@@ -15,7 +15,7 @@ public class PHPClass {
 		nodes=new ArrayList<Node>();
 		vars=new ArrayList<Var>();
 		messages=new ArrayList<Message>();
-		frames=new ArrayList<String>();
+		frames=new ArrayList<Frame>();
 		startFunName="";
 		functions="";
 		comments="";
@@ -23,7 +23,9 @@ public class PHPClass {
 
 	public void applySection(Section sec){
 		if(sec.name.equalsIgnoreCase("biz")){
-			Name=sec.elements.get(0).data.trim();
+			Biz b=new Biz(sec.elements.get(0));
+			Name=b.bizName;
+			Family=b.Family;
 		}else if(sec.name.equalsIgnoreCase("family")){
 			Family=sec.elements.get(0).data.trim();
 		}else if(sec.name.equalsIgnoreCase("node")){
@@ -38,15 +40,13 @@ public class PHPClass {
 			for(SecElement se:sec.elements)
 				messages.add(new Message(se));			
 		}else if(sec.name.equalsIgnoreCase("frame")){
-			String frm="";
+			Frame f=null;
 			for(SecElement se:sec.elements){
-				frm=se.data.trim();
-				if(frm.length()>0){
-					if(frm.charAt(0)=='*')
-						frames.add(0, frm.substring(1));
-					else
-						frames.add(frm);
-				}
+				f=new Frame(se);
+				if(f.Stared)
+					frames.add(0,f);
+				else
+					frames.add(f);
 			}
 		}else if(sec.name.equalsIgnoreCase("phpfunction")){
 			functions=sec.elements.get(0).data;
@@ -194,7 +194,7 @@ public class PHPClass {
 		if(frames.size()>0){
 			s+= "\t\t//default frame if exists\n"+
 			"\t\tif(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))\n"+
-			"\t\t\t$_SESSION['osNodes'][$fullname]['_curFrame']='"+frames.get(0)+"';\n"+
+			"\t\t\t$_SESSION['osNodes'][$fullname]['_curFrame']='"+frames.get(0).Name+"';\n"+
 			"\t\t$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];\n\n";
 		}
 		for(Node n:nodes)
@@ -299,7 +299,14 @@ public class PHPClass {
 		"\t\treturn $this->show(false);\n" +
 		"\t}\n" +
 		"\n\tfunction show($echo){\n" +
-		"\t\t$html='<div id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
+		"\t\t$_style='';\n" +
+		"\t\tswitch($this->_curFrame){\n";
+		for(Frame f:frames)
+			s+=	"\t\t\tcase '"+f.Name+"':\n" +
+				"\t\t\t\t$_style='"+f.Style+"';\n" +
+				"\t\t\t\tbreak;\n";
+		s+="\t\t}\n" +
+		"\t\t$html='<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
 		"\t\tif($_SESSION['silentmode'])\n" +
 		"\t\t\treturn;\n" +
 		"\t\tif($echo)\n" +
