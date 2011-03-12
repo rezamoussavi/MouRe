@@ -44,8 +44,8 @@ class profile {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['client_applyChanges'][$this->_fullname]=true;
-			$_SESSION['osMsg']['client_cancelChanges'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_applyChanges'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_cancelChanges'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_editInfo'][$this->_fullname]=true;
 		}
 
@@ -69,10 +69,10 @@ class profile {
 
 	function message($message, $info) {
 		switch($message){
-			case 'client_applyChanges':
+			case 'frame_applyChanges':
 				$this->onApplyChanges($info);
 				break;
-			case 'client_cancelChanges':
+			case 'frame_cancelChanges':
 				$this->onCancelChanges($info);
 				break;
 			case 'frame_editInfo':

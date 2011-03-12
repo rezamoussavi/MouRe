@@ -14,8 +14,8 @@
 	user
 
 #message
-	client->applyChanges=onApplyChanges
-	client->cancelChanges=onCancelChanges
+	frame->applyChanges=onApplyChanges
+	frame->cancelChanges=onCancelChanges
 	frame->editInfo=onEditInfo
 #frame
 	frmView,frmEdit

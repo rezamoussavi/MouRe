@@ -11,7 +11,7 @@
 	2.0: {upload bothe biz and php directly to server (ready to use)}
 
 	Author: Reza Moussavi
-	Date:	3/3/2010
+	Date:	03/03/2010
 	Version: 1.1
 	------------------
 	Author: Max Mirkia
@@ -50,7 +50,7 @@ class productlistviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['client_mode'][$this->_fullname]=true;
+			$_SESSION['osMsg']['client_item'][$this->_fullname]=true;
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
@@ -87,8 +87,8 @@ class productlistviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'client_mode':
-				$this->onMode($info);
+			case 'client_item':
+				$this->onItem($info);
 				break;
 			default:
 				break;
@@ -139,33 +139,55 @@ class productlistviewer {
 			end($this->productViewers)->bookProductUID($p);
 		}
 	}
-	function onMode($info){
-		
+	function onItem($info){
+		if($info['ID']!='all'){
+			foreach($this->productViewers as $pv){
+				if($pv->backUID()==$info['ID']){
+					$pv->bookLarge();
+					$this->_bookframe("frmBigMode");
+					break;
+				}
+			}
+		}else{
+			$this->_bookframe("frmSmallMode");
+		}
 	}
-	
 	function frmBigMode(){
-		$html=<<<PHTMLCODE
+		$html='-';
+		$id='all';
+		foreach($this->productViewers as $pv){
+			if($pv->large){
+				$html=$pv->_backframe();
+				$id=$pv->backUID();
+				break;
+			}
+		}
+		if($html=='-'){
+			$html='';
+			$this->_bookframe("frmSmallMode");
+		}else{
+			$link=osBackLinkInfo($this->_fullname,"item",array("ID"=>$id),"item",array("ID"=>"all"));
+			$back=<<<PHTMLCODE
 
-			[[ BIG MODE ]]
-		
+				<center> <a href="$link"> View All </a> </center>
+			
 PHTMLCODE;
 
+			$html=$back.$html;
+		}
 		return $html;
 	}
-	
 	function frmSmallMode(){
 		$html='';
 		foreach($this->productViewers as $pv){
+			if($pv->large){
+				$pv->bookSmall();
+			}
+			$pv->link=osBackLinkInfo($this->_fullname,"item",array("ID"=>"all"),"item",array("ID"=>$pv->backUID()));
 			$html.=$pv->_backframe();
 		}
-		return <<<PHTMLCODE
-
-			$html
-		
-PHTMLCODE;
-
+		return $html;
 	}
-	
 
 }
 

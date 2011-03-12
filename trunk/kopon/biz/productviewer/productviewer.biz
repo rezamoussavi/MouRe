@@ -11,7 +11,7 @@
 	productviewer:product
 
 #var
-	large=true
+	large=true,link=''
 
 #node
 	product product
@@ -22,12 +22,18 @@
 
 #phpfunction
 
+	function backUID(){
+		return #node->product->backUID();
+	}
+
 	function bookSmall(){
 		#var->large=false;
+		_bookframe(#frm->frmSmall);
 	}
 
 	function bookLarge(){
 		#var->large=true;
+		_bookframe(#frm->frmLarge);
 	}
 
 	function bookProductUID($UID){
@@ -66,12 +72,12 @@
 	function frmSmall(){
 		$title=#node->product->backTitle();
 		$price=#node->product->backPrice();
-		$image=#node->product->backIcon();
+		$image=#var->link!=''?'<a href="'.#var->link.'"><img src="'.#node->product->backIcon().'"/></a>"':'<img src="'.#node->product->backIcon().'"/>';
 		$discount=#node->product->backDiscount();
 		$html=<PHTML>
 			<center>$title<br />
 			price:$price you get %$discount Discount</center>
-			<center><img src="$image"/></center>
+			<center>$image</center>
 		</PHTML>;
 		return $html;
 	}

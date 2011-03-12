@@ -23,6 +23,7 @@
 
 #message
 	client->tab=onUserTabChanged
+	usertabChanged
 
 #phpfunction
 
@@ -49,5 +50,6 @@
 
     function onUserTabChanged($info){
 		#var->curTab=$info['name'];
+		osBroadcast(#msg->usertabChanged,array("tabName"=>#var->curTab));
 		_bookframe(#frame->frm);
     }

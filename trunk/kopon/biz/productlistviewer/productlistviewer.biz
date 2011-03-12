@@ -1,7 +1,7 @@
 #comments
 
 	Author: Reza Moussavi
-	Date:	3/3/2010
+	Date:	03/03/2010
 	Version: 1.1
 	------------------
 	Author: Max Mirkia
@@ -22,7 +22,7 @@
 	*frmSmallMode,frmBigMode
 
 #message
-	client->mode=onMode
+	client->item=onItem
 
 #start
 	init
@@ -40,24 +40,51 @@
 		}
 	}
 
-	function onMode($info){
-		
+	function onItem($info){
+		if($info['ID']!='all'){
+			foreach(#node->productViewers as $pv){
+				if($pv->backUID()==$info['ID']){
+					$pv->bookLarge();
+					_bookFrame(#frm->frmBigMode);
+					break;
+				}
+			}
+		}else{
+			_bookFrame(#frm->frmSmallMode);
+		}
 	}
-	
+
 	function frmBigMode(){
-		$html=<PHTML>
-			[[ BIG MODE ]]
-		</PHTML>
+		$html='-';
+		$id='all';
+		foreach(#node->productViewers as $pv){
+			if($pv->large){
+				$html=$pv->_backFrame();
+				$id=$pv->backUID();
+				break;
+			}
+		}
+		if($html=='-'){
+			$html='';
+			_bookFrame(#frm->frmSmallMode);
+		}else{
+			$link=osBackLinkInfo("item",array("ID"=>$id),"item",array("ID"=>"all"));
+			$back=<PHTML>
+				<center> <a href="$link"> View All </a> </center>
+			</PHTML>;
+			$html=$back.$html;
+		}
 		return $html;
 	}
-	
+
 	function frmSmallMode(){
 		$html='';
 		foreach(#node->productViewers as $pv){
+			if($pv->large){
+				$pv->bookSmall();
+			}
+			$pv->link=osBackLinkInfo("item",array("ID"=>"all"),"item",array("ID"=>$pv->backUID()));
 			$html.=$pv->_backFrame();
 		}
-		return <PHTML>
-			$html
-		</PHTML>;
+		return $html;
 	}
-	

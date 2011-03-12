@@ -19,7 +19,6 @@
 	Version: 0.1
 
 */
-require_once '../biz/usertab/usertab.php';
 require_once '../biz/profile/profile.php';
 require_once '../biz/referal/referal.php';
 require_once '../biz/history/history.php';
@@ -35,7 +34,6 @@ class userpanelviewer {
 	//Variables
 
 	//Nodes (bizvars)
-	var $usertab;
 	var $profile;
 	var $referal;
 	var $history;
@@ -59,8 +57,6 @@ class userpanelviewer {
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmProfile';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
-
-		$this->usertab=new usertab($this->_fullname.'_usertab');
 
 		$this->profile=new profile($this->_fullname.'_profile');
 
@@ -127,14 +123,14 @@ class userpanelviewer {
 //########################################
 
 
-	function onusertabChanged($info){
+	function onTabChanged($info){
 		$this->_bookframe("frm".$info['tabName']);
 	}
 	function frmProfile(){
-		$toShow = $this->profile->_backframe();
+		$toProfile = $this->profile->_backframe();
 		$html=<<<PHTMLCODE
 
-			$toShow
+			$toProfile
 		
 PHTMLCODE;
 
@@ -151,9 +147,10 @@ PHTMLCODE;
 		return $html;
 	}
 	function frmHistory(){
+		$toHistory = $this->history->_backframe();
 		$html=<<<PHTMLCODE
 
-			How to 
+			$toHistory
 		
 PHTMLCODE;
 

@@ -140,7 +140,11 @@ class mainviewer {
 		$this->_bookframe("frm");
 	}
 	function onLogedout($info){
-		$this->initTabbar($this->tabbar->curTabName);
+		if($this->tabbar->curTabName=="MyAcc"){
+			$this->initTabbar("Main");
+		}else{
+			$this->initTabbar($this->tabbar->curTabName);
+		}
 		$this->_bookframe("frm");
 	}
 	function frm(){

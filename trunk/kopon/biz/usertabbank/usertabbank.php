@@ -146,6 +146,7 @@ PHTMLCODE;
     }
     function onUserTabChanged($info){
 		$this->curTab=$info['name'];
+		osBroadcast("usertab_usertabChanged",array("tabName"=>$this->curTab));
 		$this->_bookframe("frm");
     }
 

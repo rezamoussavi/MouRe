@@ -51,7 +51,11 @@
 	}
 
 	function onLogedout($info){
-		#fun->initTabbar(#node->tabbar->curTabName);
+		if(#node->tabbar->curTabName=="MyAcc"){
+			#fun->initTabbar("Main");
+		}else{
+			#fun->initTabbar(#node->tabbar->curTabName);
+		}
 		_bookFrame(#frame->frm);
 	}
 

@@ -6,11 +6,12 @@
 	Author: Max Mirkia
 	Date:	2/7/2010
 	Version: 0.1
+
 #biz
 	userpanelviewer:userpage
 
 #node
-	usertab usertab,profile profile,referal referal,history history
+	profile profile,referal referal,history history
 
 #frame
 	*frmProfile,frmReferal,frmHistory
@@ -18,16 +19,16 @@
 #message
 	usertab->usertabChanged=onTabChanged
 
-
 #phpfunction
-	function onusertabChanged($info){
-		_bookframe(#frame->frm.$info['tabName']);
+
+	function onTabChanged($info){
+		_bookframe(#frm->frm.$info['tabName']);
 	}
 
 	function frmProfile(){
-		$toShow = #node->profile->_backFrame();
+		$toProfile = #node->profile->_backFrame();
 		$html=<PHTML>
-			$toShow
+			$toProfile
 		</PHTML>
 		return $html;
 	}
@@ -41,8 +42,9 @@
 	}
 
 	function frmHistory(){
+		$toHistory = #node->history->_backFrame();
 		$html=<PHTML>
-			How to 
+			$toHistory
 		</PHTML>
 		return $html;
 	}

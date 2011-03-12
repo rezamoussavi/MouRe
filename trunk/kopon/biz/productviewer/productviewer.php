@@ -31,6 +31,7 @@ class productviewer {
 
 	//Variables
 	var $large;
+	var $link;
 
 	//Nodes (bizvars)
 	var $product;
@@ -59,6 +60,10 @@ class productviewer {
 		if(!isset($_SESSION['osNodes'][$fullname]['large']))
 			$_SESSION['osNodes'][$fullname]['large']=true;
 		$this->large=&$_SESSION['osNodes'][$fullname]['large'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['link']))
+			$_SESSION['osNodes'][$fullname]['link']='';
+		$this->link=&$_SESSION['osNodes'][$fullname]['link'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='productviewer';
@@ -113,11 +118,16 @@ class productviewer {
 //########################################
 
 
+	function backUID(){
+		return $this->product->backUID();
+	}
 	function bookSmall(){
 		$this->large=false;
+		$this->_bookframe("frmSmall");
 	}
 	function bookLarge(){
 		$this->large=true;
+		$this->_bookframe("frmLarge");
 	}
 	function bookProductUID($UID){
 		$this->product->bookProductUID($UID);
@@ -156,13 +166,13 @@ PHTMLCODE;
 	function frmSmall(){
 		$title=$this->product->backTitle();
 		$price=$this->product->backPrice();
-		$image=$this->product->backIcon();
+		$image=$this->link!=''?'<a href="'.$this->link.'"><img src="'.$this->product->backIcon().'"/></a>"':'<img src="'.$this->product->backIcon().'"/>';
 		$discount=$this->product->backDiscount();
 		$html=<<<PHTMLCODE
 
 			<center>$title<br />
 			price:$price you get %$discount Discount</center>
-			<center><img src="$image"/></center>
+			<center>$image</center>
 		
 PHTMLCODE;
 

@@ -117,6 +117,7 @@ class bizbank {
 <div style="width:800px; float:left; border: 1px dotted #f5f5f5;">
 			$S
 			$L$M</div>
+			<div style="width:800px; float:left; background-color:#f5f5f5; height:25px;">&nbsp;</div>
 		
 PHTMLCODE;
 

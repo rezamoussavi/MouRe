@@ -15,6 +15,10 @@
 
 #phpfunction
 
+	function backUID(){
+		return #var->UID;
+	}
+
 	function bookProductUID($UID){
 		$date=date("Ymd");
 		$to=$date."2400";

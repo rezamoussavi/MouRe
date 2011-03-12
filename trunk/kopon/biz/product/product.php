@@ -126,6 +126,9 @@ class product {
 //########################################
 
 
+	function backUID(){
+		return $this->UID;
+	}
 	function bookProductUID($UID){
 		$date=date("Ymd");
 		$to=$date."2400";
