@@ -166,7 +166,7 @@ PHTMLCODE;
 	function frmSmall(){
 		$title=$this->product->backTitle();
 		$price=$this->product->backPrice();
-		$image=$this->link!=''?'<a href="'.$this->link.'"><img src="'.$this->product->backIcon().'"/></a>"':'<img src="'.$this->product->backIcon().'"/>';
+		$image=$this->link!=''?'<a href="'.$this->link.'"><img src="'.$this->product->backIcon().'"/></a>':'<img src="'.$this->product->backIcon().'"/>';
 		$discount=$this->product->backDiscount();
 		$html=<<<PHTMLCODE
 

@@ -72,7 +72,7 @@
 	function frmSmall(){
 		$title=#node->product->backTitle();
 		$price=#node->product->backPrice();
-		$image=#var->link!=''?'<a href="'.#var->link.'"><img src="'.#node->product->backIcon().'"/></a>"':'<img src="'.#node->product->backIcon().'"/>';
+		$image=#var->link!=''?'<a href="'.#var->link.'"><img src="'.#node->product->backIcon().'"/></a>':'<img src="'.#node->product->backIcon().'"/>';
 		$discount=#node->product->backDiscount();
 		$html=<PHTML>
 			<center>$title<br />
