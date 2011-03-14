@@ -225,8 +225,8 @@ class product {
 	
 	function backAllUID(){
 		$date=date("Ymd");
-		$to=$date."2400";
-		xquery($this,"select UID from product_product where endtime<'$to'");
+		$to=$date."0000";
+		xquery($this,"select UID from product_product where endtime<'$to' order by endtime asc");
 		$ret=array();
 		while($d=fetch()){
 			$ret[]=$d['UID'];
