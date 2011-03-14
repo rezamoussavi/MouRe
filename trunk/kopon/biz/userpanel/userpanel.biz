@@ -24,6 +24,7 @@
 
 	function init(){
 		#node->tabbar->bookContent(array("history","referal","profile"));
+		#node->tabbar->bookSelected("history");
 	}
 
 	function frm(){

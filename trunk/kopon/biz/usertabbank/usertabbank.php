@@ -126,6 +126,10 @@ class usertabbank {
         }
         $this->_bookframe("frm");
     }
+	function bookSelected($tab){
+		$this->curTab=$tab;
+		osBroadcast("usertab_usertabChanged",array("tabName"=>$tab));
+	}
     function frm(){
 		$html='';
 		foreach($this->tabs as $t){

@@ -113,6 +113,7 @@ class userpanel {
 
 	function init(){
 		$this->tabbar->bookContent(array("history","referal","profile"));
+		$this->tabbar->bookSelected("history");
 	}
 	function frm(){
 		$bar=$this->tabbar->_backframe();

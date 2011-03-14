@@ -35,6 +35,11 @@
         _bookframe(#frame->frm);
     }
 
+	function bookSelected($tab){
+		#var->curTab=$tab;
+		osBroadcast(#msg->usertabChanged,array("tabName"=>$tab));
+	}
+
     function frm(){
 		$html='';
 		foreach(#var->tabs as $t){
