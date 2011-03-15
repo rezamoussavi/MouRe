@@ -142,7 +142,7 @@ class productviewer {
 		$description=$this->product->backDescription();
 		$price=$this->product->backPrice();
 		$image=$this->product->backImage();
-		$t=$this->product->backRemainingTime();
+		$t=$this->timeFormat($this->product->backRemainingTime());
 		$discount=$this->product->backDiscount();
 		if($t<1){
 			$time="";
@@ -168,15 +168,26 @@ PHTMLCODE;
 		$price=$this->product->backPrice();
 		$image=$this->link!=''?'<a href="'.$this->link.'"><img src="'.$this->product->backIcon().'"/></a>':'<img src="'.$this->product->backIcon().'"/>';
 		$discount=$this->product->backDiscount();
+		$day=$this->dayFormat($this->product->backStartTime());
 		$html=<<<PHTMLCODE
 
 			<center>$title<br />
 			price:$price you get %$discount Discount</center>
-			<center>$image</center>
+			<center>
+			$image<br />
+			Announcment Day: $day
+			</center>
 		
 PHTMLCODE;
 
 		return $html;
+	}
+	function timeFormat($t){
+		$t=strlen($t)==3?"0".$t:$t;
+		return substr($t,0,2)." : ".substr($t,2);
+	}
+	function dayFormat($t){
+		return substr($t,0,4)."/".substr($t,4,2)."/".substr($t,6,2);
 	}
 
 }

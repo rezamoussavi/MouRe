@@ -30,6 +30,7 @@ class user {
 
 	//Variables
 	var $userUID;
+	var $userName;
 	var $email;
 	var $loggedIn;
 
@@ -51,6 +52,10 @@ class user {
 		if(!isset($_SESSION['osNodes'][$fullname]['userUID']))
 			$_SESSION['osNodes'][$fullname]['userUID']='';
 		$this->userUID=&$_SESSION['osNodes'][$fullname]['userUID'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['userName']))
+			$_SESSION['osNodes'][$fullname]['userName']='';
+		$this->userName=&$_SESSION['osNodes'][$fullname]['userName'];
 
 		if(!isset($_SESSION['osNodes'][$fullname]['email']))
 			$_SESSION['osNodes'][$fullname]['email']='';
@@ -99,7 +104,12 @@ class user {
 	function bookUID($UID){
 	}
 	function backName(){
-		return '';
+		$n='{no name}';
+		$u=osBackUser();
+		if(isset($u['userName'])){
+			$n=$u['userName'];
+		}
+		return $n;
 	}
 	function backEmail(){
 		return '';
@@ -167,13 +177,13 @@ class user {
             if ($row = fetch()) {
                 $this->email = $email;
                 $this->userUID = $row["userUID"];
-                
+                $this->userName = $row["userName"];
                 if ($row["verificationCode"] == '0') {
                     // login succefull
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "name"=>$this->email));
+					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["UserName"]));
                     osBroadcast("user_login", array());
                     return 1;
                 } else {

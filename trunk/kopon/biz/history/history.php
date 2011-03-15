@@ -128,7 +128,7 @@ class history {
 		}
 	}
 	function frm(){
-		$html='';
+		$html=' -- History<hr />';
 		foreach($this->purchases as $p){
 			$pframe=$p->_backframe();
 			$html.=<<<PHTMLCODE

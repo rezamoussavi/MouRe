@@ -129,13 +129,16 @@ PHTMLCODE;
 
 		}else{
 			$u=new user("");
-			$u->bookUID($uUID);
+			$uName=$u->backName();
+			$uMail=$u->backEmail();
+			$uBDate=$u->backBDate();
+			$uAddress=$u->backAddress();
 			$html=<<<PHTMLCODE
 
-				Name: {$u->backName()}<br>
-				email: {$u->backEmail()}<br>
-				Address: {$u->backAddress()}<br>
-				Birth Date: {$u->backBDate()}<br>
+				Name: {$uName}<br>
+				email: {$uMail}<br>
+				Address: {$uAddress}<br>
+				Birth Date: {$uBDate}<br>
 				<FORM name="{$this->_fullname}" method="post">
 					<input type="hidden" name="_message" value="frame_editInfo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 					<input value ="Edit" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press" style="margin-top: 10px; margin-right: 50px;" />

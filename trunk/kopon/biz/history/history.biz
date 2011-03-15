@@ -33,7 +33,7 @@
 	}
 
 	function frm(){
-		$html='';
+		$html=' -- History<hr />';
 		foreach(#var->purchases as $p){
 			$pframe=$p->_backFrame();
 			$html.=<PHTML>

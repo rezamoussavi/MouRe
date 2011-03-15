@@ -17,6 +17,7 @@
 	frame->applyChanges=onApplyChanges
 	frame->cancelChanges=onCancelChanges
 	frame->editInfo=onEditInfo
+
 #frame
 	frmView,frmEdit
 
@@ -31,12 +32,15 @@
 			</PHTML>
 		}else{
 			$u=new user("");
-			$u->bookUID($uUID);
+			$uName=$u->backName();
+			$uMail=$u->backEmail();
+			$uBDate=$u->backBDate();
+			$uAddress=$u->backAddress();
 			$html=<PHTML>
-				Name: {$u->backName()}<br>
-				email: {$u->backEmail()}<br>
-				Address: {$u->backAddress()}<br>
-				Birth Date: {$u->backBDate()}<br>
+				Name: {$uName}<br>
+				email: {$uMail}<br>
+				Address: {$uAddress}<br>
+				Birth Date: {$uBDate}<br>
 				<FORM name="{#nodeID}" method="post">
 					<#msg->editInfo>
 					<input value ="Edit" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press" style="margin-top: 10px; margin-right: 50px;" />

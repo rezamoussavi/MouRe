@@ -11,7 +11,7 @@
 	user:user
 
 #var
-	userUID,email,loggedIn
+	userUID,userName,email,loggedIn
 
 #phpfunction
 
@@ -19,7 +19,12 @@
 	}
 
 	function backName(){
-		return '';
+		$n='{no name}';
+		$u=osBackUser();
+		if(isset($u['userName'])){
+			$n=$u['userName'];
+		}
+		return $n;
 	}
 
 	function backEmail(){
@@ -97,13 +102,13 @@
             if ($row = fetch()) {
                 #var->email = $email;
                 #var->userUID = $row["userUID"];
-                
+                #var->userName = $row["userName"];
                 if ($row["verificationCode"] == '0') {
                     // login succefull
                     #var->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => #var->email, "UID" => #var->userUID, "name"=>#var->email));
+					osBookUser(array("email" => #var->email, "UID" => #var->userUID, "Address"=>$row["Address"], "userName"=>$row["UserName"]));
                     osBroadcast(#msg->login, array());
                     return 1;
                 } else {
