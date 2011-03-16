@@ -131,8 +131,8 @@ PHTMLCODE;
 			$u=new user("");
 			$uName=$u->backName();
 			$uMail=$u->backEmail();
-			$uBDate=$u->backBDate();
 			$uAddress=$u->backAddress();
+			$uBDate=$u->backBDate();
 			$html=<<<PHTMLCODE
 
 				Name: {$uName}<br>
@@ -150,16 +150,21 @@ PHTMLCODE;
 		return $html;
 	}
 	function frmEdit(){
+		$u=new user("");
+		$uName=$u->backName();
+		$uMail=$u->backEmail();
+		$uAddress=$u->backAddress();
+		$uBDate=$u->backBDate();
 		$html=<<<PHTMLCODE
 
 			<FORM name="{$this->_fullname}" method="post">
-				<input type="hidden" name="_message" value="frame_applyChanges" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				Name: <input type="input" name="Name"><br />
-				Address: <input type="input" name="Address"><br />
-				Birth Date: <input type="input" name="BDate"><br />
+				Name: <input type="input" name="Name" value="$uName" /><br />
+				Address: <input type="input" name="Address" value="$uAddress" /><br />
+				Birth Date: <input type="input" name="BDate" value="$uBDate" /><br />
 				New Password: <input type="password" name="NewPassword"><br />
 				Confirm Password: <input type="password" name="ConfirmPassword"><br />
 				Old Password: <input type="password" name="OldPassword"><br />
+				<input type="hidden" name="_message" value="frame_applyChanges" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="Apply" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press" style="margin-top: 10px; margin-right: 50px;" />
 			</FORM>
 			<FORM name="{$this->_fullname}cancel" method="post">
@@ -173,15 +178,11 @@ PHTMLCODE;
 	}
 	function onApplyChanges($info){
 		// $info indexes: Name, Address, BDate, NewPassword, ConfirmPassword, OldPassword
-		$uUID=osBackUser();
-		if($uUID>0){
-			$u=new user("");
-			$u->bookUID($uUID);
-			$u->bookName($info['Name']);
-			$u->bookAddress($info['Address']);
-			$u->bookBDate($info['BDate']);
-			$u->bookPassword($info['NewPassword']);
-		}
+		$u=new user("");
+		$u->bookName($info['Name']);
+		$u->bookAddress($info['Address']);
+		$u->bookBDate($info['BDate']);
+		$u->bookPassword($info['NewPassword']);
 		$this->_bookframe("frmView");
 	}
 	function onCancelChanges($info){

@@ -51,15 +51,20 @@
 	}
 
 	function frmEdit(){
+		$u=new user("");
+		$uName=$u->backName();
+		$uMail=$u->backEmail();
+		$uAddress=$u->backAddress();
+		$uBDate=$u->backBDate();
 		$html=<PHTML>
 			<FORM name="{#nodeID}" method="post">
-				<#msg->applyChanges>
-				Name: <input type="input" name="Name"><br />
-				Address: <input type="input" name="Address"><br />
-				Birth Date: <input type="input" name="BDate"><br />
+				Name: <input type="input" name="Name" value="$uName" /><br />
+				Address: <input type="input" name="Address" value="$uAddress" /><br />
+				Birth Date: <input type="input" name="BDate" value="$uBDate" /><br />
 				New Password: <input type="password" name="NewPassword"><br />
 				Confirm Password: <input type="password" name="ConfirmPassword"><br />
 				Old Password: <input type="password" name="OldPassword"><br />
+				<#msg->applyChanges>
 				<input value ="Apply" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press" style="margin-top: 10px; margin-right: 50px;" />
 			</FORM>
 			<FORM name="{#nodeID}cancel" method="post">
@@ -72,15 +77,11 @@
 
 	function onApplyChanges($info){
 		// $info indexes: Name, Address, BDate, NewPassword, ConfirmPassword, OldPassword
-		$uUID=osBackUser();
-		if($uUID>0){
-			$u=new user("");
-			$u->bookUID($uUID);
-			$u->bookName($info['Name']);
-			$u->bookAddress($info['Address']);
-			$u->bookBDate($info['BDate']);
-			$u->bookPassword($info['NewPassword']);
-		}
+		$u=new user("");
+		$u->bookName($info['Name']);
+		$u->bookAddress($info['Address']);
+		$u->bookBDate($info['BDate']);
+		$u->bookPassword($info['NewPassword']);
 		_bookFrame(#frm->frmView);
 	}
 

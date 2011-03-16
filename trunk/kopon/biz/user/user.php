@@ -103,6 +103,14 @@ class user {
 
 	function bookUID($UID){
 	}
+	function bookName($name){
+	}
+	function bookAddress($ad){
+	}
+	function bookBDate($bd){
+	}
+	function bookPassword($pass){
+	}
 	function backName(){
 		$n='{no name}';
 		$u=osBackUser();
