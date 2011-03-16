@@ -54,5 +54,7 @@
 	}
 
     function onTabSelected($info){
-		#fun->bookSelected($info["name"]);
+		if(array_search($info["name"],#var->tabs)!==false){
+			#fun->bookSelected($info["name"]);
+		}
     }

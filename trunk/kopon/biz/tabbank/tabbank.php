@@ -150,7 +150,9 @@ PHTMLCODE;
 		return $html;
 	}
     function onTabSelected($info){
-		$this->bookSelected($info["name"]);
+		if(array_search($info["name"],$this->tabs)!==false){
+			$this->bookSelected($info["name"]);
+		}
     }
 
 }

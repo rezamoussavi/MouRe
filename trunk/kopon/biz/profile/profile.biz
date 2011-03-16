@@ -34,8 +34,8 @@
 			$u=new user("");
 			$uName=$u->backName();
 			$uMail=$u->backEmail();
-			$uBDate=$u->backBDate();
 			$uAddress=$u->backAddress();
+			$uBDate=$u->backBDate();
 			$html=<PHTML>
 				Name: {$uName}<br>
 				email: {$uMail}<br>

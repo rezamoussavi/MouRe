@@ -112,13 +112,28 @@ class user {
 		return $n;
 	}
 	function backEmail(){
-		return '';
+		$n='{no email}';
+		$u=osBackUser();
+		if(isset($u['email'])){
+			$n=$u['email'];
+		}
+		return $n;
 	}
 	function backAddress(){
-		return '';
+		$n='{no address}';
+		$u=osBackUser();
+		if(isset($u['Address'])){
+			$n=$u['Address'];
+		}
+		return $n;
 	}
 	function backBDate(){
-		return '';
+		$n='{no b-date}';
+		$u=osBackUser();
+		if(isset($u['BDate'])){
+			$n=$u['BDate'];
+		}
+		return $n;
 	}
     function logout() {
         $this->loggedIn = 0;
