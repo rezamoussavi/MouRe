@@ -120,9 +120,29 @@ class user {
 		// else RETURN propper error message
 		if(isset($info['email']))	{$email=$info['email'];}	else{return 'Enter email!';}
 		if(isset($info['Pass']))	{$pass=$info['Pass'];}		else{return 'Enter Password';}
+		if(strlen(trim($pass))<1)	{return 'Enter Password';}
 		//#######################
 		// Extract other info from $info
 		// put empty string if is not set
+		$newpass=isset($info['NewPass'])?$info['NewPass']:'';
+		$address=isset($info['Address'])?$info['Address']:'';
+		$bdate=isset($info['BDate'])?$info['BDate']:'';
+		$name=isset($info['Name'])?$info['Name']:'';
+		//#######################
+		// update user if pass is correct
+		//
+		$hashPassword = $this->sha1Hash($email,$pass);
+		query("SELECT * FROM user_info WHERE email='" . $email . "' AND password='" . $hashPassword . "'  AND biznessUID= '" . osBackBizness() . "';");
+		if($row=fetch()){// Password correct
+			$newpass = (strlen(trim($newpass))<1)?$hashPassword:$this->sha1Hash($email,$newpass);
+			$q="UPDATE user_info SET password='".$newpass."', Address='".$address."', BDate='".$bdate."', UserName='".$name."' WHERE userUID='".$row['userUID']."'";
+			if(!query($q)){
+				$message='DB ERROR:<br />'.$q;
+			}
+		}else{//Incorrect password
+			$message='Incorrect Password';
+		}
+		
 		return $message;
 	}
 	function backName(){
@@ -220,7 +240,7 @@ class user {
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["UserName"]));
+					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["UserName"], "BDate"=>$row["BDate"]));
                     osBroadcast("user_login", array());
                     return 1;
                 } else {

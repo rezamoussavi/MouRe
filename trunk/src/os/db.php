@@ -32,8 +32,9 @@
 	}
 	function query($s){
 		global $osdbcon,$_result;
-		if(!$osdbcon){ $_result=null; return;}
-		$_result= mysql_query($s,$osdbcon);
+		//if(!$osdbcon){ $_result=null;}	else {$_result= mysql_query($s,$osdbcon);
+		$_result= $osdbcon? mysql_query($s,$osdbcon):false;
+		return $_result;
 	}
 	function fetch(){
 		global $_result;
