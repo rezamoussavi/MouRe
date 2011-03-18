@@ -111,6 +111,20 @@ class user {
 	}
 	function bookPassword($pass){
 	}
+	// $info = array("email"=>xxx,  "Pass"=>xxx,  "NewPass"=>xxx,  "Address"=>xxx,  "BDate"=>xxx,  "Name"=>xxx)
+	function updateUserInfo($info){
+		$email='';	$pass='';	$message='ok';
+		//#######################
+		// check if email and pass included
+		// and have values
+		// else RETURN propper error message
+		if(isset($info['email']))	{$email=$info['email'];}	else{return 'Enter email!';}
+		if(isset($info['Pass']))	{$pass=$info['Pass'];}		else{return 'Enter Password';}
+		//#######################
+		// Extract other info from $info
+		// put empty string if is not set
+		return $message;
+	}
 	function backName(){
 		$n='{no name}';
 		$u=osBackUser();

@@ -10,6 +10,9 @@
 #biz
 	profile:user
 
+#var
+	message=''
+
 #node
 	user
 
@@ -56,7 +59,10 @@
 		$uMail=$u->backEmail();
 		$uAddress=$u->backAddress();
 		$uBDate=$u->backBDate();
+		$msg=#var->message;
+		#var->message='';
 		$html=<PHTML>
+			<center><b><font color=red>{$msg}</font></b></center>
 			<FORM name="{#nodeID}" method="post">
 				Name: <input type="input" name="Name" value="$uName" /><br />
 				Address: <input type="input" name="Address" value="$uAddress" /><br />
@@ -77,12 +83,14 @@
 
 	function onApplyChanges($info){
 		// $info indexes: Name, Address, BDate, NewPassword, ConfirmPassword, OldPassword
-		$u=new user("");
-		$u->bookName($info['Name']);
-		$u->bookAddress($info['Address']);
-		$u->bookBDate($info['BDate']);
-		$u->bookPassword($info['NewPassword']);
-		_bookFrame(#frm->frmView);
+		if($info['NewPassword']==$info['ConfirmPassword']){
+			$u=new user("");
+			$info=array("email"=>$u->backEmail(),  "Pass"=>$info['OldPassword'],  "NewPass"=>$info['NewPassword'],  "Address"=>$info['Address'],  "BDate"=>$info['BDate'],  "Name"=>$info['Name']);
+			#var->message=$u->updateUserInfo($info);
+		}else{
+			#var->message='new password does not match with confirm password';
+		}
+		if(#var->message==='ok')	{_bookFrame(#frm->frmView);#var->message='';}	else{_bookFrame(#frm->frmEdit);}
 	}
 
 	function onCancelChanges($info){

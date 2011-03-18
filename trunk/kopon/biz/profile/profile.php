@@ -30,6 +30,7 @@ class profile {
 	var $_frmChanged;
 
 	//Variables
+	var $message;
 
 	//Nodes (bizvars)
 
@@ -54,6 +55,10 @@ class profile {
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmView';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['message']))
+			$_SESSION['osNodes'][$fullname]['message']='';
+		$this->message=&$_SESSION['osNodes'][$fullname]['message'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='profile';
@@ -155,8 +160,11 @@ PHTMLCODE;
 		$uMail=$u->backEmail();
 		$uAddress=$u->backAddress();
 		$uBDate=$u->backBDate();
+		$msg=$this->message;
+		$this->message='';
 		$html=<<<PHTMLCODE
 
+			<center><b><font color=red>{$msg}</font></b></center>
 			<FORM name="{$this->_fullname}" method="post">
 				Name: <input type="input" name="Name" value="$uName" /><br />
 				Address: <input type="input" name="Address" value="$uAddress" /><br />
@@ -178,12 +186,14 @@ PHTMLCODE;
 	}
 	function onApplyChanges($info){
 		// $info indexes: Name, Address, BDate, NewPassword, ConfirmPassword, OldPassword
-		$u=new user("");
-		$u->bookName($info['Name']);
-		$u->bookAddress($info['Address']);
-		$u->bookBDate($info['BDate']);
-		$u->bookPassword($info['NewPassword']);
-		$this->_bookframe("frmView");
+		if($info['NewPassword']==$info['ConfirmPassword']){
+			$u=new user("");
+			$info=array("email"=>$u->backEmail(),  "Pass"=>$info['OldPassword'],  "NewPass"=>$info['NewPassword'],  "Address"=>$info['Address'],  "BDate"=>$info['BDate'],  "Name"=>$info['Name']);
+			$this->message=$u->updateUserInfo($info);
+		}else{
+			$this->message='new password does not match with confirm password';
+		}
+		if($this->message==='ok')	{$this->_bookframe("frmView");$this->message='';}	else{$this->_bookframe("frmEdit");}
 	}
 	function onCancelChanges($info){
 		$this->_bookframe("frmView");
