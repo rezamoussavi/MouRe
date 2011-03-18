@@ -1,4 +1,5 @@
 <?php
+	session_cache_expire(10);
 	session_start();
 
 	function myErrorHandler($errno, $errstr, $errfile, $errline){

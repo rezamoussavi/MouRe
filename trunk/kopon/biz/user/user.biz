@@ -30,6 +30,34 @@
 	function bookPassword($pass){
 	}
 
+	function updateUserInfo($info){
+		$email='';
+		$pass='';
+
+		//#######################
+		// check if email and pass included
+		// else RETURN false
+		//#######################
+
+		if(isset($info['email'])){
+			$email=$info['email'];
+		}else{
+			return false;
+		}
+		if(isset($info['pass'])){
+			$email=$info['pass'];
+		}else{
+			return false;
+		}
+
+		//#######################
+		// Extract other info from $info
+		// put empty string if is not set
+		//#######################
+
+		
+	}
+
 	function backName(){
 		$n='{no name}';
 		$u=osBackUser();
