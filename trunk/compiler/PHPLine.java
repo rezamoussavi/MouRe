@@ -13,16 +13,16 @@ public class PHPLine {
 		line=dbTags(line);
 		line=toStringTags(line);
 		line=nodeIDTag(line);
-		line=replace(line, "<PHTML>", "<<<PHTMLCODE\n",false);
-		line=replace(line, "</PHTML>;", "\nPHTMLCODE;\n",false);
-		line=replace(line, "</PHTML>", "\nPHTMLCODE;\n",false);
-		line=replace(line, "_bookframe", "$this->_bookframe",false);
-		line=replace(line, "_bookFrame", "$this->_bookframe",false);
-		line=replace(line, "_backFrame", "_backframe",false);
-		line=replace(line, "osBackLink(", "osBackLink($this->_fullname,",false);
-		line=replace(line, "osBackLink (", "osBackLink($this->_fullname,",false);
-		line=replace(line, "osBackLinkInfo(", "osBackLinkInfo($this->_fullname,",false);
-		line=replace(line, "osBackLinkInfo (", "osBackLinkInfo($this->_fullname,",false);
+		line=replace(line, "<PHTML>", "<<<PHTMLCODE\n");
+		line=replace(line, "</PHTML>;", "\nPHTMLCODE;\n");
+		line=replace(line, "</PHTML>", "\nPHTMLCODE;\n");
+		line=replace(line, "_bookframe", "$this->_bookframe");
+		line=replace(line, "_bookFrame", "$this->_bookframe");
+		line=replace(line, "_backFrame", "_backframe");
+		line=replace(line, "osBackLink(", "osBackLink($this->_fullname,");
+		line=replace(line, "osBackLink (", "osBackLink($this->_fullname,");
+		line=replace(line, "osBackLinkInfo(", "osBackLinkInfo($this->_fullname,");
+		line=replace(line, "osBackLinkInfo (", "osBackLinkInfo($this->_fullname,");
 		return line;
 	}
 
@@ -102,10 +102,10 @@ public class PHPLine {
 	}
 
 	private static String replace(String line,String exp,String rep,boolean repeat){
-		int i=line.indexOf(exp);
+		int i=line.indexOf(exp,0);
 		while(i!=-1){
 			line=line.substring(0,i)+rep+line.substring(i+exp.length());
-			i=line.indexOf(exp);
+			i=line.indexOf(exp,i+1);
 			if(!repeat)
 				i=-1;
 		}
