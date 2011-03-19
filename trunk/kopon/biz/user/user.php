@@ -116,17 +116,18 @@ class user {
 		$email='';	$pass='';	$message='ok';
 		//#######################
 		// check if email and pass included
-		// and have values
+		// and have values also if there is a bdate if it is in right format
 		// else RETURN propper error message
 		if(isset($info['email']))	{$email=$info['email'];}	else{return 'Enter email!';}
 		if(isset($info['Pass']))	{$pass=$info['Pass'];}		else{return 'Enter Password';}
 		if(strlen(trim($pass))<1)	{return 'Enter Password';}
+		$bdate=isset($info['BDate'])?$this->convertBDate($info['BDate']):'';
+		if($bdate=='error')	{return 'Incorrect BDate Format';}
 		//#######################
 		// Extract other info from $info
 		// put empty string if is not set
 		$newpass=isset($info['NewPass'])?$info['NewPass']:'';
 		$address=isset($info['Address'])?$info['Address']:'';
-		$bdate=isset($info['BDate'])?$info['BDate']:'';
 		$name=isset($info['Name'])?$info['Name']:'';
 		//#######################
 		// update user if pass is correct
@@ -134,16 +135,27 @@ class user {
 		$hashPassword = $this->sha1Hash($email,$pass);
 		query("SELECT * FROM user_info WHERE email='" . $email . "' AND password='" . $hashPassword . "'  AND biznessUID= '" . osBackBizness() . "';");
 		if($row=fetch()){// Password correct
+			$UID=$row['userUID'];
 			$newpass = (strlen(trim($newpass))<1)?$hashPassword:$this->sha1Hash($email,$newpass);
-			$q="UPDATE user_info SET password='".$newpass."', Address='".$address."', BDate='".$bdate."', UserName='".$name."' WHERE userUID='".$row['userUID']."'";
+			$q="UPDATE user_info SET password='".$newpass."', Address='".$address."', BDate='".$bdate."', UserName='".$name."' WHERE userUID='".$UID."'";
 			if(!query($q)){
 				$message='DB ERROR:<br />'.$q;
 			}
 		}else{//Incorrect password
 			$message='Incorrect Password';
 		}
-		
+		if($message=='ok'){
+			osBookUser(array("email" => $email, "UID" => $UID, "Address"=>$address, "userName"=>$name, "BDate"=>$info['BDate']));
+		}
 		return $message;
+	}
+	function convertBDate($b){
+		$b=trim($b);
+		if(strlen($b)!=10)
+			return 'error';
+		if(substr($b,4,1)!="/" || substr($b,7,1)!="/")
+			return 'error';
+		return substr($b,0,4).substr($b,5,2).substr($b,8,2);
 	}
 	function backName(){
 		$n='{no name}';
@@ -176,6 +188,9 @@ class user {
 			$n=$u['BDate'];
 		}
 		return $n;
+	}
+	function addSlash2BDate($b){
+		return substr($b,0,4)."/".substr($b,4,2)."/".substr($b,6,2);
 	}
     function logout() {
         $this->loggedIn = 0;
@@ -240,7 +255,7 @@ class user {
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["UserName"], "BDate"=>$row["BDate"]));
+					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["UserName"], "BDate"=>$this->addSlash2BDate($row["BDate"])));
                     osBroadcast("user_login", array());
                     return 1;
                 } else {

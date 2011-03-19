@@ -66,16 +66,18 @@
 			<FORM name="{#nodeID}" method="post">
 				Name: <input type="input" name="Name" value="$uName" /><br />
 				Address: <input type="input" name="Address" value="$uAddress" /><br />
-				Birth Date: <input type="input" name="BDate" value="$uBDate" /><br />
-				New Password: <input type="password" name="NewPassword"><br />
-				Confirm Password: <input type="password" name="ConfirmPassword"><br />
-				Old Password: <input type="password" name="OldPassword"><br />
+				Birth Date: <input type="input" name="BDate" value="$uBDate" /><FONT color=gray>yyy/mm/dd e.g. 1987/07/27</FONT><br />
+				Current Password:<FONT color=red>*</FONT> <input type="password" name="OldPassword">
+				<hr width=300px align=left />
+				New Password: <input type="password" name="NewPassword"><FONT color=gray>leave blank if you dont want to change password</FONT><br />
+				Confirm Password: <input type="password" name="ConfirmPassword">
+				<hr width=300px align=left />
 				<#msg->applyChanges>
 				<input value ="Apply" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				<input value ="Cancel" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}cancel")' class="press" style="margin-top: 10px; margin-right: 50px;" />
 			</FORM>
 			<FORM name="{#nodeID}cancel" method="post">
 				<#msg->cancelChanges>
-				<input value ="Cancel" type = "button" onclick = 'JavaScript:sndmsg("{#nodeID}cancel")' class="press" style="margin-top: 10px; margin-right: 50px;" />
 			</FORM>
 		</PHTML>
 		return $html;

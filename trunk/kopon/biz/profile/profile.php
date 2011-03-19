@@ -168,16 +168,18 @@ PHTMLCODE;
 			<FORM name="{$this->_fullname}" method="post">
 				Name: <input type="input" name="Name" value="$uName" /><br />
 				Address: <input type="input" name="Address" value="$uAddress" /><br />
-				Birth Date: <input type="input" name="BDate" value="$uBDate" /><br />
-				New Password: <input type="password" name="NewPassword"><br />
-				Confirm Password: <input type="password" name="ConfirmPassword"><br />
-				Old Password: <input type="password" name="OldPassword"><br />
+				Birth Date: <input type="input" name="BDate" value="$uBDate" /><FONT color=gray>yyy/mm/dd e.g. 1987/07/27</FONT><br />
+				Current Password:<FONT color=red>*</FONT> <input type="password" name="OldPassword">
+				<hr width=300px align=left />
+				New Password: <input type="password" name="NewPassword"><FONT color=gray>leave blank if you dont want to change password</FONT><br />
+				Confirm Password: <input type="password" name="ConfirmPassword">
+				<hr width=300px align=left />
 				<input type="hidden" name="_message" value="frame_applyChanges" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="Apply" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				<input value ="Cancel" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}cancel")' class="press" style="margin-top: 10px; margin-right: 50px;" />
 			</FORM>
 			<FORM name="{$this->_fullname}cancel" method="post">
 				<input type="hidden" name="_message" value="frame_cancelChanges" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input value ="Cancel" type = "button" onclick = 'JavaScript:sndmsg("{$this->_fullname}cancel")' class="press" style="margin-top: 10px; margin-right: 50px;" />
 			</FORM>
 		
 PHTMLCODE;
