@@ -51,14 +51,7 @@ public class PHPClass {
 		}else if(sec.name.equalsIgnoreCase("phpfunction")){
 			functions=sec.elements.get(0).data;
 		}else if(sec.name.equalsIgnoreCase("comments")){
-			comments= "/*\n\tCompiled by bizLang compiler version 2.0 (March 4 2011) By Reza Moussavi\n" +
-			"\t1.1: {Family included}\n" +
-			"\t1.2: {flatten sleep session}\n" +
-			"\t1.3: {direct message sending}\n" +
-			"\t1.3.5: {sleep and decunstructed merged + _tmpNode_ added to fix a bug}\n" +
-			"\t1.4: {multi parameter in link message}\n" +
-			"\t1.5: {multi secName support: frm/frame, msg/messages,fun/function/phpfunction}\n" +
-			"\t2.0: {upload bothe biz and php directly to server (ready to use)}\n\n" +
+			comments= "/*\n\tCompiled by bizLang compiler version 3.0 (March 22 2011) By Reza Moussavi\n\n"+
 			sec.elements.get(0).data+"\n*/\n";
 		}
 	}
@@ -80,7 +73,7 @@ public class PHPClass {
 		String s="<?PHP\n\n"+comments;
 		for(String b:bizes)
 			if(!Name.equalsIgnoreCase(b))
-				s+="require_once '../biz/"+b+"/"+b+".php';\n";
+				s+="require_once 'biz/"+b+"/"+b+".php';\n";
 		return s;
 	}
 

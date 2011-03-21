@@ -5,5 +5,5 @@
 	{
 		echo "ok";
 	}
-	move_uploaded_file($_FILES["file"]["tmp_name"],"../biz/".$_POST['biz']."/" . $_FILES["file"]["name"]);
+	move_uploaded_file($_FILES["file"]["tmp_name"],"biz/".$_POST['biz']."/" . $_FILES["file"]["name"]);
 ?>

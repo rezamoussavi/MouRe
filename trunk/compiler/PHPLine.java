@@ -6,7 +6,6 @@ public class PHPLine {
 	private static String validVarChars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
 
 	public static String parse(String line){
-//		line=nodeFrame(line);//Should be before toThisTags
 		line=messageInForms(line);//Should be before toThisTags
 		line=msgInForms(line);//Should be before toThisTags
 		line=toThisTags(line);
@@ -105,7 +104,7 @@ public class PHPLine {
 		int i=line.indexOf(exp,0);
 		while(i!=-1){
 			line=line.substring(0,i)+rep+line.substring(i+exp.length());
-			i=line.indexOf(exp,i+1);
+			i=line.indexOf(exp,i+rep.length());
 			if(!repeat)
 				i=-1;
 		}
