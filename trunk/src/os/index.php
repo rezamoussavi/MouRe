@@ -7,8 +7,12 @@
 	}
 	set_error_handler("myErrorHandler");
 	date_default_timezone_set('GMT');
+	$UN="_biz";
+	$Pass="";
+	$DataBase="_biz";
+	$ServerAddress="localhost";	
 	require_once "biz/bizbank/bizbank.php";
-	require_once "db.php";
+	if(file_exists("db.php")) include_once "db.php";
 	require_once "core.php";
 
 	unset($bizbank);
