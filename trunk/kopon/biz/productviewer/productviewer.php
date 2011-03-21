@@ -137,7 +137,7 @@ class productviewer {
 		$image=$this->product->backImage();
 		$t=$this->timeFormat($this->product->backRemainingTime());
 		$discount=$this->product->backDiscount();
-		if($t<1){
+		if($this->product->backRemainingTime()<1){
 			$time="";
 			$buy="BUY (time out)";
 		}else{
@@ -176,7 +176,17 @@ PHTMLCODE;
 		return $html;
 	}
 	function timeFormat($t){
-		$t=strlen($t)==3?"0".$t:$t;
+		switch(strlen($t)){
+			case 1:
+				$t="000".$t;
+				break;
+			case 2:
+				$t="00".$t;
+				break;
+			case 3:
+				$t="0".$t;
+				break;
+		}
 		return substr($t,0,2)." : ".substr($t,2);
 	}
 	function dayFormat($t){
