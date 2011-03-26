@@ -1,15 +1,7 @@
 <?PHP
 
-/*
-	Compiled by bizLang compiler version 3.0 (March 22 2011) By Reza Moussavi
 
-	Author: Reza Moussavi
-	Date:	03/11/2011
-	Version: 0.1
-
-*/
-
-class subscribe {
+class test {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -37,11 +29,11 @@ class subscribe {
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
-			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+			$_SESSION['osNodes'][$fullname]['_curFrame']='view';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='subscribe';
+		$_SESSION['osNodes'][$fullname]['biz']='test';
 	}
 
 	function gotoSleep() {
@@ -71,8 +63,8 @@ class subscribe {
 	function show($echo){
 		$_style='';
 		switch($this->_curFrame){
-			case 'frm':
-				$_style=' style="width:800; float:left; background-color:#FFf0f0; text-align:center;" ';
+			case 'view':
+				$_style=' style="background-color:#FFf0f0; text-align:center;" ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -90,14 +82,15 @@ class subscribe {
 //########################################
 
 
-	function frm(){
+	function view(){
 		return <<<PHTMLCODE
 
-			-SUBSCRIBE!-
+			HEllo!
 		
 PHTMLCODE;
 
 	}
+	
 
 }
 
