@@ -10,6 +10,7 @@ public class PHPClass {
 	public String startFunName;
 	public String functions;
 	public String comments;
+	public ArrayList<database> sql;
 
 	public PHPClass(){
 		nodes=new ArrayList<Node>();
@@ -19,6 +20,20 @@ public class PHPClass {
 		startFunName="";
 		functions="";
 		comments="";
+		sql=new ArrayList<database>();
+	}
+
+	public boolean hasSql(){
+		return sql.size()>0;
+	}
+
+	public String sqlString(){
+		String s=	"<?PHP\n" +
+					"\tfunction bizsql(){\n";
+		for(database db:sql)
+			s+="\t\tquery(\"CREATE TABLE "+Name+"_"+db.Name+" ("+db.Info+")\");\n";
+		s+="\t}\n\n?>";
+		return s;
 	}
 
 	public void applySection(Section sec){
@@ -48,10 +63,16 @@ public class PHPClass {
 				else
 					frames.add(f);
 			}
+		}else if(sec.name.equalsIgnoreCase("db")){
+			database db=null;
+			for(SecElement se:sec.elements){
+				db=new database(se);
+				sql.add(db);
+			}
 		}else if(sec.name.equalsIgnoreCase("phpfunction")){
 			functions=sec.elements.get(0).data;
 		}else if(sec.name.equalsIgnoreCase("comments")){
-			comments= "/*\n\tCompiled by bizLang compiler version 3.0 (March 22 2011) By Reza Moussavi\n\n"+
+			comments= "/*\n\tCompiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi\n\n"+
 			sec.elements.get(0).data+"\n*/\n";
 		}
 	}

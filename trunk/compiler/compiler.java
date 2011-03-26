@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class compiler {
 
+	public static String UpServer;
 	public static String Server;
 	public static String BizFolder;
 	public static boolean DoUpload;
@@ -46,8 +47,10 @@ public class compiler {
 			while(line!=null){
 				line= br.readLine();
 				if(line!=null)
-					if(line.trim().equalsIgnoreCase("[server]"))
+					if(line.trim().equalsIgnoreCase("[server]")){
 						compiler.Server= br.readLine();
+						compiler.UpServer=compiler.Server+"uploader.php";
+					}
 					else if(line.trim().equalsIgnoreCase("[bizfolder]"))
 						compiler.BizFolder= br.readLine();
 			}
@@ -111,29 +114,57 @@ public class compiler {
 		php.applySection(sec);
 		System.out.print(" Compiled!");
 		//
-		// Saving Compiled File
+		// Saving .php Compiled File
 		//
 		FileWriter fw=new FileWriter(File+".php");
 		fw.write(php.toString());
 		fw.close();
+		//
+		// Saving .sql Compiled File
+		//
+		if(php.hasSql()){
+			FileWriter qfw=new FileWriter(File+".sql");
+			qfw.write(php.sqlString());
+			qfw.close();
+		}
 		if(DoUpload){
 			//
 			// Uploading .php file
 			//
 			System.out.print(" - [upload php]...");
-			if(PostFile.Post(Server, php.Name, File+".php"))
+			if(PostFile.Post(UpServer, php.Name, File,"php"))
 				System.out.print(" Done!");
 			else{
-				throw new IOException("Cannot upload php to Server: <"+Server+">");
+				throw new IOException("Cannot upload php to Server: <"+UpServer+">");
 			}
 			//
 			// Uploading .biz file
 			//
 			System.out.print(" - [upload biz]...");
-			if(PostFile.Post(Server, php.Name, File+".biz"))
+			if(PostFile.Post(UpServer, php.Name, File,"biz"))
 				System.out.print(" Done!");
 			else{
-				throw new IOException("Cannot upload biz to Server: <"+Server+">");
+				throw new IOException("Cannot upload biz to Server: <"+UpServer+">");
+			}
+			//
+			// Uploading .sql file
+			//
+			if(php.hasSql()){
+				System.out.print(" - [upload DB]...");
+				if(PostFile.Post(UpServer, php.Name, File,"sql"))
+					System.out.print(" Done!");
+				else{
+					throw new IOException("Cannot upload DB to Server: <"+UpServer+">");
+				}
+				//
+				// Uploading .sql file
+				//
+				System.out.print(" - [Create DB]...");
+				if(PostFile.Regdb(Server, php.Name))
+					System.out.print(" Done!");
+				else{
+					throw new IOException("Cannot Create DB on Server: <"+Server+">");
+				}
 			}
 		}
 	}

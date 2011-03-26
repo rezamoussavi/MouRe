@@ -4,7 +4,7 @@ public class Section {
 	String name;
 	ArrayList<SecElement> elements;
 	private boolean cs;//Comma Separated
-	private static String[] csTypes={"node","var","message","frame"};// Comma separated sections
+	private static String[] csTypes={"node","var","message","frame","db"};// Comma separated sections
 
 	public Section(String line){
 		elements=new ArrayList<SecElement>();
