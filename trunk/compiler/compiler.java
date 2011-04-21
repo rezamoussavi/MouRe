@@ -78,12 +78,7 @@ public class compiler {
 	public static boolean loadAndCompile(String fname){
 		System.out.print("\n\t"+fname+"...\n\t\t");
 		BufferedReader br;
-		String FileName =null;
-		if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0){//compiler runs on Windows OS
-			FileName=BizFolder+fname+"\\"+fname;
-		}else{
-			FileName=BizFolder+fname+"//"+fname;
-		}
+		String FileName=BizFolder+fname+"\\"+fname;
 		try {
 			br=new BufferedReader(new FileReader( new File(FileName+".biz")));
 		} catch (Exception e) {

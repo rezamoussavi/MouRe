@@ -1,22 +1,7 @@
 <?PHP
 
-/*
-	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
 
-	Author: Max Mirkia
-	Date:	2/22/2010
-	Version: 1.0
-	------------------
-	Author: Max Mirkia
-	Date:	2/7/2010
-	Version: 0.1
-
-*/
-require_once 'biz/profile/profile.php';
-require_once 'biz/referal/referal.php';
-require_once 'biz/history/history.php';
-
-class userpanelviewer {
+class reza {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -25,11 +10,9 @@ class userpanelviewer {
 	var $_frmChanged;
 
 	//Variables
+	var $loginCounter;
 
 	//Nodes (bizvars)
-	var $profile;
-	var $referal;
-	var $history;
 
 	function __construct($fullname) {
 		$this->_frmChanged=false;
@@ -42,23 +25,21 @@ class userpanelviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['usertab_usertabChanged'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
-			$_SESSION['osNodes'][$fullname]['_curFrame']='frmProfile';
+			$_SESSION['osNodes'][$fullname]['_curFrame']='sad';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		$this->profile=new profile($this->_fullname.'_profile');
-
-		$this->referal=new referal($this->_fullname.'_referal');
-
-		$this->history=new history($this->_fullname.'_history');
+		if(!isset($_SESSION['osNodes'][$fullname]['loginCounter']))
+			$_SESSION['osNodes'][$fullname]['loginCounter']=10;
+		$this->loginCounter=&$_SESSION['osNodes'][$fullname]['loginCounter'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='userpanelviewer';
+		$_SESSION['osNodes'][$fullname]['biz']='reza';
 	}
 
 	function gotoSleep() {
@@ -71,8 +52,8 @@ class userpanelviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'usertab_usertabChanged':
-				$this->onTabChanged($info);
+			case 'user_login':
+				$this->onLogin($info);
 				break;
 			default:
 				break;
@@ -91,14 +72,11 @@ class userpanelviewer {
 	function show($echo){
 		$_style='';
 		switch($this->_curFrame){
-			case 'frmProfile':
+			case 'sad':
 				$_style='';
 				break;
-			case 'frmReferal':
-				$_style='';
-				break;
-			case 'frmHistory':
-				$_style='';
+			case 'happy':
+				$_style=' style="background-color:red" ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -116,38 +94,18 @@ class userpanelviewer {
 //########################################
 
 
-	function onTabChanged($info){
-		$this->_bookframe("frm".$info['tabName']);
+	function onLogin($info){
+		$this->loginCounter++;
 	}
-	function frmProfile(){
-		$toProfile = $this->profile->_backframe();
-		$html=<<<PHTMLCODE
-
-			$toProfile
-		
-PHTMLCODE;
-
-		return $html;
+	function happy(){
+		$this->_bookframe("sad");
+		query("INSERT INTO reza_statistics VALUES('displayed');");
+		return "I am Happy ".$this->loginCounter;
 	}
-	function frmReferal(){
-		$toShow = $this->referal->_backframe();
-		$html=<<<PHTMLCODE
-
-			$toShow
-		
-PHTMLCODE;
-
-		return $html;
-	}
-	function frmHistory(){
-		$toHistory = $this->history->_backframe();
-		$html=<<<PHTMLCODE
-
-			$toHistory
-		
-PHTMLCODE;
-
-		return $html;
+	
+	function sad(){
+		$this->_bookframe("happy");
+		return "I am not Happy";
 	}
 
 }

@@ -3,21 +3,13 @@
 /*
 	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
 
-	Author: Reza Moussavi
-	Date:	3/10/2010
-	Version: 1.5
-    ------------------
-	Author: Max Mirkia
-	Date:	2/14/2010
-	Version: 1.0
-    ------------------
-    Author: Max Mirkia
-	Date:	2/7/2010
-	Version: 0.1
+	Author:	Reza Moussavi
+	Date:	4/21/2011
+	Ver:		0.1
 
 */
 
-class tabbank {
+class bizbank {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -26,8 +18,6 @@ class tabbank {
 	var $_frmChanged;
 
 	//Variables
-	var $tabs;
-	var $curTabName;
 
 	//Nodes (bizvars)
 
@@ -42,7 +32,6 @@ class tabbank {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['client_tab'][$this->_fullname]=true;
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
@@ -51,16 +40,8 @@ class tabbank {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		if(!isset($_SESSION['osNodes'][$fullname]['tabs']))
-			$_SESSION['osNodes'][$fullname]['tabs']='';
-		$this->tabs=&$_SESSION['osNodes'][$fullname]['tabs'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['curTabName']))
-			$_SESSION['osNodes'][$fullname]['curTabName']='';
-		$this->curTabName=&$_SESSION['osNodes'][$fullname]['curTabName'];
-
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='tabbank';
+		$_SESSION['osNodes'][$fullname]['biz']='bizbank';
 	}
 
 	function gotoSleep() {
@@ -73,9 +54,6 @@ class tabbank {
 
 	function message($message, $info) {
 		switch($message){
-			case 'client_tab':
-				$this->onTabSelected($info);
-				break;
 			default:
 				break;
 		}
@@ -112,41 +90,14 @@ class tabbank {
 //########################################
 
 
-    function bookContent($content){//String[]
-        $this->tabs=array();
-        foreach($content as $c){
-            $this->tabs[]=$c;
-        }
-	}
-	function bookSelected($sel){
-		$this->curTabName=$sel;
-		osBroadcast("tab_tabChanged",array("tabName"=>$sel));
-    }
-    function frm(){
-		$html='';
-		foreach($this->tabs as $t){
-			if($t==$this->curTabName){
-				$html.=<<<PHTMLCODE
- <b>[[{$t}]]</b> 
+	function frm(){
+		return <<<PHTMLCODE
+
+			testing...
+		
 PHTMLCODE;
 
-			}else{
-				$link=osBackLinkInfo($this->_fullname,"tab",array("name"=>$this->curTabName),"tab",array("name"=>$t));
-				$html.=<<<PHTMLCODE
-
-					<a href="{$link}">{$t}</a>
-				
-PHTMLCODE;
-
-			}
-		}
-		return $html;
 	}
-    function onTabSelected($info){
-		if(array_search($info["name"],$this->tabs)!==false){
-			$this->bookSelected($info["name"]);
-		}
-    }
 
 }
 

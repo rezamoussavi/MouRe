@@ -1,0 +1,18 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	4/21/2011
+	Ver:		0.1
+
+#biz
+	bizbank:bizbank
+
+#frame
+	frm
+
+#phpfunction
+
+	function frm(){
+		return <PHTML>
+			testing...
+		</PHTML>
+	}

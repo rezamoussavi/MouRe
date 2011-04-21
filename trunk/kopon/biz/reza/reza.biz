@@ -1,0 +1,31 @@
+#biz
+	reza:test
+
+#frame
+	happy(background-color:red), *sad
+
+#message
+	user->login=onLogin
+
+#var
+	loginCounter=10
+
+#db
+	statistics('count' int(11))
+
+#phpfunction
+
+	function onLogin($info){
+		#var->loginCounter++;
+	}
+
+	function happy(){
+		_bookframe(#frm->sad);
+		query("INSERT INTO #db->statistics VALUES('displayed');");
+		return "I am Happy ".#var->loginCounter;
+	}
+	
+	function sad(){
+		_bookframe(#frm->happy);
+		return "I am not Happy";
+	}

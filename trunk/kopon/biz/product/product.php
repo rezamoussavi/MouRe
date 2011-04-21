@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 3.0 (March 22 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
 
 	Author: Reza Moussavi
 	Date:	3/3/2010
