@@ -1,0 +1,113 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	4/21/2011
+	Ver:		0.1
+
+#biz
+	mainpageviewer
+
+#frame
+	frmAdVideo(float:left; width:700;)
+	frmPubVideo(float:left; width:700;)
+	frmUser(float:left; width:700;)
+	frmAdmin(float:left; width:700;)
+	*frmHome(float:left; width:700;)
+	frmHow(float:left; width:700;)
+
+#message
+	tab->tabChanged=onTabChanged
+	user->showMyAccount=onMyAcc
+	user->logout=onLogOut
+
+#var
+	userpage=0
+
+#phpfunction
+
+	//////////////////////////////////////////////////////////////////////
+	//			MESSAGE
+	//////////////////////////////////////////////////////////////////////
+
+	function onLogOut(){
+		if(#var->userpage==1){
+			#var->userpage=0;
+			_bookframe(#frm->frmHome);
+		}
+	}
+
+	function onTabChanged($info){
+		switch($info['tabName']){
+			case "Home":
+				#var->userpage=0;
+				_bookframe(#frm->frmHome);
+				break;
+			case "How":
+				#var->userpage=0;
+				_bookframe(#frm->frmHow);
+				break;
+		}
+	}
+
+	function onMyAcc($info){
+		if(osBackUserRole()=="admin"){
+			#var->userpage=1;
+			_bookframe(#frm->frmAdmin);
+		}else{
+			#var->userpage=1;
+			_bookframe(#frm->frmUser);
+		}
+	}
+
+	function on2($info){
+		#var->userpage=0;
+	}
+
+	function on3($info){
+		#var->userpage=0;
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	//			VIEW
+	//////////////////////////////////////////////////////////////////////
+
+	function frmHow(){
+		$frmAddName=nodeID."";
+		return <PHTML>
+			<form name="">
+				Add a Video
+			</form>
+			<form name="">
+				Publish a Video
+			</form>
+		</PHTML>
+	}
+
+	function frmHome(){
+		return <PHTML>
+			Home Page
+		</PHTML>
+	}
+
+	function frmAdmin(){
+		return <PHTML>
+			Admin Page
+		</PHTML>
+	}
+
+	function frmUser(){
+		return <PHTML>
+			User Page
+		</PHTML>
+	}
+
+	function frmPubVideo(){
+		return <PHTML>
+			Publish a Video
+		</PHTML>
+	}
+
+	function frmAdVideo(){
+		return <PHTML>
+			Advertise a Video
+		</PHTML>
+	}

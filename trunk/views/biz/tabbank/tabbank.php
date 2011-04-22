@@ -3,16 +3,21 @@
 /*
 	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
 
-	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Author: Reza Moussavi
+	Date:	3/10/2010
+	Version: 1.5
+    ------------------
+	Author: Max Mirkia
+	Date:	2/14/2010
+	Version: 1.0
+    ------------------
+    Author: Max Mirkia
+	Date:	2/7/2010
+	Version: 0.1
 
 */
-require_once 'biz/login/login.php';
-require_once 'biz/tabbank/tabbank.php';
-require_once 'biz/mainpageviewer/mainpageviewer.php';
 
-class bizbank {
+class tabbank {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -21,11 +26,10 @@ class bizbank {
 	var $_frmChanged;
 
 	//Variables
+	var $tabs;
+	var $curTabName;
 
 	//Nodes (bizvars)
-	var $login;
-	var $tabbar;
-	var $pages;
 
 	function __construct($fullname) {
 		$this->_frmChanged=false;
@@ -38,6 +42,7 @@ class bizbank {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['client_tab'][$this->_fullname]=true;
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
@@ -46,16 +51,16 @@ class bizbank {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		$this->login=new login($this->_fullname.'_login');
+		if(!isset($_SESSION['osNodes'][$fullname]['tabs']))
+			$_SESSION['osNodes'][$fullname]['tabs']='';
+		$this->tabs=&$_SESSION['osNodes'][$fullname]['tabs'];
 
-		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
+		if(!isset($_SESSION['osNodes'][$fullname]['curTabName']))
+			$_SESSION['osNodes'][$fullname]['curTabName']='';
+		$this->curTabName=&$_SESSION['osNodes'][$fullname]['curTabName'];
 
-		$this->pages=new mainpageviewer($this->_fullname.'_pages');
-
-		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
-			$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='bizbank';
+		$_SESSION['osNodes'][$fullname]['biz']='tabbank';
 	}
 
 	function gotoSleep() {
@@ -68,6 +73,9 @@ class bizbank {
 
 	function message($message, $info) {
 		switch($message){
+			case 'client_tab':
+				$this->onTabSelected($info);
+				break;
 			default:
 				break;
 		}
@@ -86,7 +94,7 @@ class bizbank {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' style="width:900px; margin:auto;" ';
+				$_style=' style="float:left; width:700;" ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -104,29 +112,41 @@ class bizbank {
 //########################################
 
 
-	function init(){
-		$this->tabbar->bookContent(array("Home","How"));
-		$this->tabbar->bookSelected("Home");
+    function bookContent($content){//String[]
+        $this->tabs=array();
+        foreach($content as $c){
+            $this->tabs[]=$c;
+        }
 	}
-	function frm(){
-		$login=$this->login->_backframe();
-		$tab=$this->tabbar->_backframe();
-		$pages=$this->pages->_backframe();
-		return <<<PHTMLCODE
-
-			<div style="width:900px; float:left;margin:auto; border: 1px dotted #f5f5f5;">
-				<div style="width:695px; float:left;">
-					<img src="../biz/bizbank/logo.jpg" width=695 />
-				</div>$login
-				<br>$tab $pages
-				<div style="width:901px; float:left; background-color:#f5f5f5; height:25px;">
-					&nbsp;
-				</div>
-			</div>
-		
+	function bookSelected($sel){
+		$this->curTabName=$sel;
+		osBroadcast("tab_tabChanged",array("tabName"=>$sel));
+    }
+    function frm(){
+		$html='';
+		foreach($this->tabs as $t){
+			if($t==$this->curTabName){
+				$html.=<<<PHTMLCODE
+ <b>[[{$t}]]</b> 
 PHTMLCODE;
 
+			}else{
+				$link=osBackLinkInfo($this->_fullname,"tab",array("name"=>$this->curTabName),"tab",array("name"=>$t));
+				$html.=<<<PHTMLCODE
+
+					<a href="{$link}">{$t}</a>
+				
+PHTMLCODE;
+
+			}
+		}
+		return $html;
 	}
+    function onTabSelected($info){
+		if(array_search($info["name"],$this->tabs)!==false){
+			$this->bookSelected($info["name"]);
+		}
+    }
 
 }
 
