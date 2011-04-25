@@ -7,8 +7,12 @@
 	adminviewer
 
 #frame
+	frm
 
 #phpfunction
 
-	function (){
+	function frm(){
+		return <PHTML>
+			<center>Admin Control Panel Viewer</center>
+		</PHTML>
 	}

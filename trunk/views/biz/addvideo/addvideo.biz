@@ -7,8 +7,12 @@
 	addvideo
 
 #frame
+	frm
 
 #phpfunction
 
-	function (){
+	function frm(){
+		return <PHTML>
+			<center>'Add a Video' Page</center>
+		</PHTML>
 	}

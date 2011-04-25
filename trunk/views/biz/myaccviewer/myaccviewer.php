@@ -22,6 +22,7 @@ class myaccviewer {
 	//Nodes (bizvars)
 
 	function __construct($fullname) {
+		$this->_frmChanged=false;
 		$this->_tmpNode=false;
 		if($fullname==null){
 			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
@@ -34,6 +35,11 @@ class myaccviewer {
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='myaccviewer';
 	}
@@ -54,6 +60,7 @@ class myaccviewer {
 	}
 
 	function _bookframe($frame){
+		$this->_frmChanged=true;
 		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
@@ -62,6 +69,19 @@ class myaccviewer {
 	}
 
 	function show($echo){
+		$_style='';
+		switch($this->_curFrame){
+			case 'frm':
+				$_style='';
+				break;
+		}
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
+		if($echo)
+			echo $html;
+		else
+			return $html;
 	}
 
 
@@ -70,7 +90,13 @@ class myaccviewer {
 //########################################
 
 
-	function (){
+	function frm(){
+		return <<<PHTMLCODE
+
+			<center>My Account Viewer</center>
+		
+PHTMLCODE;
+
 	}
 
 }

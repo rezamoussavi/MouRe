@@ -7,8 +7,12 @@
 	myaccviewer
 
 #frame
+	frm
 
 #phpfunction
 
-	function (){
+	function frm(){
+		return <PHTML>
+			<center>My Account Viewer</center>
+		</PHTML>
 	}

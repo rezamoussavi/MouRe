@@ -6,9 +6,24 @@
 #biz
 	videolistviewer
 
+#var
+	mode="topublish"
+
 #frame
+	frm
 
 #phpfunction
 
-	function (){
+	function bookMode($mode){
+		#var->mode=$mode;
+	}
+
+	function backMode(){
+		return #var->mode;
+	}
+
+	function frm(){
+		return <PHTML>
+			<center>VideoListViewer</center>
+		</PHTML>
 	}

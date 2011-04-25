@@ -18,6 +18,14 @@
 	tab->tabChanged=onTabChanged
 	user->showMyAccount=onMyAcc
 	user->logout=onLogOut
+	frame->AdVideo=onAdVideo
+	frame->PubVideo=onPubVideo
+
+#node
+	addvideo AddVideo
+	videolistviewer VideoList
+	myaccviewer UserPanel
+	adminviewer AdminPanel
 
 #var
 	userpage=0
@@ -27,6 +35,16 @@
 	//////////////////////////////////////////////////////////////////////
 	//			MESSAGE
 	//////////////////////////////////////////////////////////////////////
+
+	function onAdVideo($info){
+		#var->userpage=0;
+		_bookframe(#frm->frmAdVideo);
+	}
+
+	function onPubVideo($info){
+		#var->userpage=0;
+		_bookframe(#frm->frmPubVideo);
+	}
 
 	function onLogOut(){
 		if(#var->userpage==1){
@@ -70,44 +88,65 @@
 	//			VIEW
 	//////////////////////////////////////////////////////////////////////
 
-	function frmHow(){
-		$frmAddName=nodeID."";
+	function frmButtons(){
+		$frmAdName=#nodeID."advideo";
+		$frmPubName=#nodeID."pubvideo";
 		return <PHTML>
-			<form name="">
-				Add a Video
-			</form>
-			<form name="">
-				Publish a Video
-			</form>
+			<div>
+				<form name="$frmAdName" method="post">
+					<#msg->AdVideo>
+					<input value ="Ad a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmAdName")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				</form>
+				<form name="$frmPubName" method="post">
+					<#msg->PubVideo>
+					<input value ="Publish a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmPubName")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				</form>
+			</div>
+		</PHTML>
+	}
+
+	function frmHow(){
+		$buttons=#fun->frmButtons();
+		return <PHTML>
+			$buttons<hr>
+			How Page
 		</PHTML>
 	}
 
 	function frmHome(){
+		$buttons=#fun->frmButtons();
 		return <PHTML>
+			$buttons<hr>
 			Home Page
 		</PHTML>
 	}
 
 	function frmAdmin(){
+		$Admin=#node->AdminPanel->_backframe();
 		return <PHTML>
-			Admin Page
+			$Admin
 		</PHTML>
 	}
 
 	function frmUser(){
+		$U=#node->UserPanel->_backframe();
 		return <PHTML>
-			User Page
+			$U
 		</PHTML>
 	}
 
 	function frmPubVideo(){
+		$btn=#fun->frmButtons();
+		$VList=#node->VideoList->_backframe();
 		return <PHTML>
-			Publish a Video
+			$btn <br> $VList
 		</PHTML>
 	}
 
 	function frmAdVideo(){
+		$btn=#fun->frmButtons();
+		$adV=#node->AddVideo->_backframe();
 		return <PHTML>
-			Advertise a Video
+			$btn <br> $adV
 		</PHTML>
 	}
