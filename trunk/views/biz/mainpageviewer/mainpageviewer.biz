@@ -92,23 +92,23 @@
 		$frmAdName=#nodeID."advideo";
 		$frmPubName=#nodeID."pubvideo";
 		return <PHTML>
-			<div>
-				<form name="$frmAdName" method="post">
+			<div style="width:100%; float:left; text-align:center;">
+				<form name="$frmAdName" method="post" style="display:inline;">
 					<#msg->AdVideo>
 					<input value ="Ad a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmAdName")' class="press" style="margin-top: 10px; margin-right: 50px;" />
 				</form>
-				<form name="$frmPubName" method="post">
+				<form name="$frmPubName" method="post" style="display:inline;">
 					<#msg->PubVideo>
 					<input value ="Publish a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmPubName")' class="press" style="margin-top: 10px; margin-right: 50px;" />
 				</form>
-			</div>
+			</div><hr>
 		</PHTML>
 	}
 
 	function frmHow(){
 		$buttons=#fun->frmButtons();
 		return <PHTML>
-			$buttons<hr>
+			$buttons
 			How Page
 		</PHTML>
 	}
@@ -116,7 +116,7 @@
 	function frmHome(){
 		$buttons=#fun->frmButtons();
 		return <PHTML>
-			$buttons<hr>
+			$buttons
 			Home Page
 		</PHTML>
 	}

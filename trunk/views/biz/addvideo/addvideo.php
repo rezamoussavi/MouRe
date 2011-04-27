@@ -32,6 +32,7 @@ class addvideo {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['frame_addVideo'][$this->_fullname]=true;
 		}
 
 		$_SESSION['osNodes'][$fullname]['sleep']=false;
@@ -54,6 +55,9 @@ class addvideo {
 
 	function message($message, $info) {
 		switch($message){
+			case 'frame_addVideo':
+				$this->onAddVideo($info);
+				break;
 			default:
 				break;
 		}
@@ -91,12 +95,34 @@ class addvideo {
 
 
 	function frm(){
+		if(!osUserLogedin()){
+			return <<<PHTMLCODE
+
+				<div style="text-align:center; width=100%;">Log in first</div>
+			
+PHTMLCODE;
+
+		}
+		//else
+		$formname=$this->_fullname;
+		$minAOVP=10;////////////change via offer biz
 		return <<<PHTMLCODE
 
-			<center>'Add a Video' Page</center>
+			<form name="$fomrname" method="post">
+				<input type="hidden" name="_message" value="frame_addVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				Youtube link: <input name="link" size=20><br>
+				Your Offer on Price/View: <input name="AOVP" size=5> (min:$minAOVP)<br>
+				Number of Viewes: <input name="NOV" size=5><br>
+				Commision: (auto calculate)
+				<hr>
+				Total: (auto calculate) <input type="button" value="Pay"><br>
+				<input type="button" value="Apply">
+			</form>
 		
 PHTMLCODE;
 
+	}
+	function onAddVideo($info){
 	}
 
 }

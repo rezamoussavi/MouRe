@@ -387,13 +387,13 @@ PHTML;
 		$html = <<<PHTMLCODE
 
 						<h2>Welcome sir!</h2>
-						<form name="$formName" method="post" >
+						<form name="$formName" method="post" style="display:inline;">
 							<input type="hidden" name="_message" value="frame_logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-							<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formName")'  class="press" style="margin-top: 0px;"><br />
+							<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formName")'  class="press" style="margin-top: 0px;">
 						</form>
-						<form name="$myAccFormName" method="post" >
+						<form name="$myAccFormName" method="post" style="display:inline;">
 							<input type="hidden" name="_message" value="frame_showMyAccount" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-							<input value ="My Account" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;"><br />
+							<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;">
 						</form>
 					
 PHTMLCODE;
