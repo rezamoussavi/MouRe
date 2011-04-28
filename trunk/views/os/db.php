@@ -1,6 +1,6 @@
 <?php
-	$UN="isadmin_biz";
+	$UN="samrad_db";
 	$Pass="maxmirkia";
-	$DataBase="isadmin_biz";
+	$DataBase="samrad_db";
 	$ServerAddress="localhost";
 ?>

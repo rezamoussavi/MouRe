@@ -18,6 +18,7 @@ class addvideo {
 	var $_frmChanged;
 
 	//Variables
+	var $errMessage;
 
 	//Nodes (bizvars)
 
@@ -40,6 +41,10 @@ class addvideo {
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['errMessage']))
+			$_SESSION['osNodes'][$fullname]['errMessage']="";
+		$this->errMessage=&$_SESSION['osNodes'][$fullname]['errMessage'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='addvideo';
@@ -105,10 +110,11 @@ PHTMLCODE;
 		}
 		//else
 		$formname=$this->_fullname;
-		$minAOVP=10;////////////change via offer biz
+		$minAOVP=0.01;////////////change via offer biz
 		return <<<PHTMLCODE
 
-			<form name="$fomrname" method="post">
+			<center><font color=red>{$this->errMessage}</font><hr></center>
+			<form name="$formname" method="post">
 				<input type="hidden" name="_message" value="frame_addVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				Youtube link: <input name="link" size=20><br>
 				Your Offer on Price/View: <input name="AOVP" size=5> (min:$minAOVP)<br>
@@ -116,13 +122,25 @@ PHTMLCODE;
 				Commision: (auto calculate)
 				<hr>
 				Total: (auto calculate) <input type="button" value="Pay"><br>
-				<input type="button" value="Apply">
+				<input type="button" value="Apply" onclick = 'JavaScript:sndmsg("$formname")'>
 			</form>
 		
 PHTMLCODE;
 
 	}
 	function onAddVideo($info){
+		$e="ERROR: <br>";
+		if(strlen($info['link'])<2){
+			$e.="Enter a valid link<br>";
+		}
+		if($info['AOVP']<0.01){////////////replace with offer
+			$e.="Minimum Offer should be 0.01<br>";
+		}
+		if($info['NOV']<1){/////////////replace with offer
+			$e.="Enter valid Number of Views<br>";
+		}
+		$this->errMessage=$e;
+		$this->_bookframe("frm");
 	}
 
 }

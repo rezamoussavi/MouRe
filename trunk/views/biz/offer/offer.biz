@@ -1,14 +1,58 @@
 #comments
 	Author:	Reza Moussavi
+	Date:	4/27/2011
+	Ver:		0.2
+	-----------------------------------
+	Author:	Reza Moussavi
 	Date:	4/21/2011
 	Ver:		0.1
 
 #biz
 	offer
 
-#frame
+#var
+	offerUID=-1
+	available=false
+	minAOPV=0.0
+	APRatio=0
+	minLifeTime=0
+	minCancelTime=0
+
+#start
+	init
+
+#db
+	info ('offerUID' int(11) NOT NULL auto_increment; 'available' tinyint(4); 'minAOPV' float NOT NULL; 'APRatio' int(11) NOT NULL; 'minLifeTime' int(11) NOT NULL; 'minCancelTime' int(11) NOT NULL; PRIMARY KEY  ('offerUID');)
+#db-comment
+	info:
+		offerUID  int
+		available tinyint
+		minAOPV float
+		APRatio int
+		minLifeTime int
+		minCancelTime int
 
 #phpfunction
 
-	function (){
+	function init(){
+		query();
+	}
+
+	function bookInfo($info){
+		if(isset($info['offerUID']))
+			offerUID=$info['offerUID'];
+		if(isset($info['available']))
+			available=$info['available'];
+		if(isset($info['minAOPV']))
+			minAOPV=$info['minAOPV'];
+		if(isset($info['APRatio']))
+			APRatio=$info['APRatio'];
+		if(isset($info['minLifeTime']))
+			minLifeTime=$info['minLifeTime'];
+		if(isset($info['minCancelTime']))
+			minCancelTime=$info['minCancelTime'];
+	}
+
+	function backInfo(){
+		return array('offerUID'=>#var->offerUID,'available'=>#var->available,'minAOPV'=>#var->minAOPV,'APRatio'=>#var->APRatio,'minLifeTime'=>#var->minLifeTime,	'minCancelTime'=>#var->minCancelTime);
 	}
