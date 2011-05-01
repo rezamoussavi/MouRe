@@ -38,7 +38,7 @@
 			$VBars.=$vb->_backframe()."<hr>";
 		}
 		return <PHTML>
-			<center>VideoListViewer</center>
+			<center>Choose a video to Publish</center>
 			<br>$VBars
 		</PHTML>
 	}

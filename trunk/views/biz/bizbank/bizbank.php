@@ -89,7 +89,17 @@ class bizbank {
 				$_style=' style="width:900px; margin:auto;" ';
 				break;
 		}
-		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<script type="text/javascript">';
+		$html.=<<<JAVASCRIPT
+
+JAVASCRIPT;
+		$html.=<<<JSONDOCREADY
+function {$this->_fullname}(){	$("#bizbanklogo").mouseover(function(){   $("#bizbanklogo").fadeTo("fast",0.7)});
+	$("#bizbanklogo").mouseout(function(){   $("#bizbanklogo").fadeTo("fast",1)});
+}
+JSONDOCREADY;
+		$html.='</script>
+<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -116,7 +126,7 @@ class bizbank {
 
 			<div style="width:900px; float:left;margin:auto; border: 1px dotted #f5f5f5;">
 				<div style="width:695px; float:left;">
-					<img src="../biz/bizbank/logo.jpg" width=695 />
+					<img id="bizbanklogo" src="../biz/bizbank/logo.jpg" width=695 />
 				</div>$login
 				<br>$tab $pages
 				<div style="width:901px; float:left; background-color:#f5f5f5; height:25px;">

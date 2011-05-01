@@ -1,7 +1,6 @@
 <?php
 	session_cache_expire(10);
 	session_start();
-
 	function myErrorHandler($errno, $errstr, $errfile, $errline){
 		echo "<hr /><font color=red> bizError:$errno - ERROR:$errstr - FILE:$errfile - LINE:$errline </font><hr />";
 	}
@@ -42,6 +41,11 @@
 		if(! isset($_POST['_message'])){
 			$bizbank=new bizbank("B");
 		}
+		$JQueryCode=<<<JQUERY
+			<script src="http://www.sam-rad.com/jquery.js" type="text/javascript"></script>
+			<script type="text/javascript">
+				$(document).ready(function(){
+JQUERY;
 
 		$msgMode=false;
 		$_SESSION['silentmode']=false;
@@ -66,7 +70,13 @@
 			}
 			if(isset($bizbank)){
 				$bizbank->show(true);
+				foreach($_SESSION['osNodes'] as $nodeFN=>$node){
+					if(is_object($node['node'])){
+						$JQueryCode.=$nodeFN."();";
+					}
+				}
 			}
+			echo $JQueryCode."});</script>";
 			require_once "ajax.php";
 		}
 

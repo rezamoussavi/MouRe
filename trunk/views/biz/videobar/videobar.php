@@ -83,7 +83,20 @@ class videobar {
 				$_style='';
 				break;
 		}
-		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<script type="text/javascript">';
+		$html.=<<<JAVASCRIPT
+	function test(){
+		//do some JS
+	}
+
+JAVASCRIPT;
+		$html.=<<<JSONDOCREADY
+function {$this->_fullname}(){	//do some stuff
+	//and more and more
+}
+JSONDOCREADY;
+		$html.='</script>
+<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -105,9 +118,13 @@ class videobar {
 		return "[ Video Bar! ]";
 	}
 	function frmToPublish(){
+		$frmName=$this->_fullname.$this->data['adUID'];
 		return <<<PHTMLCODE
 
-			<img src="{$this->data['img']}" /> --> Is ready to publish
+			<a href="{$this->data['link']}" target="_blank">
+				<img src="{$this->data['img']}" /> 
+			</a>
+			--> Is ready to publish
 		
 PHTMLCODE;
 

@@ -12,6 +12,15 @@
 #var
 	data
 
+#javascript
+	function test(){
+		//do some JS
+	}
+
+#jsondocready
+	//do some stuff
+	//and more and more
+
 #phpfunction
 
 	/******************************************
@@ -23,8 +32,12 @@
 	}
 
 	function frmToPublish(){
+		$frmName=#nodeID.#var->data['adUID'];
 		return <PHTML>
-			<img src="{#var->data['img']}" /> --> Is ready to publish
+			<a href="{#var->data['link']}" target="_blank">
+				<img src="{#var->data['img']}" /> 
+			</a>
+			--> Is ready to publish
 		</PHTML>
 	}
 

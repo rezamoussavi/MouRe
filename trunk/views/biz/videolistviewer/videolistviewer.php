@@ -128,7 +128,7 @@ class videolistviewer {
 		}
 		return <<<PHTMLCODE
 
-			<center>VideoListViewer</center>
+			<center>Choose a video to Publish</center>
 			<br>$VBars
 		
 PHTMLCODE;
