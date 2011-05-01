@@ -11,6 +11,8 @@ public class PHPClass {
 	public String functions;
 	public String comments;
 	public ArrayList<database> sql;
+	public String JavaScript;
+	public String JSOnDocReady;
 
 	public PHPClass(){
 		nodes=new ArrayList<Node>();
@@ -20,6 +22,8 @@ public class PHPClass {
 		startFunName="";
 		functions="";
 		comments="";
+		JavaScript="";
+		JSOnDocReady="";
 		sql=new ArrayList<database>();
 	}
 
@@ -69,6 +73,10 @@ public class PHPClass {
 				db=new database(se);
 				sql.add(db);
 			}
+		}else if(sec.name.equalsIgnoreCase("javascript")){
+			JavaScript=sec.elements.get(0).data;
+		}else if(sec.name.equalsIgnoreCase("jsondocready")){
+			JSOnDocReady=sec.elements.get(0).data;
 		}else if(sec.name.equalsIgnoreCase("phpfunction")){
 			functions=sec.elements.get(0).data;
 		}else if(sec.name.equalsIgnoreCase("comments")){
@@ -289,13 +297,22 @@ public class PHPClass {
 	}
 
 	function show($echo){
-		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$_style='';
+		switch($this->_curFrame){
+			case 'frm':
+				$_style='';
+				break;
+		}
+		$html='<script type="text/javascript">';
+		$html.=<<<JAVASCRIPT\n javascript+nJAVASCRIPT\n;
+		$html.=<<<JSONDOCREADY\n function #nodeID{JSOnDocReady}\nJSONDOCREADY\n;
+		$html.='</script><div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
-            echo $this;
+            echo $html;
         else
-            return $this;
+            return $html;
     }
 		 */
 		String s="";
@@ -317,7 +334,10 @@ public class PHPClass {
 				"\t\t\t\t$_style='"+f.Style+"';\n" +
 				"\t\t\t\tbreak;\n";
 			s+="\t\t}\n" +
-			"\t\t$html='<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
+			"\t\t$html='<script type=\"text/javascript\">';\n" +
+			"\t\t$html.=<<<JAVASCRIPT\n"+JavaScript+"\nJAVASCRIPT;\n" +
+			"\t\t$html.=<<<JSONDOCREADY\nfunction {$this->_fullname}(){"+JSOnDocReady+"}\nJSONDOCREADY;\n" +
+			"\t\t$html.='</script>\n<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
 			"\t\tif($_SESSION['silentmode'])\n" +
 			"\t\t\treturn;\n" +
 			"\t\tif($echo)\n" +
