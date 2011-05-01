@@ -4,10 +4,16 @@
 	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
+	Date:	5/1/2011
+	Ver:		1.0
+	----------------------------------
+	Author:	Reza Moussavi
 	Date:	4/21/2011
 	Ver:		0.1
 
 */
+require_once 'biz/adlink/adlink.php';
+require_once 'biz/videobar/videobar.php';
 
 class videolistviewer {
 
@@ -18,9 +24,9 @@ class videolistviewer {
 	var $_frmChanged;
 
 	//Variables
-	var $mode;
 
 	//Nodes (bizvars)
+	var $VBars; // array of biz
 
 	function __construct($fullname) {
 		$this->_frmChanged=false;
@@ -41,15 +47,23 @@ class videolistviewer {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		if(!isset($_SESSION['osNodes'][$fullname]['mode']))
-			$_SESSION['osNodes'][$fullname]['mode']="topublish";
-		$this->mode=&$_SESSION['osNodes'][$fullname]['mode'];
+		//handle arrays
+		$this->VBars=array();
+		if(!isset($_SESSION['osNodes'][$fullname]['VBars']))
+			$_SESSION['osNodes'][$fullname]['VBars']=array();
+		foreach($_SESSION['osNodes'][$fullname]['VBars'] as $arrfn)
+			$this->VBars[]=new videobar($arrfn);
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='videolistviewer';
 	}
 
 	function gotoSleep() {
+		$_SESSION['osNodes'][$this->_fullname]['VBars']=array();
+		$_SESSION['osNodes'][$this->_fullname]['sleep']=true;
+		foreach($this->VBars as $node){
+			$_SESSION['osNodes'][$this->_fullname]['VBars'][]=$node->_fullname;
+		}
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -96,15 +110,26 @@ class videolistviewer {
 
 
 	function bookMode($mode){
-		$this->mode=$mode;
-	}
-	function backMode(){
-		return $this->mode;
+		$al=new adlink("");
+		$Vs=array();
+		$Vs=$al->backVideoList($mode);
+		$this->VBars=array();
+		foreach($Vs as $v){
+			$vb=new videobar($this->_fullname.count($this->VBars));
+			$vb->bookInfo($v);
+			$vb->bookMode($mode);
+			$this->VBars[]=$vb;
+		}
 	}
 	function frm(){
+		$VBars="";
+		foreach($this->VBars as $vb){
+			$VBars.=$vb->_backframe()."<hr>";
+		}
 		return <<<PHTMLCODE
 
 			<center>VideoListViewer</center>
+			<br>$VBars
 		
 PHTMLCODE;
 

@@ -137,6 +137,7 @@
 
 	function frmPubVideo(){
 		$btn=#fun->frmButtons();
+		#node->VideoList->bookMode("topublish");
 		$VList=#node->VideoList->_backframe();
 		return <PHTML>
 			$btn <br> $VList

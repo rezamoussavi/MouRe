@@ -252,6 +252,7 @@ PHTMLCODE;
 	}
 	function frmPubVideo(){
 		$btn=$this->frmButtons();
+		$this->VideoList->bookMode("topublish");
 		$VList=$this->VideoList->_backframe();
 		return <<<PHTMLCODE
 

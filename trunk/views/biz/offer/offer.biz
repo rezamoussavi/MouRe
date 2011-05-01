@@ -1,5 +1,9 @@
 #comments
 	Author:	Reza Moussavi
+	Date:	4/28/2011
+	Ver:		1.0
+	-----------------------------------
+	Author:	Reza Moussavi
 	Date:	4/27/2011
 	Ver:		0.2
 	-----------------------------------
@@ -17,12 +21,13 @@
 	APRatio=0
 	minLifeTime=0
 	minCancelTime=0
+	minNOV=0
 
 #start
 	init
 
 #db
-	info ('offerUID' int(11) NOT NULL auto_increment; 'available' tinyint(4); 'minAOPV' float NOT NULL; 'APRatio' int(11) NOT NULL; 'minLifeTime' int(11) NOT NULL; 'minCancelTime' int(11) NOT NULL; PRIMARY KEY  ('offerUID');)
+	info ('offerUID' int(11) NOT NULL auto_increment; 'available' tinyint(4); 'minAOPV' float NOT NULL; 'APRatio' int(11) NOT NULL; 'minLifeTime' int(11) NOT NULL; 'minCancelTime' int(11) NOT NULL; 'minNOV' int(11) NOT NULL; PRIMARY KEY  ('offerUID'))
 #db-comment
 	info:
 		offerUID  int
@@ -31,28 +36,41 @@
 		APRatio int
 		minLifeTime int
 		minCancelTime int
+		minNOV int
 
 #phpfunction
 
 	function init(){
-		query();
+		query("SELECT * FROM #db->info WHERE available=1;");
+		$row=fetch();
+		if($row){
+			#var->offerUID=$row['offerUID'];
+			#var->available=$row['available'];
+			#var->minAOPV=$row['minAOPV'];
+			#var->APRatio=$row['APRatio'];
+			#var->minLifeTime=$row['minLifeTime'];
+			#var->minCancelTime=$row['minCancelTime'];
+			#var->minNOV=$row['minNOV'];
+		}
 	}
 
 	function bookInfo($info){
 		if(isset($info['offerUID']))
-			offerUID=$info['offerUID'];
+			#var->offerUID=$info['offerUID'];
 		if(isset($info['available']))
-			available=$info['available'];
+			#var->available=$info['available'];
 		if(isset($info['minAOPV']))
-			minAOPV=$info['minAOPV'];
+			#var->minAOPV=$info['minAOPV'];
 		if(isset($info['APRatio']))
-			APRatio=$info['APRatio'];
+			#var->APRatio=$info['APRatio'];
 		if(isset($info['minLifeTime']))
-			minLifeTime=$info['minLifeTime'];
+			#var->minLifeTime=$info['minLifeTime'];
 		if(isset($info['minCancelTime']))
-			minCancelTime=$info['minCancelTime'];
+			#var->minCancelTime=$info['minCancelTime'];
+		if(isset($info['minNOV']))
+			#var->minNOV=$info['minNOV'];
 	}
 
 	function backInfo(){
-		return array('offerUID'=>#var->offerUID,'available'=>#var->available,'minAOPV'=>#var->minAOPV,'APRatio'=>#var->APRatio,'minLifeTime'=>#var->minLifeTime,	'minCancelTime'=>#var->minCancelTime);
+		return array('offerUID'=>#var->offerUID,'available'=>#var->available,'minAOPV'=>#var->minAOPV,'APRatio'=>#var->APRatio,'minLifeTime'=>#var->minLifeTime,	'minCancelTime'=>#var->minCancelTime,	'minNOV'=>#var->minNOV);
 	}

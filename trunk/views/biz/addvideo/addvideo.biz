@@ -11,13 +11,16 @@
 	addvideo
 
 #frame
-	frm
+	*frm,frmSuccess
 
 #var
 	errMessage=""
 
 #message
 	frame->addVideo=onAddVideo
+
+#node
+	adlink, offer offer
 
 #phpfunction
 
@@ -29,14 +32,15 @@
 		}
 		//else
 		$formname=#nodeID;
-		$minAOVP=0.01;////////////change via offer biz
+		$minAOPV=#node->offer->minAOPV;
+		$minNOV=#node->offer->minNOV;
 		return <PHTML>
 			<center><font color=red>{#var->errMessage}</font><hr></center>
 			<form name="$formname" method="post">
 				<#msg->addVideo>
-				Youtube link: <input name="link" size=20><br>
-				Your Offer on Price/View: <input name="AOVP" size=5> (min:$minAOVP)<br>
-				Number of Viewes: <input name="NOV" size=5><br>
+				Youtube link: <input name="link" size=50><br>
+				Your Offer on Price/View: <input name="AOPV" size=5> (min: $minAOPV)<br>
+				Number of Viewes: <input name="NOV" size=5> (min: $minNOV)<br>
 				Commision: (auto calculate)
 				<hr>
 				Total: (auto calculate) <input type="button" value="Pay"><br>
@@ -45,17 +49,48 @@
 		</PHTML>
 	}
 
+	function frmSuccess(){
+		$msg=#var->errMessage;
+		#var->errMessage="";
+		_bookframe(#frm->frm);
+		return <PHTML>
+			<center><font color=green>{$msg}</font><hr></center>
+		</PHTML>
+	}
+
 	function onAddVideo($info){
-		$e="ERROR: <br>";
-		if(strlen($info['link'])<2){
+		$e="";
+		if(strlen($info['link'])<5){
 			$e.="Enter a valid link<br>";
 		}
-		if($info['AOVP']<0.01){////////////replace with offer
-			$e.="Minimum Offer should be 0.01<br>";
+		if($info['AOPV']<#node->offer->minAOPV){
+			$e.="Minimum Offer should be ".#node->offer->minAOPV."<br>";
 		}
-		if($info['NOV']<1){/////////////replace with offer
-			$e.="Enter valid Number of Views<br>";
+		if($info['NOV']<#node->offer->minNOV){
+			$e.="Minimum Number of Views should be ".#node->offer->minNOV."<br>";
+		}
+		if(strlen($e)<2){// NO ERROR
+			$al=new adlink("");
+			$data=array();
+			$user=osBackUser();
+			$data['advertisor']=$user['UID'];
+			$data['running']=1;
+			$data['lastDate']="";
+			$data['startDate']="";
+			$data['link']=$info['link'];
+			$data['maxViews']=$info['NOV'];
+			$data['AOPV']=$info['AOPV'];
+			$data['paid']=0;
+			$data['APRate']=#node->offer->APRatio;
+			$data['minLifeTime']=#node->offer->minLifeTime;
+			$data['minCancelTime']=#node->offer->minCancelTime;
+			$al->bookLink($data);
+			$emb=$al->backYEmbed($data['link']);
+			$e="Added Successfully<br>$emb";
+			_bookframe(#frm->frmSuccess);
+		}else{// HAS ERROR
+			$e="ERROR: <br>".$e;
+			_bookframe(#frm->frm);
 		}
 		#var->errMessage=$e;
-		_bookframe(#frm->frm);
 	}

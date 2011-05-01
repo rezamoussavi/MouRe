@@ -1,14 +1,72 @@
 #comments
 	Author:	Reza Moussavi
-	Date:	4/21/2011
+	Date:	5/1/2011
+	Ver:		1.0
+	-----------------------------------
+	Author:	Reza Moussavi
+	Date:	4/28/2011
 	Ver:		0.1
 
 #biz
 	adlink
 
-#frame
+#db
+	info ('advertisor' INT(11) NOT NULL; 'running' TINYINT(4) NOT NULL; 'lastDate' VARCHAR(8) NULL; 'startDate' VARCHAR(8) NOT NULL; 'link' VARCHAR(255) NOT NULL;'img' VARCHAR(255) NOT NULL; 'embed' VARCHAR(255) NOT NULL; 'maxViews' INT(11) NOT NULL; 'AOPV' FLOAT NOT NULL; 'paid' FLOAT NOT NULL; 'APRate' FLOAT NOT NULL; 'minLifeTime' INT(11) NOT NULL; 'minCancelTime' INT(11) NOT NULL; INDEX ('advertisor'))
+#db-comment
+	advertisor INT as 'userUID'
+	running TINYINT 
+	lastDate VARCHAR(8)
+	startDate VARCHAR(8)
+	link VARCHAR(255)
+	img VARCHAR(255)
+	embed VARCHAR(255)
+	maxViews INT
+	AOPV FLOAT
+	paid INT
+	APRate FLOAT
+	minLifeTime INT
+	minCancelTime INT
 
 #phpfunction
 
-	function (){
+	function bookLink($info){
+		$img=#fun->backYImg($info['link']);
+		$embed=#fun->backYEmbed($info['link']);
+		$q="INSERT INTO #db->info (advertisor,running,lastDate,startDate,link,img,embed,maxViews,AOPV,paid,APRate,minLifeTime,minCancelTime)";
+		$q.=" VALUES({$info['advertisor']},{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
+		query($q);
+	}
+
+	/************************************************
+	*
+	*************************************************/
+
+	function backVideoList($mode){
+		$vl=array();
+		switch($mode){
+			case "topublish":
+				query("SELECT * FROM #db->info WHERE running=1");
+				break;
+		}
+		while($row=fetch())	{$vl[]=$row;}
+		return $vl;
+	}
+
+	/************************************************
+	*		YouTube Functions
+	*************************************************/
+
+	function backYImg($y){
+		$code=#fun->backYCode($y);
+		return "http://img.youtube.com/vi/".$code."/2.jpg";
+	}
+
+	function backYEmbed($y){
+		$code=#fun->backYCode($y);
+		return "<iframe width=640 height=390 src=http://www.youtube.com/embed/".$code." frameborder=0 allowfullscreen></iframe>";
+	}
+
+	function backYCode($y){
+		$a=strpos($y,"watch?v=")+8;
+		return substr($y,$a,strpos($y."&","&")-$a);
 	}

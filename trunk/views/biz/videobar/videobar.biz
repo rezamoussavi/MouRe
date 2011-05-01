@@ -1,14 +1,47 @@
 #comments
 	Author:	Reza Moussavi
-	Date:	4/21/2011
+	Date:	5/1/2011
 	Ver:		0.1
 
 #biz
 	videobar
 
 #frame
+	frm,frmToPublish
+
+#var
+	data
 
 #phpfunction
 
-	function (){
+	/******************************************
+	*		Frames
+	******************************************/
+
+	function frm(){
+		return "[ Video Bar! ]";
+	}
+
+	function frmToPublish(){
+		return <PHTML>
+			<img src="{#var->data['img']}" /> --> Is ready to publish
+		</PHTML>
+	}
+
+	/******************************************
+	*		Functionalities
+	******************************************/
+
+	function bookMode($mode){
+		switch($mode){
+			case "topublish":
+				_bookframe(#frm->frmToPublish);
+				break;
+			default:
+				_bookframe(#frm->frm);
+		}
+	}
+
+	function bookInfo($data){
+		#var->data=$data;
 	}

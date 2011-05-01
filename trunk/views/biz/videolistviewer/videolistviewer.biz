@@ -1,13 +1,18 @@
 #comments
 	Author:	Reza Moussavi
+	Date:	5/1/2011
+	Ver:		1.0
+	----------------------------------
+	Author:	Reza Moussavi
 	Date:	4/21/2011
 	Ver:		0.1
 
 #biz
 	videolistviewer
 
-#var
-	mode="topublish"
+#node
+	adlink
+	videobar[] VBars
 
 #frame
 	frm
@@ -15,15 +20,25 @@
 #phpfunction
 
 	function bookMode($mode){
-		#var->mode=$mode;
-	}
-
-	function backMode(){
-		return #var->mode;
+		$al=new adlink("");
+		$Vs=array();
+		$Vs=$al->backVideoList($mode);
+		#node->VBars=array();
+		foreach($Vs as $v){
+			$vb=new videobar(#nodeID.count(#node->VBars));
+			$vb->bookInfo($v);
+			$vb->bookMode($mode);
+			#node->VBars[]=$vb;
+		}
 	}
 
 	function frm(){
+		$VBars="";
+		foreach(#node->VBars as $vb){
+			$VBars.=$vb->_backframe()."<hr>";
+		}
 		return <PHTML>
 			<center>VideoListViewer</center>
+			<br>$VBars
 		</PHTML>
 	}
