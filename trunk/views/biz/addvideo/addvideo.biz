@@ -34,7 +34,7 @@
 		$formname=#nodeID;
 		$minAOPV=#node->offer->minAOPV;
 		$minNOV=#node->offer->minNOV;
-		return <PHTML>
+		$html=<PHTML>
 			<center><font color=red>{#var->errMessage}</font><hr></center>
 			<form name="$formname" method="post">
 				<#msg->addVideo>
@@ -47,6 +47,8 @@
 				<input type="button" value="Apply" onclick = 'JavaScript:sndmsg("$formname")'>
 			</form>
 		</PHTML>
+		#var->errMessage="";
+		return $html;
 	}
 
 	function frmSuccess(){

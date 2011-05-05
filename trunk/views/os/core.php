@@ -130,7 +130,7 @@
 				$log=<<<MSGLOG
 					$msg <b>Sent</b><br>
 					<b>TO: </b>$to
-					<b>DATA:</b><br>
+					<br><b>DATA:</b><br>
 					$data
 MSGLOG;
 				osLog("OS","osMessage","$log");
@@ -235,11 +235,11 @@ MSGLOG;
 		}
 		query("SELECT * FROM os_log ORDER BY logID DESC");
 		$html="<html>";
-		if(isset($_GET['auto'])){
-			$html.="<head><meta HTTP-EQUIV='refresh' CONTENT='1; ?log";
-			if(isset($_GET['auto']))	$html.="&auto";
-			$html.="'></head><body>";
-		}
+		$html.="<head><meta HTTP-EQUIV='refresh' CONTENT='";
+		$html.=isset($_GET['auto'])?"1":"60";
+		$html.="; ?log";
+		if(isset($_GET['auto']))	$html.="&auto";
+		$html.="'></head><body>";
 		$html.=<<<HTMLSTYLE
 			<style type='text/css'>
 				table.log{
@@ -256,7 +256,7 @@ HTMLSTYLE;
 		if(isset($_GET['auto']))
 			$html.="<a href='?log'>Turn OFF AutoRefresh</a>";
 		else
-			$html.="<a href='?log&auto'>Turn ON AutoRefresh</a>";
+			$html.="<a href='?log&auto'>Turn ON AutoRefresh</a><font color=gray size=1>Refresh time On:1sec OFF:2min</font>";
 		$html.=" <br>for LogMessages : <font size=1 color=gray>use ?message=on or ?message=off on open page of site</font>";
 		$html.="<table class='log'><tr>";
 		$html.="<td>ID</td>";

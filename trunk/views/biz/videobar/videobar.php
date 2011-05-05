@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
 	Date:	5/1/2011
@@ -125,13 +125,21 @@ JSONDOCREADY;
 		$frmName=$this->_fullname.$this->data['adUID'];
 		$scv=($this->showScript)?$this->scv->_backframe():" ";
 		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
+		$EPV=$this->data['AOPV']/$this->data['APRate'];
 		return <<<PHTMLCODE
 
-		<div style="width:500px;">
-			<div style="display:inline;height:90px;width:90px;"><a href="{$this->data['link']}" target="_blank">
-				<img src="{$this->data['img']}" /> 
-			</a></div>
-			<div style="position:absolute;display:inline;height:90px;width:400px;align:right;">
+		<div style="width:650px;height:120;">
+			<div style="float:left;height:120px;width:150px;text-align:left;">
+				<a href="{$this->data['link']}" target="_blank">
+					<img src="{$this->data['img']}" />
+				</a>
+				<br><font size=2>viewd {$this->data['viewed']} of {$this->data['maxViews']}</font>
+			</div>
+			<div style="float:left;height:120px;width:400px;align:right;">
+				Last Date : {$this->data['lastDate']}
+				<br>Earn/View : {$EPV}
+			</div>
+			<div style="float:left;height:120px;width:100px;text-align:right;">
 				<form id="$frmName" method="post" style="display:inline;">
 					<input type="button" value="$btnCaption" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
 					<input type="hidden" name="_message" value="frame_getLink" /><input type = "hidden" name="_target" value="{$this->_fullname}" />

@@ -34,7 +34,8 @@
 #phpfunction
 
 	function onShowMyAccount($info){
-		osBroadcast(#msg->showMyAccount);
+		$data=array();
+		osBroadcast(#msg->showMyAccount,$data);
 	}
 
 	function onLoginBtn($info){

@@ -32,12 +32,20 @@
 		$frmName=#nodeID.#var->data['adUID'];
 		$scv=(#var->showScript)?#node->scv->_backframe():" ";
 		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
+		$EPV=#var->data['AOPV']/#var->data['APRate'];
 		return <PHTML>
-		<div style="width:500px;">
-			<div style="display:inline;height:90px;width:90px;"><a href="{#var->data['link']}" target="_blank">
-				<img src="{#var->data['img']}" /> 
-			</a></div>
-			<div style="position:absolute;display:inline;height:90px;width:400px;align:right;">
+		<div style="width:650px;height:120;">
+			<div style="float:left;height:120px;width:150px;text-align:left;">
+				<a href="{#var->data['link']}" target="_blank">
+					<img src="{#var->data['img']}" />
+				</a>
+				<br><font size=2>viewd {#var->data['viewed']} of {#var->data['maxViews']}</font>
+			</div>
+			<div style="float:left;height:120px;width:400px;align:right;">
+				Last Date : {#var->data['lastDate']}
+				<br>Earn/View : {$EPV}
+			</div>
+			<div style="float:left;height:120px;width:100px;text-align:right;">
 				<form id="$frmName" method="post" style="display:inline;">
 					<input type="button" value="$btnCaption" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
 					<#msg->getLink>

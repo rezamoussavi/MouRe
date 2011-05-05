@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:		Reza Moussavi
 	Version:	1.1
@@ -150,7 +150,8 @@ JSONDOCREADY;
 
 
 	function onShowMyAccount($info){
-		osBroadcast("user_showMyAccount");
+		$data=array();
+		osBroadcast("user_showMyAccount",$data);
 	}
 	function onLoginBtn($info){
 		$this->userShow->login($info['email'], $info['password']);

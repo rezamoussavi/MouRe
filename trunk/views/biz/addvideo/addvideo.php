@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
 	Date:	4/27/2011
@@ -128,7 +128,7 @@ PHTMLCODE;
 		$formname=$this->_fullname;
 		$minAOPV=$this->offer->minAOPV;
 		$minNOV=$this->offer->minNOV;
-		return <<<PHTMLCODE
+		$html=<<<PHTMLCODE
 
 			<center><font color=red>{$this->errMessage}</font><hr></center>
 			<form name="$formname" method="post">
@@ -144,6 +144,8 @@ PHTMLCODE;
 		
 PHTMLCODE;
 
+		$this->errMessage="";
+		return $html;
 	}
 	function frmSuccess(){
 		$msg=$this->errMessage;

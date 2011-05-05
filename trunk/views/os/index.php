@@ -2,9 +2,8 @@
 	session_cache_expire(10);
 	session_start();
 	function myErrorHandler($errno, $errstr, $errfile, $errline){
-		$m=" bizError:$errno - ERROR:$errstr - FILE:$errfile - LINE:$errline";
-		osLog("OS","ERROR",$m);
-		//echo "<hr><font color=red>$m</font></hr>";
+		$m="$errstr<hr width=100px align=left>$errfile<br>(line $errline)";
+		osLog("OS","<font color=red>ERROR</font> ($errno) ",$m);
 	}
 	set_error_handler("myErrorHandler");
 	date_default_timezone_set('GMT');
@@ -20,32 +19,16 @@
 	if(!isset($_SESSION['logMessages'])){
 		$_SESSION['logMessages']=false;
 	}
+	if(isset($_GET['message'])){
+		$_SESSION['logMessages']=($_GET['message']=='on')?true:false;
+		unset($_GET['message']);
+	}
 	if(isset($_GET['kill'])){
 		$_SESSION['osNodes']=array();
 		$_SESSION['osMsg']=array();
 		$_SESSION['osLink']=array();
 		unset($_SESSION['user']);
-		if(isset($_GET['message'])){
-			switch($_GET['message']){
-				case "on":
-					$_SESSION['logMessages']=true;
-					break;
-				case "off":
-					$_SESSION['logMessages']=false;
-					break;
-			}
-		}
 		$_GET=array();
-	}
-	if(isset($_GET['message'])){
-		switch($_GET['message']){
-			case "on":
-				$_SESSION['logMessages']=true;
-				break;
-			case "off":
-				$_SESSION['logMessages']=false;
-				break;
-		}
 	}
 	if(isset($_GET['regdb'])){
 		$bizdb=$_GET['regdb'];
