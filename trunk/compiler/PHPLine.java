@@ -22,6 +22,8 @@ public class PHPLine {
 		line=replace(line, "osBackLink (", "osBackLink($this->_fullname,");
 		line=replace(line, "osBackLinkInfo(", "osBackLinkInfo($this->_fullname,");
 		line=replace(line, "osBackLinkInfo (", "osBackLinkInfo($this->_fullname,");
+		line=replace(line, "osLog(", "osLog('"+PHPClass.Name+"',$this->_fullname,");
+		line=replace(line, "osLog (", "osLog('"+PHPClass.Name+"',$this->_fullname,");
 		return line;
 	}
 

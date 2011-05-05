@@ -80,7 +80,7 @@ public class PHPClass {
 		}else if(sec.name.equalsIgnoreCase("phpfunction")){
 			functions=sec.elements.get(0).data;
 		}else if(sec.name.equalsIgnoreCase("comments")){
-			comments= "/*\n\tCompiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi\n\n"+
+			comments= "/*\n\tCompiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi\n\n"+
 			sec.elements.get(0).data+"\n*/\n";
 		}
 	}
@@ -112,7 +112,6 @@ public class PHPClass {
 		"\tvar $_fullname;\n" +
 		"\tvar $_curFrame;\n" +
 		"\tvar $_tmpNode;\n" +
-		"\tvar $_frmChanged;\n" +
 		"\n\t//Variables\n";
 		for(Var v:vars)
 			s+="\tvar $"+v.name+";\n";
@@ -148,7 +147,6 @@ public class PHPClass {
 		/*
 	function __construct($fullname) {
 		$this->_tmpNode=false;
-		$this->_frmChanged=false;//if there is any frame defined for this biz
 		if($fullname==null){
 			$fullname="_tmpNode_".count($_SESSION['osNodes']);
 			$this->_tmpNode=true;
@@ -161,7 +159,6 @@ public class PHPClass {
         	$_SESSION['osMsg'][Msg][$this->_fullname]=true;
         }
 
-		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']="frm";
@@ -185,7 +182,6 @@ public class PHPClass {
 
 	function gotoSleep() {
 		$_SESSION['osNodes'][$this->_fullname]['NODES']=array();
-		$_SESSION['osNodes'][$this->_fullname]['sleep']=true;
 		foreach($this->NODES as $node){
 			$_SESSION['osNodes'][$this->_fullname]['NODES'][]=$node->_fullname;
 		}
@@ -197,8 +193,6 @@ public class PHPClass {
 
 		 */
 		String s="\n\tfunction __construct($fullname) {\n";
-		if(frames.size()>0)
-			s+="\t\t$this->_frmChanged=false;\n";
 		s+=	"\t\t$this->_tmpNode=false;\n"+
 			"\t\tif($fullname==null){\n"+
 			"\t\t\t$fullname='_tmpNode_'.count($_SESSION['osNodes']);\n"+
@@ -211,8 +205,7 @@ public class PHPClass {
 		for(Message m:messages)
 			if(m.isCallBack())
 				s+="\t\t\t$_SESSION['osMsg']['"+m.msg+"'][$this->_fullname]=true;\n";
-		s+="\t\t}\n\n" +
-			"\t\t$_SESSION['osNodes'][$fullname]['sleep']=false;\n";
+		s+="\t\t}\n\n";
 		if(frames.size()>0){
 			s+= "\t\t//default frame if exists\n"+
 			"\t\tif(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))\n"+
@@ -246,7 +239,6 @@ public class PHPClass {
 		for(Node n:nodes)
 			if(n.isArray)
 				s+= "\t\t$_SESSION['osNodes'][$this->_fullname]['"+n.node+"']=array();\n" +
-					"\t\t$_SESSION['osNodes'][$this->_fullname]['sleep']=true;\n"+
 					"\t\tforeach($this->"+n.node+" as $node){\n" +
 					"\t\t\t$_SESSION['osNodes'][$this->_fullname]['"+n.node+"'][]=$node->_fullname;\n\t\t}\n";
 		s+= "\t\tif($this->_tmpNode)\n"+
@@ -287,7 +279,6 @@ public class PHPClass {
 		/*
 
 	function _bookframe($frame){
-		$this->_frmChanged=true;//if there is any frm defined for this biz
 		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
@@ -303,7 +294,7 @@ public class PHPClass {
 				$_style='';
 				break;
 		}
-		$html='<script type="text/javascript">';
+		$html='<script type="text/javascript" language="Javascript">';
 		$html.=<<<JAVASCRIPT\n javascript+nJAVASCRIPT\n;
 		$html.=<<<JSONDOCREADY\n function #nodeID{JSOnDocReady}\nJSONDOCREADY\n;
 		$html.='</script><div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -317,8 +308,6 @@ public class PHPClass {
 		 */
 		String s="";
 		s+="\n\tfunction _bookframe($frame){\n";
-		if(frames.size()>0)
-			s+="\t\t$this->_frmChanged=true;\n";
 		s+="\t\t$this->_curFrame=$frame;\n" +
 		"\t\t//$this->show(true);\n" +
 		"\t}\n" +
@@ -334,7 +323,7 @@ public class PHPClass {
 				"\t\t\t\t$_style='"+f.Style+"';\n" +
 				"\t\t\t\tbreak;\n";
 			s+="\t\t}\n" +
-			"\t\t$html='<script type=\"text/javascript\">';\n" +
+			"\t\t$html='<script type=\"text/javascript\" language=\"Javascript\">';\n" +
 			"\t\t$html.=<<<JAVASCRIPT\n"+JavaScript+"\nJAVASCRIPT;\n" +
 			"\t\t$html.=<<<JSONDOCREADY\nfunction {$this->_fullname}(){"+JSOnDocReady+"}\nJSONDOCREADY;\n" +
 			"\t\t$html.='</script>\n<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
