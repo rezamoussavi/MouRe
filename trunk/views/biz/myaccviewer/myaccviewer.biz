@@ -1,18 +1,79 @@
 #comments
 	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Date:	5/5/2011
+	Ver:		1.0
 
 #biz
 	myaccviewer
 
 #frame
-	frm
+	frmProfile
+	frmPubLink s
+	frmAdLinks
+
+#node
+	profileviewer profile
+	videolistviewer pubLinks
+	videolistviewer adLinks
+
+#message
+	frame->profileBtn=onProfileBtn
+	frame->pubLinkBtn=onPubLinkBtn
+	frame->adLinkBtn=onAdLinkBtn
 
 #phpfunction
 
-	function frm(){
-		return <PHTML>
-			<center>My Account Viewer</center>
+	/*-----------------------------------------------------
+	/		Message Handlers
+	-----------------------------------------------------*/
+
+	function onProfileBtn($info){
+		_bookframe(#frm->frmProfile);
+	}
+
+	function onPubLinkBtn($info){
+		_bookframe(#frm->frmPubLinks);
+	}
+
+	function onAdLinkBtn($info){
+		_bookframe(#frm->frmAdLinks);
+	}
+
+	/*-----------------------------------------------------
+	/		Frames
+	-----------------------------------------------------*/
+
+	function frmProfile(){
+		return #fun->buttons()."<hr>".#node->profile->_backframe();
+	}
+
+	function frmPubLinks(){
+		return #fun->buttons()."<hr>".#node->pubLinks->_backframe();
+	}
+
+	function frmAdLinks(){
+		return #fun->buttons()."<hr>".#node->adLinks->_backframe();
+	}
+
+	function buttons(){
+		$ProfileFormName=#nodeID."profileBtn";
+		$pubLinkFormName=#nodeID."pubLinkBtn";
+		$adLinkFormName=#nodeID."adLinkBtn";
+		$html=<PHTML>
+			<div style="float:left;width:800px;">
+				<form name={$ProfileFormName} method="post" style="float:left;">
+					<#msg->profileBtn>
+					<input type="button" value="Profile" onclick = 'JavaScript:sndmsg("$ProfileFormName")'  />
+				</form>
+				<form name={$pubLinkFormName} method="post" style="float:left;">
+					<#msg->pubLinkBtn>
+					<input type="button" value="My Published Links" onclick = 'JavaScript:sndmsg("$pubLinkFormName")'  />
+				</form>
+				<form name={$adLinkFormName} method="post" style="float:left;">
+					<#msg->adLinkBtn>
+					<input type="button" value="My Advertised Links" onclick = 'JavaScript:sndmsg("$adLinkFormName")'  />
+				</form>
+			</div>
 		</PHTML>
+		return $html;
 	}

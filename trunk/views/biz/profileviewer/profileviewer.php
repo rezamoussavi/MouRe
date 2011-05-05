@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
 	Date:	4/21/2011
@@ -32,6 +32,11 @@ class profileviewer {
 			//If any message need to be registered will placed here
 		}
 
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='profileviewer';
 	}
@@ -60,6 +65,27 @@ class profileviewer {
 	}
 
 	function show($echo){
+		$_style='';
+		switch($this->_curFrame){
+			case 'frm':
+				$_style='';
+				break;
+		}
+		$html='<script type="text/javascript" language="Javascript">';
+		$html.=<<<JAVASCRIPT
+
+JAVASCRIPT;
+		$html.=<<<JSONDOCREADY
+function {$this->_fullname}(){}
+JSONDOCREADY;
+		$html.='</script>
+<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
+		if($echo)
+			echo $html;
+		else
+			return $html;
 	}
 
 
@@ -68,7 +94,14 @@ class profileviewer {
 //########################################
 
 
-	function (){
+	function frm(){
+		$html=<<<PHTMLCODE
+
+			profile viewer
+		
+PHTMLCODE;
+
+		return $html;
 	}
 
 }

@@ -7,8 +7,13 @@
 	profileviewer
 
 #frame
+	frm
 
 #phpfunction
 
-	function (){
+	function frm(){
+		$html=<PHTML>
+			profile viewer
+		</PHTML>
+		return $html;
 	}

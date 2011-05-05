@@ -1,13 +1,15 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Date:	5/5/2011
+	Ver:		1.0
 
 */
+require_once 'biz/profileviewer/profileviewer.php';
+require_once 'biz/videolistviewer/videolistviewer.php';
 
 class myaccviewer {
 
@@ -19,6 +21,9 @@ class myaccviewer {
 	//Variables
 
 	//Nodes (bizvars)
+	var $profile;
+	var $pubLinks;
+	var $adLinks;
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -30,12 +35,21 @@ class myaccviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['frame_profileBtn'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_pubLinkBtn'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_adLinkBtn'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
-			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frmProfile';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
+		$this->profile=new profileviewer($this->_fullname.'_profile');
+
+		$this->pubLinks=new videolistviewer($this->_fullname.'_pubLinks');
+
+		$this->adLinks=new videolistviewer($this->_fullname.'_adLinks');
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='myaccviewer';
@@ -51,6 +65,15 @@ class myaccviewer {
 
 	function message($message, $info) {
 		switch($message){
+			case 'frame_profileBtn':
+				$this->onProfileBtn($info);
+				break;
+			case 'frame_pubLinkBtn':
+				$this->onPubLinkBtn($info);
+				break;
+			case 'frame_adLinkBtn':
+				$this->onAdLinkBtn($info);
+				break;
 			default:
 				break;
 		}
@@ -67,7 +90,13 @@ class myaccviewer {
 	function show($echo){
 		$_style='';
 		switch($this->_curFrame){
-			case 'frm':
+			case 'frmProfile':
+				$_style='';
+				break;
+			case 'frmPubLink s':
+				$_style='';
+				break;
+			case 'frmAdLinks':
 				$_style='';
 				break;
 		}
@@ -94,13 +123,54 @@ JSONDOCREADY;
 //########################################
 
 
-	function frm(){
-		return <<<PHTMLCODE
+	/*-----------------------------------------------------
+	/		Message Handlers
+	-----------------------------------------------------*/
+	function onProfileBtn($info){
+		$this->_bookframe("frmProfile");
+	}
+	function onPubLinkBtn($info){
+		$this->_bookframe("frmPubLinks");
+	}
+	function onAdLinkBtn($info){
+		$this->_bookframe("frmAdLinks");
+	}
+	/*-----------------------------------------------------
+	/		Frames
+	-----------------------------------------------------*/
+	function frmProfile(){
+		return $this->buttons()."<hr>".$this->profile->_backframe();
+	}
+	function frmPubLinks(){
+		return $this->buttons()."<hr>".$this->pubLinks->_backframe();
+	}
+	function frmAdLinks(){
+		return $this->buttons()."<hr>".$this->adLinks->_backframe();
+	}
+	function buttons(){
+		$ProfileFormName=$this->_fullname."profileBtn";
+		$pubLinkFormName=$this->_fullname."pubLinkBtn";
+		$adLinkFormName=$this->_fullname."adLinkBtn";
+		$html=<<<PHTMLCODE
 
-			<center>My Account Viewer</center>
+			<div style="float:left;width:800px;">
+				<form name={$ProfileFormName} method="post" style="float:left;">
+					<input type="hidden" name="_message" value="frame_profileBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input type="button" value="Profile" onclick = 'JavaScript:sndmsg("$ProfileFormName")'  />
+				</form>
+				<form name={$pubLinkFormName} method="post" style="float:left;">
+					<input type="hidden" name="_message" value="frame_pubLinkBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input type="button" value="My Published Links" onclick = 'JavaScript:sndmsg("$pubLinkFormName")'  />
+				</form>
+				<form name={$adLinkFormName} method="post" style="float:left;">
+					<input type="hidden" name="_message" value="frame_adLinkBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input type="button" value="My Advertised Links" onclick = 'JavaScript:sndmsg("$adLinkFormName")'  />
+				</form>
+			</div>
 		
 PHTMLCODE;
 
+		return $html;
 	}
 
 }
