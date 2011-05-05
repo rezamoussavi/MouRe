@@ -9,17 +9,14 @@
 #frame
 	frm,frmToPublish
 
+#node
+	scriptviewer scv
+
 #var
-	data
+	data, showScript=false
 
-#javascript
-	function test(){
-		//do some JS
-	}
-
-#jsondocready
-	//do some stuff
-	//and more and more
+#message
+	frame->getLink=onGetLink
 
 #phpfunction
 
@@ -33,12 +30,32 @@
 
 	function frmToPublish(){
 		$frmName=#nodeID.#var->data['adUID'];
+		$scv=(#var->showScript)?#node->scv->_backframe():" ";
+		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
 		return <PHTML>
-			<a href="{#var->data['link']}" target="_blank">
+		<div style="width:500px;">
+			<div style="display:inline;height:90px;width:90px;"><a href="{#var->data['link']}" target="_blank">
 				<img src="{#var->data['img']}" /> 
-			</a>
-			--> Is ready to publish
+			</a></div>
+			<div style="position:absolute;display:inline;height:90px;width:400px;align:right;">
+				<form id="$frmName" method="post" style="display:inline;">
+					<input type="button" value="$btnCaption" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
+					<#msg->getLink>
+				</form>
+			</div><br>
+		</div>
+		<br>
+			$scv
 		</PHTML>
+	}
+
+	/******************************************
+	*		Message Handlers
+	******************************************/
+
+	function onGetLink(){
+		#var->showScript=!#var->showScript;
+		_bookframe(#var->_curFrame);
 	}
 
 	/******************************************
@@ -57,4 +74,5 @@
 
 	function bookInfo($data){
 		#var->data=$data;
+		#node->scv->generateScript($data['adUID']);
 	}

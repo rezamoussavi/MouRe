@@ -19,7 +19,6 @@ class adlink {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
-	var $_frmChanged;
 
 	//Variables
 
@@ -37,7 +36,6 @@ class adlink {
 			//If any message need to be registered will placed here
 		}
 
-		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='adlink';
 	}

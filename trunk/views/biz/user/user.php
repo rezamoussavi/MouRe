@@ -19,7 +19,6 @@ class user {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
-	var $_frmChanged;
 
 	//Variables
 	var $userUID;
@@ -41,7 +40,6 @@ class user {
 			//If any message need to be registered will placed here
 		}
 
-		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		if(!isset($_SESSION['osNodes'][$fullname]['userUID']))
 			$_SESSION['osNodes'][$fullname]['userUID']='';
 		$this->userUID=&$_SESSION['osNodes'][$fullname]['userUID'];

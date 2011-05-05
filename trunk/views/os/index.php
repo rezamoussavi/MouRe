@@ -2,7 +2,9 @@
 	session_cache_expire(10);
 	session_start();
 	function myErrorHandler($errno, $errstr, $errfile, $errline){
-		echo "<hr /><font color=red> bizError:$errno - ERROR:$errstr - FILE:$errfile - LINE:$errline </font><hr />";
+		$m=" bizError:$errno - ERROR:$errstr - FILE:$errfile - LINE:$errline";
+		osLog("OS","ERROR",$m);
+		//echo "<hr><font color=red>$m</font></hr>";
 	}
 	set_error_handler("myErrorHandler");
 	date_default_timezone_set('GMT');
@@ -15,17 +17,43 @@
 	require_once "core.php";
 
 	unset($bizbank);
+	if(!isset($_SESSION['logMessages'])){
+		$_SESSION['logMessages']=false;
+	}
 	if(isset($_GET['kill'])){
 		$_SESSION['osNodes']=array();
 		$_SESSION['osMsg']=array();
 		$_SESSION['osLink']=array();
 		unset($_SESSION['user']);
+		if(isset($_GET['message'])){
+			switch($_GET['message']){
+				case "on":
+					$_SESSION['logMessages']=true;
+					break;
+				case "off":
+					$_SESSION['logMessages']=false;
+					break;
+			}
+		}
+		$_GET=array();
+	}
+	if(isset($_GET['message'])){
+		switch($_GET['message']){
+			case "on":
+				$_SESSION['logMessages']=true;
+				break;
+			case "off":
+				$_SESSION['logMessages']=false;
+				break;
+		}
 	}
 	if(isset($_GET['regdb'])){
 		$bizdb=$_GET['regdb'];
 		require_once "biz/".$bizdb."/".$bizdb.".sql";
 		bizsql();
 		echo 'ok';
+	}elseif(isset($_GET['log'])){
+		showLogPage();
 	}else{
 		if(!isset($_SESSION['user'])){
 			$_SESSION['user']=array();
@@ -76,23 +104,23 @@ JQUERY;
 					}
 				}
 			}
-			echo $JQueryCode."});</script>";
+			echo $JQueryCode."}); </script>";
 			require_once "ajax.php";
 		}
 
 		foreach($_SESSION['osNodes'] as $node){
-			if(isset($node['sleep'])){
-				if(!$node['sleep']){
+		//	if(isset($node['sleep'])){
+		//		if(!$node['sleep']){
 					if(isset($node['node'])){
 						if(is_object($node['node'])){
-							$node['node']->gotoSleep();
 							if($msgMode){
 								$node['node']->show(true);
 							}
+							$node['node']->gotoSleep();
 						}
 					}
-				}
-			}
+		//		}
+		//	}
 		}
 	}
 ?>

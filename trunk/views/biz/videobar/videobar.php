@@ -8,6 +8,7 @@
 	Ver:		0.1
 
 */
+require_once 'biz/scriptviewer/scriptviewer.php';
 
 class videobar {
 
@@ -15,15 +16,15 @@ class videobar {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
-	var $_frmChanged;
 
 	//Variables
 	var $data;
+	var $showScript;
 
 	//Nodes (bizvars)
+	var $scv;
 
 	function __construct($fullname) {
-		$this->_frmChanged=false;
 		$this->_tmpNode=false;
 		if($fullname==null){
 			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
@@ -33,17 +34,23 @@ class videobar {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['frame_getLink'][$this->_fullname]=true;
 		}
 
-		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
+		$this->scv=new scriptviewer($this->_fullname.'_scv');
+
 		if(!isset($_SESSION['osNodes'][$fullname]['data']))
 			$_SESSION['osNodes'][$fullname]['data']='';
 		$this->data=&$_SESSION['osNodes'][$fullname]['data'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['showScript']))
+			$_SESSION['osNodes'][$fullname]['showScript']=false;
+		$this->showScript=&$_SESSION['osNodes'][$fullname]['showScript'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='videobar';
@@ -59,13 +66,15 @@ class videobar {
 
 	function message($message, $info) {
 		switch($message){
+			case 'frame_getLink':
+				$this->onGetLink($info);
+				break;
 			default:
 				break;
 		}
 	}
 
 	function _bookframe($frame){
-		$this->_frmChanged=true;
 		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
@@ -83,17 +92,12 @@ class videobar {
 				$_style='';
 				break;
 		}
-		$html='<script type="text/javascript">';
+		$html='<script type="text/javascript" language="Javascript">';
 		$html.=<<<JAVASCRIPT
-	function test(){
-		//do some JS
-	}
 
 JAVASCRIPT;
 		$html.=<<<JSONDOCREADY
-function {$this->_fullname}(){	//do some stuff
-	//and more and more
-}
+function {$this->_fullname}(){}
 JSONDOCREADY;
 		$html.='</script>
 <div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -119,15 +123,33 @@ JSONDOCREADY;
 	}
 	function frmToPublish(){
 		$frmName=$this->_fullname.$this->data['adUID'];
+		$scv=($this->showScript)?$this->scv->_backframe():" ";
+		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
 		return <<<PHTMLCODE
 
-			<a href="{$this->data['link']}" target="_blank">
+		<div style="width:500px;">
+			<div style="display:inline;height:90px;width:90px;"><a href="{$this->data['link']}" target="_blank">
 				<img src="{$this->data['img']}" /> 
-			</a>
-			--> Is ready to publish
+			</a></div>
+			<div style="position:absolute;display:inline;height:90px;width:400px;align:right;">
+				<form id="$frmName" method="post" style="display:inline;">
+					<input type="button" value="$btnCaption" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
+					<input type="hidden" name="_message" value="frame_getLink" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				</form>
+			</div><br>
+		</div>
+		<br>
+			$scv
 		
 PHTMLCODE;
 
+	}
+	/******************************************
+	*		Message Handlers
+	******************************************/
+	function onGetLink(){
+		$this->showScript=!$this->showScript;
+		$this->_bookframe($this->_curFrame);
 	}
 	/******************************************
 	*		Functionalities
@@ -143,6 +165,7 @@ PHTMLCODE;
 	}
 	function bookInfo($data){
 		$this->data=$data;
+		$this->scv->generateScript($data['adUID']);
 	}
 
 }

@@ -23,7 +23,6 @@ class tabbank {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
-	var $_frmChanged;
 
 	//Variables
 	var $tabs;
@@ -32,7 +31,6 @@ class tabbank {
 	//Nodes (bizvars)
 
 	function __construct($fullname) {
-		$this->_frmChanged=false;
 		$this->_tmpNode=false;
 		if($fullname==null){
 			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
@@ -45,7 +43,6 @@ class tabbank {
 			$_SESSION['osMsg']['client_tab'][$this->_fullname]=true;
 		}
 
-		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
@@ -82,7 +79,6 @@ class tabbank {
 	}
 
 	function _bookframe($frame){
-		$this->_frmChanged=true;
 		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
@@ -97,7 +93,15 @@ class tabbank {
 				$_style=' style="float:left; width:700;" ';
 				break;
 		}
-		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<script type="text/javascript" language="Javascript">';
+		$html.=<<<JAVASCRIPT
+
+JAVASCRIPT;
+		$html.=<<<JSONDOCREADY
+function {$this->_fullname}(){}
+JSONDOCREADY;
+		$html.='</script>
+<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

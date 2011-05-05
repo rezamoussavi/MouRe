@@ -23,7 +23,6 @@ class offer {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
-	var $_frmChanged;
 
 	//Variables
 	var $offerUID;
@@ -48,7 +47,6 @@ class offer {
 			//If any message need to be registered will placed here
 		}
 
-		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		if(!isset($_SESSION['osNodes'][$fullname]['offerUID']))
 			$_SESSION['osNodes'][$fullname]['offerUID']=-1;
 		$this->offerUID=&$_SESSION['osNodes'][$fullname]['offerUID'];

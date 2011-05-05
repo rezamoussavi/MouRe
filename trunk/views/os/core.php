@@ -41,6 +41,11 @@
 //########################################################
 //########################################################
 
+	function osLog($Biz,$NodeID,$Message){
+		$t=$_SERVER['REQUEST_TIME'];
+		query("INSERT INTO os_log(TimeStamp,Biz,NodeID,Message) VALUES('$t','$Biz','$NodeID','$Message')");
+	}
+
 	function _D($a){
 		echo "<hr />DEBUG: ".$a."<hr />";
 	}
@@ -106,6 +111,9 @@
 	}
 
 	function osBroadcast($msg,$info){
+		if($_SESSION['logMessages']){
+			osLog("OS","BroadCast","<b>MSG:</b> $msg<br><b>INFO:</b><br>".arr2str($info));
+		}
 		if(isset($_SESSION['osMsg'][$msg])){
 			if(count($_SESSION['osMsg'][$msg])>0){
 				foreach($_SESSION['osMsg'][$msg] as $node=>$v){
@@ -115,22 +123,51 @@
 		}
 	}
 	function osMessage($to,$msg,$info){
-		//global $node;
-		$node=NULL;
-		if(!isset($_SESSION['osNodes'][$to])){
-			return;
-		}
-		if(!isset($_SESSION['osNodes'][$to]['node'])){
-			$biz=$_SESSION['osNodes'][$to]['biz'];
-			if($biz){
-				$node=new $biz($to);
+		if($node=osBackNode($to)){
+			$node->message($msg,$info);
+			if($_SESSION['logMessages']){
+				$data=arr2str($info);
+				$log=<<<MSGLOG
+					$msg <b>Sent</b><br>
+					<b>TO: </b>$to
+					<b>DATA:</b><br>
+					$data
+MSGLOG;
+				osLog("OS","osMessage","$log");
 			}
 		}else{
-			$node=$_SESSION['osNodes'][$to]['node'];
 		}
-		if($node){
-			$node->message($msg,$info);
+	}
+
+	function osBackNode($FName){
+		/*
+			Evaluate the given FullName
+		*/
+		if(!isset($_SESSION['osNodes'][$FName])){
+			if($_SESSION['logMessages']){osLog("OS","osBackNode","Node not found : $FName");}
+			return false;
 		}
+		/*
+			If node is constructed(awake)
+		*/
+		if(isset($_SESSION['osNodes'][$FName]['node'])){
+			if(is_object($_SESSION['osNodes'][$FName]['node']))
+			{
+				if($_SESSION['logMessages']){osLog("OS","osBackNode","Node is Awake : $FName");}
+				return $_SESSION['osNodes'][$FName]['node'];
+			}
+		}
+		/*
+			If node not awake, wake it up
+		*/
+		$biz=$_SESSION['osNodes'][$FName]['biz'];
+		if($biz){
+			if($_SESSION['logMessages']){osLog("OS","osBackNode","Node Woked Up : $FName");}
+			return new $biz($FName);
+		}
+
+		if($_SESSION['logMessages']){osLog("OS","osBackNode","Node ERROR : $FName");}		
+		return false;
 	}
 
 	function osBackBizness(){
@@ -187,5 +224,85 @@
 				$ret[substr($s,0,$i)]=substr($s,$i+1);
 		}
 		return $ret;
-}
+	}
+
+	function showLogPage(){
+		if(isset($_GET['delete'])){
+			query("DELETE FROM os_log WHERE logID=".$_GET['delete']);
+		}
+		if(isset($_GET['deleteto'])){
+			query("DELETE FROM os_log WHERE logID <= ".$_GET['deleteto']);
+		}
+		query("SELECT * FROM os_log ORDER BY logID DESC");
+		$html="<html>";
+		if(isset($_GET['auto'])){
+			$html.="<head><meta HTTP-EQUIV='refresh' CONTENT='1; ?log";
+			if(isset($_GET['auto']))	$html.="&auto";
+			$html.="'></head><body>";
+		}
+		$html.=<<<HTMLSTYLE
+			<style type='text/css'>
+				table.log{
+					border-width:1px;
+					border-style:solid;
+				}
+				table.log td{
+					border-width:1px;
+					border-style:dotted;
+				}
+			</style>
+HTMLSTYLE;
+		$html.="<a href='?log'>ManualRefresh</a><br>";
+		if(isset($_GET['auto']))
+			$html.="<a href='?log'>Turn OFF AutoRefresh</a>";
+		else
+			$html.="<a href='?log&auto'>Turn ON AutoRefresh</a>";
+		$html.=" <br>for LogMessages : <font size=1 color=gray>use ?message=on or ?message=off on open page of site</font>";
+		$html.="<table class='log'><tr>";
+		$html.="<td>ID</td>";
+		$html.="<td>Time</td>";
+		$html.="<td>Biz</td>";
+		$html.="<td>NodeID</td>";
+		$html.="<td>Message</td>";
+		$html.="<td></td>";
+		$html.="<td></td>";
+		$html.="</tr>";
+		$c=array("#FFFFFF","#FFCCFF","#99FF99","#CCFF33");
+		$s=count($c);
+		$i=0;
+		$t=" ";
+		while($row=fetch()){
+			if($t!=$row['TimeStamp']){
+				$t=$row['TimeStamp'];
+				//$i=($i==$s-1)?0:$i+1;
+				$html.="<tr bgcolor='#000000'><td colspan=7></td></tr>";
+			}
+			$bg=$c[$i];
+			$html.="<tr bgcolor='$bg'>";
+			$html.="<td><font size=1>".$row['logID']."</font></td>";
+			$html.="<td><font size=1>".$row['TimeStamp']."</font></td>";
+			$html.="<td><font size=1>".$row['Biz']."</font></td>";
+			$html.="<td><font size=2>".$row['NodeID']."</font></td>";
+			$html.="<td><font size=2>".$row['Message']."</font></td>";
+			$html.="<td><a title='Delete this Row' href='?log&delete=".$row['logID']."'><img src='delete.jpg' /></a></td>";
+			$html.="<td><a title='Delete All rows from this to end' href='?log&deleteto=".$row['logID']."'><img src='delete.jpg' /></a></td>";
+			$html.="</tr>";
+		}
+		$html.="</table></body></html>";
+		echo $html;
+	}
+
+	function arr2str($a){
+		if(is_array($a)){
+			$ret=" [ ";
+			foreach($a as $k=>$v){
+				$ret.=$k."=>".arr2str($v)." , ";
+			}
+			$ret=substr($ret,0,strlen($ret)-2);
+			$ret.=" ]  ";
+			return $ret;
+		}else{
+			return $a;
+		}
+	}
 ?>

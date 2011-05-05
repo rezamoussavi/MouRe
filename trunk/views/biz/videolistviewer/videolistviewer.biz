@@ -12,7 +12,7 @@
 
 #node
 	adlink
-	videobar[] VBars
+	videobar VBars[]
 
 #frame
 	frm
@@ -25,7 +25,7 @@
 		$Vs=$al->backVideoList($mode);
 		#node->VBars=array();
 		foreach($Vs as $v){
-			$vb=new videobar(#nodeID.count(#node->VBars));
+			$vb=new videobar("VBar".#nodeID.count(#node->VBars));
 			$vb->bookInfo($v);
 			$vb->bookMode($mode);
 			#node->VBars[]=$vb;

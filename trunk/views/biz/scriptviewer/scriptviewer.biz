@@ -1,14 +1,44 @@
 #comments
 	Author:	Reza Moussavi
-	Date:	4/21/2011
+	Date:	5/1/2011
 	Ver:		0.1
 
 #biz
 	scriptviewer
 
+#var
+	script="[!]"
+
+#JavaScript
+	function Do_Copy(txt){
+		if (window.clipboardData) {
+			window.clipboardData.setData("Text",txt);
+			alert('The text is copied to your clipboard...');
+		}else{
+			alert('The text is NOT copied to your clipboard...');
+		}
+	}
+
 #frame
+	frm
 
 #phpfunction
 
-	function (){
+	function generateScript($adLinkID){
+		$user=osBackUser();
+		$userID=$user['UID'];
+		if($userID<1){
+			#var->script="Generating data (".$adLinkID.") failed! - LOGIN first ";
+		}else{
+			#var->script="Generating data (".$adLinkID.") not accomplished! for user (".$userID." : ".$user['email'].") ";
+		}
+	}
+
+	function frm(){
+		return <PHTML>
+			<textarea id="codetopublish{#nodeID}" rows="5" cols="45">{#var->script}</textarea>
+			<br><input type="button" value="Copy" onclick='JavaScript:Do_Copy("{#var->script}")'>
+			<br><b>Instruction:</b><br>
+			Press Copy button or copy content in the text area and paste it in your weblog/website
+		</PHTML>
 	}

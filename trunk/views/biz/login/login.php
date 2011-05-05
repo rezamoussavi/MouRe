@@ -21,7 +21,6 @@ class login {
 	var $_fullname;
 	var $_curFrame;
 	var $_tmpNode;
-	var $_frmChanged;
 
 	//Variables
 	var $signupSuccess;
@@ -31,7 +30,6 @@ class login {
 	var $userShow;
 
 	function __construct($fullname) {
-		$this->_frmChanged=false;
 		$this->_tmpNode=false;
 		if($fullname==null){
 			$fullname='_tmpNode_'.count($_SESSION['osNodes']);
@@ -52,7 +50,6 @@ class login {
 			$_SESSION['osMsg']['frame_showMyAccount'][$this->_fullname]=true;
 		}
 
-		$_SESSION['osNodes'][$fullname]['sleep']=false;
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
@@ -115,7 +112,6 @@ class login {
 	}
 
 	function _bookframe($frame){
-		$this->_frmChanged=true;
 		$this->_curFrame=$frame;
 		//$this->show(true);
 	}
@@ -130,7 +126,15 @@ class login {
 				$_style=' style="float:left; width:200;" ';
 				break;
 		}
-		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<script type="text/javascript" language="Javascript">';
+		$html.=<<<JAVASCRIPT
+
+JAVASCRIPT;
+		$html.=<<<JSONDOCREADY
+function {$this->_fullname}(){}
+JSONDOCREADY;
+		$html.='</script>
+<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
