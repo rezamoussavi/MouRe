@@ -1,0 +1,25 @@
+
+<!doctype html> 
+<?php
+$_SESSION["Payment_Amount"] = 10;
+
+?>
+<html> 
+<head> 
+	<title>Return Page</title> 
+	
+	<style type="text/css"> 
+		html, body {padding: 0; margin: 0; }
+		body {background: #333;
+    color: #fff;; font-family: Tahoma;  }
+	</style> 
+	
+	</head> 
+<body> 
+	<h1>Purchase</h1> 
+	<form action='expresscheckout.php' METHOD='POST'>
+<input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0' align='top' alt='Check out with PayPal'/>
+</form>
+	
+</body> 
+</html>
