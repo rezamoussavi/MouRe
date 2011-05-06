@@ -14,7 +14,7 @@
 	userUID,userName,email,loggedIn
 
 #db
-	info ('userUID' int(11) NOT NULL auto_increment; 'email' varchar(50) NOT NULL; 'password' varchar(50) NOT NULL; 'verificationCode' varchar(50) NOT NULL; 'biznessUID' int(11) NOT NULL; 'role' varchar(50) NOT NULL COMMENT 'user / admin'; PRIMARY KEY  ('userUID'); UNIQUE KEY 'email' ('email'))
+	info ('userUID' int(11) NOT NULL auto_increment; 'email' varchar(50) NOT NULL; 'userName' varchar(50) NOT NULL; 'BDate' varchar(10) NOT NULL; 'Address' varchar(255) NOT NULL; 'password' varchar(50) NOT NULL; 'verificationCode' varchar(50) NOT NULL; 'biznessUID' int(11) NOT NULL; 'role' varchar(50) NOT NULL COMMENT 'user / admin'; PRIMARY KEY  ('userUID'); UNIQUE KEY 'email' ('email'))
  
 #phpfunction
 
@@ -65,7 +65,7 @@
 		if($row=fetch()){// Password correct
 			$UID=$row['userUID'];
 			$newpass = (strlen(trim($newpass))<1)?$hashPassword:#fun->sha1Hash($email,$newpass);
-			$q="UPDATE #db->info SET password='".$newpass."', Address='".$address."', BDate='".$bdate."', UserName='".$name."' WHERE userUID='".$UID."'";
+			$q="UPDATE #db->info SET password='".$newpass."', Address='".$address."', BDate='".$bdate."', userName='".$name."' WHERE userUID='".$UID."'";
 			if(!query($q)){
 				$message='DB ERROR:<br />'.$q;
 			}
@@ -196,7 +196,7 @@
                     #var->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => #var->email, "UID" => #var->userUID, "Address"=>$row["Address"], "userName"=>$row["UserName"], "role"=>$row["role"], "BDate"=>#fun->addSlash2BDate($row["BDate"])));
+					osBookUser(array("email" => #var->email, "UID" => #var->userUID, "Address"=>$row["Address"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>#fun->addSlash2BDate($row["BDate"])));
                     osBroadcast(#msg->login, array());
                     return 1;
                 } else {

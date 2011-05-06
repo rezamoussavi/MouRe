@@ -1,7 +1,7 @@
 #comments
 	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Date:	5/6/2011
+	Ver:		1.0
 
 #biz
 	profileviewer
@@ -9,11 +9,62 @@
 #frame
 	frm
 
+#node
+	user
+
+#message
+	frame->updateInfo=onUpdateInfo
+	frame->changePassword=onChangePassword
+
+#var
+	message=""
+
 #phpfunction
 
+	/*---------------------------------------------------------
+	-
+	------------------------------------------------------------*/
 	function frm(){
-		$html=<PHTML>
-			profile viewer
-		</PHTML>
+		$formName=#nodeID."ApplyBtn";
+		$formPass=#nodeID."Pass";
+		if(!osUserLogedin()){
+			$html="Please Login First";
+		}else{
+			$html=<PHTML>
+				{#var->message}
+				<div style="float:left;">
+					<form id="$formName" method="post">
+						<#msg->updateInfo>
+						Real Name: <input name="RealName" size=20><br>
+						Real Name: <input name="RealName" size=20><br>
+						Password: <input name="Password" type="password" size=20><br>
+						<input type="button" value="Apply" onclick='Javascript:sndmsg("$formName")'>
+					</form>
+					<form id="$formPass" method="post">
+						<#msg->changePassword>
+						New Password: <input name="NewPass1" size=20 type="password"><br>
+						Confirm : <input name="NewPass2" size=20 type="password"><br>
+						Old Password: <input name="Password" type="password" size=20><br>
+						<input type="button" value="Change Password" onclick='Javascript:sndmsg("$formPass")'>
+					</form>
+				</div>
+				<div style="float:left;">
+					Balance: <br>
+					Paid: <br>
+					Earned:
+				</div>
+			</PHTML>
+		}
 		return $html;
+	}
+
+	/*---------------------------------------------------------------
+	-		Message Handlers
+	---------------------------------------------------------------*/
+
+	function onChangePassword($info){
+		
+	}
+
+	function onUpdateInfo($info){
 	}

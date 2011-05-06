@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
 	Date:	2/16/2011
@@ -128,7 +128,7 @@ class user {
 		if($row=fetch()){// Password correct
 			$UID=$row['userUID'];
 			$newpass = (strlen(trim($newpass))<1)?$hashPassword:$this->sha1Hash($email,$newpass);
-			$q="UPDATE user_info SET password='".$newpass."', Address='".$address."', BDate='".$bdate."', UserName='".$name."' WHERE userUID='".$UID."'";
+			$q="UPDATE user_info SET password='".$newpass."', Address='".$address."', BDate='".$bdate."', userName='".$name."' WHERE userUID='".$UID."'";
 			if(!query($q)){
 				$message='DB ERROR:<br />'.$q;
 			}
@@ -246,7 +246,7 @@ class user {
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["UserName"], "role"=>$row["role"], "BDate"=>$this->addSlash2BDate($row["BDate"])));
+					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$this->addSlash2BDate($row["BDate"])));
                     osBroadcast("user_login", array());
                     return 1;
                 } else {

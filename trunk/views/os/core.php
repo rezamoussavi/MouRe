@@ -46,10 +46,6 @@
 		query("INSERT INTO os_log(TimeStamp,Biz,NodeID,Message) VALUES('$t','$Biz','$NodeID','$Message')");
 	}
 
-	function _D($a){
-		echo "<hr />DEBUG: ".$a."<hr />";
-	}
-
 	function osBackLink($node,$curLink,$linkto){
 		$ar1=array();
 		$ar2=array();
@@ -87,10 +83,6 @@
 			$msg=substr($msg,0,strlen($msg)-1);
 		}
 		return $msg;
-	}
-
-	function osIsAdmin(){
-		return false;
 	}
 
 	function osBookUser($user){
@@ -233,6 +225,9 @@ MSGLOG;
 		if(isset($_GET['deleteto'])){
 			query("DELETE FROM os_log WHERE logID <= ".$_GET['deleteto']);
 		}
+		if(isset($_GET['deletefrom'])){
+			query("DELETE FROM os_log WHERE logID >= ".$_GET['deletefrom']);
+		}
 		query("SELECT * FROM os_log ORDER BY logID DESC");
 		$html="<html>";
 		$html.="<head><meta HTTP-EQUIV='refresh' CONTENT='";
@@ -264,9 +259,7 @@ HTMLSTYLE;
 		$html.="<td>Biz</td>";
 		$html.="<td>NodeID</td>";
 		$html.="<td>Message</td>";
-		$html.="<td></td>";
-		$html.="<td></td>";
-		$html.="</tr>";
+		$html.="<td></td><td></td><td></td></tr>";
 		$c=array("#FFFFFF","#FFCCFF","#99FF99","#CCFF33");
 		$s=count($c);
 		$i=0;
@@ -275,7 +268,7 @@ HTMLSTYLE;
 			if($t!=$row['TimeStamp']){
 				$t=$row['TimeStamp'];
 				//$i=($i==$s-1)?0:$i+1;
-				$html.="<tr bgcolor='#000000'><td colspan=7></td></tr>";
+				$html.="<tr bgcolor='#000000'><td colspan=8></td></tr>";
 			}
 			$bg=$c[$i];
 			$html.="<tr bgcolor='$bg'>";
@@ -285,7 +278,8 @@ HTMLSTYLE;
 			$html.="<td><font size=2>".$row['NodeID']."</font></td>";
 			$html.="<td><font size=2>".$row['Message']."</font></td>";
 			$html.="<td><a title='Delete this Row' href='?log&delete=".$row['logID']."'><img src='delete.jpg' /></a></td>";
-			$html.="<td><a title='Delete All rows from this to end' href='?log&deleteto=".$row['logID']."'><img src='delete.jpg' /></a></td>";
+			$html.="<td><a title='Delete All rows from this Down' href='?log&deleteto=".$row['logID']."'>&or;</td>";
+			$html.="<td><a title='Delete All rows from this Up' href='?log&deletefrom=".$row['logID']."'>&and;</a></td>";
 			$html.="</tr>";
 		}
 		$html.="</table></body></html>";
