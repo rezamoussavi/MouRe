@@ -33,28 +33,30 @@
 			$html=<PHTML>
 				{#var->message}
 				<div style="float:left;">
-					<form id="$formName" method="post">
+					<form id="$formName" method="post" style="margin:10px;background-color:#FFCCFF;float:left;">
 						<#msg->updateInfo>
 						Real Name: <input name="RealName" size=20><br>
-						Real Name: <input name="RealName" size=20><br>
+						Birth Date: <input name="BDate" size=20 ><br>
+						Address: <br><textarea name="Address" rows=4 cols=30></textarea><br>
 						Password: <input name="Password" type="password" size=20><br>
-						<input type="button" value="Apply" onclick='Javascript:sndmsg("$formName")'>
+						<div align=right><input type="button" value="Apply" onclick='Javascript:sndmsg("$formName")'></div>
 					</form>
-					<form id="$formPass" method="post">
+					<form id="$formPass" method="post" style="margin:10px;background-color:#CCFFFF;float:left;">
 						<#msg->changePassword>
 						New Password: <input name="NewPass1" size=20 type="password"><br>
 						Confirm : <input name="NewPass2" size=20 type="password"><br>
 						Old Password: <input name="Password" type="password" size=20><br>
-						<input type="button" value="Change Password" onclick='Javascript:sndmsg("$formPass")'>
+						<div align=right><input type="button" value="Change Password" onclick='Javascript:sndmsg("$formPass")'></div>
 					</form>
 				</div>
-				<div style="float:left;">
+				<div style="float:left;margin:10px;background-color:#FFFFCC;">
 					Balance: <br>
 					Paid: <br>
 					Earned:
 				</div>
 			</PHTML>
 		}
+		#var->message="";
 		return $html;
 	}
 
@@ -63,7 +65,13 @@
 	---------------------------------------------------------------*/
 
 	function onChangePassword($info){
-		
+		//check password match
+		if($info['NewPass1']!=$info['NewPass2']){
+			#var->message="<font color=red>Password and Confirm password dismatch! try again</font>";
+			return;
+		}
+		//applypass
+		//prepare error if any
 	}
 
 	function onUpdateInfo($info){
