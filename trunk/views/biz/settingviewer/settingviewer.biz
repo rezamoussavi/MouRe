@@ -7,8 +7,11 @@
 	settingviewer
 
 #frame
-
+	frmSetting()
 #phpfunction
 
-	function (){
+	function frmSetting(){
+		return <PHTML>
+			Setting
+		</PHTML>
 	}
