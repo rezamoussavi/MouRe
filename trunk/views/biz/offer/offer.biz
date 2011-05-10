@@ -14,15 +14,6 @@
 #biz
 	offer
 
-#var
-	offerUID=-1
-	available=false
-	minAOPV=0.0
-	APRatio=0
-	minLifeTime=0
-	minCancelTime=0
-	minNOV=0
-
 #start
 	init
 
@@ -40,6 +31,18 @@
 
 #phpfunction
 
+	function bookInfo($info){
+		query("UPDATE #db->info SET available=0 WHERE available=1");
+		query("INSERT INTO #db->info(available,minAOPV,APRatio,minLifeTime,minCancelTime,minNOV) VALUES(1,$info[minAOPV],$info[APRatio],$info[minLifeTime],$info[minCancelTime],$info[minNOV])");
+	}
+
+	function backInfo(){
+		query("SELECT * FROM #db->info WHERE available=1");
+		if($ret=fetch())
+			return $ret;
+		return array("minNOV"=>"","minAOPV"=>"APRatio",""=>"","minLifeTime"=>"","minCancelTime"=>"");
+	}
+
 	function init(){
 		query("SELECT * FROM #db->info WHERE available=1;");
 		$row=fetch();
@@ -52,25 +55,4 @@
 			#var->minCancelTime=$row['minCancelTime'];
 			#var->minNOV=$row['minNOV'];
 		}
-	}
-
-	function bookInfo($info){
-		if(isset($info['offerUID']))
-			#var->offerUID=$info['offerUID'];
-		if(isset($info['available']))
-			#var->available=$info['available'];
-		if(isset($info['minAOPV']))
-			#var->minAOPV=$info['minAOPV'];
-		if(isset($info['APRatio']))
-			#var->APRatio=$info['APRatio'];
-		if(isset($info['minLifeTime']))
-			#var->minLifeTime=$info['minLifeTime'];
-		if(isset($info['minCancelTime']))
-			#var->minCancelTime=$info['minCancelTime'];
-		if(isset($info['minNOV']))
-			#var->minNOV=$info['minNOV'];
-	}
-
-	function backInfo(){
-		return array('offerUID'=>#var->offerUID,'available'=>#var->available,'minAOPV'=>#var->minAOPV,'APRatio'=>#var->APRatio,'minLifeTime'=>#var->minLifeTime,	'minCancelTime'=>#var->minCancelTime,	'minNOV'=>#var->minNOV);
 	}

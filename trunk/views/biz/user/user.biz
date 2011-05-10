@@ -11,12 +11,31 @@
 	user:user
 
 #var
-	userUID,userName,email,loggedIn
+	userUID,userName,email,loggedIn,BDate,Address,role
 
 #db
 	info ('userUID' int(11) NOT NULL auto_increment; 'email' varchar(50) NOT NULL; 'userName' varchar(50) NOT NULL; 'BDate' varchar(10) NOT NULL; 'Address' varchar(255) NOT NULL; 'password' varchar(50) NOT NULL; 'verificationCode' varchar(50) NOT NULL; 'biznessUID' int(11) NOT NULL; 'role' varchar(50) NOT NULL COMMENT 'user / admin'; PRIMARY KEY  ('userUID'); UNIQUE KEY 'email' ('email'))
- 
+#db-comment
+	'userUID' int(11)
+	'email' varchar(50)
+	'userName' varchar(50)
+	'BDate' varchar(10)
+	'Address' varchar(255)
+	'password' varchar(50)
+	'verificationCode' varchar(50)
+	'biznessUID' int(11)
+	'role' varchar(50)
+
 #phpfunction
+
+	function bookInfo($info){
+		if(is_array($info)){
+			if(isset($info['email'])&&isset($info['RealName'])&&isset($info['BDate'])&&isset($info['Address'])&&isset($info['Password'])){
+				$hashPass = #fun->sha1Hash($info['email']),$info['Password']));
+				query("UPDATE #db->info email='$info[email]' , userName=$info[RealName] , BDate=$info[BDate] , Address=$info[Address]  WHERE password=$hashPass");
+			}
+		}
+	}
 
 	function bookUID($UID){
 	}

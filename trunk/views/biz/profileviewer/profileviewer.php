@@ -112,6 +112,7 @@ JSONDOCREADY;
 	-
 	------------------------------------------------------------*/
 	function frm(){
+		$user=osBackUser();
 		$formName=$this->_fullname."ApplyBtn";
 		$formPass=$this->_fullname."Pass";
 		if(!osUserLogedin()){
@@ -123,9 +124,9 @@ JSONDOCREADY;
 				<div style="float:left;">
 					<form id="$formName" method="post" style="margin:10px;background-color:#FFCCFF;float:left;">
 						<input type="hidden" name="_message" value="frame_updateInfo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-						Real Name: <input name="RealName" size=20><br>
-						Birth Date: <input name="BDate" size=20 ><br>
-						Address: <br><textarea name="Address" rows=4 cols=30></textarea><br>
+						Real Name: <input name="RealName" value="{$user['userName']}" size=20><br>
+						Birth Date: <input name="BDate" value="{$user['BDate']}" size=20 ><br>
+						Address: <br><textarea name="Address" rows=4 cols=30>{$user['Address']}</textarea><br>
 						Password: <input name="Password" type="password" size=20><br>
 						<div align=right><input type="button" value="Apply" onclick='Javascript:sndmsg("$formName")'></div>
 					</form>
@@ -162,6 +163,11 @@ PHTMLCODE;
 		//prepare error if any
 	}
 	function onUpdateInfo($info){
+		$curU=osBackUser();
+		$info['email']=$curU['email'];
+		$u=new user("");
+		$u->bookInfo($info);
+		$this->_bookframe("frm");
 	}
 
 }

@@ -25,6 +25,9 @@ class user {
 	var $userName;
 	var $email;
 	var $loggedIn;
+	var $BDate;
+	var $Address;
+	var $role;
 
 	//Nodes (bizvars)
 
@@ -55,6 +58,18 @@ class user {
 		if(!isset($_SESSION['osNodes'][$fullname]['loggedIn']))
 			$_SESSION['osNodes'][$fullname]['loggedIn']='';
 		$this->loggedIn=&$_SESSION['osNodes'][$fullname]['loggedIn'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['BDate']))
+			$_SESSION['osNodes'][$fullname]['BDate']='';
+		$this->BDate=&$_SESSION['osNodes'][$fullname]['BDate'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['Address']))
+			$_SESSION['osNodes'][$fullname]['Address']='';
+		$this->Address=&$_SESSION['osNodes'][$fullname]['Address'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['role']))
+			$_SESSION['osNodes'][$fullname]['role']='';
+		$this->role=&$_SESSION['osNodes'][$fullname]['role'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='user';

@@ -1,7 +1,7 @@
 <?PHP
 
 /*
-	Compiled by bizLang compiler version 3.2 [DB added] (March 26 2011) By Reza Moussavi
+	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
 	Date:	4/28/2011
@@ -25,13 +25,6 @@ class offer {
 	var $_tmpNode;
 
 	//Variables
-	var $offerUID;
-	var $available;
-	var $minAOPV;
-	var $APRatio;
-	var $minLifeTime;
-	var $minCancelTime;
-	var $minNOV;
 
 	//Nodes (bizvars)
 
@@ -46,34 +39,6 @@ class offer {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 		}
-
-		if(!isset($_SESSION['osNodes'][$fullname]['offerUID']))
-			$_SESSION['osNodes'][$fullname]['offerUID']=-1;
-		$this->offerUID=&$_SESSION['osNodes'][$fullname]['offerUID'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['available']))
-			$_SESSION['osNodes'][$fullname]['available']=false;
-		$this->available=&$_SESSION['osNodes'][$fullname]['available'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['minAOPV']))
-			$_SESSION['osNodes'][$fullname]['minAOPV']=0.0;
-		$this->minAOPV=&$_SESSION['osNodes'][$fullname]['minAOPV'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['APRatio']))
-			$_SESSION['osNodes'][$fullname]['APRatio']=0;
-		$this->APRatio=&$_SESSION['osNodes'][$fullname]['APRatio'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['minLifeTime']))
-			$_SESSION['osNodes'][$fullname]['minLifeTime']=0;
-		$this->minLifeTime=&$_SESSION['osNodes'][$fullname]['minLifeTime'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['minCancelTime']))
-			$_SESSION['osNodes'][$fullname]['minCancelTime']=0;
-		$this->minCancelTime=&$_SESSION['osNodes'][$fullname]['minCancelTime'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['minNOV']))
-			$_SESSION['osNodes'][$fullname]['minNOV']=0;
-		$this->minNOV=&$_SESSION['osNodes'][$fullname]['minNOV'];
 
 		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
 			$this->init(); //Customized Initializing
@@ -113,6 +78,16 @@ class offer {
 //########################################
 
 
+	function bookInfo($info){
+		query("UPDATE offer_info SET available=0 WHERE available=1");
+		query("INSERT INTO offer_info(available,minAOPV,APRatio,minLifeTime,minCancelTime,minNOV) VALUES(1,$info[minAOPV],$info[APRatio],$info[minLifeTime],$info[minCancelTime],$info[minNOV])");
+	}
+	function backInfo(){
+		query("SELECT * FROM offer_info WHERE available=1");
+		if($ret=fetch())
+			return $ret;
+		return array("minNOV"=>"","minAOPV"=>"APRatio",""=>"","minLifeTime"=>"","minCancelTime"=>"");
+	}
 	function init(){
 		query("SELECT * FROM offer_info WHERE available=1;");
 		$row=fetch();
@@ -125,25 +100,6 @@ class offer {
 			$this->minCancelTime=$row['minCancelTime'];
 			$this->minNOV=$row['minNOV'];
 		}
-	}
-	function bookInfo($info){
-		if(isset($info['offerUID']))
-			$this->offerUID=$info['offerUID'];
-		if(isset($info['available']))
-			$this->available=$info['available'];
-		if(isset($info['minAOPV']))
-			$this->minAOPV=$info['minAOPV'];
-		if(isset($info['APRatio']))
-			$this->APRatio=$info['APRatio'];
-		if(isset($info['minLifeTime']))
-			$this->minLifeTime=$info['minLifeTime'];
-		if(isset($info['minCancelTime']))
-			$this->minCancelTime=$info['minCancelTime'];
-		if(isset($info['minNOV']))
-			$this->minNOV=$info['minNOV'];
-	}
-	function backInfo(){
-		return array('offerUID'=>$this->offerUID,'available'=>$this->available,'minAOPV'=>$this->minAOPV,'APRatio'=>$this->APRatio,'minLifeTime'=>$this->minLifeTime,	'minCancelTime'=>$this->minCancelTime,	'minNOV'=>$this->minNOV);
 	}
 
 }
