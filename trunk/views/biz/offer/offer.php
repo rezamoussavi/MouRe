@@ -25,6 +25,12 @@ class offer {
 	var $_tmpNode;
 
 	//Variables
+	var $available;
+	var $minAOPV;
+	var $APRatio;
+	var $minLifeTime;
+	var $minCancelTime;
+	var $minNOV;
 
 	//Nodes (bizvars)
 
@@ -39,6 +45,30 @@ class offer {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 		}
+
+		if(!isset($_SESSION['osNodes'][$fullname]['available']))
+			$_SESSION['osNodes'][$fullname]['available']='';
+		$this->available=&$_SESSION['osNodes'][$fullname]['available'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['minAOPV']))
+			$_SESSION['osNodes'][$fullname]['minAOPV']='';
+		$this->minAOPV=&$_SESSION['osNodes'][$fullname]['minAOPV'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['APRatio']))
+			$_SESSION['osNodes'][$fullname]['APRatio']='';
+		$this->APRatio=&$_SESSION['osNodes'][$fullname]['APRatio'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['minLifeTime']))
+			$_SESSION['osNodes'][$fullname]['minLifeTime']='';
+		$this->minLifeTime=&$_SESSION['osNodes'][$fullname]['minLifeTime'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['minCancelTime']))
+			$_SESSION['osNodes'][$fullname]['minCancelTime']='';
+		$this->minCancelTime=&$_SESSION['osNodes'][$fullname]['minCancelTime'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['minNOV']))
+			$_SESSION['osNodes'][$fullname]['minNOV']='';
+		$this->minNOV=&$_SESSION['osNodes'][$fullname]['minNOV'];
 
 		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
 			$this->init(); //Customized Initializing
@@ -81,6 +111,12 @@ class offer {
 	function bookInfo($info){
 		query("UPDATE offer_info SET available=0 WHERE available=1");
 		query("INSERT INTO offer_info(available,minAOPV,APRatio,minLifeTime,minCancelTime,minNOV) VALUES(1,$info[minAOPV],$info[APRatio],$info[minLifeTime],$info[minCancelTime],$info[minNOV])");
+		$this->available=$info['available'];
+		$this->minAOPV=$info['minAOPV'];
+		$this->APRatio=$info['APRatio'];
+		$this->minLifeTime=$info['minLifeTime'];
+		$this->minCancelTime=$info['minCancelTime'];
+		$this->minNOV=$info['minNOV'];
 	}
 	function backInfo(){
 		query("SELECT * FROM offer_info WHERE available=1");

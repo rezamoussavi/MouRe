@@ -107,6 +107,14 @@ class user {
 //########################################
 
 
+	function bookInfo($info){
+		if(is_array($info)){
+			if(isset($info['email'])&&isset($info['RealName'])&&isset($info['BDate'])&&isset($info['Address'])&&isset($info['Password'])){
+				$hashPass = $this->sha1Hash($info['email'],$info['Password']);
+				query("UPDATE user_info email='$info[email]' , userName=$info[RealName] , BDate=$info[BDate] , Address=$info[Address]  WHERE password=$hashPass");
+			}
+		}
+	}
 	function bookUID($UID){
 	}
 	function bookName($name){
