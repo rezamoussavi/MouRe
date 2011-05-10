@@ -1,18 +1,100 @@
 #comments
-	Author:	Reza Moussavi
-	Date:	4/21/2011
+	Author:	Max Mirkia
+	Date:	5/6/2011
 	Ver:		0.1
 
 #biz
 	adminviewer
 
+#node
+	settingviewer setting,userlistviewer users,linklistviewer links
+
+#message
+	frame->settingListViewer=onSettingListViewr
+	frame->userListViewer=onUserListViewer
+	frame->linkListViewer=onLinkListViewer
+
 #frame
-	frm
+	frmButtons(),
+	frmSetting(),
+	frmUsers(),
+	frmLinks()
 
 #phpfunction
 
-	function frm(){
-		return <PHTML>
-			<center>Admin Control Panel Viewer</center>
-		</PHTML>
+	////////////Message/////////////////
+	
+	function onLinkListViewer($info){
+		_bookframe(#frm->frmLinks);
 	}
+	
+	
+	function onSettingListViewr($info){
+		_bookframe(#frm->frmSetting);
+	}
+	
+	function onUserListViewer($info){
+		_bookframe(#frm->frmUsers);
+	}
+	
+
+	////////////View/////////////////
+	
+	function frmLinks(){
+		$button = #fun->frmButtons();
+		$links = #node->links->_backframe();
+		return <PHTML>
+			$button <br> $links
+		
+		</PHTML>
+	
+	}
+	
+	function frmSetting(){
+		$button = #fun->frmButtons();
+		$setting = #node->setting->_backframe();
+		return <PHTML>
+			$button <br> $setting
+		
+		</PHTML>
+	
+	}
+	
+	function frmUsers(){
+		$button = #fun->frmButtons();
+		$users = #node->users->_backframe();
+		return <PHTML>
+			$button <br> $users
+		
+		</PHTML>
+	
+	}
+	
+	function frmButtons(){
+		$frmSetting=#nodeID."setting";
+		$frmLinks=#nodeID."links";
+		$frmUsers=#nodeID."users";		
+		return <PHTML>
+			<div style="width:100%; float:left; text-align:center;">
+				<form name="$frmSetting" method="post" style="display:inline;">
+					<#msg->settingListViewer>
+					<input value ="Setting" type = "button" onclick = 'JavaScript:sndmsg("$frmSetting")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				</form>				
+				<form name="$frmUsers" method="post" style="display:inline;">
+					<#msg->userListViewer>
+					<input value ="Users" type = "button" onclick = 'JavaScript:sndmsg("$frmUsers")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				</form>
+				<form name="$frmLinks" method="post" style="display:inline;">
+					<#msg->linkListViewer>
+					<input value ="Links" type = "button" onclick = 'JavaScript:sndmsg("$frmLinks")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				</form>
+			</div><hr>
+		</PHTML>
+	
+	}
+
+
+
+
+
+

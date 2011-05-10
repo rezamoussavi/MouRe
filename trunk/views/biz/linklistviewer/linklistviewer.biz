@@ -7,8 +7,11 @@
 	linklistviewer
 
 #frame
-
+	frmList()
 #phpfunction
 
-	function (){
+	function frmList(){
+		return <PHTML>
+			Links
+		</PHTML>
 	}

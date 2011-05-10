@@ -7,8 +7,11 @@
 	userlistviewer
 
 #frame
-
+	frmUsers
 #phpfunction
 
-	function (){
+	function frmUsers (){
+		return <PHTML>
+			Users
+		</PHTML>
 	}
