@@ -24,6 +24,10 @@
 
 #phpfunction
 
+	/*-------------------------------------------------
+	-		FRAMES
+	-------------------------------------------------*/
+
 	function frm(){
 		if(!osUserLogedin()){
 			return <PHTML>
@@ -32,16 +36,15 @@
 		}
 		//else
 		$formname=#nodeID;
-		$minAOPV=#node->offer->minAOPV;
-		$minNOV=#node->offer->minNOV;
+		$of=#node->offer->backInfo();
 		$html=<PHTML>
 			<center><font color=red>{#var->errMessage}</font><hr></center>
 			<form name="$formname" method="post">
 				<#msg->addVideo>
 				Title: <input name="title" size=50><br>
 				Youtube link: <input name="link" size=50><br>
-				Your Offer on Price/View: <input name="AOPV" size=5> (min: $minAOPV)<br>
-				Number of Viewes: <input name="NOV" size=5> (min: $minNOV)<br>
+				Your Offer on Price/View: <input name="AOPV" size=5> (min: {$of['minAOPV']})<br>
+				Number of Viewes: <input name="NOV" size=5> (min: {$of['minNOV']})<br>
 				Commision: (auto calculate)
 				<hr>
 				Total: (auto calculate) <input type="button" value="Pay"><br>
@@ -61,16 +64,21 @@
 		</PHTML>
 	}
 
+	/*-------------------------------------------------
+	-		MESSAGES
+	-------------------------------------------------*/
+
 	function onAddVideo($info){
+		$of=#node->offer->backInfo();
 		$e="";
 		if(strlen($info['link'])<5){
 			$e.="Enter a valid link<br>";
 		}
-		if($info['AOPV']<#node->offer->minAOPV){
-			$e.="Minimum Offer should be ".#node->offer->minAOPV."<br>";
+		if($info['AOPV']<$of['minAOPV']){
+			$e.="Minimum Offer should be ".$of['minAOPV']."<br>";
 		}
-		if($info['NOV']<#node->offer->minNOV){
-			$e.="Minimum Number of Views should be ".#node->offer->minNOV."<br>";
+		if($info['NOV']<$of['minNOV']){
+			$e.="Minimum Number of Views should be ".$of['minNOV']."<br>";
 		}
 		if(strlen($e)<2){// NO ERROR
 			$al=new adlink("");
@@ -85,9 +93,9 @@
 			$data['maxViews']=$info['NOV'];
 			$data['AOPV']=$info['AOPV'];
 			$data['paid']=0;
-			$data['APRate']=#node->offer->APRatio;
-			$data['minLifeTime']=#node->offer->minLifeTime;
-			$data['minCancelTime']=#node->offer->minCancelTime;
+			$data['APRate']=$of['APRatio'];
+			$data['minLifeTime']=$of['minLifeTime'];
+			$data['minCancelTime']=$of['minCancelTime'];
 			$al->bookLink($data);
 			$emb=$al->backYEmbed($data['link']);
 			$e="Added Successfully<br>$emb";

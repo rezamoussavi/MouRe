@@ -171,7 +171,7 @@ PHTMLCODE;
 			</div>
 			<div style="float:left;height:120px;width:400px;align:right;">
 				Total Paid: {$this->data['paid']} - Pay Per View : {$AOPV}
-				<br>Viewd: $VN
+				<br>Viewed: $VN
 				<br>Remaining: $RM
 				<br>Total: $TV
 				<br>StartDate:{$this->data['startDate']} - Last Date : {$this->data['lastDate']}
@@ -184,7 +184,6 @@ PHTMLCODE;
 			</div><br>
 		</div>
 		<br>
-			$scv
 		
 PHTMLCODE;
 

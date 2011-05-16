@@ -115,6 +115,9 @@ JSONDOCREADY;
 //########################################
 
 
+	/*-------------------------------------------------
+	-		FRAMES
+	-------------------------------------------------*/
 	function frm(){
 		if(!osUserLogedin()){
 			return <<<PHTMLCODE
@@ -126,8 +129,7 @@ PHTMLCODE;
 		}
 		//else
 		$formname=$this->_fullname;
-		$minAOPV=$this->offer->minAOPV;
-		$minNOV=$this->offer->minNOV;
+		$of=$this->offer->backInfo();
 		$html=<<<PHTMLCODE
 
 			<center><font color=red>{$this->errMessage}</font><hr></center>
@@ -135,8 +137,8 @@ PHTMLCODE;
 				<input type="hidden" name="_message" value="frame_addVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				Title: <input name="title" size=50><br>
 				Youtube link: <input name="link" size=50><br>
-				Your Offer on Price/View: <input name="AOPV" size=5> (min: $minAOPV)<br>
-				Number of Viewes: <input name="NOV" size=5> (min: $minNOV)<br>
+				Your Offer on Price/View: <input name="AOPV" size=5> (min: {$of['minAOPV']})<br>
+				Number of Viewes: <input name="NOV" size=5> (min: {$of['minNOV']})<br>
 				Commision: (auto calculate)
 				<hr>
 				Total: (auto calculate) <input type="button" value="Pay"><br>
@@ -159,16 +161,20 @@ PHTMLCODE;
 PHTMLCODE;
 
 	}
+	/*-------------------------------------------------
+	-		MESSAGES
+	-------------------------------------------------*/
 	function onAddVideo($info){
+		$of=$this->offer->backInfo();
 		$e="";
 		if(strlen($info['link'])<5){
 			$e.="Enter a valid link<br>";
 		}
-		if($info['AOPV']<$this->offer->minAOPV){
-			$e.="Minimum Offer should be ".$this->offer->minAOPV."<br>";
+		if($info['AOPV']<$of['minAOPV']){
+			$e.="Minimum Offer should be ".$of['minAOPV']."<br>";
 		}
-		if($info['NOV']<$this->offer->minNOV){
-			$e.="Minimum Number of Views should be ".$this->offer->minNOV."<br>";
+		if($info['NOV']<$of['minNOV']){
+			$e.="Minimum Number of Views should be ".$of['minNOV']."<br>";
 		}
 		if(strlen($e)<2){// NO ERROR
 			$al=new adlink("");
@@ -183,9 +189,9 @@ PHTMLCODE;
 			$data['maxViews']=$info['NOV'];
 			$data['AOPV']=$info['AOPV'];
 			$data['paid']=0;
-			$data['APRate']=$this->offer->APRatio;
-			$data['minLifeTime']=$this->offer->minLifeTime;
-			$data['minCancelTime']=$this->offer->minCancelTime;
+			$data['APRate']=$of['APRatio'];
+			$data['minLifeTime']=$of['minLifeTime'];
+			$data['minCancelTime']=$of['minCancelTime'];
 			$al->bookLink($data);
 			$emb=$al->backYEmbed($data['link']);
 			$e="Added Successfully<br>$emb";
