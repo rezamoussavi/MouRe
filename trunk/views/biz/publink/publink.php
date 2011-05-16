@@ -4,7 +4,7 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
-	Date:	4/21/2011
+	Date:	5/12/2011
 	Ver:		0.1
 
 */
@@ -68,7 +68,7 @@ class publink {
 //########################################
 
 
-	function (){
+	function addLink(){
 	}
 
 }

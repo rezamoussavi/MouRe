@@ -107,23 +107,31 @@ class user {
 //########################################
 
 
+	function changePass($old,$new){
+		$u=osBackUser();
+		$hashPass = $this->sha1Hash($u['email'],$old);
+		$newPass = $this->sha1Hash($u['email'],$new);
+		query("SELECT * FROM user_info WHERE password='$hashPass'");
+		if(fetch()){
+			query("UPDATE user_info SET password='$newPass' WHERE password='$hashPass'");
+			return true;
+		}else
+			return false;
+	}
 	function bookInfo($info){
 		if(is_array($info)){
 			if(isset($info['email'])&&isset($info['RealName'])&&isset($info['BDate'])&&isset($info['Address'])&&isset($info['Password'])){
 				$hashPass = $this->sha1Hash($info['email'],$info['Password']);
-				query("UPDATE user_info email='$info[email]' , userName=$info[RealName] , BDate=$info[BDate] , Address=$info[Address]  WHERE password=$hashPass");
+				$q="UPDATE user_info SET email='$info[email]' , userName='$info[RealName]' , BDate='$info[BDate]' , Address='$info[Address]'  WHERE password='$hashPass'";
+				query($q);
+				$u=osBackUser();
+				$u['email']=$info['email'];
+				$u['userName']=$info['RealName'];
+				$u['BDate']=$info['BDate'];
+				$u['Address']=$info['Address'];
+				osBookUser($u);
 			}
 		}
-	}
-	function bookUID($UID){
-	}
-	function bookName($name){
-	}
-	function bookAddress($ad){
-	}
-	function bookBDate($bd){
-	}
-	function bookPassword($pass){
 	}
 	// $info = array("email"=>xxx,  "Pass"=>xxx,  "NewPass"=>xxx,  "Address"=>xxx,  "BDate"=>xxx,  "Name"=>xxx)
 	function updateUserInfo($info){
@@ -269,7 +277,7 @@ class user {
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$this->addSlash2BDate($row["BDate"])));
+					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
                     osBroadcast("user_login", array());
                     return 1;
                 } else {

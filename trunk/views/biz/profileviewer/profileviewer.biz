@@ -10,7 +10,7 @@
 	frm
 
 #node
-	user
+	user, adlink
 
 #message
 	frame->updateInfo=onUpdateInfo
@@ -31,6 +31,9 @@
 		if(!osUserLogedin()){
 			$html="Please Login First";
 		}else{
+			$al=new adlink("");
+			if(!$paid=$al->backTotalPaid())
+				$paid='0';
 			$html=<PHTML>
 				{#var->message}
 				<div style="float:left;">
@@ -52,7 +55,7 @@
 				</div>
 				<div style="float:left;margin:10px;background-color:#FFFFCC;">
 					Balance: <br>
-					Paid: <br>
+					Paid: $paid<br>
 					Earned:
 				</div>
 			</PHTML>
@@ -72,7 +75,8 @@
 			return;
 		}
 		//applypass
-		//prepare error if any
+		$u=new user("");
+		#var->message=($u->changePass($info['Password'],$info['NewPass1']))?"<b><center><font color=green>Password has been Changed!</font></center></b>":"<b><center><font color=red>ERROR! Password NOT Changed!</font></center></b>";
 	}
 
 	function onUpdateInfo($info){
@@ -80,5 +84,6 @@
 		$info['email']=$curU['email'];
 		$u=new user("");
 		$u->bookInfo($info);
+		#var->message="<center><b><font color=green>Update Successfully!</font></b></center>";
 		_bookframe(#frm->frm);
 	}

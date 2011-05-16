@@ -38,6 +38,7 @@
 			<center><font color=red>{#var->errMessage}</font><hr></center>
 			<form name="$formname" method="post">
 				<#msg->addVideo>
+				Title: <input name="title" size=50><br>
 				Youtube link: <input name="link" size=50><br>
 				Your Offer on Price/View: <input name="AOPV" size=5> (min: $minAOPV)<br>
 				Number of Viewes: <input name="NOV" size=5> (min: $minNOV)<br>
@@ -80,6 +81,7 @@
 			$data['lastDate']="";
 			$data['startDate']="";
 			$data['link']=$info['link'];
+			$data['title']=$info['title'];
 			$data['maxViews']=$info['NOV'];
 			$data['AOPV']=$info['AOPV'];
 			$data['paid']=0;

@@ -311,8 +311,9 @@ PHTML;
 		//important to add the div thingy here so that the ajax knows what to update :)
 		$formName = #nodeID."logout";
 		$myAccFormName = #nodeID."myacc";
+		$u=osBackUser();
 		$html = <PHTML>
-						<h2>Welcome sir!</h2>
+						<h2>Welcome {$u['userName']}!</h2>
 						<form name="$formName" method="post" style="display:inline;">
 							<#msg->logoutBtn>
 							<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formName")'  class="press" style="margin-top: 0px;">

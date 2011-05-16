@@ -91,6 +91,9 @@ class videobar {
 			case 'frmToPublish':
 				$_style='';
 				break;
+			case 'frmMyAd':
+				$_style='';
+				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
 		$html.=<<<JAVASCRIPT
@@ -125,7 +128,7 @@ JSONDOCREADY;
 		$frmName=$this->_fullname.$this->data['adUID'];
 		$scv=($this->showScript)?$this->scv->_backframe():" ";
 		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
-		$EPV=$this->data['AOPV']/$this->data['APRate'];
+		$EPV=$this->data['AOPV']*$this->data['APRate'];
 		return <<<PHTMLCODE
 
 		<div style="width:650px;height:120;">
@@ -152,6 +155,40 @@ JSONDOCREADY;
 PHTMLCODE;
 
 	}
+	function frmMyAd(){
+		$frmName=$this->_fullname.$this->data['adUID'];
+		$AOPV=$this->data['AOPV'];
+		$VN=$this->data['viewed'];
+		$TV=$this->data['maxViews'];
+		$RM=$TV-$VN;
+		return <<<PHTMLCODE
+
+		<div style="width:650px;height:120;">
+			<div style="float:left;height:120px;width:150px;text-align:left;">
+				<a href="{$this->data['link']}" target="_blank">
+					<img src="{$this->data['img']}" />
+				</a>
+			</div>
+			<div style="float:left;height:120px;width:400px;align:right;">
+				Total Paid: {$this->data['paid']} - Pay Per View : {$AOPV}
+				<br>Viewd: $VN
+				<br>Remaining: $RM
+				<br>Total: $TV
+				<br>StartDate:{$this->data['startDate']} - Last Date : {$this->data['lastDate']}
+			</div>
+			<div style="float:left;height:120px;width:100px;text-align:right;">
+				<form id="$frmName" method="post" style="display:inline;">
+					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
+					<input type="hidden" name="_message" value="frame_stop" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				</form>
+			</div><br>
+		</div>
+		<br>
+			$scv
+		
+PHTMLCODE;
+
+	}
 	/******************************************
 	*		Message Handlers
 	******************************************/
@@ -166,6 +203,9 @@ PHTMLCODE;
 		switch($mode){
 			case "topublish":
 				$this->_bookframe("frmToPublish");
+				break;
+			case "myad":
+				$this->_bookframe("frmMyAd");
 				break;
 			default:
 				$this->_bookframe("frm");

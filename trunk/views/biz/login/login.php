@@ -389,9 +389,10 @@ PHTML;
 		//important to add the div thingy here so that the ajax knows what to update :)
 		$formName = $this->_fullname."logout";
 		$myAccFormName = $this->_fullname."myacc";
+		$u=osBackUser();
 		$html = <<<PHTMLCODE
 
-						<h2>Welcome sir!</h2>
+						<h2>Welcome {$u['userName']}!</h2>
 						<form name="$formName" method="post" style="display:inline;">
 							<input type="hidden" name="_message" value="frame_logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 							<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formName")'  class="press" style="margin-top: 0px;">

@@ -133,6 +133,7 @@ PHTMLCODE;
 			<center><font color=red>{$this->errMessage}</font><hr></center>
 			<form name="$formname" method="post">
 				<input type="hidden" name="_message" value="frame_addVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				Title: <input name="title" size=50><br>
 				Youtube link: <input name="link" size=50><br>
 				Your Offer on Price/View: <input name="AOPV" size=5> (min: $minAOPV)<br>
 				Number of Viewes: <input name="NOV" size=5> (min: $minNOV)<br>
@@ -178,6 +179,7 @@ PHTMLCODE;
 			$data['lastDate']="";
 			$data['startDate']="";
 			$data['link']=$info['link'];
+			$data['title']=$info['title'];
 			$data['maxViews']=$info['NOV'];
 			$data['AOPV']=$info['AOPV'];
 			$data['paid']=0;

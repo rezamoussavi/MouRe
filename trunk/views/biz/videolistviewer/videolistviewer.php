@@ -131,7 +131,6 @@ JSONDOCREADY;
 		}
 		return <<<PHTMLCODE
 
-			<center>Choose a video to Publish</center>
 			<br>$VBars
 		
 PHTMLCODE;

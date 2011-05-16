@@ -1,14 +1,34 @@
 #comments
 	Author:	Reza Moussavi
-	Date:	4/21/2011
+	Date:	5/12/2011
 	Ver:		0.1
 
 #biz
 	publink
 
-#frame
+#db
+	info('pubUID' INT(11) NOT NULL AUTO_INCREMENT; 'adLinkUID' INT(11) NOT NULL; 'publisher' INT(11) NOT NULL; 'totalView' INT(11) NOT NULL; 'AOPV' FLOAT NOT NULL; 'PPV' FLOAT NOT NULL; PRIMARY KEY ('pubUID'))
+	stat('pubUID' INT(11) NOT NULL; 'timeStamp' VARCHAR(14) NOT NULL; 'IP' VARCHAR(15) NOT NULL; 'countryCode' VARCHAR(5) NOT NULL; 'countryName' VARCHAR(255) NOT NULL; INDEX ('pubUID'))
+
+#db-comments
+
+	info:
+		'pubUID' INT
+		'adLinkUID' INT
+		'publisher' INT
+		'totalView' INT
+		'AOPV' FLOAT 
+		'PPV' FLOAT
+
+	stat:
+		'pubUID' INT
+		'timeStamp' VARCHAR(14)
+		'IP' VARCHAR(15)
+		'countryCode' VARCHAR(5)
+		'countryName' VARCHAR(255)
 
 #phpfunction
 
-	function (){
+	function addLink(){
 	}
+

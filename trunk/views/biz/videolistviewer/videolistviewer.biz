@@ -38,7 +38,6 @@
 			$VBars.=$vb->_backframe()."<hr>";
 		}
 		return <PHTML>
-			<center>Choose a video to Publish</center>
 			<br>$VBars
 		</PHTML>
 	}

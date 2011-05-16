@@ -72,11 +72,21 @@ class adlink {
 //########################################
 
 
+	function backTotalPaid(){
+		$paid=0.0;
+		$user=osBackUser();
+		$u=$user['UID'];
+		query("SELECT SUM(paid) as totalPaid FROM adlink_info WHERE advertisor=$u");
+		if($row=fetch()){
+			$paid=$row['totalPaid'];
+		}
+		return $paid;
+	}
 	function bookLink($info){
 		$img=$this->backYImg($info['link']);
 		$embed=$this->backYEmbed($info['link']);
-		$q="INSERT INTO adlink_info (advertisor,running,lastDate,startDate,link,img,embed,maxViews,AOPV,paid,APRate,minLifeTime,minCancelTime)";
-		$q.=" VALUES({$info['advertisor']},{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
+		$q="INSERT INTO adlink_info (advertisor,title,running,lastDate,startDate,link,img,embed,maxViews,AOPV,paid,APRate,minLifeTime,minCancelTime)";
+		$q.=" VALUES({$info['advertisor']},'{$info['title']}',{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
 		query($q);
 	}
 	/************************************************
@@ -87,6 +97,11 @@ class adlink {
 		switch($mode){
 			case "topublish":
 				query("SELECT * FROM adlink_info WHERE running=1");
+				break;
+			case "myad":
+				$u=osBackUser();
+				$q="SELECT * FROM adlink_info WHERE advertisor=".$u['UID'];
+				query($q);
 				break;
 		}
 		while($row=fetch())	{$vl[]=$row;}

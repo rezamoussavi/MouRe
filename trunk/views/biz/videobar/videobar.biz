@@ -7,7 +7,9 @@
 	videobar
 
 #frame
-	frm,frmToPublish
+	frm
+	frmToPublish
+	frmMyAd
 
 #node
 	scriptviewer scv
@@ -32,7 +34,7 @@
 		$frmName=#nodeID.#var->data['adUID'];
 		$scv=(#var->showScript)?#node->scv->_backframe():" ";
 		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
-		$EPV=#var->data['AOPV']/#var->data['APRate'];
+		$EPV=#var->data['AOPV']*#var->data['APRate'];
 		return <PHTML>
 		<div style="width:650px;height:120;">
 			<div style="float:left;height:120px;width:150px;text-align:left;">
@@ -49,6 +51,38 @@
 				<form id="$frmName" method="post" style="display:inline;">
 					<input type="button" value="$btnCaption" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
 					<#msg->getLink>
+				</form>
+			</div><br>
+		</div>
+		<br>
+			$scv
+		</PHTML>
+	}
+
+	function frmMyAd(){
+		$frmName=#nodeID.#var->data['adUID'];
+		$AOPV=#var->data['AOPV'];
+		$VN=#var->data['viewed'];
+		$TV=#var->data['maxViews'];
+		$RM=$TV-$VN;
+		return <PHTML>
+		<div style="width:650px;height:120;">
+			<div style="float:left;height:120px;width:150px;text-align:left;">
+				<a href="{#var->data['link']}" target="_blank">
+					<img src="{#var->data['img']}" />
+				</a>
+			</div>
+			<div style="float:left;height:120px;width:400px;align:right;">
+				Total Paid: {#var->data['paid']} - Pay Per View : {$AOPV}
+				<br>Viewed: $VN
+				<br>Remaining: $RM
+				<br>Total: $TV
+				<br>StartDate:{#var->data['startDate']} - Last Date : {#var->data['lastDate']}
+			</div>
+			<div style="float:left;height:120px;width:100px;text-align:right;">
+				<form id="$frmName" method="post" style="display:inline;">
+					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
+					<#msg->stop>
 				</form>
 			</div><br>
 		</div>
@@ -74,6 +108,9 @@
 		switch($mode){
 			case "topublish":
 				_bookframe(#frm->frmToPublish);
+				break;
+			case "myad":
+				_bookframe(#frm->frmMyAd);
 				break;
 			default:
 				_bookframe(#frm->frm);

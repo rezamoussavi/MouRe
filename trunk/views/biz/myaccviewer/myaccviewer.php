@@ -133,6 +133,7 @@ JSONDOCREADY;
 		$this->_bookframe("frmPubLinks");
 	}
 	function onAdLinkBtn($info){
+		$this->adLinks->bookMode("myad");
 		$this->_bookframe("frmAdLinks");
 	}
 	/*-----------------------------------------------------

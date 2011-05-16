@@ -28,28 +28,32 @@
 
 #phpfunction
 
+	function changePass($old,$new){
+		$u=osBackUser();
+		$hashPass = #fun->sha1Hash($u['email'],$old);
+		$newPass = #fun->sha1Hash($u['email'],$new);
+		query("SELECT * FROM #db->info WHERE password='$hashPass'");
+		if(fetch()){
+			query("UPDATE #db->info SET password='$newPass' WHERE password='$hashPass'");
+			return true;
+		}else
+			return false;
+	}
+
 	function bookInfo($info){
 		if(is_array($info)){
 			if(isset($info['email'])&&isset($info['RealName'])&&isset($info['BDate'])&&isset($info['Address'])&&isset($info['Password'])){
 				$hashPass = #fun->sha1Hash($info['email'],$info['Password']);
-				query("UPDATE #db->info email='$info[email]' , userName=$info[RealName] , BDate=$info[BDate] , Address=$info[Address]  WHERE password=$hashPass");
+				$q="UPDATE #db->info SET email='$info[email]' , userName='$info[RealName]' , BDate='$info[BDate]' , Address='$info[Address]'  WHERE password='$hashPass'";
+				query($q);
+				$u=osBackUser();
+				$u['email']=$info['email'];
+				$u['userName']=$info['RealName'];
+				$u['BDate']=$info['BDate'];
+				$u['Address']=$info['Address'];
+				osBookUser($u);
 			}
 		}
-	}
-
-	function bookUID($UID){
-	}
-
-	function bookName($name){
-	}
-
-	function bookAddress($ad){
-	}
-
-	function bookBDate($bd){
-	}
-
-	function bookPassword($pass){
 	}
 
 	// $info = array("email"=>xxx,  "Pass"=>xxx,  "NewPass"=>xxx,  "Address"=>xxx,  "BDate"=>xxx,  "Name"=>xxx)
@@ -215,7 +219,7 @@
                     #var->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => #var->email, "UID" => #var->userUID, "Address"=>$row["Address"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>#fun->addSlash2BDate($row["BDate"])));
+					osBookUser(array("email" => #var->email, "UID" => #var->userUID, "Address"=>$row["Address"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
                     osBroadcast(#msg->login, array());
                     return 1;
                 } else {

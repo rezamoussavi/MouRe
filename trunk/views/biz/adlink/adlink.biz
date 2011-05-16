@@ -11,9 +11,11 @@
 	adlink
 
 #db
-	info ('adUID' INT(11) NOT NULL AUTO_INCREMENT; 'advertisor' INT(11) NOT NULL; 'running' TINYINT(4) NOT NULL; 'lastDate' VARCHAR(10) NULL; 'startDate' VARCHAR(10) NOT NULL; 'link' VARCHAR(255) NOT NULL;'img' VARCHAR(255) NOT NULL; 'embed' VARCHAR(255) NOT NULL; 'maxViews' INT(11) NOT NULL; 'viewed' INT(11) NOT NULL; 'AOPV' FLOAT NOT NULL; 'paid' FLOAT NOT NULL; 'APRate' FLOAT NOT NULL; 'minLifeTime' INT(11) NOT NULL; 'minCancelTime' INT(11) NOT NULL; PRIMARY KEY ('adUID');UNIQUE ('adUID'))
+	info ('adUID' INT(11) NOT NULL AUTO_INCREMENT; 'title' VARCHAR(255) NULL; 'advertisor' INT(11) NOT NULL; 'running' TINYINT(4) NOT NULL; 'lastDate' VARCHAR(10) NULL; 'startDate' VARCHAR(10) NOT NULL; 'link' VARCHAR(255) NOT NULL;'img' VARCHAR(255) NOT NULL; 'embed' VARCHAR(255) NOT NULL; 'maxViews' INT(11) NOT NULL; 'viewed' INT(11) NOT NULL; 'AOPV' FLOAT NOT NULL; 'paid' FLOAT NOT NULL; 'APRate' FLOAT NOT NULL; 'minLifeTime' INT(11) NOT NULL; 'minCancelTime' INT(11) NOT NULL; PRIMARY KEY ('adUID'))
 #db-comment
+	adUID INT
 	advertisor INT as 'userUID'
+	title VARCHAR(255)
 	running TINYINT 
 	lastDate VARCHAR(8)
 	startDate VARCHAR(8)
@@ -21,7 +23,7 @@
 	img VARCHAR(255)
 	embed VARCHAR(255)
 	maxViews INT
-	viewd INT
+	viewed INT
 	AOPV FLOAT
 	paid INT
 	APRate FLOAT
@@ -30,11 +32,22 @@
 
 #phpfunction
 
+	function backTotalPaid(){
+		$paid=0.0;
+		$user=osBackUser();
+		$u=$user['UID'];
+		query("SELECT SUM(paid) as totalPaid FROM #db->info WHERE advertisor=$u");
+		if($row=fetch()){
+			$paid=$row['totalPaid'];
+		}
+		return $paid;
+	}
+
 	function bookLink($info){
 		$img=#fun->backYImg($info['link']);
 		$embed=#fun->backYEmbed($info['link']);
-		$q="INSERT INTO #db->info (advertisor,running,lastDate,startDate,link,img,embed,maxViews,AOPV,paid,APRate,minLifeTime,minCancelTime)";
-		$q.=" VALUES({$info['advertisor']},{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
+		$q="INSERT INTO #db->info (advertisor,title,running,lastDate,startDate,link,img,embed,maxViews,AOPV,paid,APRate,minLifeTime,minCancelTime)";
+		$q.=" VALUES({$info['advertisor']},'{$info['title']}',{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
 		query($q);
 	}
 
@@ -47,6 +60,11 @@
 		switch($mode){
 			case "topublish":
 				query("SELECT * FROM #db->info WHERE running=1");
+				break;
+			case "myad":
+				$u=osBackUser();
+				$q="SELECT * FROM #db->info WHERE advertisor=".$u['UID'];
+				query($q);
 				break;
 		}
 		while($row=fetch())	{$vl[]=$row;}

@@ -9,6 +9,7 @@
 
 */
 require_once 'biz/user/user.php';
+require_once 'biz/adlink/adlink.php';
 
 class profileviewer {
 
@@ -118,6 +119,9 @@ JSONDOCREADY;
 		if(!osUserLogedin()){
 			$html="Please Login First";
 		}else{
+			$al=new adlink("");
+			if(!$paid=$al->backTotalPaid())
+				$paid='0';
 			$html=<<<PHTMLCODE
 
 				{$this->message}
@@ -140,7 +144,7 @@ JSONDOCREADY;
 				</div>
 				<div style="float:left;margin:10px;background-color:#FFFFCC;">
 					Balance: <br>
-					Paid: <br>
+					Paid: $paid<br>
 					Earned:
 				</div>
 			
@@ -160,13 +164,15 @@ PHTMLCODE;
 			return;
 		}
 		//applypass
-		//prepare error if any
+		$u=new user("");
+		$this->message=($u->changePass($info['Password'],$info['NewPass1']))?"<b><center><font color=green>Password has been Changed!</font></center></b>":"<b><center><font color=red>ERROR! Password NOT Changed!</font></center></b>";
 	}
 	function onUpdateInfo($info){
 		$curU=osBackUser();
 		$info['email']=$curU['email'];
 		$u=new user("");
 		$u->bookInfo($info);
+		$this->message="<center><b><font color=green>Update Successfully!</font></b></center>";
 		$this->_bookframe("frm");
 	}
 
