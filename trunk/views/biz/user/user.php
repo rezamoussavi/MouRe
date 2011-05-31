@@ -277,7 +277,7 @@ class user {
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
+					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
                     osBroadcast("user_login", array());
                     return 1;
                 } else {
@@ -295,7 +295,7 @@ class user {
         }
         
     }
-    function add($email, $password, $passwordagain) {        
+    function add($email, $password, $passwordagain, $userName, $Address, $Country, $PostalCode) {
         //check if the email is already registered 
         query("SELECT * FROM user_info WHERE email='" . $email . "' ;");
         if ($row = fetch())
@@ -312,7 +312,7 @@ class user {
                 //save the new user in the database
                 $vcode = $this->createVerificationCode();
                 $hashPassword = $this->sha1Hash($email,$password);
-                query("INSERT INTO user_info (email,password,verificationCode,biznessUID) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."');");
+                query("INSERT INTO user_info (email,password,verificationCode,biznessUID,userName,Address,Country,PostalCode) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."','".$userName."','".$Address."','".$Country."','".$PostalCode."');");
                 
                 // A welcome message to the user...
                 $msg = "Welcome! Please verify your account using this code: ".$vcode;

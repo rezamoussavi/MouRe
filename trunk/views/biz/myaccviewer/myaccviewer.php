@@ -38,6 +38,7 @@ class myaccviewer {
 			$_SESSION['osMsg']['frame_profileBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_pubLinkBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_adLinkBtn'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -73,6 +74,9 @@ class myaccviewer {
 				break;
 			case 'frame_adLinkBtn':
 				$this->onAdLinkBtn($info);
+				break;
+			case 'user_logout':
+				$this->onLogout($info);
 				break;
 			default:
 				break;
@@ -126,14 +130,18 @@ JSONDOCREADY;
 	/*-----------------------------------------------------
 	/		Message Handlers
 	-----------------------------------------------------*/
+	function onLogout($info){
+		$this->_bookframe("frmProfile");
+	}
 	function onProfileBtn($info){
 		$this->_bookframe("frmProfile");
 	}
 	function onPubLinkBtn($info){
+		$this->pubLinks->bookModeUser("mypub",osBackUserID());
 		$this->_bookframe("frmPubLinks");
 	}
 	function onAdLinkBtn($info){
-		$this->adLinks->bookMode("myad");
+		$this->adLinks->bookModeUser("myad",osBackUserID());
 		$this->_bookframe("frmAdLinks");
 	}
 	/*-----------------------------------------------------

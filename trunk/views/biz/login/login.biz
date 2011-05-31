@@ -71,7 +71,7 @@
 	function onSignup($info){
 		if($info['email'] != "" && $info['password'] != "" && $info['passwordagain'] != "")
 		{
-			$signup = #node->userShow->add($info['email'], $info['password'], $info['passwordagain']);
+			$signup = #node->userShow->add($info['email'], $info['password'], $info['passwordagain'], $info['userName'], $info['Address'], $info['Country'], $info['PostalCode']);
 
 			switch($signup){
 				case 1:
@@ -220,6 +220,10 @@ PHTML;
 			<h5>$msg</h5>
 			<form name="$formName" method="post" >
 				<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
+				<div style="width: 100px; margin-top: 10px;">Real Name </div> <input type="input" name="userName" /><br />
+				<div style="width: 100px; margin-top: 10px;">Address </div> <input type="input" name="Address" /><br />
+				<div style="width: 100px; margin-top: 10px;">Country </div> <input type="input" name="Country" /><br />
+				<div style="width: 100px; margin-top: 10px;">Postal Code </div> <input type="input" name="PostalCode" /><br />
 				<div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" /><br />
 				<div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" /><br />
 				<#msg->signup>

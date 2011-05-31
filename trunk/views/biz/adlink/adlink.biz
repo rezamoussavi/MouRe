@@ -34,8 +34,7 @@
 
 	function backTotalPaid(){
 		$paid=0.0;
-		$user=osBackUser();
-		$u=$user['UID'];
+		$u=osBackUserID();
 		query("SELECT SUM(paid) as totalPaid FROM #db->info WHERE advertisor=$u");
 		if($row=fetch()){
 			$paid=$row['totalPaid'];
@@ -55,20 +54,28 @@
 	*
 	*************************************************/
 
-	function backVideoList($mode){
+	function backVideoList($mode,$userID){
 		$vl=array();
 		switch($mode){
 			case "topublish":
 				query("SELECT * FROM #db->info WHERE running=1");
 				break;
 			case "myad":
-				$u=osBackUser();
-				$q="SELECT * FROM #db->info WHERE advertisor=".$u['UID'];
+				$q="SELECT * FROM #db->info WHERE advertisor=".$userID;
 				query($q);
 				break;
 		}
 		while($row=fetch())	{$vl[]=$row;}
 		return $vl;
+	}
+
+	function backAll(){
+		query("SELECT DISTINCT advertisor FROM #db->info");
+		if($row=fetch()){
+			return $row;
+		}
+		$ret=array();
+		return $ret;
 	}
 
 	/************************************************

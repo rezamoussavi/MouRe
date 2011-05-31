@@ -9,7 +9,6 @@
 
 */
 require_once 'biz/user/user.php';
-require_once 'biz/adlink/adlink.php';
 
 class profileviewer {
 
@@ -119,18 +118,18 @@ JSONDOCREADY;
 		if(!osUserLogedin()){
 			$html="Please Login First";
 		}else{
-			$al=new adlink("");
-			if(!$paid=$al->backTotalPaid())
-				$paid='0';
 			$html=<<<PHTMLCODE
 
 				{$this->message}
 				<div style="float:left;">
 					<form id="$formName" method="post" style="margin:10px;background-color:#FFCCFF;float:left;">
 						<input type="hidden" name="_message" value="frame_updateInfo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-						Real Name: <input name="RealName" value="{$user['userName']}" size=20><br>
-						Birth Date: <input name="BDate" value="{$user['BDate']}" size=20 ><br>
+						Real Name: {$user['userName']}<br/>
+						eMail: {$user['email']}<br/>
+						Birth Date: {$user['BDate']}<br/>
 						Address: <br><textarea name="Address" rows=4 cols=30>{$user['Address']}</textarea><br>
+						Country: <input name="Country" value="{$user['Country']}" /><br/>
+						Postal Code: <input name="PostalCode" value="{$user['PostalCode']}" /><br/>
 						Password: <input name="Password" type="password" size=20><br>
 						<div align=right><input type="button" value="Apply" onclick='Javascript:sndmsg("$formName")'></div>
 					</form>
@@ -141,11 +140,6 @@ JSONDOCREADY;
 						Old Password: <input name="Password" type="password" size=20><br>
 						<div align=right><input type="button" value="Change Password" onclick='Javascript:sndmsg("$formPass")'></div>
 					</form>
-				</div>
-				<div style="float:left;margin:10px;background-color:#FFFFCC;">
-					Balance: <br>
-					Paid: $paid<br>
-					Earned:
 				</div>
 			
 PHTMLCODE;

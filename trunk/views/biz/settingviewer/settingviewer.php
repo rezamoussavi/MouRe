@@ -4,10 +4,11 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Date:	5/31/2011
+	Ver:	1.0
 
 */
+require_once 'biz/offer/offer.php';
 
 class settingviewer {
 
@@ -17,8 +18,10 @@ class settingviewer {
 	var $_tmpNode;
 
 	//Variables
+	var $message;
 
 	//Nodes (bizvars)
+	var $offer;
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -30,12 +33,19 @@ class settingviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['frame_apply'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmSetting';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
+		$this->offer=new offer($this->_fullname.'_offer');
+
+		if(!isset($_SESSION['osNodes'][$fullname]['message']))
+			$_SESSION['osNodes'][$fullname]['message']="";
+		$this->message=&$_SESSION['osNodes'][$fullname]['message'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='settingviewer';
@@ -51,6 +61,9 @@ class settingviewer {
 
 	function message($message, $info) {
 		switch($message){
+			case 'frame_apply':
+				$this->onApply($info);
+				break;
 			default:
 				break;
 		}
@@ -94,13 +107,41 @@ JSONDOCREADY;
 //########################################
 
 
+	/************************
+	*	Frames
+	*************************/
 	function frmSetting(){
+		$frmName=$this->_fullname."Apply";
+		$offer=$this->offer->backInfo();
+		$minAOPV=$offer['minAOPV'];
+		$minNOV=$offer['minNOV'];
+		$APRatio=$offer['APRatio'];
+		$minLifeTime=$offer['minLifeTime'];
+		$minCancelTime=$offer['minCancelTime'];
+		$msg=$this->message;
+		$this->message="";
 		return <<<PHTMLCODE
 
-			Setting
+			$msg
+			<form id="$frmName" method="POST">
+				<input type="hidden" name="_message" value="frame_apply" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				minAOPV: <input name="minAOPV" value="$minAOPV" /><br/>
+				minNOV: <input name="minNOV" value="$minNOV" /><br/>
+				APRatio: <input name="APRatio" value="$APRatio" /><br/>
+				minLifeTime: <input name="minLifeTime" value="$minLifeTime" /> days<br/>
+				minCancelTime: <input name="minCancelTime" value="$minCancelTime" /> days<br/>
+				<input type="button" value="Apply" onclick='Javascript:sndmsg("$frmName")' />
+			</form>
 		
 PHTMLCODE;
 
+	}
+	/************************
+	*	Message Handler
+	*************************/
+	function onApply($info){
+		$this->offer->bookInfo($info);
+		$this->message="<font color=green>Changes has been saved!</font>";
 	}
 
 }

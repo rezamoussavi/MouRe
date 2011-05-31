@@ -94,6 +94,12 @@ class videobar {
 			case 'frmMyAd':
 				$_style='';
 				break;
+			case 'frmMyPub':
+				$_style='';
+				break;
+			case 'frmShort':
+				$_style='';
+				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
 		$html.=<<<JAVASCRIPT
@@ -139,6 +145,7 @@ JSONDOCREADY;
 				<br><font size=2>viewd {$this->data['viewed']} of {$this->data['maxViews']}</font>
 			</div>
 			<div style="float:left;height:120px;width:400px;align:right;">
+				{$this->data['title']}<br>
 				Last Date : {$this->data['lastDate']}
 				<br>Earn/View : {$EPV}
 			</div>
@@ -151,6 +158,26 @@ JSONDOCREADY;
 		</div>
 		<br>
 			$scv
+		
+PHTMLCODE;
+
+	}
+	function frmMyPub(){
+		return "[ Video Bar! MyPub]";
+	}
+	function frmShort(){
+		return <<<PHTMLCODE
+
+		<div style="width:650px;height:120;">
+			<div style="float:left;height:120px;width:150px;text-align:left;">
+				<a href="{$this->data['link']}" target="_blank">
+					<img src="{$this->data['img']}" />
+				</a>
+			</div>
+			<div style="float:left;height:120px;width:400px;align:right;">
+				Title : {$this->data['title']}
+			</div>
+		</div>
 		
 PHTMLCODE;
 
@@ -205,6 +232,12 @@ PHTMLCODE;
 				break;
 			case "myad":
 				$this->_bookframe("frmMyAd");
+				break;
+			case "mypub":
+				$this->_bookframe("frmMyPub");
+				break;
+			case "short":
+				$this->_bookframe("frmShort");
 				break;
 			default:
 				$this->_bookframe("frm");

@@ -44,7 +44,7 @@
 		query("SELECT * FROM #db->info WHERE available=1");
 		if(#var->data=fetch())
 			return #var->data;
-		return array("minNOV"=>"","minAOPV"=>"APRatio",""=>"","minLifeTime"=>"","minCancelTime"=>"");
+		return array("minNOV"=>"","minAOPV"=>"APRatio",""=>"","minLifeTime"=>"","minCancelTime"=>"","APRatio"=>"");
 	}
 
 	function init(){

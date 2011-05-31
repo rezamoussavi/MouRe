@@ -92,7 +92,7 @@ class offer {
 		query("SELECT * FROM offer_info WHERE available=1");
 		if($this->data=fetch())
 			return $this->data;
-		return array("minNOV"=>"","minAOPV"=>"APRatio",""=>"","minLifeTime"=>"","minCancelTime"=>"");
+		return array("minNOV"=>"","minAOPV"=>"APRatio",""=>"","minLifeTime"=>"","minCancelTime"=>"","APRatio"=>"");
 	}
 	function init(){
 		$this->data=array();

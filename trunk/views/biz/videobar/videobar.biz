@@ -10,6 +10,8 @@
 	frm
 	frmToPublish
 	frmMyAd
+	frmMyPub
+	frmShort
 
 #node
 	scriptviewer scv
@@ -44,6 +46,7 @@
 				<br><font size=2>viewd {#var->data['viewed']} of {#var->data['maxViews']}</font>
 			</div>
 			<div style="float:left;height:120px;width:400px;align:right;">
+				{#var->data['title']}<br>
 				Last Date : {#var->data['lastDate']}
 				<br>Earn/View : {$EPV}
 			</div>
@@ -56,6 +59,25 @@
 		</div>
 		<br>
 			$scv
+		</PHTML>
+	}
+
+	function frmMyPub(){
+		return "[ Video Bar! MyPub]";
+	}
+
+	function frmShort(){
+		return <PHTML>
+		<div style="width:650px;height:120;">
+			<div style="float:left;height:120px;width:150px;text-align:left;">
+				<a href="{#var->data['link']}" target="_blank">
+					<img src="{#var->data['img']}" />
+				</a>
+			</div>
+			<div style="float:left;height:120px;width:400px;align:right;">
+				Title : {#var->data['title']}
+			</div>
+		</div>
 		</PHTML>
 	}
 
@@ -110,6 +132,12 @@
 				break;
 			case "myad":
 				_bookframe(#frm->frmMyAd);
+				break;
+			case "mypub":
+				_bookframe(#frm->frmMyPub);
+				break;
+			case "short":
+				_bookframe(#frm->frmShort);
 				break;
 			default:
 				_bookframe(#frm->frm);

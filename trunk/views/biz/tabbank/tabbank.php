@@ -126,7 +126,26 @@ JSONDOCREADY;
 		$this->curTabName=$sel;
 		osBroadcast("tab_tabChanged",array("tabName"=>$sel));
     }
+	/*
+	*	This frm show all tabs (including selected one) as link
+	*/
     function frm(){
+		$html='';
+		foreach($this->tabs as $t){
+			$link=osBackLinkInfo($this->_fullname,"tab",array("name"=>$this->curTabName),"tab",array("name"=>$t));
+			$html.=<<<PHTMLCODE
+
+				<a href="{$link}">{$t}</a>
+			
+PHTMLCODE;
+
+		}
+		return $html;
+	}
+	/*
+	*	this old frm show the current tab as selected
+	*/
+    function OLD_frm(){
 		$html='';
 		foreach($this->tabs as $t){
 			if($t==$this->curTabName){

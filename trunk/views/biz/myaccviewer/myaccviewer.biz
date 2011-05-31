@@ -20,6 +20,7 @@
 	frame->profileBtn=onProfileBtn
 	frame->pubLinkBtn=onPubLinkBtn
 	frame->adLinkBtn=onAdLinkBtn
+	user->logout=onLogout
 
 #phpfunction
 
@@ -27,16 +28,21 @@
 	/		Message Handlers
 	-----------------------------------------------------*/
 
+	function onLogout($info){
+		_bookframe(#frm->frmProfile);
+	}
+
 	function onProfileBtn($info){
 		_bookframe(#frm->frmProfile);
 	}
 
 	function onPubLinkBtn($info){
+		#node->pubLinks->bookModeUser("mypub",osBackUserID());
 		_bookframe(#frm->frmPubLinks);
 	}
 
 	function onAdLinkBtn($info){
-		#node->adLinks->bookMode("myad");
+		#node->adLinks->bookModeUser("myad",osBackUserID());
 		_bookframe(#frm->frmAdLinks);
 	}
 

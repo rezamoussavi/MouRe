@@ -127,8 +127,9 @@ JSONDOCREADY;
 //########################################
 
 
-	////////////Message/////////////////
-	
+	/*-----------------------------------------
+	-		MESSAGES
+	-----------------------------------------*/
 	function onLinkListViewer($info){
 		$this->_bookframe("frmLinks");
 	}
@@ -142,7 +143,9 @@ JSONDOCREADY;
 		$this->_bookframe("frmUsers");
 	}
 	
-	////////////View/////////////////
+	/*-----------------------------------------
+	-		FRAMES
+	-----------------------------------------*/
 	
 	function frmLinks(){
 		$button = $this->frmButtons();

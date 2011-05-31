@@ -112,10 +112,10 @@ JSONDOCREADY;
 //########################################
 
 
-	function bookMode($mode){
+	function bookModeUser($mode,$userID){
 		$al=new adlink("");
 		$Vs=array();
-		$Vs=$al->backVideoList($mode);
+		$Vs=$al->backVideoList($mode,$userID);
 		$this->VBars=array();
 		foreach($Vs as $v){
 			$vb=new videobar("VBar".$this->_fullname.count($this->VBars));

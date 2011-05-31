@@ -74,8 +74,7 @@ class adlink {
 
 	function backTotalPaid(){
 		$paid=0.0;
-		$user=osBackUser();
-		$u=$user['UID'];
+		$u=osBackUserID();
 		query("SELECT SUM(paid) as totalPaid FROM adlink_info WHERE advertisor=$u");
 		if($row=fetch()){
 			$paid=$row['totalPaid'];
@@ -92,20 +91,27 @@ class adlink {
 	/************************************************
 	*
 	*************************************************/
-	function backVideoList($mode){
+	function backVideoList($mode,$userID){
 		$vl=array();
 		switch($mode){
 			case "topublish":
 				query("SELECT * FROM adlink_info WHERE running=1");
 				break;
 			case "myad":
-				$u=osBackUser();
-				$q="SELECT * FROM adlink_info WHERE advertisor=".$u['UID'];
+				$q="SELECT * FROM adlink_info WHERE advertisor=".$userID;
 				query($q);
 				break;
 		}
 		while($row=fetch())	{$vl[]=$row;}
 		return $vl;
+	}
+	function backAll(){
+		query("SELECT DISTINCT advertisor FROM adlink_info");
+		if($row=fetch()){
+			return $row;
+		}
+		$ret=array();
+		return $ret;
 	}
 	/************************************************
 	*		YouTube Functions

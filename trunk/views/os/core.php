@@ -94,6 +94,10 @@
 		return $_SESSION['user'];
 	}
 
+	function osBackUserID(){
+		return isset($_SESSION['user']['UID'])? $_SESSION['user']['UID'] : -1;
+	}
+
 	function osUserLogedin(){
 		return isset($_SESSION['user']['UID'])? ($_SESSION['user']['UID']>-1)?true:false : false;
 	}
