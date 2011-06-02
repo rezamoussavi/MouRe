@@ -4,10 +4,12 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Date:	6/02/2011
+	Ver:	1.0
 
 */
+require_once 'biz/adlink/adlink.php';
+require_once 'biz/linkviewer/linkviewer.php';
 
 class linklistviewer {
 
@@ -19,6 +21,7 @@ class linklistviewer {
 	//Variables
 
 	//Nodes (bizvars)
+	var $links; // array of biz
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -30,6 +33,7 @@ class linklistviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -37,11 +41,24 @@ class linklistviewer {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frmList';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
+		//handle arrays
+		$this->links=array();
+		if(!isset($_SESSION['osNodes'][$fullname]['links']))
+			$_SESSION['osNodes'][$fullname]['links']=array();
+		foreach($_SESSION['osNodes'][$fullname]['links'] as $arrfn)
+			$this->links[]=new linkviewer($arrfn);
+
+		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
+			$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='linklistviewer';
 	}
 
 	function gotoSleep() {
+		$_SESSION['osNodes'][$this->_fullname]['links']=array();
+		foreach($this->links as $node){
+			$_SESSION['osNodes'][$this->_fullname]['links'][]=$node->_fullname;
+		}
 		if($this->_tmpNode)
 			unset($_SESSION['osNodes'][$this->_fullname]);
 		else
@@ -51,6 +68,9 @@ class linklistviewer {
 
 	function message($message, $info) {
 		switch($message){
+			case 'user_logout':
+				$this->onLogout($info);
+				break;
 			default:
 				break;
 		}
@@ -94,13 +114,38 @@ JSONDOCREADY;
 //########################################
 
 
+	/********************************
+	*	Functionalities
+	*********************************/
+	function init(){
+		$this->links=array();
+		$al=new adlink("");
+		$all=$al->backAllLink();
+		$i=0;
+		foreach($all as $LData){
+			$l=new linkviewer($this->_fullname.$i++);
+			$l->bookData($LData);
+			$this->links[]=$l;
+		}
+	}
+	/********************************
+	*	Frames
+	*********************************/
 	function frmList(){
-		return <<<PHTMLCODE
-
-			Links
-		
-PHTMLCODE;
-
+		if(!osIsAdmin()){
+			return '<font style="background-color:#000000;color:#00FF00;">. Admin Access Only! .</font>';
+		}
+		$html="";
+		foreach($this->links as $l){
+			$html.=$l->_backframe();
+		}
+		return $html;
+	}
+	/********************************
+	*	Message Handlers
+	*********************************/
+	function onLogout(){
+		$this->_bookframe("frmList");
 	}
 
 }

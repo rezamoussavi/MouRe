@@ -1,14 +1,91 @@
 #comments
 	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Date:	5/31/2011
+	Ver:	1.0
 
 #biz
 	userviewer
 
 #frame
+	frm
+	frmBar()
+
+#var
+	userData
+	showAdLinks=false
+	showPubLinks=false
+
+#node
+	videolistviewer vlv
+
+#message
+	frame->showAdLinks=onShowAdLinks
+	frame->showPubLinks=onShowPubLinks
 
 #phpfunction
 
-	function (){
+	/*****************************
+	*	Messages
+	*****************************/
+
+	function onShowAdLinks($info){
+		if(#var->showAdLinks){
+			#var->showAdLinks=false;
+		}else{
+			#node->vlv->bookModeUser("myad",#var->userData['userUID']);
+			#var->showAdLinks=true;
+			#var->showPubLinks=false;
+		}
+	}
+
+	function onShowPubLinks($info){
+		if(#var->showPubLinks){
+			#var->showPubLinks=false;
+		}else{
+			#node->vlv->bookModeUser("mypub",#var->userData['userUID']);
+			#var->showPubLinks=true;
+			#var->showAdLinks=false;
+		}
+	}
+
+	/*****************************
+	*	Frames
+	*****************************/
+
+	function frm(){
+		return "[userviewer.biz]!";
+	}
+
+	function frmBar(){
+		$frmAdLink=#nodeID."adLink";
+		$frmPubLink=#nodeID."pubLink";
+		$html=<PHTML>
+			<br /><div style="height:20px;float:left;overflow: hidden;width:100px;display:inline;">{#var->userData['email']}</div>
+			<div style="height:20px;background-color:#eebbee;float:left;overflow: hidden;width:100px;display:inline;">{#var->userData['userName']}</div>
+			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{#var->userData['Address']}</div>
+			<form name="$frmAdLink" style="float:left;overflow: hidden;width:50px;display:inline;"><#msg->showAdLinks><input type="button" value="adL." onclick='Javascript:sndmsg("$frmAdLink")' /></form>
+			<form name="$frmPubLink" style="float:left;overflow: hidden;width:50px;display:inline;"><#msg->showPubLinks><input type="button" value="pubL." onclick='Javascript:sndmsg("$frmPubLink")' /></form>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">Balns</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">Intr</div><br />
+		</PHTML>
+		if((#var->showAdLinks) OR (#var->showPubLinks)){
+			$html.="<br />".#node->vlv->_backframe();
+		}
+		return $html."<br />";
+	}
+
+	/*****************************
+	*	Functionalities
+	*****************************/
+
+	function bookModeUser($mode,$userData){
+		#var->userData=$userData;
+		switch($mode){
+			case "bar":
+				_bookframe(#frm->frmBar);
+				break;
+			default:
+				_bookframe(#frm->frm);
+				break;
+		}
 	}

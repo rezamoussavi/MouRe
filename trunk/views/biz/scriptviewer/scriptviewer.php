@@ -5,7 +5,7 @@
 
 	Author:	Reza Moussavi
 	Date:	5/1/2011
-	Ver:		0.1
+	Ver:	0.1
 
 */
 
@@ -109,7 +109,7 @@ JSONDOCREADY;
 
 	function generateScript($adLinkID){
 		$user=osBackUser();
-		$userID=$user['UID'];
+		$userID=$user['userUID'];
 		if($userID<1){
 			$this->script="Generating data (".$adLinkID.") failed! - LOGIN first ";
 		}else{

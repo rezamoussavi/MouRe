@@ -181,7 +181,7 @@ JSONDOCREADY;
 	function onSignup($info){
 		if($info['email'] != "" && $info['password'] != "" && $info['passwordagain'] != "")
 		{
-			$signup = $this->userShow->add($info['email'], $info['password'], $info['passwordagain'], $info['userName'], $info['Address'], $info['Country'], $info['PostalCode']);
+			$signup = $this->userShow->add($info['email'], $info['password'], $info['passwordagain'], $info['userName'], $info['Address'], $info['Country'], $info['PostalCode'],'user');
 			switch($signup){
 				case 1:
 					$this->signupSuccess = 1;

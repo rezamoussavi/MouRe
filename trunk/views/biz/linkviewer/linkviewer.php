@@ -4,8 +4,8 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Date:	6/02/2011
+	Ver:	0.5
 
 */
 
@@ -17,6 +17,7 @@ class linkviewer {
 	var $_tmpNode;
 
 	//Variables
+	var $data;
 
 	//Nodes (bizvars)
 
@@ -31,6 +32,15 @@ class linkviewer {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 		}
+
+		//default frame if exists
+		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
+		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['data']))
+			$_SESSION['osNodes'][$fullname]['data']='';
+		$this->data=&$_SESSION['osNodes'][$fullname]['data'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='linkviewer';
@@ -60,6 +70,27 @@ class linkviewer {
 	}
 
 	function show($echo){
+		$_style='';
+		switch($this->_curFrame){
+			case 'frm':
+				$_style='';
+				break;
+		}
+		$html='<script type="text/javascript" language="Javascript">';
+		$html.=<<<JAVASCRIPT
+
+JAVASCRIPT;
+		$html.=<<<JSONDOCREADY
+function {$this->_fullname}(){}
+JSONDOCREADY;
+		$html.='</script>
+<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		if($_SESSION['silentmode'])
+			return;
+		if($echo)
+			echo $html;
+		else
+			return $html;
 	}
 
 
@@ -68,7 +99,17 @@ class linkviewer {
 //########################################
 
 
-	function (){
+	/********************************
+	*	Functionalities
+	*********************************/
+	function bookData($Data){
+		$this->data=$Data;
+	}
+	/********************************
+	*	Frames
+	*********************************/
+	function frm(){
+		return "a Link<br />";
 	}
 
 }

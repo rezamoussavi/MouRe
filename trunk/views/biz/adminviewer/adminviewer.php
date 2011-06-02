@@ -4,8 +4,8 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Max Mirkia
-	Date:	5/6/2011
-	Ver:		0.1
+	Date:	6/02/2011
+	Ver:	1.0
 
 */
 require_once 'biz/settingviewer/settingviewer.php';
@@ -143,9 +143,9 @@ JSONDOCREADY;
 		$this->_bookframe("frmUsers");
 	}
 	
-	/*-----------------------------------------
-	-		FRAMES
-	-----------------------------------------*/
+	/*************************************
+	*		FRAMES
+	*************************************/
 	
 	function frmLinks(){
 		$button = $this->frmButtons();
@@ -153,7 +153,6 @@ JSONDOCREADY;
 		return <<<PHTMLCODE
 
 			$button <br> $links
-		
 		
 PHTMLCODE;
 
@@ -167,7 +166,6 @@ PHTMLCODE;
 
 			$button <br> $setting
 		
-		
 PHTMLCODE;
 
 	
@@ -178,8 +176,7 @@ PHTMLCODE;
 		$users = $this->users->_backframe();
 		return <<<PHTMLCODE
 
-			$button <br> $users
-		
+			$button <br> $users		
 		
 PHTMLCODE;
 

@@ -1,14 +1,30 @@
 #comments
 	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Date:	6/02/2011
+	Ver:	0.5
 
 #biz
 	linkviewer
 
 #frame
+	frm
 
+#var
+	data
 #phpfunction
 
-	function (){
+	/********************************
+	*	Functionalities
+	*********************************/
+
+	function bookData($Data){
+		#var->data=$Data;
+	}
+
+	/********************************
+	*	Frames
+	*********************************/
+
+	function frm(){
+		return "a Link<br />";
 	}

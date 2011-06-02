@@ -71,7 +71,7 @@
 	function onSignup($info){
 		if($info['email'] != "" && $info['password'] != "" && $info['passwordagain'] != "")
 		{
-			$signup = #node->userShow->add($info['email'], $info['password'], $info['passwordagain'], $info['userName'], $info['Address'], $info['Country'], $info['PostalCode']);
+			$signup = #node->userShow->add($info['email'], $info['password'], $info['passwordagain'], $info['userName'], $info['Address'], $info['Country'], $info['PostalCode'],'user');
 
 			switch($signup){
 				case 1:

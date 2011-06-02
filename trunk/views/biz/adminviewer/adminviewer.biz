@@ -1,7 +1,7 @@
 #comments
 	Author:	Max Mirkia
-	Date:	5/6/2011
-	Ver:		0.1
+	Date:	6/02/2011
+	Ver:	1.0
 
 #biz
 	adminviewer
@@ -15,9 +15,9 @@
 	frame->linkListViewer=onLinkListViewer
 
 #frame
-	frmButtons(),
-	frmSetting(),
-	frmUsers(),
+	frmButtons()
+	frmSetting()
+	frmUsers()
 	frmLinks()
 
 #phpfunction
@@ -40,16 +40,15 @@
 	}
 	
 
-	/*-----------------------------------------
-	-		FRAMES
-	-----------------------------------------*/
+	/*************************************
+	*		FRAMES
+	*************************************/
 	
 	function frmLinks(){
 		$button = #fun->frmButtons();
 		$links = #node->links->_backframe();
 		return <PHTML>
 			$button <br> $links
-		
 		</PHTML>
 	
 	}
@@ -59,7 +58,6 @@
 		$setting = #node->setting->_backframe();
 		return <PHTML>
 			$button <br> $setting
-		
 		</PHTML>
 	
 	}
@@ -68,8 +66,7 @@
 		$button = #fun->frmButtons();
 		$users = #node->users->_backframe();
 		return <PHTML>
-			$button <br> $users
-		
+			$button <br> $users		
 		</PHTML>
 	
 	}

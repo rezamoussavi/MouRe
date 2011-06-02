@@ -120,15 +120,25 @@ class user {
 	}
 	function bookInfo($info){
 		if(is_array($info)){
-			if(isset($info['email'])&&isset($info['RealName'])&&isset($info['BDate'])&&isset($info['Address'])&&isset($info['Password'])){
+			if(isset($info['email'])&&isset($info['Password'])){
 				$hashPass = $this->sha1Hash($info['email'],$info['Password']);
-				$q="UPDATE user_info SET email='$info[email]' , userName='$info[RealName]' , BDate='$info[BDate]' , Address='$info[Address]'  WHERE password='$hashPass'";
+				$q="UPDATE user_info SET email='$info[email]'";
+				if(isset($info['RealName']))
+					$q.=" , userName='$info[RealName]' ";
+				if(isset($info['BDate']))
+					$q.=", BDate='$info[BDate]'";
+				if(isset($info['Address']))
+					$q.=" , Address='$info[Address]'";
+				$q.="  WHERE password='$hashPass'";
 				query($q);
 				$u=osBackUser();
 				$u['email']=$info['email'];
-				$u['userName']=$info['RealName'];
-				$u['BDate']=$info['BDate'];
-				$u['Address']=$info['Address'];
+				if(isset($info['RealName']))
+					$u['userName']=$info['RealName'];
+				if(isset($info['BDate']))
+					$u['BDate']=$info['BDate'];
+				if(isset($info['Address']))
+					$u['Address']=$info['Address'];
 				osBookUser($u);
 			}
 		}
@@ -167,7 +177,7 @@ class user {
 			$message='Incorrect Password';
 		}
 		if($message=='ok'){
-			osBookUser(array("email" => $email, "UID" => $UID, "Address"=>$address, "userName"=>$name, "BDate"=>$info['BDate']));
+			osBookUser(array("email" => $email, "userUID" => $UID, "Address"=>$address, "userName"=>$name, "BDate"=>$info['BDate']));
 		}
 		return $message;
 	}
@@ -216,7 +226,7 @@ class user {
 	}
     function logout() {
         $this->loggedIn = 0;
-		osBookUser(array("email" => "", "UID" => -1, "name"=>""));
+		osBookUser(array("email" => "", "userUID" => -1, "name"=>""));
         osBroadcast("user_logout", array());
     }
     function isLoggedin() {
@@ -277,7 +287,7 @@ class user {
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => $this->email, "UID" => $this->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
+					osBookUser(array("email" => $this->email, "userUID" => $this->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
                     osBroadcast("user_login", array());
                     return 1;
                 } else {
@@ -295,7 +305,7 @@ class user {
         }
         
     }
-    function add($email, $password, $passwordagain, $userName, $Address, $Country, $PostalCode) {
+    function add($email, $password, $passwordagain, $userName, $Address, $Country, $PostalCode, $role) {
         //check if the email is already registered 
         query("SELECT * FROM user_info WHERE email='" . $email . "' ;");
         if ($row = fetch())
@@ -312,7 +322,7 @@ class user {
                 //save the new user in the database
                 $vcode = $this->createVerificationCode();
                 $hashPassword = $this->sha1Hash($email,$password);
-                query("INSERT INTO user_info (email,password,verificationCode,biznessUID,userName,Address,Country,PostalCode) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."','".$userName."','".$Address."','".$Country."','".$PostalCode."');");
+                query("INSERT INTO user_info (email,password,verificationCode,biznessUID,userName,Address,Country,PostalCode,role) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."','".$userName."','".$Address."','".$Country."','".$PostalCode."','".$role."');");
                 
                 // A welcome message to the user...
                 $msg = "Welcome! Please verify your account using this code: ".$vcode;
@@ -388,6 +398,17 @@ class user {
         $toSelectFrom = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return $this->createRandomChars($toSelectFrom, 10);
     }
+	function backAll(){
+		$users=array();
+		if(!osIsAdmin()){	return $users;	}
+		query("SELECT * FROM user_info WHERE role='user'");
+		while($row=fetch()){
+			unset($row['password']);
+			unset($row['verificationCode']);
+			$users[]=$row;
+		}
+		return $users;
+	}
 
 }
 

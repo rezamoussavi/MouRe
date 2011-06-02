@@ -105,12 +105,20 @@ class adlink {
 		while($row=fetch())	{$vl[]=$row;}
 		return $vl;
 	}
-	function backAll(){
-		query("SELECT DISTINCT advertisor FROM adlink_info");
-		if($row=fetch()){
-			return $row;
-		}
+	function backAllUser(){
 		$ret=array();
+		query("SELECT DISTINCT advertisor FROM adlink_info");
+		while($row=fetch()){
+			$ret[]=$row['advertisor'];
+		}
+		return $ret;
+	}
+	function backAllLink(){
+	$ret=array();
+		query("SELECT * FROM adlink_info");
+		while($row=fetch()){
+			$ret[]=$row;
+		}
 		return $ret;
 	}
 	/************************************************
