@@ -86,7 +86,7 @@
 	}
 
 	function osBookUser($user){
-		$_SESSION['user']=array("UID"=>-1);
+		$_SESSION['user']=array("userUID"=>-1);
 		$_SESSION['user']=$user;
 	}
 
@@ -95,15 +95,19 @@
 	}
 
 	function osBackUserID(){
-		return isset($_SESSION['user']['UID'])? $_SESSION['user']['UID'] : -1;
+		return isset($_SESSION['user']['userUID'])? $_SESSION['user']['userUID'] : -1;
 	}
 
 	function osUserLogedin(){
-		return isset($_SESSION['user']['UID'])? ($_SESSION['user']['UID']>-1)?true:false : false;
+		return isset($_SESSION['user']['userUID'])? ($_SESSION['user']['userUID']>-1)?true:false : false;
 	}
 
 	function osBackUserRole(){
 		return osUserLogedin()? $_SESSION['user']['role']:false;
+	}
+
+	function osIsAdmin(){
+		return (isset($_SESSION['user']['role']))? ($_SESSION['user']['role']=='admin'):false;
 	}
 
 	function osBroadcast($msg,$info){
