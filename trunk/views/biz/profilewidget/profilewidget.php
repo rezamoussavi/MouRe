@@ -4,16 +4,12 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
-	Date:	4/21/2011
-	Ver:		0.1
+	Date:	6/03/2011
+	Ver:	0.1
 
 */
-require_once 'biz/login/login.php';
-require_once 'biz/profilewidget/profilewidget.php';
-require_once 'biz/tabbank/tabbank.php';
-require_once 'biz/mainpageviewer/mainpageviewer.php';
 
-class bizbank {
+class profilewidget {
 
 	//Mandatory Variables for a biz
 	var $_fullname;
@@ -23,10 +19,6 @@ class bizbank {
 	//Variables
 
 	//Nodes (bizvars)
-	var $login;
-	var $profile;
-	var $tabbar;
-	var $pages;
 
 	function __construct($fullname) {
 		$this->_tmpNode=false;
@@ -38,6 +30,9 @@ class bizbank {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
+			$_SESSION['osMsg']['frame_showMyAccount'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -45,18 +40,8 @@ class bizbank {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		$this->login=new login($this->_fullname.'_login');
-
-		$this->profile=new profilewidget($this->_fullname.'_profile');
-
-		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
-
-		$this->pages=new mainpageviewer($this->_fullname.'_pages');
-
-		if(!isset($_SESSION['osNodes'][$fullname]['biz']))
-			$this->init(); //Customized Initializing
 		$_SESSION['osNodes'][$fullname]['node']=$this;
-		$_SESSION['osNodes'][$fullname]['biz']='bizbank';
+		$_SESSION['osNodes'][$fullname]['biz']='profilewidget';
 	}
 
 	function gotoSleep() {
@@ -69,6 +54,15 @@ class bizbank {
 
 	function message($message, $info) {
 		switch($message){
+			case 'frame_showMyAccount':
+				$this->onShowMyAccount($info);
+				break;
+			case 'user_login':
+				$this->onLoginChange($info);
+				break;
+			case 'user_logout':
+				$this->onLoginChange($info);
+				break;
 			default:
 				break;
 		}
@@ -86,7 +80,7 @@ class bizbank {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' style="width:900px; margin:auto;" ';
+				$_style=' style="float:left; width:200;" ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -94,9 +88,7 @@ class bizbank {
 
 JAVASCRIPT;
 		$html.=<<<JSONDOCREADY
-function {$this->_fullname}(){	$("#bizbanklogo").mouseover(function(){   $("#bizbanklogo").fadeTo("fast",0.7)});
-	$("#bizbanklogo").mouseout(function(){   $("#bizbanklogo").fadeTo("fast",1)});
-}
+function {$this->_fullname}(){}
 JSONDOCREADY;
 		$html.='</script>
 <div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -114,33 +106,42 @@ JSONDOCREADY;
 //########################################
 
 
-	function init(){
-		$this->tabbar->bookContent(array("Home","How"));
-		$this->tabbar->bookSelected("Home");
+	/******************************
+	*	Message Handlers
+	******************************/
+	function onLoginChange($info){
+		/*
+		*	Since the biz is interested in a message
+		*	It needs a callback function
+		*	But by this specific message we need to refresh the biz frame
+		*	by default each biz which is alive will be refreshed
+		*	So there is no need to put any code on this function
+		*/
 	}
+	
+	function onShowMyAccount($info){
+		$data=array();
+		osBroadcast("user_showMyAccount",$data);
+	}
+	/******************************
+	*	Frames
+	******************************/
 	function frm(){
-		$login=$this->login->_backframe();
-		$profile=$this->profile->_backframe();
-		$tab=$this->tabbar->_backframe();
-		$pages=$this->pages->_backframe();
-		return <<<PHTMLCODE
+		$myAccFormName = $this->_fullname."myacc";
+		if(osUserLogedin()){
+		$html=<<<PHTMLCODE
 
-			<div style="width:900px; float:left;margin:auto; border: 1px dotted #f5f5f5;">
-				<div style="width:695px; float:left;">
-					<img id="bizbanklogo" src="../biz/bizbank/logo.jpg" width=695 />
-					$tab $pages
-				</div>
-				<div style="width:200px; float:left;">
-					$login
-					$profile
-				</div>
-				<div style="width:901px; float:left; background-color:#f5f5f5; height:25px;">
-					&nbsp;
-				</div>
-			</div>
+			<form name="$myAccFormName" method="post" style="display:inline;">
+				<input type="hidden" name="_message" value="frame_showMyAccount" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;">
+			</form>
 		
 PHTMLCODE;
 
+		}else{
+			$html="";
+		}
+		return $html;
 	}
 
 }

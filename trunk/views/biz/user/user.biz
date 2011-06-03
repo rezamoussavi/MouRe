@@ -1,5 +1,9 @@
 #comments
 	Author:	Reza Moussavi
+	Date:	6/03/2011
+	Version:1.5
+	---------------------
+	Author:	Reza Moussavi
 	Date:	2/16/2011
 	Version:1.3
 	---------------------
@@ -14,7 +18,7 @@
 	userUID,userName,email,loggedIn,BDate,Address,role
 
 #db
-	info ('userUID' int(11) NOT NULL auto_increment; 'email' varchar(50) NOT NULL; 'userName' varchar(50) NOT NULL; 'BDate' varchar(10) NOT NULL; 'Address' varchar(255) NOT NULL; 'Country' varchar(100) NOT NULL; 'PostalCode' varchar(25) NOT NULL; 'password' varchar(50) NOT NULL; 'verificationCode' varchar(50) NOT NULL; 'biznessUID' int(11) NOT NULL; 'role' varchar(50) NOT NULL COMMENT 'user / admin'; PRIMARY KEY  ('userUID'); UNIQUE KEY 'email' ('email'))
+	info ('userUID' int(11) NOT NULL auto_increment; 'email' varchar(50) NOT NULL; 'userName' varchar(50) NOT NULL; 'BDate' varchar(10) NOT NULL; 'Address' varchar(255) NOT NULL; 'Country' varchar(100) NOT NULL; 'PostalCode' varchar(25) NOT NULL; 'password' varchar(50) NOT NULL; 'verificationCode' varchar(50) NOT NULL; 'biznessUID' int(11) NOT NULL; 'role' varchar(50) NOT NULL COMMENT 'user / admin'; 'balance' int(11); PRIMARY KEY  ('userUID'); UNIQUE KEY 'email' ('email'))
 #db-comment
 	'userUID' int(11)
 	'email' varchar(50)
@@ -27,6 +31,7 @@
 	'verificationCode' varchar(50)
 	'biznessUID' int(11)
 	'role' varchar(50)
+	'balance' int(11)
 
 #phpfunction
 

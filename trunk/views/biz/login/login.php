@@ -47,7 +47,6 @@ class login {
 			$_SESSION['osMsg']['frame_signup'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_validate'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_home'][$this->_fullname]=true;
-			$_SESSION['osMsg']['frame_showMyAccount'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -103,9 +102,6 @@ class login {
 			case 'frame_home':
 				$this->onHome($info);
 				break;
-			case 'frame_showMyAccount':
-				$this->onShowMyAccount($info);
-				break;
 			default:
 				break;
 		}
@@ -149,10 +145,6 @@ JSONDOCREADY;
 //########################################
 
 
-	function onShowMyAccount($info){
-		$data=array();
-		osBroadcast("user_showMyAccount",$data);
-	}
 	function onLoginBtn($info){
 		$this->userShow->login($info['email'], $info['password']);
 		$this->_bookframe("frm");
@@ -392,7 +384,6 @@ PHTML;
 	function showWelcome(){
 		//important to add the div thingy here so that the ajax knows what to update :)
 		$formName = $this->_fullname."logout";
-		$myAccFormName = $this->_fullname."myacc";
 		$u=osBackUser();
 		$html = <<<PHTMLCODE
 
@@ -400,10 +391,6 @@ PHTML;
 						<form name="$formName" method="post" style="display:inline;">
 							<input type="hidden" name="_message" value="frame_logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 							<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formName")'  class="press" style="margin-top: 0px;">
-						</form>
-						<form name="$myAccFormName" method="post" style="display:inline;">
-							<input type="hidden" name="_message" value="frame_showMyAccount" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-							<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;">
 						</form>
 					
 PHTMLCODE;

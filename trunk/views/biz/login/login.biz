@@ -29,14 +29,8 @@
 	frame->signup=onSignup,
 	frame->validate=onValidate,
 	frame->home=onHome
-	frame->showMyAccount=onShowMyAccount
 
 #phpfunction
-
-	function onShowMyAccount($info){
-		$data=array();
-		osBroadcast(#msg->showMyAccount,$data);
-	}
 
 	function onLoginBtn($info){
 		#node->userShow->login($info['email'], $info['password']);
@@ -314,17 +308,12 @@ PHTML;
 	function showWelcome(){
 		//important to add the div thingy here so that the ajax knows what to update :)
 		$formName = #nodeID."logout";
-		$myAccFormName = #nodeID."myacc";
 		$u=osBackUser();
 		$html = <PHTML>
 						<h2>Welcome {$u['userName']}!</h2>
 						<form name="$formName" method="post" style="display:inline;">
 							<#msg->logoutBtn>
 							<input value ="Logout" type = "button" onclick = 'JavaScript:sndmsg("$formName")'  class="press" style="margin-top: 0px;">
-						</form>
-						<form name="$myAccFormName" method="post" style="display:inline;">
-							<#msg->showMyAccount>
-							<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;">
 						</form>
 					</PHTML>
 		return $html;

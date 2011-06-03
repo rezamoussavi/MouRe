@@ -150,9 +150,9 @@ JSONDOCREADY;
 //########################################
 
 
-	//////////////////////////////////////////////////////////////////////
-	//			MESSAGE
-	//////////////////////////////////////////////////////////////////////
+	/**************************************
+	*	MESSAGE Handlers
+	**************************************/
 	function onAdVideo($info){
 		$this->userpage=0;
 		$this->_bookframe("frmAdVideo");
@@ -205,11 +205,11 @@ JSONDOCREADY;
 			<div style="width:100%; float:left; text-align:center;">
 				<form name="$frmAdName" method="post" style="display:inline;">
 					<input type="hidden" name="_message" value="frame_AdVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input value ="Ad a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmAdName")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+					<input value ="Ad a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmAdName")' class="press" style="Height:100; width:150;margin-top: 10px; margin-right: 50px;" />
 				</form>
 				<form name="$frmPubName" method="post" style="display:inline;">
 					<input type="hidden" name="_message" value="frame_PubVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input value ="Publish a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmPubName")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+					<input value ="Publish a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmPubName")' class="press" style="Height:100; width:150; margin-top: 10px; margin-right: 50px;" />
 				</form>
 			</div><hr>
 		
