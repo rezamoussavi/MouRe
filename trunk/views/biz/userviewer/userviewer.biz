@@ -65,7 +65,7 @@
 			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{#var->userData['Address']}</div>
 			<form name="$frmAdLink" style="float:left;overflow: hidden;width:50px;display:inline;"><#msg->showAdLinks><input type="button" value="adL." onclick='Javascript:sndmsg("$frmAdLink")' /></form>
 			<form name="$frmPubLink" style="float:left;overflow: hidden;width:50px;display:inline;"><#msg->showPubLinks><input type="button" value="pubL." onclick='Javascript:sndmsg("$frmPubLink")' /></form>
-			<div style="float:left;overflow: hidden;width:50px;display:inline;">Balns</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">{#var->userData['balance']}</div>
 			<div style="float:left;overflow: hidden;width:50px;display:inline;">Intr</div><br />
 		</PHTML>
 		if((#var->showAdLinks) OR (#var->showPubLinks)){

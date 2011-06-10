@@ -20,6 +20,9 @@
 	earned=0
 	reimbursed=0
 
+#node
+	user, adlink
+
 #phpfunction
 
 	/******************************
@@ -50,19 +53,20 @@
 	******************************/
 
 	function frm(){
+		if(!osUserLogedin()){
+			return "";
+		}
 		$myAccFormName = #nodeID."myacc";
-		$balance=
-		if(osUserLogedin()){
 		$html=<PHTML>
-			Balance: $balance $
-			<form name="$myAccFormName" method="post" style="display:inline;">
+			Balance: {#var->balance} $<br />
+			Paid: {#var->paid} $<br />
+			Re-imbursed: {#var->reimbursed} $<br />
+			Earned: {#var->earned} $<br />
+			<form name="$myAccFormName" method="post">
 				<#msg->showMyAccount>
 				<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;">
 			</form>
 		</PHTML>
-		}else{
-			$html="";
-		}
 		return $html;
 	}
 
@@ -71,4 +75,16 @@
 	******************************/
 
 	function reCalc(){
+		#var->balance=0;
+		#var->paid=0;
+		#var->earned=0;
+		#var->reimbursed=0;
+
+		$u=new user("");
+		if($ud=$u->backUserData(osBackUserID())){
+			#var->balance=$ud['balance'];
+			$al=new adlink("");
+			#var->paid=$al->backTotalPaid();
+			#var->reimbursed=$al->backTotalreimbursed();
+		}
 	}

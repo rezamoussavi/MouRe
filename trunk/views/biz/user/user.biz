@@ -236,7 +236,7 @@
                     #var->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => #var->email, "userUID" => #var->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
+					osBookUser(array("email" => #var->email, "userUID" => #var->userUID, "Address"=>$row["Address"], "balance"=>$row["balance"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
                     osBroadcast(#msg->login, array());
                     return 1;
                 } else {
@@ -355,6 +355,11 @@
         $toSelectFrom = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return #fun->createRandomChars($toSelectFrom, 10);
     }
+
+	function backUserData($userUID){
+		query("SELECT * FROM #db->info WHERE userUID='".$userUID."'");
+		return fetch();
+	}
 
 	function backAll(){
 		$users=array();

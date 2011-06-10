@@ -8,6 +8,8 @@
 	Ver:	0.1
 
 */
+require_once 'biz/user/user.php';
+require_once 'biz/adlink/adlink.php';
 
 class profilewidget {
 
@@ -17,6 +19,10 @@ class profilewidget {
 	var $_tmpNode;
 
 	//Variables
+	var $balance;
+	var $paid;
+	var $earned;
+	var $reimbursed;
 
 	//Nodes (bizvars)
 
@@ -40,6 +46,22 @@ class profilewidget {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
+		if(!isset($_SESSION['osNodes'][$fullname]['balance']))
+			$_SESSION['osNodes'][$fullname]['balance']=0;
+		$this->balance=&$_SESSION['osNodes'][$fullname]['balance'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['paid']))
+			$_SESSION['osNodes'][$fullname]['paid']=0;
+		$this->paid=&$_SESSION['osNodes'][$fullname]['paid'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['earned']))
+			$_SESSION['osNodes'][$fullname]['earned']=0;
+		$this->earned=&$_SESSION['osNodes'][$fullname]['earned'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['reimbursed']))
+			$_SESSION['osNodes'][$fullname]['reimbursed']=0;
+		$this->reimbursed=&$_SESSION['osNodes'][$fullname]['reimbursed'];
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='profilewidget';
 	}
@@ -58,10 +80,10 @@ class profilewidget {
 				$this->onShowMyAccount($info);
 				break;
 			case 'user_login':
-				$this->onLoginChange($info);
+				$this->onLogin($info);
 				break;
 			case 'user_logout':
-				$this->onLoginChange($info);
+				$this->onLogout($info);
 				break;
 			default:
 				break;
@@ -109,7 +131,10 @@ JSONDOCREADY;
 	/******************************
 	*	Message Handlers
 	******************************/
-	function onLoginChange($info){
+	function onLogin($info){
+		$this->reCalc();
+	}
+	function onLogout($info){
 		/*
 		*	Since the biz is interested in a message
 		*	It needs a callback function
@@ -127,21 +152,38 @@ JSONDOCREADY;
 	*	Frames
 	******************************/
 	function frm(){
+		if(!osUserLogedin()){
+			return "";
+		}
 		$myAccFormName = $this->_fullname."myacc";
-		if(osUserLogedin()){
 		$html=<<<PHTMLCODE
-
-			<form name="$myAccFormName" method="post" style="display:inline;">
+REZA
+			Balance: {$this->balance} $<br />
+			Paid: {$this->paid} $<br />
+			Re-imbursed: {$this->reimbursed} $<br />
+			Earned: {$this->earned} $<br />
+			<form name="$myAccFormName" method="post">
 				<input type="hidden" name="_message" value="frame_showMyAccount" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;">
 			</form>
-		
 PHTMLCODE;
-
-		}else{
-			$html="";
+return $html;
+	}
+	/******************************
+	*	Functionalities
+	******************************/
+	function reCalc(){
+		$this->balance=0;
+		$this->paid=0;
+		$this->earned=0;
+		$this->reimbursed=0;
+		$u=new user("");
+		if($ud=$u->backUserData(osBackUserID())){
+			$this->balance=$ud['balance'];
+			$al=new adlink("");
+			$this->paid=$al->backTotalPaid();
+			$this->reimbursed=$al->backTotalreimbursed();
 		}
-		return $html;
 	}
 
 }

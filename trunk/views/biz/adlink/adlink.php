@@ -73,13 +73,26 @@ class adlink {
 
 
 	function backTotalPaid(){
+		return $this->backTotalPaidByUser(osBackUserID());
+	}
+	function backTotalPaidByUser($UID){
 		$paid=0.0;
-		$u=osBackUserID();
-		query("SELECT SUM(paid) as totalPaid FROM adlink_info WHERE advertisor=$u");
+		query("SELECT SUM(paid) as totalPaid FROM adlink_info WHERE advertisor=$UID");
 		if($row=fetch()){
 			$paid=$row['totalPaid'];
 		}
 		return $paid;
+	}
+	function backTotalReimbursed(){
+		return $this->backTotalReimbursedByUser(osBackUserID());
+	}
+	function backTotalReimbursedByUser($UID){
+		$Re=0.0;
+		query("SELECT SUM(reimbursed) as totalRe FROM adlink_info WHERE advertisor=$UID");
+		if($row=fetch()){
+			$Re=$row['totalRe'];
+		}
+		return $Re;
 	}
 	function bookLink($info){
 		$img=$this->backYImg($info['link']);
