@@ -121,8 +121,11 @@ JSONDOCREADY;
 		$this->links=array();
 		$al=new adlink("");
 		$all=$al->backAllLink();
+		$user=new user("");
 		$i=0;
 		foreach($all as $LData){
+			$u=$user->backUserData($LData['advertisor']);
+			$LData['userName']=$u['userName'];
 			$l=new linkviewer($this->_fullname.$i++);
 			$l->bookData($LData);
 			$this->links[]=$l;

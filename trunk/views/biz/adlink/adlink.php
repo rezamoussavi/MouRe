@@ -127,7 +127,7 @@ class adlink {
 		return $ret;
 	}
 	function backAllLink(){
-	$ret=array();
+		$ret=array();
 		query("SELECT * FROM adlink_info");
 		while($row=fetch()){
 			$ret[]=$row;

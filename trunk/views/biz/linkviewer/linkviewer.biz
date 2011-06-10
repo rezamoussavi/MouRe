@@ -1,5 +1,9 @@
 #comments
 	Author:	Reza Moussavi
+	Date:	6/10/2011
+	Ver:	1.0
+	----------------------
+	Author:	Reza Moussavi
 	Date:	6/02/2011
 	Ver:	0.5
 
@@ -7,16 +11,28 @@
 	linkviewer
 
 #frame
-	frm
+	frm(float:left;width:700px;)
 
 #var
 	data
+	extra
+
+#message
+	frame->btnLink=onBtnLink
+	frame->btnUser=onBtnUser
+	frame->btnIP=onBtnIP
+	frame->btnPublisher=onBtnPublisher
+	
 #phpfunction
 
 	/********************************
 	*	Functionalities
 	*********************************/
 
+	/*
+	*	$Data keys include
+			all from adlink.biz database + userName
+	*/
 	function bookData($Data){
 		#var->data=$Data;
 	}
@@ -26,5 +42,147 @@
 	*********************************/
 
 	function frm(){
-		return "a Link<br />";
+		$remaining=#var->data['maxViews'] - #var->data['viewed'];
+		$bgcolor=#var->data['running']==0?"gray":"transparent";
+		$divStyle="height: 20px; overflow: hidden; float: left; display: inline; background-color:".$bgcolor.";";
+		$btnStyle="border:1px solid #ccc;cursor:pointer;background-color:white;";
+		$videoCel=#fun->backLinkCel($divStyle,$btnStyle);
+		$userCel=#fun->backUserCel($divStyle,$btnStyle);
+		$IPCel=#fun->backIpCel($divStyle,$btnStyle);
+		$publisherCel=#fun->backPublisherCel($divStyle,$btnStyle);
+		$extra=#fun->backExtra();
+		return <PHTML>
+			<div style="float:left">
+				{$videoCel}
+				{$userCel}
+				<div style="width:50px; $divStyle "><a title="Paid: {#var->data['paid']}">
+					{#var->data['paid']}	</a></div>
+				<div style="width:50px; $divStyle "><a title="Viewd {#var->data['viewed']} times">
+					{#var->data['viewed']}	</a></div>
+				<div style="width:50px; $divStyle "><a title="{$remaining} times remained to be watched">
+					{$remaining}</a></div>
+				<div style="width:30px; $divStyle "><a title="Running for xx days">
+					time</a></div>
+				<div style="width:75px; $divStyle "><a title="Advertisor Pay Per View(AOPV):{#var->data['AOPV']} / Rate to be paid to publisher(APRate): {#var->data['APRate']}">
+					{#var->data['AOPV']}/{#var->data['APRate']}</a></div>
+				{$IPCel}
+				{$publisherCel}
+				<div style="width:50px; $divStyle "><a title="Interest till now for us(views website)">
+					Int$	</a></div>
+			</div>
+			$extra
+		</PHTML>
 	}
+
+	function backLinkCel($divstyle,$btnstyle){
+		$frm=#nodeID."Link";
+		return <PHTML>
+			<div style="width:200px; $divstyle "><a title="[CLICK] Video Title: {#var->data['title']}">
+				<form name="$frm" method="post">
+					<#msg->btnLink>
+					<input type="button" value="{#var->data['title']}" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+				</form>
+			</a></div>
+		</PHTML>
+	}
+
+	function backUserCel($divstyle,$btnstyle){
+		$frm=#nodeID."User";
+		return <PHTML>
+			<div style="width:75px; $divstyle "><a title="[CLICK] Advertisor Name: {#var->data['userName']}">
+				<form name="$frm" method="post">
+					<#msg->btnUser>
+					<input type="button" value="{#var->data['userName']}" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+				</form>
+			</a></div>
+		</PHTML>
+	}
+
+	function backIPCel($divstyle,$btnstyle){
+		$frm=#nodeID."IP";
+		return <PHTML>
+			<div style="width:30px; $divstyle "><a title="[CLICK] visit statistics">
+				<form name="$frm" method="post">
+					<#msg->btnIP>
+					<input type="button" value="Stat" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+				</form>
+			</a></div>
+		</PHTML>
+	}
+
+	function backPublisherCel($divstyle,$btnstyle){
+		$frm=#nodeID."Publisher";
+		return <PHTML>
+			<div style="width:50px; $divstyle "><a title="[CLICK] List of ublishers whom published this video">
+				<form name="$frm" method="post">
+					<#msg->btnPublisher>
+					<input type="button" value="Pubs" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+				</form>
+			</a></div>
+		</PHTML>
+	}
+
+	function backExtra(){
+		switch(#var->extra){
+			case "link":
+				return #fun->backExtraLink();
+				break;
+			case "user":
+				return #fun->backExtraUser();
+				break;
+			case "ip":
+				return #fun->backExtraIP();
+				break;
+			case "publisher":
+				return #fun->backExtraPublisher();
+				break;
+			default:
+				return " ";
+				break;
+		}
+	}
+
+	function backExtraUser(){
+		return <PHTML>
+			EXTRA User
+		</PHTML>
+	}
+
+	function backExtraLink(){
+		return <PHTML>
+			EXTRA Link
+		</PHTML>
+	}
+
+	function backExtraIP(){
+		return <PHTML>
+			EXTRA IP
+		</PHTML>
+	}
+
+	function backExtraPublisher(){
+		return <PHTML>
+			EXTRA Publisher
+		</PHTML>
+	}
+
+	/********************************
+	*	Message Handler
+	*********************************/
+
+	function onBtnLink($info){
+		#var->extra=#var->extra=="link"?" ":"link";
+	}
+
+	function onBtnUser($info){
+		#var->extra=#var->extra=="user"?" ":"user";
+	}
+
+	function onBtnIP($info){
+		#var->extra=#var->extra=="ip"?" ":"ip";
+	}
+
+	function onBtnPublisher($info){
+		#var->extra=#var->extra=="publisher"?" ":"publisher";
+	}
+

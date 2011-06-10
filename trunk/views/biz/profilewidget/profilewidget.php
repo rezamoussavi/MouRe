@@ -157,7 +157,7 @@ JSONDOCREADY;
 		}
 		$myAccFormName = $this->_fullname."myacc";
 		$html=<<<PHTMLCODE
-REZA
+
 			Balance: {$this->balance} $<br />
 			Paid: {$this->paid} $<br />
 			Re-imbursed: {$this->reimbursed} $<br />
@@ -166,8 +166,10 @@ REZA
 				<input type="hidden" name="_message" value="frame_showMyAccount" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;">
 			</form>
+		
 PHTMLCODE;
-return $html;
+
+		return $html;
 	}
 	/******************************
 	*	Functionalities

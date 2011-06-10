@@ -96,7 +96,7 @@
 	}
 
 	function backAllLink(){
-	$ret=array();
+		$ret=array();
 		query("SELECT * FROM #db->info");
 		while($row=fetch()){
 			$ret[]=$row;
