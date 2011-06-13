@@ -12,6 +12,8 @@
 	Ver:	0.5
 
 */
+require_once 'biz/videobar/videobar.php';
+require_once 'biz/userviewer/userviewer.php';
 
 class linkviewer {
 
@@ -141,11 +143,13 @@ JSONDOCREADY;
 		$remaining=$this->data['maxViews'] - $this->data['viewed'];
 		$bgcolor=$this->data['running']==0?"gray":"transparent";
 		$divStyle="height: 20px; overflow: hidden; float: left; display: inline; background-color:".$bgcolor.";";
-		$btnStyle="border:1px solid #ccc;cursor:pointer;background-color:white;";
-		$videoCel=$this->backLinkCel($divStyle,$btnStyle);
-		$userCel=$this->backUserCel($divStyle,$btnStyle);
-		$IPCel=$this->backIpCel($divStyle,$btnStyle);
-		$publisherCel=$this->backPublisherCel($divStyle,$btnStyle);
+		$btnStyle="height:100%;width:100%;border:0px;cursor:pointer;background-color:transparent;";
+		$btnAction="";
+		$divbtnStyle=$divStyle."border:1px solid #ccc;";
+		$videoCel=$this->backLinkCel($divbtnStyle,$btnStyle,$btnAction);
+		$userCel=$this->backUserCel($divbtnStyle,$btnStyle,$btnAction);
+		$IPCel=$this->backIpCel($divbtnStyle,$btnStyle,$btnAction);
+		$publisherCel=$this->backPublisherCel($divbtnStyle,$btnStyle,$btnAction);
 		$extra=$this->backExtra();
 		return <<<PHTMLCODE
 
@@ -172,56 +176,56 @@ JSONDOCREADY;
 PHTMLCODE;
 
 	}
-	function backLinkCel($divstyle,$btnstyle){
+	function backLinkCel($divstyle,$btnstyle,$btnAction){
 		$frm=$this->_fullname."Link";
 		return <<<PHTMLCODE
 
 			<div style="width:200px; $divstyle "><a title="[CLICK] Video Title: {$this->data['title']}">
 				<form name="$frm" method="post">
 					<input type="hidden" name="_message" value="frame_btnLink" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="{$this->data['title']}" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+					<input type="button" value="{$this->data['title']}" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
 				</form>
 			</a></div>
 		
 PHTMLCODE;
 
 	}
-	function backUserCel($divstyle,$btnstyle){
+	function backUserCel($divstyle,$btnstyle,$btnAction){
 		$frm=$this->_fullname."User";
 		return <<<PHTMLCODE
 
 			<div style="width:75px; $divstyle "><a title="[CLICK] Advertisor Name: {$this->data['userName']}">
 				<form name="$frm" method="post">
 					<input type="hidden" name="_message" value="frame_btnUser" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="{$this->data['userName']}" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+					<input type="button" value="{$this->data['userName']}" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
 				</form>
 			</a></div>
 		
 PHTMLCODE;
 
 	}
-	function backIPCel($divstyle,$btnstyle){
+	function backIPCel($divstyle,$btnstyle,$btnAction){
 		$frm=$this->_fullname."IP";
 		return <<<PHTMLCODE
 
 			<div style="width:30px; $divstyle "><a title="[CLICK] visit statistics">
 				<form name="$frm" method="post">
 					<input type="hidden" name="_message" value="frame_btnIP" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="Stat" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+					<input type="button" value="Stat" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
 				</form>
 			</a></div>
 		
 PHTMLCODE;
 
 	}
-	function backPublisherCel($divstyle,$btnstyle){
+	function backPublisherCel($divstyle,$btnstyle,$btnAction){
 		$frm=$this->_fullname."Publisher";
 		return <<<PHTMLCODE
 
 			<div style="width:50px; $divstyle "><a title="[CLICK] List of ublishers whom published this video">
 				<form name="$frm" method="post">
 					<input type="hidden" name="_message" value="frame_btnPublisher" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="Pubs" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+					<input type="button" value="Pubs" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
 				</form>
 			</a></div>
 		
@@ -247,18 +251,29 @@ PHTMLCODE;
 				break;
 		}
 	}
-	function backExtraUser(){
+	function backExtraLink(){
+		$x=new videobar("");
+		$x->bookInfo($this->data);
+		$x->bookMode("short");
+		$frm=$x->_backframe();
 		return <<<PHTMLCODE
 
-			EXTRA User
+			<div style="float:left;margin-left:25px;padding:5px;border: 1px dotted gray;">
+				{$frm}
+			</div>
 		
 PHTMLCODE;
 
 	}
-	function backExtraLink(){
+	function backExtraUser(){
+		$u=new userviewer("");
+		$u->bookModeUser("short",$this->data['advertisor']);
+		$frm=$u->_backframe();
 		return <<<PHTMLCODE
 
-			EXTRA Link
+			<div style="float:left;margin-left:25px;padding:5px;border: 1px dotted gray;">
+				{$frm}
+			</div>
 		
 PHTMLCODE;
 

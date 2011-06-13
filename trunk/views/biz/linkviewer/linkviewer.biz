@@ -17,6 +17,10 @@
 	data
 	extra
 
+#node
+	videobar
+	userviewer
+
 #message
 	frame->btnLink=onBtnLink
 	frame->btnUser=onBtnUser
@@ -45,11 +49,13 @@
 		$remaining=#var->data['maxViews'] - #var->data['viewed'];
 		$bgcolor=#var->data['running']==0?"gray":"transparent";
 		$divStyle="height: 20px; overflow: hidden; float: left; display: inline; background-color:".$bgcolor.";";
-		$btnStyle="border:1px solid #ccc;cursor:pointer;background-color:white;";
-		$videoCel=#fun->backLinkCel($divStyle,$btnStyle);
-		$userCel=#fun->backUserCel($divStyle,$btnStyle);
-		$IPCel=#fun->backIpCel($divStyle,$btnStyle);
-		$publisherCel=#fun->backPublisherCel($divStyle,$btnStyle);
+		$btnStyle="height:100%;width:100%;border:0px;cursor:pointer;background-color:transparent;";
+		$btnAction="";
+		$divbtnStyle=$divStyle."border:1px solid #ccc;";
+		$videoCel=#fun->backLinkCel($divbtnStyle,$btnStyle,$btnAction);
+		$userCel=#fun->backUserCel($divbtnStyle,$btnStyle,$btnAction);
+		$IPCel=#fun->backIpCel($divbtnStyle,$btnStyle,$btnAction);
+		$publisherCel=#fun->backPublisherCel($divbtnStyle,$btnStyle,$btnAction);
 		$extra=#fun->backExtra();
 		return <PHTML>
 			<div style="float:left">
@@ -74,49 +80,49 @@
 		</PHTML>
 	}
 
-	function backLinkCel($divstyle,$btnstyle){
+	function backLinkCel($divstyle,$btnstyle,$btnAction){
 		$frm=#nodeID."Link";
 		return <PHTML>
 			<div style="width:200px; $divstyle "><a title="[CLICK] Video Title: {#var->data['title']}">
 				<form name="$frm" method="post">
 					<#msg->btnLink>
-					<input type="button" value="{#var->data['title']}" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+					<input type="button" value="{#var->data['title']}" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
 				</form>
 			</a></div>
 		</PHTML>
 	}
 
-	function backUserCel($divstyle,$btnstyle){
+	function backUserCel($divstyle,$btnstyle,$btnAction){
 		$frm=#nodeID."User";
 		return <PHTML>
 			<div style="width:75px; $divstyle "><a title="[CLICK] Advertisor Name: {#var->data['userName']}">
 				<form name="$frm" method="post">
 					<#msg->btnUser>
-					<input type="button" value="{#var->data['userName']}" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+					<input type="button" value="{#var->data['userName']}" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
 				</form>
 			</a></div>
 		</PHTML>
 	}
 
-	function backIPCel($divstyle,$btnstyle){
+	function backIPCel($divstyle,$btnstyle,$btnAction){
 		$frm=#nodeID."IP";
 		return <PHTML>
 			<div style="width:30px; $divstyle "><a title="[CLICK] visit statistics">
 				<form name="$frm" method="post">
 					<#msg->btnIP>
-					<input type="button" value="Stat" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+					<input type="button" value="Stat" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
 				</form>
 			</a></div>
 		</PHTML>
 	}
 
-	function backPublisherCel($divstyle,$btnstyle){
+	function backPublisherCel($divstyle,$btnstyle,$btnAction){
 		$frm=#nodeID."Publisher";
 		return <PHTML>
 			<div style="width:50px; $divstyle "><a title="[CLICK] List of ublishers whom published this video">
 				<form name="$frm" method="post">
 					<#msg->btnPublisher>
-					<input type="button" value="Pubs" onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+					<input type="button" value="Pubs" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
 				</form>
 			</a></div>
 		</PHTML>
@@ -142,15 +148,26 @@
 		}
 	}
 
-	function backExtraUser(){
+	function backExtraLink(){
+		$x=new videobar("");
+		$x->bookInfo(#var->data);
+		$x->bookMode("short");
+		$frm=$x->_backframe();
 		return <PHTML>
-			EXTRA User
+			<div style="float:left;margin-left:25px;padding:5px;border: 1px dotted gray;">
+				{$frm}
+			</div>
 		</PHTML>
 	}
 
-	function backExtraLink(){
+	function backExtraUser(){
+		$u=new userviewer("");
+		$u->bookModeUser("short",#var->data['advertisor']);
+		$frm=$u->_backframe();
 		return <PHTML>
-			EXTRA Link
+			<div style="float:left;margin-left:25px;padding:5px;border: 1px dotted gray;">
+				{$frm}
+			</div>
 		</PHTML>
 	}
 

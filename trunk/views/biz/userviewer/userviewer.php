@@ -98,7 +98,10 @@ class userviewer {
 				$_style='';
 				break;
 			case 'frmBar':
-				$_style=' style="" ';
+				$_style='';
+				break;
+			case 'frmShort':
+				$_style='';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -171,6 +174,19 @@ PHTMLCODE;
 		}
 		return $html."<br />";
 	}
+	function frmShort(){
+		return <<<PHTMLCODE
+
+			<br /><div style="height:20px;float:left;overflow: hidden;width:100px;display:inline;">{$this->userData['email']}</div>
+			<div style="height:20px;background-color:#eebbee;float:left;overflow: hidden;width:100px;display:inline;">{$this->userData['userName']}</div>
+			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{$this->userData['Address']}</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">{$this->userData['balance']}</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">Intr</div><br />
+			<br />
+		
+PHTMLCODE;
+
+	}
 	/*****************************
 	*	Functionalities
 	*****************************/
@@ -179,6 +195,9 @@ PHTMLCODE;
 		switch($mode){
 			case "bar":
 				$this->_bookframe("frmBar");
+				break;
+			case "short":
+				$this->_bookframe("frmShort");
 				break;
 			default:
 				$this->_bookframe("frm");

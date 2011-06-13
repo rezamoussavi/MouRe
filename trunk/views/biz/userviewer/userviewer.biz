@@ -1,14 +1,19 @@
 #comments
 	Author:	Reza Moussavi
-	Date:	5/31/2011
+	Date:	6/13/2011
 	Ver:	1.0
+	----------------------
+	Author:	Reza Moussavi
+	Date:	5/31/2011
+	Ver:	0.5
 
 #biz
 	userviewer
 
 #frame
 	frm
-	frmBar()
+	frmBar
+	frmShort
 
 #var
 	userData
@@ -74,6 +79,17 @@
 		return $html."<br />";
 	}
 
+	function frmShort(){
+		return <PHTML>
+			<br /><div style="height:20px;float:left;overflow: hidden;width:100px;display:inline;">{#var->userData['email']}</div>
+			<div style="height:20px;background-color:#eebbee;float:left;overflow: hidden;width:100px;display:inline;">{#var->userData['userName']}</div>
+			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{#var->userData['Address']}</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">{#var->userData['balance']}</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">Intr</div><br />
+			<br />
+		</PHTML>
+	}
+
 	/*****************************
 	*	Functionalities
 	*****************************/
@@ -83,6 +99,9 @@
 		switch($mode){
 			case "bar":
 				_bookframe(#frm->frmBar);
+				break;
+			case "short":
+				_bookframe(#frm->frmShort);
 				break;
 			default:
 				_bookframe(#frm->frm);
