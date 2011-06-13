@@ -19,7 +19,7 @@
 
 #node
 	videobar
-	userviewer
+	user, userviewer
 
 #message
 	frame->btnLink=onBtnLink
@@ -154,18 +154,19 @@
 		$x->bookMode("short");
 		$frm=$x->_backframe();
 		return <PHTML>
-			<div style="float:left;margin-left:25px;padding:5px;border: 1px dotted gray;">
+			<div style="float:left;margin-left:25px;margin-bottom:10px;margin-top:5px;padding:5px;border: 1px dotted gray;">
 				{$frm}
 			</div>
 		</PHTML>
 	}
 
 	function backExtraUser(){
-		$u=new userviewer("");
-		$u->bookModeUser("short",#var->data['advertisor']);
-		$frm=$u->_backframe();
+		$u=new user("");
+		$uv=new userviewer("");
+		$uv->bookModeUser("short",$u->backUserData(#var->data['advertisor']));
+		$frm=$uv->_backframe();
 		return <PHTML>
-			<div style="float:left;margin-left:25px;padding:5px;border: 1px dotted gray;">
+			<div style="float:left;margin-left:25px;margin-bottom:10px;margin-top:5px;padding:5px;border: 1px dotted gray;"> 
 				{$frm}
 			</div>
 		</PHTML>

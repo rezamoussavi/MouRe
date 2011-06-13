@@ -13,6 +13,7 @@
 
 */
 require_once 'biz/videobar/videobar.php';
+require_once 'biz/user/user.php';
 require_once 'biz/userviewer/userviewer.php';
 
 class linkviewer {
@@ -258,7 +259,7 @@ PHTMLCODE;
 		$frm=$x->_backframe();
 		return <<<PHTMLCODE
 
-			<div style="float:left;margin-left:25px;padding:5px;border: 1px dotted gray;">
+			<div style="float:left;margin-left:25px;margin-bottom:10px;margin-top:5px;padding:5px;border: 1px dotted gray;">
 				{$frm}
 			</div>
 		
@@ -266,12 +267,13 @@ PHTMLCODE;
 
 	}
 	function backExtraUser(){
-		$u=new userviewer("");
-		$u->bookModeUser("short",$this->data['advertisor']);
-		$frm=$u->_backframe();
+		$u=new user("");
+		$uv=new userviewer("");
+		$uv->bookModeUser("short",$u->backUserData($this->data['advertisor']));
+		$frm=$uv->_backframe();
 		return <<<PHTMLCODE
 
-			<div style="float:left;margin-left:25px;padding:5px;border: 1px dotted gray;">
+			<div style="float:left;margin-left:25px;margin-bottom:10px;margin-top:5px;padding:5px;border: 1px dotted gray;"> 
 				{$frm}
 			</div>
 		
