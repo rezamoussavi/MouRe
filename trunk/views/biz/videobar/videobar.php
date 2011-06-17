@@ -4,8 +4,12 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
+	Date:	6/13/2011
+	Ver:	1.0
+	----------------------
+	Author:	Reza Moussavi
 	Date:	5/1/2011
-	Ver:		0.1
+	Ver:	0.1
 
 */
 require_once 'biz/scriptviewer/scriptviewer.php';
@@ -35,6 +39,8 @@ class videobar {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['frame_getLink'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -68,6 +74,12 @@ class videobar {
 		switch($message){
 			case 'frame_getLink':
 				$this->onGetLink($info);
+				break;
+			case 'user_login':
+				$this->onLoginStatusChanged($info);
+				break;
+			case 'user_logout':
+				$this->onLoginStatusChanged($info);
 				break;
 			default:
 				break;
@@ -218,9 +230,12 @@ PHTMLCODE;
 	/******************************************
 	*		Message Handlers
 	******************************************/
-	function onGetLink(){
+	function onGetLink($info){
 		$this->showScript=!$this->showScript;
 		$this->_bookframe($this->_curFrame);
+	}
+	function onLoginStatusChanged($info){
+		$this->generateScript();
 	}
 	/******************************************
 	*		Functionalities
@@ -245,7 +260,10 @@ PHTMLCODE;
 	}
 	function bookInfo($data){
 		$this->data=$data;
-		$this->scv->generateScript($data['adUID']);
+		$this->generateScript();
+	}
+	function generateScript(){
+		$this->scv->generateScript($this->data);
 	}
 
 }

@@ -9,6 +9,9 @@
 #var
 	script="[!]"
 
+#node
+	publink
+
 #JavaScript
 	function Do_Copy(txt){
 		if (window.clipboardData) {
@@ -24,13 +27,13 @@
 
 #phpfunction
 
-	function generateScript($adLinkID){
-		$user=osBackUser();
-		$userID=$user['userUID'];
-		if($userID<1){
-			#var->script="Generating data (".$adLinkID.") failed! - LOGIN first ";
+	function generateScript($adLinkData){
+		$pl=new publink("");
+		$code=$pl->generateScript($adLinkData);
+		if($code!=0){
+			#var->script="http://sam-rad.com/v?id=$code";
 		}else{
-			#var->script="Generating data (".$adLinkID.") not accomplished! for user (".$userID." : ".$user['email'].") ";
+			#var->script="LOGIN first!";
 		}
 	}
 

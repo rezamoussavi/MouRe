@@ -127,7 +127,7 @@ JSONDOCREADY;
 	function frm(){
 		$VBars="";
 		foreach($this->VBars as $vb){
-			$VBars.=$vb->_backframe()."<hr>";
+			$VBars.="<div style='float:left;border:1px dotted gray;margin:5px;padding:5px;background-color:#F5F5FF;' >".$vb->_backframe()."</div>";
 		}
 		return <<<PHTMLCODE
 

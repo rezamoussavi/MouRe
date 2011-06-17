@@ -5,7 +5,7 @@
 
 	Author:	Reza Moussavi
 	Date:	5/12/2011
-	Ver:		0.1
+	Ver:	0.1
 
 */
 
@@ -68,7 +68,26 @@ class publink {
 //########################################
 
 
-	function addLink(){
+	function generateScript($adLinkData){
+		$userID=osBackUserID();
+		$code=0;
+		if(osUserLogedin()){
+			/* User is logedin */
+			query("SELECT * FROM publink_info WHERE adLinkUID=".$adLinkData['adUID']." AND publisher=$userID");
+			$code="!";
+			if($row=fetch()){
+				/* pubLink exist */
+				$code=$row['pubUID'];
+			}else{
+				/* pubLink does not exist */
+				$PPV=$adLinkData['AOPV']*$adLinkData['APRate'];
+				$q="INSERT INTO publink_info(adLinkUID,publisher,totalView,AOPV,PPV) ";
+				$q.="VALUES('".$adLinkData['adUID']."','$userID','0','".$adLinkData['AOPV']."','$PPV')";
+				query($q);
+				$code=mysql_insert_id();
+			}
+		}
+		return $code;
 	}
 
 }

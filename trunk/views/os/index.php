@@ -30,13 +30,22 @@
 		unset($_SESSION['user']);
 		$_GET=array();
 	}
+	/*
+	*	MODE: regdb
+	*/
 	if(isset($_GET['regdb'])){
 		$bizdb=$_GET['regdb'];
 		require_once "biz/".$bizdb."/".$bizdb.".sql";
 		bizsql();
 		echo 'ok';
+	/*
+	*	MODE: log
+	*/
 	}elseif(isset($_GET['log'])){
 		showLogPage();
+	/*
+	*	MODE: normal
+	*/
 	}else{
 		if(!isset($_SESSION['user'])){
 			$_SESSION['user']=array();
@@ -92,18 +101,17 @@ JQUERY;
 		}
 
 		foreach($_SESSION['osNodes'] as $node){
-		//	if(isset($node['sleep'])){
-		//		if(!$node['sleep']){
-					if(isset($node['node'])){
-						if(is_object($node['node'])){
-							if($msgMode){
-								$node['node']->show(true);
-							}
-							$node['node']->gotoSleep();
-						}
+			if(isset($node['node'])){
+				if(is_object($node['node'])){
+					if($msgMode){
+						$node['node']->show(true);
 					}
-		//		}
-		//	}
+					$node['node']->gotoSleep();
+				}
+			}
 		}
 	}
+	/*
+	*	END OF MODE: normal
+	*/
 ?>

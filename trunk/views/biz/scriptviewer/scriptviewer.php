@@ -8,6 +8,7 @@
 	Ver:	0.1
 
 */
+require_once 'biz/publink/publink.php';
 
 class scriptviewer {
 
@@ -107,13 +108,13 @@ JSONDOCREADY;
 //########################################
 
 
-	function generateScript($adLinkID){
-		$user=osBackUser();
-		$userID=$user['userUID'];
-		if($userID<1){
-			$this->script="Generating data (".$adLinkID.") failed! - LOGIN first ";
+	function generateScript($adLinkData){
+		$pl=new publink("");
+		$code=$pl->generateScript($adLinkData);
+		if($code!=0){
+			$this->script="http://www.sam-rad.com/api.php?biz=publink&id=$code";
 		}else{
-			$this->script="Generating data (".$adLinkID.") not accomplished! for user (".$userID." : ".$user['email'].") ";
+			$this->script="LOGIN first!";
 		}
 	}
 	function frm(){

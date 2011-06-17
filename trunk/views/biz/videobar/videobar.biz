@@ -25,6 +25,8 @@
 
 #message
 	frame->getLink=onGetLink
+	user->login=onLoginStatusChanged
+	user->logout=onLoginStatusChanged
 
 #phpfunction
 
@@ -120,9 +122,13 @@
 	*		Message Handlers
 	******************************************/
 
-	function onGetLink(){
+	function onGetLink($info){
 		#var->showScript=!#var->showScript;
 		_bookframe(#var->_curFrame);
+	}
+
+	function onLoginStatusChanged($info){
+		#fun->generateScript();
 	}
 
 	/******************************************
@@ -150,5 +156,9 @@
 
 	function bookInfo($data){
 		#var->data=$data;
-		#node->scv->generateScript($data['adUID']);
+		#fun->generateScript();
+	}
+
+	function generateScript(){
+		#node->scv->generateScript(#var->data);
 	}

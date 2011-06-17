@@ -4,8 +4,12 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
-	Date:	5/31/2011
+	Date:	6/13/2011
 	Ver:	1.0
+	----------------------
+	Author:	Reza Moussavi
+	Date:	5/31/2011
+	Ver:	0.5
 
 */
 require_once 'biz/videolistviewer/videolistviewer.php';
