@@ -79,14 +79,6 @@ class scriptviewer {
 		}
 		$html='<script type="text/javascript" language="Javascript">';
 		$html.=<<<JAVASCRIPT
-	function Do_Copy(txt){
-		if (window.clipboardData) {
-			window.clipboardData.setData("Text",txt);
-			alert('The text is copied to your clipboard...');
-		}else{
-			alert('The text is NOT copied to your clipboard...');
-		}
-	} 
 
 JAVASCRIPT;
 		$html.=<<<JSONDOCREADY
@@ -121,9 +113,8 @@ JSONDOCREADY;
 		return <<<PHTMLCODE
 
 			<textarea id="codetopublish{$this->_fullname}" rows="5" cols="75">{$this->script}</textarea>
-			<br><input type="button" value="Copy" onclick='JavaScript:Do_Copy("{$this->script}")'>
 			<br><b>Instruction:</b><br>
-			Press Copy button or copy content in the text area and paste it in your weblog/website
+			Copy content in the text area and paste it in your weblog/website
 		
 PHTMLCODE;
 

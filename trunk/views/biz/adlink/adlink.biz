@@ -83,6 +83,11 @@
 				$q="SELECT * FROM #db->info WHERE advertisor=".$userID;
 				query($q);
 				break;
+			case "mypub":
+				//$q="SELECT * FROM #db->info WHERE adUID IN(SELECT distinct adlinkUID from publink_info where publisher=".$userID." and totalView>0)";
+				$q="SELECT * FROM #db->info as al,publink_info as pl WHERE al.adUID=pl.adlinkUID AND pl.publisher=".$userID." and pl.totalView>0";
+				query($q);
+				break;
 		}
 		while($row=fetch())	{$vl[]=$row;}
 		return $vl;

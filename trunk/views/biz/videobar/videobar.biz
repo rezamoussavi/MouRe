@@ -43,6 +43,7 @@
 		$scv=(#var->showScript)?#node->scv->_backframe():" ";
 		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
 		$EPV=#var->data['AOPV']*#var->data['APRate'];
+		$Title=htmlspecialchars(#var->data['title'], ENT_QUOTES);
 		return <PHTML>
 		<div style="width:650px;height:120;">
 			<div style="float:left;height:120px;width:150px;text-align:left;">
@@ -52,7 +53,7 @@
 				<br><font size=2>viewd {#var->data['viewed']} of {#var->data['maxViews']}</font>
 			</div>
 			<div style="float:left;height:120px;width:400px;align:right;">
-				{#var->data['title']}<br>
+				{$Title}<br>
 				Last Date : {#var->data['lastDate']}
 				<br>Earn/View : {$EPV}
 			</div>
@@ -61,18 +62,46 @@
 					<input type="button" value="$btnCaption" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
 					<#msg->getLink>
 				</form>
-			</div><br>
+			</div>
 		</div>
-		<br>
 			$scv
 		</PHTML>
 	}
 
 	function frmMyPub(){
-		return "[ Video Bar! MyPub]";
+		$frmName=#nodeID.#var->data['adUID'];
+		$AOPV=#var->data['AOPV'];
+		$APRate=#var->data['APRate'];
+		$EPV=$AOPV*$APRate;
+		$VN=#var->data['viewed'];
+		$RM=#var->data['maxViews']-$VN;
+		$SD=#var->data['startDate'];
+		$LD=#var->data['lastDate'];
+		$UVN=#var->data['totalView'];
+		$UE=$UVN*$EPV;
+		return <PHTML>
+		<div style="width:650px;height:100;">
+			<div style="float:left;height:100px;width:150px;text-align:left;">
+				<a href="{#var->data['link']}" target="_blank">
+					<img src="{#var->data['img']}" />
+				</a>
+			</div>
+			<div style="float:left;height:100px;width:300px;align:right;">
+				Earn Per View : {$EPV}<br />
+				Viewed: $VN<br />
+				Remaining: $RM<br />
+				StartDate:$SD - Last Date : $LD
+			</div>
+			<div style="float:left;height:75px;width:150px;text-align:left;border:1px solid #FFFFFF;margin:5px;padding:5px;background-color:#E0E0FF;">
+				Viewed by you: $UVN<br />
+				You earned: $UE<br />
+			</div>
+		</div>
+		</PHTML>
 	}
 
 	function frmShort(){
+		$Title=htmlspecialchars(#var->data['title'], ENT_QUOTES);
 		return <PHTML>
 		<div style="width:650px;height:120;">
 			<div style="float:left;height:120px;width:150px;text-align:left;">
@@ -81,7 +110,7 @@
 				</a>
 			</div>
 			<div style="float:left;height:120px;width:400px;align:right;">
-				Title : {#var->data['title']}
+				Title : {$Title}
 			</div>
 		</div>
 		</PHTML>
@@ -94,20 +123,20 @@
 		$TV=#var->data['maxViews'];
 		$RM=$TV-$VN;
 		return <PHTML>
-		<div style="width:650px;height:120;">
+		<div style="width:650px;height:100;">
 			<div style="float:left;height:120px;width:150px;text-align:left;">
 				<a href="{#var->data['link']}" target="_blank">
 					<img src="{#var->data['img']}" />
 				</a>
 			</div>
-			<div style="float:left;height:120px;width:400px;align:right;">
+			<div style="float:left;height:100px;width:400px;align:right;">
 				Total Paid: {#var->data['paid']} - Pay Per View : {$AOPV}
 				<br>Viewed: $VN
 				<br>Remaining: $RM
 				<br>Total: $TV
 				<br>StartDate:{#var->data['startDate']} - Last Date : {#var->data['lastDate']}
 			</div>
-			<div style="float:left;height:120px;width:100px;text-align:right;">
+			<div style="float:left;height:100px;width:100px;text-align:right;">
 				<form id="$frmName" method="post" style="display:inline;">
 					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
 					<#msg->stop>

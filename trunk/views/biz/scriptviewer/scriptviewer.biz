@@ -12,16 +12,6 @@
 #node
 	publink
 
-#JavaScript
-	function Do_Copy(txt){
-		if (window.clipboardData) {
-			window.clipboardData.setData("Text",txt);
-			alert('The text is copied to your clipboard...');
-		}else{
-			alert('The text is NOT copied to your clipboard...');
-		}
-	} 
-
 #frame
 	frm
 
@@ -40,8 +30,7 @@
 	function frm(){
 		return <PHTML>
 			<textarea id="codetopublish{#nodeID}" rows="5" cols="75">{#var->script}</textarea>
-			<br><input type="button" value="Copy" onclick='JavaScript:Do_Copy("{#var->script}")'>
 			<br><b>Instruction:</b><br>
-			Press Copy button or copy content in the text area and paste it in your weblog/website
+			Copy content in the text area and paste it in your weblog/website
 		</PHTML>
 	}

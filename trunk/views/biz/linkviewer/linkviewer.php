@@ -101,7 +101,7 @@ class linkviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' style="float:left;width:700px;" ';
+				$_style=' style="float:left;width:750px;margin:5px;padding:5px;border:1px solid #A0FFA0;background-color:#F0FFF0;" ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -143,7 +143,7 @@ JSONDOCREADY;
 	function frm(){
 		$remaining=$this->data['maxViews'] - $this->data['viewed'];
 		$bgcolor=$this->data['running']==0?"gray":"transparent";
-		$divStyle="height: 20px; overflow: hidden; float: left; display: inline; background-color:".$bgcolor.";";
+		$divStyle="padding:1px;margin:1px;height: 22px; overflow: hidden; float: left; display: inline; background-color:".$bgcolor.";";
 		$btnStyle="height:100%;width:100%;border:0px;cursor:pointer;background-color:transparent;";
 		$btnAction="";
 		$divbtnStyle=$divStyle."border:1px solid #ccc;";
@@ -179,12 +179,13 @@ PHTMLCODE;
 	}
 	function backLinkCel($divstyle,$btnstyle,$btnAction){
 		$frm=$this->_fullname."Link";
+		$Title=htmlspecialchars($this->data['title'], ENT_QUOTES);
 		return <<<PHTMLCODE
 
-			<div style="width:200px; $divstyle "><a title="[CLICK] Video Title: {$this->data['title']}">
+			<div style="width:200px; $divstyle "><a title="[CLICK] Video Title: {$Title}">
 				<form name="$frm" method="post">
 					<input type="hidden" name="_message" value="frame_btnLink" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="{$this->data['title']}" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
+					<input type="button" value="{$Title}" $btnAction onclick='javascript:sndmsg("{$frm}")' style="$btnstyle" />
 				</form>
 			</a></div>
 		
@@ -289,12 +290,16 @@ PHTMLCODE;
 
 	}
 	function backExtraPublisher(){
-		return <<<PHTMLCODE
-
-			EXTRA Publisher
-		
-PHTMLCODE;
-
+		query("SELECT * FROM publink_info as pl, user_info as u WHERE u.userUID=pl.publisher AND pl.totalView>0 AND pl.adLinkUID=".$this->data['adUID']);
+		$html="";
+		while($row=fetch()){
+			$u=new userviewer("");
+			$u->bookModeUser("short",$row);
+			$html.=$u->_backframe();
+		}
+		if($html=="")
+			$html="EMPTY!";
+		return $html;
 	}
 	/********************************
 	*	Message Handler

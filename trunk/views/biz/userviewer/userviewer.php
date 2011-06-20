@@ -102,10 +102,10 @@ class userviewer {
 				$_style='';
 				break;
 			case 'frmBar':
-				$_style='';
+				$_style=' style="float:left;width:700px;border:1px solid #0000FF;background-color:#EFEFFF;margin:5px;padding:5px;" ';
 				break;
 			case 'frmShort':
-				$_style='';
+				$_style=' style="float:left;width:300px;border:1px dotted #E0E0FF;background-color:#EFEFFF;margin:5px;padding:5px;" ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';

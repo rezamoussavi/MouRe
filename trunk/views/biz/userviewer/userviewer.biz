@@ -12,8 +12,8 @@
 
 #frame
 	frm
-	frmBar
-	frmShort
+	frmBar(float:left;width:700px;border:1px solid #0000FF;background-color:#EFEFFF;margin:5px;padding:5px;)
+	frmShort(float:left;width:300px;border:1px dotted #E0E0FF;background-color:#EFEFFF;margin:5px;padding:5px;)
 
 #var
 	userData

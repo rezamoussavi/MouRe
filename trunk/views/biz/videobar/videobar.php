@@ -147,6 +147,7 @@ JSONDOCREADY;
 		$scv=($this->showScript)?$this->scv->_backframe():" ";
 		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
 		$EPV=$this->data['AOPV']*$this->data['APRate'];
+		$Title=htmlspecialchars($this->data['title'], ENT_QUOTES);
 		return <<<PHTMLCODE
 
 		<div style="width:650px;height:120;">
@@ -157,7 +158,7 @@ JSONDOCREADY;
 				<br><font size=2>viewd {$this->data['viewed']} of {$this->data['maxViews']}</font>
 			</div>
 			<div style="float:left;height:120px;width:400px;align:right;">
-				{$this->data['title']}<br>
+				{$Title}<br>
 				Last Date : {$this->data['lastDate']}
 				<br>Earn/View : {$EPV}
 			</div>
@@ -166,18 +167,49 @@ JSONDOCREADY;
 					<input type="button" value="$btnCaption" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
 					<input type="hidden" name="_message" value="frame_getLink" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				</form>
-			</div><br>
+			</div>
 		</div>
-		<br>
 			$scv
 		
 PHTMLCODE;
 
 	}
 	function frmMyPub(){
-		return "[ Video Bar! MyPub]";
+		$frmName=$this->_fullname.$this->data['adUID'];
+		$AOPV=$this->data['AOPV'];
+		$APRate=$this->data['APRate'];
+		$EPV=$AOPV*$APRate;
+		$VN=$this->data['viewed'];
+		$RM=$this->data['maxViews']-$VN;
+		$SD=$this->data['startDate'];
+		$LD=$this->data['lastDate'];
+		$UVN=$this->data['totalView'];
+		$UE=$UVN*$EPV;
+		return <<<PHTMLCODE
+
+		<div style="width:650px;height:100;">
+			<div style="float:left;height:100px;width:150px;text-align:left;">
+				<a href="{$this->data['link']}" target="_blank">
+					<img src="{$this->data['img']}" />
+				</a>
+			</div>
+			<div style="float:left;height:100px;width:300px;align:right;">
+				Earn Per View : {$EPV}<br />
+				Viewed: $VN<br />
+				Remaining: $RM<br />
+				StartDate:$SD - Last Date : $LD
+			</div>
+			<div style="float:left;height:75px;width:150px;text-align:left;border:1px solid #FFFFFF;margin:5px;padding:5px;background-color:#E0E0FF;">
+				Viewed by you: $UVN<br />
+				You earned: $UE<br />
+			</div>
+		</div>
+		
+PHTMLCODE;
+
 	}
 	function frmShort(){
+		$Title=htmlspecialchars($this->data['title'], ENT_QUOTES);
 		return <<<PHTMLCODE
 
 		<div style="width:650px;height:120;">
@@ -187,7 +219,7 @@ PHTMLCODE;
 				</a>
 			</div>
 			<div style="float:left;height:120px;width:400px;align:right;">
-				Title : {$this->data['title']}
+				Title : {$Title}
 			</div>
 		</div>
 		
@@ -202,20 +234,20 @@ PHTMLCODE;
 		$RM=$TV-$VN;
 		return <<<PHTMLCODE
 
-		<div style="width:650px;height:120;">
+		<div style="width:650px;height:100;">
 			<div style="float:left;height:120px;width:150px;text-align:left;">
 				<a href="{$this->data['link']}" target="_blank">
 					<img src="{$this->data['img']}" />
 				</a>
 			</div>
-			<div style="float:left;height:120px;width:400px;align:right;">
+			<div style="float:left;height:100px;width:400px;align:right;">
 				Total Paid: {$this->data['paid']} - Pay Per View : {$AOPV}
 				<br>Viewed: $VN
 				<br>Remaining: $RM
 				<br>Total: $TV
 				<br>StartDate:{$this->data['startDate']} - Last Date : {$this->data['lastDate']}
 			</div>
-			<div style="float:left;height:120px;width:100px;text-align:right;">
+			<div style="float:left;height:100px;width:100px;text-align:right;">
 				<form id="$frmName" method="post" style="display:inline;">
 					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
 					<input type="hidden" name="_message" value="frame_stop" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
