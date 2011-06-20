@@ -88,7 +88,7 @@ class linklistviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frmList':
-				$_style=' style="" ';
+				$_style='';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';

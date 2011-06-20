@@ -20,7 +20,7 @@
 		}else{
 			alert('The text is NOT copied to your clipboard...');
 		}
-	}
+	} 
 
 #frame
 	frm
@@ -31,7 +31,7 @@
 		$pl=new publink("");
 		$code=$pl->generateScript($adLinkData);
 		if($code!=0){
-			#var->script="http://sam-rad.com/v?id=$code";
+			#var->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".$adLinkData['videoCode']."?version=3&width=770&height=550&link=".$code."' WIDTH='700' HEIGHT='500' allowfullscreen='true'/>";
 		}else{
 			#var->script="LOGIN first!";
 		}
@@ -39,7 +39,7 @@
 
 	function frm(){
 		return <PHTML>
-			<textarea id="codetopublish{#nodeID}" rows="5" cols="45">{#var->script}</textarea>
+			<textarea id="codetopublish{#nodeID}" rows="5" cols="75">{#var->script}</textarea>
 			<br><input type="button" value="Copy" onclick='JavaScript:Do_Copy("{#var->script}")'>
 			<br><b>Instruction:</b><br>
 			Press Copy button or copy content in the text area and paste it in your weblog/website

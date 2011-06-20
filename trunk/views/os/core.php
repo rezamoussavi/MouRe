@@ -27,7 +27,9 @@
 	}
 	function query($s){
 		global $osdbcon,$_result;
-		$_result= $osdbcon? mysql_query($s,$osdbcon):false;
+		if(!($_result= $osdbcon? mysql_query($s,$osdbcon):false)){
+			osLog("os","query()","calling mysql_query() <b><font color=red>ERROR</font><br />Query:</b><br />".$s);
+		}
 		return $_result;
 	}
 	function fetch(){

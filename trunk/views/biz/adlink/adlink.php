@@ -97,8 +97,9 @@ class adlink {
 	function bookLink($info){
 		$img=$this->backYImg($info['link']);
 		$embed=$this->backYEmbed($info['link']);
-		$q="INSERT INTO adlink_info (advertisor,title,running,lastDate,startDate,link,img,embed,maxViews,AOPV,paid,APRate,minLifeTime,minCancelTime)";
-		$q.=" VALUES({$info['advertisor']},'{$info['title']}',{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
+		$videoCode=$this->backYCode($info['link']);
+		$q="INSERT INTO adlink_info (advertisor,title,running,lastDate,startDate,videoCode,link,img,embed,maxViews,AOPV,paid,APRate,minLifeTime,minCancelTime)";
+		$q.=" VALUES({$info['advertisor']},'{$info['title']}',{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$videoCode}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
 		query($q);
 	}
 	/************************************************

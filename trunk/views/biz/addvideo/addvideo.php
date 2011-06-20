@@ -6,7 +6,7 @@
 	Author:	Reza Moussavi
 	Date:	4/27/2011
 	Ver:		1.0
-	------------------------------------
+	-----------------------
 	Author:	Reza Moussavi
 	Date:	4/21/2011
 	Ver:		0.1
@@ -39,6 +39,8 @@ class addvideo {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['frame_addVideo'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -68,6 +70,12 @@ class addvideo {
 		switch($message){
 			case 'frame_addVideo':
 				$this->onAddVideo($info);
+				break;
+			case 'user_login':
+				$this->onLoginStatusChange($info);
+				break;
+			case 'user_logout':
+				$this->onLoginStatusChange($info);
 				break;
 			default:
 				break;
@@ -164,6 +172,9 @@ PHTMLCODE;
 	/*************************************************
 	*		MESSAGES
 	*************************************************/
+	function onLoginStatusChange($info){
+		//REFRESH AUTOMATICALLY
+	}
 	function onAddVideo($info){
 		$of=$this->offer->backInfo();
 		$e="";
@@ -179,8 +190,7 @@ PHTMLCODE;
 		if(strlen($e)<2){// NO ERROR
 			$al=new adlink("");
 			$data=array();
-			$user=osBackUser();
-			$data['advertisor']=$user['UID'];
+			$data['advertisor']=osBackUserID();
 			$data['running']=1;
 			$data['lastDate']="";
 			$data['startDate']="";

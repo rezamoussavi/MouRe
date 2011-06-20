@@ -86,7 +86,7 @@ class scriptviewer {
 		}else{
 			alert('The text is NOT copied to your clipboard...');
 		}
-	}
+	} 
 
 JAVASCRIPT;
 		$html.=<<<JSONDOCREADY
@@ -112,7 +112,7 @@ JSONDOCREADY;
 		$pl=new publink("");
 		$code=$pl->generateScript($adLinkData);
 		if($code!=0){
-			$this->script="http://www.sam-rad.com/api.php?biz=publink&id=$code";
+			$this->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".$adLinkData['videoCode']."?version=3&width=770&height=550&link=".$code."' WIDTH='700' HEIGHT='500' allowfullscreen='true'/>";
 		}else{
 			$this->script="LOGIN first!";
 		}
@@ -120,7 +120,7 @@ JSONDOCREADY;
 	function frm(){
 		return <<<PHTMLCODE
 
-			<textarea id="codetopublish{$this->_fullname}" rows="5" cols="45">{$this->script}</textarea>
+			<textarea id="codetopublish{$this->_fullname}" rows="5" cols="75">{$this->script}</textarea>
 			<br><input type="button" value="Copy" onclick='JavaScript:Do_Copy("{$this->script}")'>
 			<br><b>Instruction:</b><br>
 			Press Copy button or copy content in the text area and paste it in your weblog/website

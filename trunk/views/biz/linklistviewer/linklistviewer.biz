@@ -11,7 +11,7 @@
 	linkviewer links[]
 
 #frame
-	frmList()
+	frmList
 
 #message
 	user->logout=onLogout

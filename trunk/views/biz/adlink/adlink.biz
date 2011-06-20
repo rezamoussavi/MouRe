@@ -11,7 +11,7 @@
 	adlink
 
 #db
-	info ('adUID' INT(11) NOT NULL AUTO_INCREMENT; 'title' VARCHAR(255) NULL; 'advertisor' INT(11) NOT NULL; 'running' TINYINT(4) NOT NULL; 'lastDate' VARCHAR(10) NULL; 'startDate' VARCHAR(10) NOT NULL; 'link' VARCHAR(255) NOT NULL;'img' VARCHAR(255) NOT NULL; 'embed' VARCHAR(255) NOT NULL; 'maxViews' INT(11) NOT NULL; 'viewed' INT(11) NOT NULL; 'AOPV' FLOAT NOT NULL; 'paid' FLOAT NOT NULL; 'reimbursed' INT(11) NOT NULL; 'APRate' FLOAT NOT NULL; 'minLifeTime' INT(11) NOT NULL; 'minCancelTime' INT(11) NOT NULL; PRIMARY KEY ('adUID'))
+	info ('adUID' INT(11) NOT NULL AUTO_INCREMENT; 'title' VARCHAR(255) NULL; 'advertisor' INT(11) NOT NULL; 'running' TINYINT(4) NOT NULL; 'lastDate' VARCHAR(10) NULL; 'startDate' VARCHAR(10) NOT NULL; 'videoCode' VARCHAR(50) NOT NULL; 'link' VARCHAR(255) NOT NULL;'img' VARCHAR(255) NOT NULL; 'embed' VARCHAR(255) NOT NULL; 'maxViews' INT(11) NOT NULL; 'viewed' INT(11) NOT NULL; 'AOPV' FLOAT NOT NULL; 'paid' FLOAT NOT NULL; 'reimbursed' INT(11) NOT NULL; 'APRate' FLOAT NOT NULL; 'minLifeTime' INT(11) NOT NULL; 'minCancelTime' INT(11) NOT NULL; PRIMARY KEY ('adUID'))
 #db-comment
 	adUID INT
 	advertisor INT as 'userUID'
@@ -19,6 +19,7 @@
 	running TINYINT 
 	lastDate VARCHAR(8)
 	startDate VARCHAR(8)
+	videoCode VARCHAR(50)
 	link VARCHAR(255)
 	img VARCHAR(255)
 	embed VARCHAR(255)
@@ -62,8 +63,9 @@
 	function bookLink($info){
 		$img=#fun->backYImg($info['link']);
 		$embed=#fun->backYEmbed($info['link']);
-		$q="INSERT INTO #db->info (advertisor,title,running,lastDate,startDate,link,img,embed,maxViews,AOPV,paid,APRate,minLifeTime,minCancelTime)";
-		$q.=" VALUES({$info['advertisor']},'{$info['title']}',{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
+		$videoCode=#fun->backYCode($info['link']);
+		$q="INSERT INTO #db->info (advertisor,title,running,lastDate,startDate,videoCode,link,img,embed,maxViews,AOPV,paid,APRate,minLifeTime,minCancelTime)";
+		$q.=" VALUES({$info['advertisor']},'{$info['title']}',{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$videoCode}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
 		query($q);
 	}
 
