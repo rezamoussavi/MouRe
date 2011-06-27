@@ -155,12 +155,12 @@ JSONDOCREADY;
 				<a href="{$this->data['link']}" target="_blank">
 					<img src="{$this->data['img']}" />
 				</a>
-				<br><font size=2>viewd {$this->data['viewed']} of {$this->data['maxViews']}</font>
+				<br /><font size=2>viewd {$this->data['viewed']} of {$this->data['maxViews']}</font>
 			</div>
 			<div style="float:left;height:120px;width:400px;align:right;">
-				{$Title}<br>
+				{$Title}<br />
 				Last Date : {$this->data['lastDate']}
-				<br>Earn/View : {$EPV}
+				<br />Earn/View : {$EPV}
 			</div>
 			<div style="float:left;height:120px;width:100px;text-align:right;">
 				<form id="$frmName" method="post" style="display:inline;">
@@ -228,6 +228,7 @@ PHTMLCODE;
 	}
 	function frmMyAd(){
 		$frmName=$this->_fullname.$this->data['adUID'];
+		$Title=$this->data['title'];
 		$AOPV=$this->data['AOPV'];
 		$VN=$this->data['viewed'];
 		$TV=$this->data['maxViews'];
@@ -241,20 +242,21 @@ PHTMLCODE;
 				</a>
 			</div>
 			<div style="float:left;height:100px;width:400px;align:right;">
-				Total Paid: {$this->data['paid']} - Pay Per View : {$AOPV}
-				<br>Viewed: $VN
-				<br>Remaining: $RM
-				<br>Total: $TV
-				<br>StartDate:{$this->data['startDate']} - Last Date : {$this->data['lastDate']}
+				<u>$Title</u>
+				<br />Total Paid: {$this->data['paid']} - Pay Per View : {$AOPV}
+				<br />Viewed: $VN
+				<br />Remaining: $RM
+				<br />Total: $TV
+				<br />StartDate:{$this->data['startDate']} - Last Date : {$this->data['lastDate']}
 			</div>
 			<div style="float:left;height:100px;width:100px;text-align:right;">
 				<form id="$frmName" method="post" style="display:inline;">
 					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
 					<input type="hidden" name="_message" value="frame_stop" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				</form>
-			</div><br>
+			</div><br />
 		</div>
-		<br>
+		<br />
 		
 PHTMLCODE;
 

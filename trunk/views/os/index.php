@@ -82,9 +82,11 @@ JQUERY;
 				$_SESSION['osLink']=$_GET;
 				unset($_SESSION['osLink']['kill']);
 				$_SESSION['silentmode']=true;
-				foreach($_SESSION['osLink'] as $a=>$b){
-					$p=osParse($b);
-					osMessage($a,"client_".$p[0],$p[1]);
+				if(isset($_SESSION['osLink']))if(is_array($_SESSION['osLink'])){
+					foreach($_SESSION['osLink'] as $a=>$b){
+						$p=osParse($b);
+						osMessage($a,"client_".$p[0],$p[1]);
+					}
 				}
 				$_SESSION['silentmode']=false;
 			}

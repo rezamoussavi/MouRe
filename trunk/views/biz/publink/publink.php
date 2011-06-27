@@ -81,13 +81,21 @@ class publink {
 			}else{
 				/* pubLink does not exist */
 				$PPV=$adLinkData['AOPV']*$adLinkData['APRate'];
-				$q="INSERT INTO publink_info(adLinkUID,publisher,totalView,AOPV,PPV) ";
-				$q.="VALUES('".$adLinkData['adUID']."','$userID','0','".$adLinkData['AOPV']."','$PPV')";
+				$q="INSERT INTO publink_info(adLinkUID,YTID,publisher,totalView,AOPV,PPV) ";
+				$q.="VALUES('".$adLinkData['adUID']."','".$adLinkData['videoCode']."','$userID','0','".$adLinkData['AOPV']."','$PPV')";
 				query($q);
 				$code=mysql_insert_id();
 			}
 		}
 		return $code;
+	}
+	function backStat($adUID){
+		$data=array();
+		query("SELECT countryCode,countryName,views FROM publink_stat WHERE adUID=$adUID");
+		while($row=fetch()){
+			$data[]=$row;
+		}
+		return $data;
 	}
 
 }

@@ -50,12 +50,12 @@
 				<a href="{#var->data['link']}" target="_blank">
 					<img src="{#var->data['img']}" />
 				</a>
-				<br><font size=2>viewd {#var->data['viewed']} of {#var->data['maxViews']}</font>
+				<br /><font size=2>viewd {#var->data['viewed']} of {#var->data['maxViews']}</font>
 			</div>
 			<div style="float:left;height:120px;width:400px;align:right;">
-				{$Title}<br>
+				{$Title}<br />
 				Last Date : {#var->data['lastDate']}
-				<br>Earn/View : {$EPV}
+				<br />Earn/View : {$EPV}
 			</div>
 			<div style="float:left;height:120px;width:100px;text-align:right;">
 				<form id="$frmName" method="post" style="display:inline;">
@@ -118,6 +118,7 @@
 
 	function frmMyAd(){
 		$frmName=#nodeID.#var->data['adUID'];
+		$Title=#var->data['title'];
 		$AOPV=#var->data['AOPV'];
 		$VN=#var->data['viewed'];
 		$TV=#var->data['maxViews'];
@@ -130,20 +131,21 @@
 				</a>
 			</div>
 			<div style="float:left;height:100px;width:400px;align:right;">
-				Total Paid: {#var->data['paid']} - Pay Per View : {$AOPV}
-				<br>Viewed: $VN
-				<br>Remaining: $RM
-				<br>Total: $TV
-				<br>StartDate:{#var->data['startDate']} - Last Date : {#var->data['lastDate']}
+				<u>$Title</u>
+				<br />Total Paid: {#var->data['paid']} - Pay Per View : {$AOPV}
+				<br />Viewed: $VN
+				<br />Remaining: $RM
+				<br />Total: $TV
+				<br />StartDate:{#var->data['startDate']} - Last Date : {#var->data['lastDate']}
 			</div>
 			<div style="float:left;height:100px;width:100px;text-align:right;">
 				<form id="$frmName" method="post" style="display:inline;">
 					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
 					<#msg->stop>
 				</form>
-			</div><br>
+			</div><br />
 		</div>
-		<br>
+		<br />
 		</PHTML>
 	}
 

@@ -104,7 +104,7 @@ JSONDOCREADY;
 		$pl=new publink("");
 		$code=$pl->generateScript($adLinkData);
 		if($code!=0){
-			$this->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".$adLinkData['videoCode']."?version=3&width=770&height=550&link=".$code."' WIDTH='700' HEIGHT='500' allowfullscreen='true'/>";
+			$this->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".$code."&link=".$adLinkData['videoCode']."?version=3' WIDTH='700' HEIGHT='500' allowfullscreen='true' scale='noscale'/>";
 		}else{
 			$this->script="LOGIN first!";
 		}

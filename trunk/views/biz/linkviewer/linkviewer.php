@@ -13,6 +13,7 @@
 
 */
 require_once 'biz/videobar/videobar.php';
+require_once 'biz/ipviewer/ipviewer.php';
 require_once 'biz/user/user.php';
 require_once 'biz/userviewer/userviewer.php';
 
@@ -177,6 +178,9 @@ JSONDOCREADY;
 PHTMLCODE;
 
 	}
+	/********************************
+	*	Frame Cells
+	*********************************/
 	function backLinkCel($divstyle,$btnstyle,$btnAction){
 		$frm=$this->_fullname."Link";
 		$Title=htmlspecialchars($this->data['title'], ENT_QUOTES);
@@ -234,6 +238,9 @@ PHTMLCODE;
 PHTMLCODE;
 
 	}
+	/********************************
+	*	Frame Extras
+	*********************************/
 	function backExtra(){
 		switch($this->extra){
 			case "link":
@@ -282,12 +289,9 @@ PHTMLCODE;
 
 	}
 	function backExtraIP(){
-		return <<<PHTMLCODE
-
-			EXTRA IP
-		
-PHTMLCODE;
-
+		$ipv=new ipviewer("");
+		$ipv->bookInfo(isset($this->data['adUID'])?$this->data['adUID']:-1,htmlspecialchars($this->data['title'],ENT_QUOTES));
+		return $ipv->_backframe();
 	}
 	function backExtraPublisher(){
 		query("SELECT * FROM publink_info as pl, user_info as u WHERE u.userUID=pl.publisher AND pl.totalView>0 AND pl.adLinkUID=".$this->data['adUID']);

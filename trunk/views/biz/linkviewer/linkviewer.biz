@@ -18,7 +18,7 @@
 	extra
 
 #node
-	videobar
+	videobar, ipviewer
 	user, userviewer
 
 #message
@@ -80,6 +80,10 @@
 		</PHTML>
 	}
 
+	/********************************
+	*	Frame Cells
+	*********************************/
+
 	function backLinkCel($divstyle,$btnstyle,$btnAction){
 		$frm=#nodeID."Link";
 		$Title=htmlspecialchars(#var->data['title'], ENT_QUOTES);
@@ -129,6 +133,10 @@
 		</PHTML>
 	}
 
+	/********************************
+	*	Frame Extras
+	*********************************/
+
 	function backExtra(){
 		switch(#var->extra){
 			case "link":
@@ -174,9 +182,9 @@
 	}
 
 	function backExtraIP(){
-		return <PHTML>
-			EXTRA IP
-		</PHTML>
+		$ipv=new ipviewer("");
+		$ipv->bookInfo(isset(#var->data['adUID'])?#var->data['adUID']:-1,htmlspecialchars(#var->data['title'],ENT_QUOTES));
+		return $ipv->_backframe();
 	}
 
 	function backExtraPublisher(){

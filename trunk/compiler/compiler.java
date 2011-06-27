@@ -30,14 +30,35 @@ public class compiler {
 			System.out.print("\ncommand> ");
 			input=getInput();if(input.equalsIgnoreCase("exit")) break;
 			int ok=0;int err=0;
-			if(input.equalsIgnoreCase("all")){
+			if(input.equalsIgnoreCase("re")){
 				for(String s:bizes)
 					if(loadAndCompile(s))	ok++; else err++;
 				System.out.print("\n\n\t"+(ok+err)+"\tTotal\n\t"+ok+"\tCompiled/Uploaded\n\t"+err+"\tError");
+			}else if(input.equalsIgnoreCase("all")){
+				for(String s:bizes)
+					if(hasChanged(s)) if(loadAndCompile(s))	ok++; else err++;
+				System.out.print("\n\n\t"+(ok+err)+"\tTotal\n\t"+ok+"\tCompiled/Uploaded\n\t"+err+"\tError");
+			}else if(input.equalsIgnoreCase("help") || input.equalsIgnoreCase("?")){
+				System.out.println("\n--- HELP ----");
+				System.out.println("\tbizname: compile and upload the biz");
+				System.out.println("\t-bizname: compile but not upload the biz");
+				System.out.println("\tall: compile and upload all changed bizes since last compile");
+				System.out.println("\t-all: compile but not upload all changed bizes since last compile");
+				System.out.println("\tre: compile and upload all(old and new) bizes");
+				System.out.println("\t-re: compile but not upload all(old and new) bizes");
+				System.out.println("--- HELP ---");
 			}
 			else
 				loadAndCompile(input);
 		}
+	}
+
+	public static boolean hasChanged(String fname){
+		String bizFileName=BizFolder+fname+"\\"+fname+".biz";
+		String phpFileName=BizFolder+fname+"\\"+fname+".php";
+		File bizFile=new File(bizFileName);
+		File phpFile=new File(phpFileName);
+		return bizFile.lastModified()>phpFile.lastModified();
 	}
 
 	public static boolean LoadConfig(){
