@@ -1,0 +1,10 @@
+Biz Compiler
+
+Java Build Path Liberaries:
+---------------------------
+commons-codec-1.4.iar
+commons-logging-1.1.1.jar
+httpclient-4.1.jar
+httpclient-cache-4.1.jar
+httpcore-4.1.jar
+httpmime-4.1.jar
