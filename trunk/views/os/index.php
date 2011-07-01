@@ -94,7 +94,7 @@ JQUERY;
 				$bizbank->show(true);
 				foreach($_SESSION['osNodes'] as $nodeFN=>$node){
 					if(is_object($node['node'])){
-						$JQueryCode.=$nodeFN."();";
+						$JQueryCode.="if(window.".$nodeFN.")".$nodeFN."();";
 					}
 				}
 			}

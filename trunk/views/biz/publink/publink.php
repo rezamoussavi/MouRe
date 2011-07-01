@@ -97,6 +97,14 @@ class publink {
 		}
 		return $data;
 	}
+	function backEarned($UID){
+		$earned=0;
+		query("SELECT SUM(PPV * totalView) as earned FROM publink_info WHERE publisher=".$UID);
+		if($row=fetch()){
+			$earned=$row['earned'];
+		}
+		return $earned;
+	}
 
 }
 

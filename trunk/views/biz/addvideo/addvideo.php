@@ -102,6 +102,23 @@ class addvideo {
 		}
 		$html='<script type="text/javascript" language="Javascript">';
 		$html.=<<<JAVASCRIPT
+	var okTitle=false;
+	function checkTitle(){
+		if(document.getElementById('theTitle').value.length<1){
+			document.getElementById('msgTitle').innerHTML = "<font color=red>Invalid Name</font>";
+			okTitle=false;
+		}else{
+			document.getElementById('msgTitle').innerHTML = "<font color=green>OK</font>";
+			okTitle=false;
+		}
+		checkAll();
+	}
+	function checkAll(){
+		if(okTitle)
+			document.getElementById('theButton').disabled=0;
+		else
+			document.getElementById('theButton').disabled=0;
+	}
 
 JAVASCRIPT;
 		$html.=<<<JSONDOCREADY
@@ -143,14 +160,14 @@ PHTMLCODE;
 			<center><font color=red>{$this->errMessage}</font><hr></center>
 			<form name="$formname" method="post">
 				<input type="hidden" name="_message" value="frame_addVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				Title: <input name="title" size=50><br>
+				Title: <input id="theTitle" name="title" size=50 onkeypress='JavaScript:checkTitle()' onchange="JavaScript:checkTitle();"><span id="msgTitle"></span><br>
 				Youtube link: <input name="link" size=50><br>
 				Your Offer on Price/View: <input name="AOPV" size=5> (min: {$of['minAOPV']})<br>
 				Number of Viewes: <input name="NOV" size=5> (min: {$of['minNOV']})<br>
 				Commision: (auto calculate)
 				<hr>
 				Total: (auto calculate) <input type="button" value="Pay"><br>
-				<input type="button" value="Apply" onclick = 'JavaScript:sndmsg("$formname")'>
+				<input id="theButton" disabled type="button" value="Apply" onclick = 'JavaScript:sndmsg("$formname")'>
 			</form>
 		
 PHTMLCODE;

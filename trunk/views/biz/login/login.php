@@ -262,12 +262,12 @@ JSONDOCREADY;
 		$html =<<<PHTML
 			<h2>Login</h2>
 			<h5>$modehtml</h5>
-			<form name="$formName" method="post" >
+			<form name="$formName"  method="post" >
 				<div style="width: 50px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
 				<div style="width: 50px; margin-top: 10px;">Password </div> <input type="password" name="password" /> <br />
 				<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<div style="width: 180px;">
-				<input value ="Login" type = "button" onclick = 'JavaScript:sndmsg("$formName")' class="press" style="margin-top: 10px; margin-right: 50px;" />
+				<input value ="Login" type = "button" onClick='JavaScript:sndmsg("$formName")'  class="press" style="margin-top: 10px; margin-right: 50px;" />
 				</div>
 			</form>
 			<form name="$formNameSignup" method="post" >

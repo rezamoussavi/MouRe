@@ -4,12 +4,17 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
+	Date:	7/30/2011
+	Ver:	1.0
+	---------------------
+	Author:	Reza Moussavi
 	Date:	6/03/2011
 	Ver:	0.1
 
 */
 require_once 'biz/user/user.php';
 require_once 'biz/adlink/adlink.php';
+require_once 'biz/publink/publink.php';
 
 class profilewidget {
 
@@ -37,6 +42,7 @@ class profilewidget {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['frame_showMyAccount'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_reCalc'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
@@ -78,6 +84,9 @@ class profilewidget {
 		switch($message){
 			case 'frame_showMyAccount':
 				$this->onShowMyAccount($info);
+				break;
+			case 'frame_reCalc':
+				$this->onReCalc($info);
 				break;
 			case 'user_login':
 				$this->onLogin($info);
@@ -134,6 +143,9 @@ JSONDOCREADY;
 	function onLogin($info){
 		$this->reCalc();
 	}
+	function onReCalc($info){
+		$this->reCalc();
+	}
 	function onLogout($info){
 		/*
 		*	Since the biz is interested in a message
@@ -156,15 +168,21 @@ JSONDOCREADY;
 			return "";
 		}
 		$myAccFormName = $this->_fullname."myacc";
+		$ReCalcFrmName = $this->_fullname."reCalc";
 		$html=<<<PHTMLCODE
 
-			Balance: {$this->balance} $<br />
+			Balance: {$this->balance} $
+			<a href="http://sam-rad.com/PayPal">Add</a><br />
 			Paid: {$this->paid} $<br />
 			Re-imbursed: {$this->reimbursed} $<br />
 			Earned: {$this->earned} $<br />
+			<form name="$ReCalcFrmName" method="post">
+				<input type="hidden" name="_message" value="frame_reCalc" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
+			</form>
 			<form name="$myAccFormName" method="post">
 				<input type="hidden" name="_message" value="frame_showMyAccount" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;">
+				<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;" />
 			</form>
 		
 PHTMLCODE;
@@ -185,6 +203,8 @@ PHTMLCODE;
 			$al=new adlink("");
 			$this->paid=$al->backTotalPaid();
 			$this->reimbursed=$al->backTotalreimbursed();
+			$pl=new publink("");
+			$this->earned=sprintf("%.2f",$pl->backEarned(osBackUserID()));
 		}
 	}
 

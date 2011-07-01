@@ -54,8 +54,8 @@ public class compiler {
 	}
 
 	public static boolean hasChanged(String fname){
-		String bizFileName=BizFolder+fname+"\\"+fname+".biz";
-		String phpFileName=BizFolder+fname+"\\"+fname+".php";
+		String bizFileName=BizFolder+fname+"/"+fname+".biz";
+		String phpFileName=BizFolder+fname+"/"+fname+".php";
 		File bizFile=new File(bizFileName);
 		File phpFile=new File(phpFileName);
 		return bizFile.lastModified()>phpFile.lastModified();
@@ -99,7 +99,7 @@ public class compiler {
 	public static boolean loadAndCompile(String fname){
 		System.out.print("\n\t"+fname+"...\n\t\t");
 		BufferedReader br;
-		String FileName=BizFolder+fname+"\\"+fname;
+		String FileName=BizFolder+fname+"/"+fname;
 		try {
 			br=new BufferedReader(new FileReader( new File(FileName+".biz")));
 		} catch (Exception e) {
