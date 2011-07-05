@@ -19,12 +19,14 @@
 
 #node
 	scriptviewer scv
+	ipviewer
 
 #var
-	data, showScript=false
+	data, showScript=false, showStat=false
 
 #message
 	frame->getLink=onGetLink
+	frame->StatBtn=onStatBtn
 	user->login=onLoginStatusChanged
 	user->logout=onLoginStatusChanged
 
@@ -87,6 +89,7 @@
 				</a>
 			</div>
 			<div style="float:left;height:100px;width:300px;align:right;">
+				<u>{#var->data['title']}</u><br />
 				Earn Per View : {$EPV}<br />
 				Viewed: $VN<br />
 				Remaining: $RM<br />
@@ -123,12 +126,20 @@
 		$VN=#var->data['viewed'];
 		$TV=#var->data['maxViews'];
 		$RM=$TV-$VN;
+		$StatisticsBtn=#var->showStat?"[-]":"[+]";
+		$StatisticsBtn.=" Stats";
+		$frmStatName=#nodeID."Stat";
+		$statFrm=#fun->backStatFrame();
 		return <PHTML>
-		<div style="width:650px;height:100;">
+		<div style="width:650px;height:125;">
 			<div style="float:left;height:120px;width:150px;text-align:left;">
 				<a href="{#var->data['link']}" target="_blank">
 					<img src="{#var->data['img']}" />
-				</a>
+				</a><br />
+				<form id="$frmStatName" method="post">
+					<#msg->StatBtn>
+					<input type="button" value="$StatisticsBtn" onclick="javascript:sndmsg('$frmStatName')" style="border:0px;cursor:pointer;background-color:transparent;" />
+				</form>
 			</div>
 			<div style="float:left;height:100px;width:400px;align:right;">
 				<u>$Title</u>
@@ -145,8 +156,17 @@
 				</form>
 			</div><br />
 		</div>
+		<div style="float:left;">$statFrm</div>
 		<br />
 		</PHTML>
+	}
+
+	function backStatFrame(){
+		if(!#var->showStat)
+			return "";
+		$ipv=new ipviewer("");
+		$ipv->bookInfo(#var->data['adUID'],#var->data['title']);
+		return $ipv->_backframe();
 	}
 
 	/******************************************
@@ -160,6 +180,11 @@
 
 	function onLoginStatusChanged($info){
 		#fun->generateScript();
+	}
+
+	function onStatBtn($info){
+		#var->showStat=!#var->showStat;
+		_bookframe(#var->_curFrame);
 	}
 
 	/******************************************

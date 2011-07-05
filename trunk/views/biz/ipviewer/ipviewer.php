@@ -4,8 +4,12 @@
 	Compiled by bizLang compiler version 4.0 [JQuery] (May 5 2011) By Reza Moussavi
 
 	Author:	Reza Moussavi
+	Date:	7/05/2011
+	Ver:	1.0
+	---------------------
+	Author:	Reza Moussavi
 	Date:	4/21/2011
-	Ver:		0.1
+	Ver:	0.1
 
 */
 require_once 'biz/publink/publink.php';

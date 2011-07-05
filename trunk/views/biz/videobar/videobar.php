@@ -13,6 +13,7 @@
 
 */
 require_once 'biz/scriptviewer/scriptviewer.php';
+require_once 'biz/ipviewer/ipviewer.php';
 
 class videobar {
 
@@ -24,6 +25,7 @@ class videobar {
 	//Variables
 	var $data;
 	var $showScript;
+	var $showStat;
 
 	//Nodes (bizvars)
 	var $scv;
@@ -39,6 +41,7 @@ class videobar {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['frame_getLink'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_StatBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
@@ -58,6 +61,10 @@ class videobar {
 			$_SESSION['osNodes'][$fullname]['showScript']=false;
 		$this->showScript=&$_SESSION['osNodes'][$fullname]['showScript'];
 
+		if(!isset($_SESSION['osNodes'][$fullname]['showStat']))
+			$_SESSION['osNodes'][$fullname]['showStat']=false;
+		$this->showStat=&$_SESSION['osNodes'][$fullname]['showStat'];
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='videobar';
 	}
@@ -74,6 +81,9 @@ class videobar {
 		switch($message){
 			case 'frame_getLink':
 				$this->onGetLink($info);
+				break;
+			case 'frame_StatBtn':
+				$this->onStatBtn($info);
 				break;
 			case 'user_login':
 				$this->onLoginStatusChanged($info);
@@ -194,6 +204,7 @@ PHTMLCODE;
 				</a>
 			</div>
 			<div style="float:left;height:100px;width:300px;align:right;">
+				<u>{$this->data['title']}</u><br />
 				Earn Per View : {$EPV}<br />
 				Viewed: $VN<br />
 				Remaining: $RM<br />
@@ -233,13 +244,21 @@ PHTMLCODE;
 		$VN=$this->data['viewed'];
 		$TV=$this->data['maxViews'];
 		$RM=$TV-$VN;
+		$StatisticsBtn=$this->showStat?"[-]":"[+]";
+		$StatisticsBtn.=" Stats";
+		$frmStatName=$this->_fullname."Stat";
+		$statFrm=$this->backStatFrame();
 		return <<<PHTMLCODE
 
-		<div style="width:650px;height:100;">
+		<div style="width:650px;height:125;">
 			<div style="float:left;height:120px;width:150px;text-align:left;">
 				<a href="{$this->data['link']}" target="_blank">
 					<img src="{$this->data['img']}" />
-				</a>
+				</a><br />
+				<form id="$frmStatName" method="post">
+					<input type="hidden" name="_message" value="frame_StatBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input type="button" value="$StatisticsBtn" onclick="javascript:sndmsg('$frmStatName')" style="border:0px;cursor:pointer;background-color:transparent;" />
+				</form>
 			</div>
 			<div style="float:left;height:100px;width:400px;align:right;">
 				<u>$Title</u>
@@ -256,10 +275,18 @@ PHTMLCODE;
 				</form>
 			</div><br />
 		</div>
+		<div style="float:left;">$statFrm</div>
 		<br />
 		
 PHTMLCODE;
 
+	}
+	function backStatFrame(){
+		if(!$this->showStat)
+			return "";
+		$ipv=new ipviewer("");
+		$ipv->bookInfo($this->data['adUID'],$this->data['title']);
+		return $ipv->_backframe();
 	}
 	/******************************************
 	*		Message Handlers
@@ -270,6 +297,10 @@ PHTMLCODE;
 	}
 	function onLoginStatusChanged($info){
 		$this->generateScript();
+	}
+	function onStatBtn($info){
+		$this->showStat=!$this->showStat;
+		$this->_bookframe($this->_curFrame);
 	}
 	/******************************************
 	*		Functionalities
