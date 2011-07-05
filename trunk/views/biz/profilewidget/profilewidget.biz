@@ -16,15 +16,11 @@
 
 #message
 	frame->showMyAccount=onShowMyAccount
-	frame->reCalc=onReCalc
-	user->login=onLogin
 	user->logout=onLogout
+	user->login=onLogin
 
 #var
 	balance=0
-	paid=0
-	earned=0
-	reimbursed=0
 
 #node
 	user, adlink, publink
@@ -36,11 +32,10 @@
 	******************************/
 
 	function onLogin($info){
-		#fun->reCalc();
-	}
-
-	function onReCalc($info){
-		#fun->reCalc();
+		$u=new user("");
+		if($ud=$u->backUserData(osBackUserID())){
+			#var->balance=$ud['balance'];
+		}
 	}
 
 	function onLogout($info){
@@ -67,17 +62,8 @@
 			return "";
 		}
 		$myAccFormName = #nodeID."myacc";
-		$ReCalcFrmName = #nodeID."reCalc";
 		$html=<PHTML>
 			Balance: {#var->balance} $
-			<a href="http://sam-rad.com/PayPal">Add</a><br />
-			Paid: {#var->paid} $<br />
-			Re-imbursed: {#var->reimbursed} $<br />
-			Earned: {#var->earned} $<br />
-			<form name="$ReCalcFrmName" method="post">
-				<#msg->reCalc>
-				<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
-			</form>
 			<form name="$myAccFormName" method="post">
 				<#msg->showMyAccount>
 				<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;" />
@@ -86,23 +72,4 @@
 		return $html;
 	}
 
-	/******************************
-	*	Functionalities
-	******************************/
 
-	function reCalc(){
-		#var->balance=0;
-		#var->paid=0;
-		#var->earned=0;
-		#var->reimbursed=0;
-
-		$u=new user("");
-		if($ud=$u->backUserData(osBackUserID())){
-			#var->balance=$ud['balance'];
-			$al=new adlink("");
-			#var->paid=$al->backTotalPaid();
-			#var->reimbursed=$al->backTotalreimbursed();
-			$pl=new publink("");
-			#var->earned=sprintf("%.2f",$pl->backEarned(osBackUserID()));
-		}
-	}

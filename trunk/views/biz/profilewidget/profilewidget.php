@@ -25,9 +25,6 @@ class profilewidget {
 
 	//Variables
 	var $balance;
-	var $paid;
-	var $earned;
-	var $reimbursed;
 
 	//Nodes (bizvars)
 
@@ -42,9 +39,8 @@ class profilewidget {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['frame_showMyAccount'][$this->_fullname]=true;
-			$_SESSION['osMsg']['frame_reCalc'][$this->_fullname]=true;
-			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
+			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -55,18 +51,6 @@ class profilewidget {
 		if(!isset($_SESSION['osNodes'][$fullname]['balance']))
 			$_SESSION['osNodes'][$fullname]['balance']=0;
 		$this->balance=&$_SESSION['osNodes'][$fullname]['balance'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['paid']))
-			$_SESSION['osNodes'][$fullname]['paid']=0;
-		$this->paid=&$_SESSION['osNodes'][$fullname]['paid'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['earned']))
-			$_SESSION['osNodes'][$fullname]['earned']=0;
-		$this->earned=&$_SESSION['osNodes'][$fullname]['earned'];
-
-		if(!isset($_SESSION['osNodes'][$fullname]['reimbursed']))
-			$_SESSION['osNodes'][$fullname]['reimbursed']=0;
-		$this->reimbursed=&$_SESSION['osNodes'][$fullname]['reimbursed'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='profilewidget';
@@ -85,14 +69,11 @@ class profilewidget {
 			case 'frame_showMyAccount':
 				$this->onShowMyAccount($info);
 				break;
-			case 'frame_reCalc':
-				$this->onReCalc($info);
+			case 'user_logout':
+				$this->onLogout($info);
 				break;
 			case 'user_login':
 				$this->onLogin($info);
-				break;
-			case 'user_logout':
-				$this->onLogout($info);
 				break;
 			default:
 				break;
@@ -141,10 +122,10 @@ JSONDOCREADY;
 	*	Message Handlers
 	******************************/
 	function onLogin($info){
-		$this->reCalc();
-	}
-	function onReCalc($info){
-		$this->reCalc();
+		$u=new user("");
+		if($ud=$u->backUserData(osBackUserID())){
+			$this->balance=$ud['balance'];
+		}
 	}
 	function onLogout($info){
 		/*
@@ -168,18 +149,9 @@ JSONDOCREADY;
 			return "";
 		}
 		$myAccFormName = $this->_fullname."myacc";
-		$ReCalcFrmName = $this->_fullname."reCalc";
 		$html=<<<PHTMLCODE
 
 			Balance: {$this->balance} $
-			<a href="http://sam-rad.com/PayPal">Add</a><br />
-			Paid: {$this->paid} $<br />
-			Re-imbursed: {$this->reimbursed} $<br />
-			Earned: {$this->earned} $<br />
-			<form name="$ReCalcFrmName" method="post">
-				<input type="hidden" name="_message" value="frame_reCalc" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
-			</form>
 			<form name="$myAccFormName" method="post">
 				<input type="hidden" name="_message" value="frame_showMyAccount" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;" />
@@ -188,24 +160,6 @@ JSONDOCREADY;
 PHTMLCODE;
 
 		return $html;
-	}
-	/******************************
-	*	Functionalities
-	******************************/
-	function reCalc(){
-		$this->balance=0;
-		$this->paid=0;
-		$this->earned=0;
-		$this->reimbursed=0;
-		$u=new user("");
-		if($ud=$u->backUserData(osBackUserID())){
-			$this->balance=$ud['balance'];
-			$al=new adlink("");
-			$this->paid=$al->backTotalPaid();
-			$this->reimbursed=$al->backTotalreimbursed();
-			$pl=new publink("");
-			$this->earned=sprintf("%.2f",$pl->backEarned(osBackUserID()));
-		}
 	}
 
 }

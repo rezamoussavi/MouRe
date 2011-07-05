@@ -63,6 +63,7 @@
 		}
 		$JQueryCode=<<<JQUERY
 			<script src="http://www.sam-rad.com/jquery.js" type="text/javascript"></script>
+			<script src="http://www.sam-rad.com/biz.js" type="text/javascript"></script>
 			<script type="text/javascript">
 				$(document).ready(function(){
 JQUERY;

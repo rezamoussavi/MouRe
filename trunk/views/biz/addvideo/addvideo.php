@@ -102,23 +102,6 @@ class addvideo {
 		}
 		$html='<script type="text/javascript" language="Javascript">';
 		$html.=<<<JAVASCRIPT
-	var okTitle=false;
-	function checkTitle(){
-		if(document.getElementById('theTitle').value.length<1){
-			document.getElementById('msgTitle').innerHTML = "<font color=red>Invalid Name</font>";
-			okTitle=false;
-		}else{
-			document.getElementById('msgTitle').innerHTML = "<font color=green>OK</font>";
-			okTitle=false;
-		}
-		checkAll();
-	}
-	function checkAll(){
-		if(okTitle)
-			document.getElementById('theButton').disabled=0;
-		else
-			document.getElementById('theButton').disabled=0;
-	}
 
 JAVASCRIPT;
 		$html.=<<<JSONDOCREADY
@@ -155,19 +138,21 @@ PHTMLCODE;
 		//else
 		$formname=$this->_fullname;
 		$of=$this->offer->backInfo();
+		$u=osBackUser();
+		$balance=$u['balance'];
 		$html=<<<PHTMLCODE
 
 			<center><font color=red>{$this->errMessage}</font><hr></center>
 			<form name="$formname" method="post">
 				<input type="hidden" name="_message" value="frame_addVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				Title: <input id="theTitle" name="title" size=50 onkeypress='JavaScript:checkTitle()' onchange="JavaScript:checkTitle();"><span id="msgTitle"></span><br>
-				Youtube link: <input name="link" size=50><br>
-				Your Offer on Price/View: <input name="AOPV" size=5> (min: {$of['minAOPV']})<br>
-				Number of Viewes: <input name="NOV" size=5> (min: {$of['minNOV']})<br>
+				Title: <input id="theTitle" name="title" size=50 onkeypress='JavaScript:checkTitle()' onchange="JavaScript:checkTitle();"><span id="msgTitle"><font color="red">*</font></span><br>
+				Youtube link: <input id="theYLink" name="link" size=50 onkeypress='JavaScript:checkYLink()' onchange="JavaScript:checkYLink();"><span id="msgYLink"><font color="red">*</font></span><br>
+				Your Offer on Price/View: <input id="theAOPV" name="AOPV" size=5 onkeypress='JavaScript:checkAOPV({$of['minAOPV']})' onchange="JavaScript:checkAOPV({$of['minAOPV']});"> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
+				Number of Viewes: <input id="theNOV" name="NOV" size=5 onkeypress='JavaScript:checkNOV({$of['minNOV']})' onchange="JavaScript:checkNOV({$of['minNOV']});"> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
 				Commision: (auto calculate)
 				<hr>
-				Total: (auto calculate) <input type="button" value="Pay"><br>
-				<input id="theButton" disabled type="button" value="Apply" onclick = 'JavaScript:sndmsg("$formname")'>
+				Total: <span id="theTotal">0</span>$ - balance:<span id="theBalance">$balance</span> $ <span id="msgTotal"></span><br />
+				<input id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
 			</form>
 		
 PHTMLCODE;

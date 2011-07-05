@@ -8,8 +8,9 @@
 
 #frame
 	frmProfile
-	frmPubLink s
+	frmPubLinks
 	frmAdLinks
+	frmBalance
 
 #node
 	profileviewer profile
@@ -20,13 +21,26 @@
 	frame->profileBtn=onProfileBtn
 	frame->pubLinkBtn=onPubLinkBtn
 	frame->adLinkBtn=onAdLinkBtn
+	frame->balanceBtn=onBalanceBtn
+	frame->reCalc=onReCalc
+	user->login=onReCalc
 	user->logout=onLogout
+
+#var
+	balance=0
+	paid=0
+	earned=0
+	reimbursed=0
 
 #phpfunction
 
-	/*-----------------------------------------------------
-	/		Message Handlers
-	-----------------------------------------------------*/
+	/******************************
+	*	Message Handlers
+	******************************/
+
+	function onReCalc($info){
+		#fun->reCalc();
+	}
 
 	function onLogout($info){
 		_bookframe(#frm->frmProfile);
@@ -46,9 +60,13 @@
 		_bookframe(#frm->frmAdLinks);
 	}
 
-	/*-----------------------------------------------------
-	/		Frames
-	-----------------------------------------------------*/
+	function onBalanceBtn($info){
+		_bookframe(#frm->frmBalance);
+	}
+
+	/******************************
+	*	Frames
+	******************************/
 
 	function frmProfile(){
 		return #fun->buttons()."<hr>".#node->profile->_backframe();
@@ -62,8 +80,28 @@
 		return #fun->buttons()."<hr>".#node->adLinks->_backframe();
 	}
 
+	function frmBalance(){
+		if(!osUserLogedin()){
+			return "";
+		}
+		$ReCalcFrmName = #nodeID."reCalc";
+		$html=<PHTML>
+			Balance: {#var->balance} $
+			<a href="http://sam-rad.com/PayPal">Add</a><br />
+			Paid: {#var->paid} $<br />
+			Re-imbursed: {#var->reimbursed} $<br />
+			Earned: {#var->earned} $<br />
+			<form name="$ReCalcFrmName" method="post">
+				<#msg->reCalc>
+				<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
+			</form>
+		</PHTML>
+		return #fun->buttons()."<hr>".$html;
+	}
+
 	function buttons(){
 		$ProfileFormName=#nodeID."profileBtn";
+		$BalanceFormName=#nodeID."balanceBtn";
 		$pubLinkFormName=#nodeID."pubLinkBtn";
 		$adLinkFormName=#nodeID."adLinkBtn";
 		$html=<PHTML>
@@ -71,6 +109,10 @@
 				<form name={$ProfileFormName} method="post" style="float:left;">
 					<#msg->profileBtn>
 					<input type="button" value="Profile" onclick = 'JavaScript:sndmsg("$ProfileFormName")'  />
+				</form>
+				<form name={$BalanceFormName} method="post" style="float:left;">
+					<#msg->balanceBtn>
+					<input type="button" value="Balance" onclick = 'JavaScript:sndmsg("$BalanceFormName")'  />
 				</form>
 				<form name={$pubLinkFormName} method="post" style="float:left;">
 					<#msg->pubLinkBtn>
@@ -83,4 +125,25 @@
 			</div>
 		</PHTML>
 		return $html;
+	}
+
+	/******************************
+	*	Functionalities
+	******************************/
+
+	function reCalc(){
+		#var->balance=0;
+		#var->paid=0;
+		#var->earned=0;
+		#var->reimbursed=0;
+
+		$u=new user("");
+		if($ud=$u->backUserData(osBackUserID())){
+			#var->balance=$ud['balance'];
+			$al=new adlink("");
+			#var->paid=$al->backTotalPaid();
+			#var->reimbursed=$al->backTotalreimbursed();
+			$pl=new publink("");
+			#var->earned=sprintf("%.2f",$pl->backEarned(osBackUserID()));
+		}
 	}

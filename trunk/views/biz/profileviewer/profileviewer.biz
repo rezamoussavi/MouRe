@@ -82,3 +82,4 @@
 		#var->message="<center><b><font color=green>Update Successfully!</font></b></center>";
 		_bookframe(#frm->frm);
 	}
+
