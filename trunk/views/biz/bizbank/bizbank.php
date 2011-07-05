@@ -8,8 +8,7 @@
 	Ver:		0.1
 
 */
-require_once 'biz/login/login.php';
-require_once 'biz/profilewidget/profilewidget.php';
+require_once 'biz/viewslogin/viewslogin.php';
 require_once 'biz/tabbank/tabbank.php';
 require_once 'biz/mainpageviewer/mainpageviewer.php';
 
@@ -24,7 +23,6 @@ class bizbank {
 
 	//Nodes (bizvars)
 	var $login;
-	var $profile;
 	var $tabbar;
 	var $pages;
 
@@ -45,9 +43,7 @@ class bizbank {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		$this->login=new login($this->_fullname.'_login');
-
-		$this->profile=new profilewidget($this->_fullname.'_profile');
+		$this->login=new viewslogin($this->_fullname.'_login');
 
 		$this->tabbar=new tabbank($this->_fullname.'_tabbar');
 
@@ -120,7 +116,6 @@ JSONDOCREADY;
 	}
 	function frm(){
 		$login=$this->login->_backframe();
-		$profile=$this->profile->_backframe();
 		$tab=$this->tabbar->_backframe();
 		$pages=$this->pages->_backframe();
 		return <<<PHTMLCODE
@@ -132,7 +127,6 @@ JSONDOCREADY;
 				</div>
 				<div style="width:200px; float:left;">
 					$login
-					$profile
 				</div>
 				<div style="width:901px; float:left; background-color:#f5f5f5; height:25px;">
 					&nbsp;
