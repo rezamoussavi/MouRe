@@ -48,6 +48,11 @@
 		query("INSERT INTO os_log(TimeStamp,Biz,NodeID,Message) VALUES('$t','$Biz','$NodeID','$Message')");
 	}
 
+	function osBackPageLink($page){
+		$_SESSION['osPage']=$page;
+		return "?p=".$page;
+	}
+
 	function osBackLink($node,$curLink,$linkto){
 		$ar1=array();
 		$ar2=array();
@@ -137,7 +142,6 @@
 MSGLOG;
 				osLog("OS","osMessage","$log");
 			}
-		}else{
 		}
 	}
 

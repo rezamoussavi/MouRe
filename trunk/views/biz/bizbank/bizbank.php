@@ -112,7 +112,7 @@ JSONDOCREADY;
 
 	function init(){
 		$this->tabbar->bookContent(array("Home","How"));
-		$this->tabbar->bookSelected("Home");
+		//$this->tabbar->bookSelected("Home");
 	}
 	function frm(){
 		$login=$this->login->_backframe();

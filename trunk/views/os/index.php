@@ -79,7 +79,10 @@ JQUERY;
 			}
 			$msgMode=true;
 		}else{
-			if(count($_GET)>0){
+			if(isset($_GET['p'])){
+				$emptyar=array();
+				osBroadcast("page_".$_GET['p'],$emptyar);
+			}elseif(count($_GET)>0){
 				$_SESSION['osLink']=$_GET;
 				unset($_SESSION['osLink']['kill']);
 				$_SESSION['silentmode']=true;

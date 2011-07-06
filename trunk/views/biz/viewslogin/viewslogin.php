@@ -39,7 +39,6 @@ class viewslogin {
 			$_SESSION['osMsg']['frame_doLoginBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_xBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_logoutBtn'][$this->_fullname]=true;
-			$_SESSION['osMsg']['frame_myaccBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_validateBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_doSignupBtn'][$this->_fullname]=true;
 		}
@@ -89,9 +88,6 @@ class viewslogin {
 				break;
 			case 'frame_logoutBtn':
 				$this->onLogoutBtn($info);
-				break;
-			case 'frame_myaccBtn':
-				$this->onMyaccBtn($info);
 				break;
 			case 'frame_validateBtn':
 				$this->onValidateBtn($info);
@@ -196,8 +192,10 @@ JSONDOCREADY;
 		$this->_bookframe("frmMain");
 	}
 	function onMyaccBtn($info){
-		$data=array();
-		osBroadcast("user_showMyAccount",$data);
+		if($info['Page']=="show"){
+			$data=array();
+			osBroadcast("user_showMyAccount",$data);
+		}
 	}
 	function onValidateBtn($info){
 		$u=new user("");
@@ -292,7 +290,8 @@ PHTMLCODE;
 		$name=$u['userName'];
 		$balance=$u['balance'];
 		$lgoutFrm=$this->_fullname."lgout";
-		$myaccFrm=$this->_fullname."myacc";
+		$d=array();
+		$link=osBackPageLink("Myacc");
 		return <<<PHTMLCODE
 
 			Welcome $name<br />
@@ -301,10 +300,7 @@ PHTMLCODE;
 				<input type="hidden" name="_message" value="frame_logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input type="button" value="Logout" onclick="JavaScript:sndmsg('$lgoutFrm')"/>
 			</form>			
-			<form id="$myaccFrm" method="post" style="display:inline;">
-				<input type="hidden" name="_message" value="frame_myaccBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input type="button" value="My Acc" onclick="JavaScript:sndmsg('$myaccFrm')"/>
-			</form>			
+			<a href="$link" > My Acc </a>
 		
 PHTMLCODE;
 
@@ -329,8 +325,8 @@ PHTMLCODE;
 					<input type="hidden" name="_message" value="frame_doSignupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 					<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
 					<div style="width: 100px; margin-top: 10px;">Real Name </div> <input type="input" name="userName" /><br />
-					<div style="width: 100px; margin-top: 10px;">Address </div> <input type="input" name="Address" /><br />
 					<div style="width: 100px; margin-top: 10px;">Country </div> <input type="input" name="Country" /><br />
+					<div style="width: 100px; margin-top: 10px;">Address </div> <input type="input" name="Address" /><br />
 					<div style="width: 100px; margin-top: 10px;">Postal Code </div> <input type="input" name="PostalCode" /><br />
 					<div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" /><br />
 					<div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" /><br />

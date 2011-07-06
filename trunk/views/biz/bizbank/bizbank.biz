@@ -24,7 +24,7 @@
 
 	function init(){
 		#node->tabbar->bookContent(array("Home","How"));
-		#node->tabbar->bookSelected("Home");
+		//#node->tabbar->bookSelected("Home");
 	}
 
 	function frm(){

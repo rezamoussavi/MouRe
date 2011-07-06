@@ -25,7 +25,6 @@
 	frame->doLoginBtn=onDoLoginBtn
 	frame->xBtn=onXBtn
 	frame->logoutBtn=onLogoutBtn
-	frame->myaccBtn=onMyaccBtn
 	frame->validateBtn=onValidateBtn
 	frame->doSignupBtn=onDoSignupBtn
 
@@ -79,8 +78,10 @@
 	}
 
 	function onMyaccBtn($info){
-		$data=array();
-		osBroadcast(#msg->showMyAccount,$data);
+		if($info['Page']=="show"){
+			$data=array();
+			osBroadcast(#msg->showMyAccount,$data);
+		}
 	}
 
 	function onValidateBtn($info){
@@ -179,7 +180,8 @@
 		$name=$u['userName'];
 		$balance=$u['balance'];
 		$lgoutFrm=#nodeID."lgout";
-		$myaccFrm=#nodeID."myacc";
+		$d=array();
+		$link=osBackPageLink("Myacc");
 		return <PHTML>
 			Welcome $name<br />
 			Balance $balance<br />
@@ -187,10 +189,7 @@
 				<#msg->logoutBtn>
 				<input type="button" value="Logout" onclick="JavaScript:sndmsg('$lgoutFrm')"/>
 			</form>			
-			<form id="$myaccFrm" method="post" style="display:inline;">
-				<#msg->myaccBtn>
-				<input type="button" value="My Acc" onclick="JavaScript:sndmsg('$myaccFrm')"/>
-			</form>			
+			<a href="$link" > My Acc </a>
 		</PHTML>
 	}
 
@@ -213,8 +212,8 @@
 					<#msg->doSignupBtn>
 					<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
 					<div style="width: 100px; margin-top: 10px;">Real Name </div> <input type="input" name="userName" /><br />
-					<div style="width: 100px; margin-top: 10px;">Address </div> <input type="input" name="Address" /><br />
 					<div style="width: 100px; margin-top: 10px;">Country </div> <input type="input" name="Country" /><br />
+					<div style="width: 100px; margin-top: 10px;">Address </div> <input type="input" name="Address" /><br />
 					<div style="width: 100px; margin-top: 10px;">Postal Code </div> <input type="input" name="PostalCode" /><br />
 					<div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" /><br />
 					<div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" /><br />

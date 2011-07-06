@@ -40,15 +40,15 @@ class mainpageviewer {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['tab_tabChanged'][$this->_fullname]=true;
-			$_SESSION['osMsg']['user_showMyAccount'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
-			$_SESSION['osMsg']['frame_AdVideo'][$this->_fullname]=true;
-			$_SESSION['osMsg']['frame_PubVideo'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_AdVideo'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_PubVideo'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
-			$_SESSION['osNodes'][$fullname]['_curFrame']='frmHome';
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frmPubVideo';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
 		$this->AddVideo=new addvideo($this->_fullname.'_AddVideo');
@@ -80,16 +80,16 @@ class mainpageviewer {
 			case 'tab_tabChanged':
 				$this->onTabChanged($info);
 				break;
-			case 'user_showMyAccount':
+			case 'page_Myacc':
 				$this->onMyAcc($info);
 				break;
 			case 'user_logout':
 				$this->onLogOut($info);
 				break;
-			case 'frame_AdVideo':
+			case 'page_AdVideo':
 				$this->onAdVideo($info);
 				break;
-			case 'frame_PubVideo':
+			case 'page_PubVideo':
 				$this->onPubVideo($info);
 				break;
 			default:
@@ -108,19 +108,19 @@ class mainpageviewer {
 	function show($echo){
 		$_style='';
 		switch($this->_curFrame){
-			case 'frmHome':
+			case 'frmPubVideo':
 				$_style=' style="float:left; width:700;" ';
 				break;
 			case 'frmAdVideo':
-				$_style=' style="float:left; width:700;" ';
-				break;
-			case 'frmPubVideo':
 				$_style=' style="float:left; width:700;" ';
 				break;
 			case 'frmUser':
 				$_style=' style="float:left; width:700;" ';
 				break;
 			case 'frmAdmin':
+				$_style=' style="float:left; width:700;" ';
+				break;
+			case 'frmHome':
 				$_style=' style="float:left; width:700;" ';
 				break;
 			case 'frmHow':
@@ -198,19 +198,13 @@ JSONDOCREADY;
 	//			VIEW
 	//////////////////////////////////////////////////////////////////////
 	function frmButtons(){
-		$frmAdName=$this->_fullname."advideo";
-		$frmPubName=$this->_fullname."pubvideo";
+		$adPage=osBackPageLink("AdVideo");
+		$pubPage=osBackPageLink("PubVideo");
 		return <<<PHTMLCODE
 
 			<div style="width:100%; float:left; text-align:center;">
-				<form name="$frmAdName" method="post" style="display:inline;">
-					<input type="hidden" name="_message" value="frame_AdVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input value ="Ad a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmAdName")' class="press" style="Height:100; width:150;margin-top: 10px; margin-right: 50px;" />
-				</form>
-				<form name="$frmPubName" method="post" style="display:inline;">
-					<input type="hidden" name="_message" value="frame_PubVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input value ="Publish a Video" type = "button" onclick = 'JavaScript:sndmsg("$frmPubName")' class="press" style="Height:100; width:150; margin-top: 10px; margin-right: 50px;" />
-				</form>
+				<a href="$adPage" style="border:1px;Height:100; width:150;margin-top: 10px; margin-right: 50px;">Ad a Video</a>
+				<a href="$pubPage" style="border:1px;Height:100; width:150; margin-top: 10px; margin-right: 50px;">Publish a Video </a>
 			</div><hr>
 		
 PHTMLCODE;
