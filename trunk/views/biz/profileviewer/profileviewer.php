@@ -138,7 +138,7 @@ JSONDOCREADY;
 						Country: <input name="Country" value="{$user['Country']}" /><br/>
 						Postal Code: <input name="PostalCode" value="{$user['PostalCode']}" /><br/>
 						<div align=right><input type="button" value="Apply" onclick='document.getElementById("{$this->_fullname}getPassword").style.display="block"'></div>
-						<div id="{$this->_fullname}getPassword" style="display:none;z-index:1;margin-top:-50;border:1 dotted black;background-color:red;">
+						<div id="{$this->_fullname}getPassword" style="display:none;z-index:1;border:1 dotted black;background-color:red;">
 							Please enter your Password:<br />
 							<input name="Password" type="password" size=20><br />
 							<input type="button" value="Cancel" onclick='document.getElementById("{$this->_fullname}getPassword").style.display="none"'>

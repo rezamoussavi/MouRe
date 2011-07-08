@@ -1,0 +1,171 @@
+body
+{
+    margin: 0px;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+#header_bg
+{
+    background: url('./headerbg.png') repeat-x top center;
+    padding-top: 36px;
+    height: 100px;
+}
+
+#logo_div
+{
+    border: 1px solid black;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 15%;
+    float: left;
+}
+
+#logo_img
+{
+    height: 61px;
+    width: 318px;
+}
+
+#menu_div
+{
+    color: white;
+    margin-left: 15%;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#menu_div ul
+{
+    list-style: none;
+}
+#menu_div li
+{
+    float:  left;
+    margin-left: 25px;
+}
+#pric_cont {float: left; margin-top: 43px;}
+#log_sign {margin-left: 20px; float: left; margin-top: 0px;}
+#log_sign ul {padding-left: 0px;}
+#pers_info {font-size: 80%; margin-left: 20px; text-align: center; visibility: hidden;}
+#balance_div {margin-top: 10px;}
+
+#menu_div a
+{
+    text-decoration: none;
+    color: inherit;
+}
+
+#menu_div a:hover {border-bottom: 2px solid #1260DE;}
+
+#login_div
+{
+    background: url('./formsbg.png') repeat scroll 0 0 transparent;
+    color: white;
+    display: none;
+    position:absolute;
+    top: 16%;
+    left: 61%;
+    padding: 15px;
+    border-radius: 0px 0px 20px 20px;
+    /*opacity: 0.85;*/
+    width:250px;
+    height:120px;
+    z-index: 9002;
+}
+
+#signup_div
+{
+    background: url('./formsbg.png') repeat scroll 0 0 transparent;
+    color: white;
+    display: none;
+    position:absolute;
+    top: 15%;
+    left: 61%;
+    padding: 15px;
+    border-radius: 0px 0px 20px 20px;
+    /*opacity: 0.85;*/
+    width:260px;
+    height:130px;
+    z-index: 9002;
+}
+
+
+.username_div, .password_div
+{
+    font-size: 80%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.user_tf, .pass_tf
+{
+    width: 150px;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+.confirm_tf{
+	width: 150px;
+    margin-left: 22px;
+    border-radius: 5px;
+}
+
+
+#remember_div {margin-top: 20px;}
+
+#login_btn_div {
+	margin-top: -20px;
+	margin-left: 145px;
+}
+
+#signup_btn_div{
+	margin-top: 13px;
+	margin-left: 90px;	
+}
+
+#forgot, #remember
+{
+    font-size: 70%;
+    margin-left: 10px;
+}
+
+#forgot_div,#remember_div a:hover {
+	margin-top: 20px;
+	border-bottom: none;
+}
+
+.form_btn
+{
+    width: 100px;
+    height: 30px;
+    background-color: #A2E3F5;
+    border: 5px solid #1ABABA;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#showbox
+{
+    background: url('./showbox.png') repeat scroll 0 0 transparent;
+    border-bottom: 2px solid #E1E3DC;
+    /*display: none;*/
+    padding: 36px 0;
+    height: 300px;
+}
+
+#publish_btns {text-align: center;}
+
+#publish_btn, #advertise_btn {margin-top: 20px;}
+
+#publish_btns button {padding: 0px; border: 1px solid #76c7e7; width: 453px; height: 96px; border-radius: 10%;}
+#publish_btn
+{
+    background-image: url('./publish_btn.png');
+}
+#advertise_btn
+{
+    background-image: url('./advertise_btn.png');
+    margin-left: 25px;
+}
+
+

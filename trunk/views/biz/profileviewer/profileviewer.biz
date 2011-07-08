@@ -51,7 +51,7 @@
 						Country: <input name="Country" value="{$user['Country']}" /><br/>
 						Postal Code: <input name="PostalCode" value="{$user['PostalCode']}" /><br/>
 						<div align=right><input type="button" value="Apply" onclick='document.getElementById("{#nodeID}getPassword").style.display="block"'></div>
-						<div id="{#nodeID}getPassword" style="display:none;z-index:1;margin-top:-50;border:1 dotted black;background-color:red;">
+						<div id="{#nodeID}getPassword" style="display:none;z-index:1;border:1 dotted black;background-color:red;">
 							Please enter your Password:<br />
 							<input name="Password" type="password" size=20><br />
 							<input type="button" value="Cancel" onclick='document.getElementById("{#nodeID}getPassword").style.display="none"'>

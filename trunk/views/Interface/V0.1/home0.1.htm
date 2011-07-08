@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./home.css" />
+
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript">
+			$(document).ready( function() {
+				$("#login-link").click( function() {
+					$("#login-panel").slideToggle(200);
+				})
+			})
+			$(document).keydown( function(e) {
+				if (e.keyCode == 27) {
+					$("#login-panel").hide(0);
+				}
+			});
+		</script>
+
+		<script type="text/javascript">
+			var popup_onfocus = false;
+			var on_login = false;
+			function login_popup() {
+				var elem = document.getElementById("login_div");
+				elem.style.display = 'block';
+				elem.focus();
+				//elem.style.opacity = 0.9;
+				//elem.style.filter = 'alpha(opacity=' + 90 + ')';
+				setTimeout( function() {
+					popup_onfocus = true
+				}, 100);
+			}
+
+			function close_popup() {
+				if(!on_login && popup_onfocus) {
+					//if(document.getElementById("login_div").style.opacity > 0)
+					//                {
+					//                    document.getElementById("login_div").innerHTML = document.getElementById("login_div").style.opacity;
+					//                    var sdfdsd = setInterval(change_opac(), 100);
+					//                }
+					popup_onfocus = false;
+					document.getElementById("login_div").style.display = 'none';
+				}
+			}
+
+			function change_opac() {
+				document.getElementById("login_div").style.opacity = document.getElementById("login_div").style.opacity - 0.3;
+
+			}
+
+			function hover_login(bool) {
+				on_login = bool;
+			}
+		</script>
+	</head>
+
+	<body onclick="close_popup()">
+		<div id="header_bg">
+			<div id="logo_div">
+				<img id="logo_img" alt="" src="./logo.png" />
+			</div>
+			<div id="menu_div">
+				<div id="pric_cont">
+					<ul id="menu_list">
+						<li>
+							<a id="login-link" href="#login">Pricing</a>
+						</li>
+						<li>
+							<a href="javascript:my_function()">Contact us</a>
+						</li>
+					</ul>
+				</div>
+				<div id="log_sign">
+					<ul>
+						<li id="signup_li">
+							<a href="javascript:my_function()">Sign up</a>
+						</li>
+						<li>
+							<a href="javascript:my_function()" onclick="login_popup()">Log in</a>
+						</li>
+					</ul>
+				</div>
+				<div id="login-panel" onmouseover="hover_login(true)" onmouseout="hover_login(false)">
+					<form method="post">
+						<div id="username_div">
+							<label id="user_lbl">
+								Username:
+							</label>
+							<input id="user_tf" name="user_tf" type="text" />
+						</div>
+						<div id="password_div">
+							<label id="pass_lbl">
+								Password:
+							</label>
+							<input id="pass_tf" name="pass_tf" type="text" />
+						</div>
+						<div id="login_btn_div">
+							<input id="login_btn" type="submit" value="Login" />
+						</div>
+						<div id="forgot_div">
+							<a id="forgot" class="login_anc" href="javascript:my_function()">Forgot Password?</a>
+							<a id="something" class="login_anc" href="javascript:my_function()">Something Something</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div id="showbox">
+
+		</div>
+		<div id="publish_btns">
+			<button id="publish_btn" type="button">
+			</button>
+			<button id="advertise_btn" type="button">
+			</button>
+		</div>
+
+	</body>
+</html>
