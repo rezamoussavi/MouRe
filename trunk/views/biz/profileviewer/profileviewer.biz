@@ -21,13 +21,21 @@
 
 #phpfunction
 
-	/*---------------------------------------------------------
-	-
-	------------------------------------------------------------*/
+	/********************************************
+	*		FRAME
+	********************************************/
+
 	function frm(){
 		$user=osBackUser();
 		$formName=#nodeID."ApplyBtn";
 		$formPass=#nodeID."Pass";
+		if(strlen($user['userName'])<2){
+			$userBox='<input size=10 name="RealName" />';
+			$bdBox='<input size=10 name="BDate" />';
+		}else{
+			$userBox=$user['userName'];
+			$bdBox=$user['BDate'];
+		}
 		if(!osUserLogedin()){
 			$html="Please Login First";
 		}else{
@@ -36,14 +44,19 @@
 				<div style="float:left;">
 					<form id="$formName" method="post" style="margin:10px;background-color:#FFCCFF;float:left;">
 						<#msg->updateInfo>
-						Real Name: {$user['userName']}<br/>
+						Real Name: {$userBox}<br/>
 						eMail: {$user['email']}<br/>
-						Birth Date: {$user['BDate']}<br/>
+						Birth Date: {$bdBox}<br/>
 						Address: <br><textarea name="Address" rows=4 cols=30>{$user['Address']}</textarea><br>
 						Country: <input name="Country" value="{$user['Country']}" /><br/>
 						Postal Code: <input name="PostalCode" value="{$user['PostalCode']}" /><br/>
-						Password: <input name="Password" type="password" size=20><br>
-						<div align=right><input type="button" value="Apply" onclick='Javascript:sndmsg("$formName")'></div>
+						<div align=right><input type="button" value="Apply" onclick='document.getElementById("{#nodeID}getPassword").style.display="block"'></div>
+						<div id="{#nodeID}getPassword" style="display:none;z-index:1;margin-top:-50;border:1 dotted black;background-color:red;">
+							Please enter your Password:<br />
+							<input name="Password" type="password" size=20><br />
+							<input type="button" value="Cancel" onclick='document.getElementById("{#nodeID}getPassword").style.display="none"'>
+							<input type="button" value="OK" onclick='Javascript:sndmsg("$formName")'>
+						</div>
 					</form>
 					<form id="$formPass" method="post" style="margin:10px;background-color:#CCFFFF;float:left;">
 						<#msg->changePassword>
@@ -59,9 +72,9 @@
 		return $html;
 	}
 
-	/*---------------------------------------------------------------
-	-		Message Handlers
-	---------------------------------------------------------------*/
+	/********************************************
+	*		Message Handlers
+	********************************************/
 
 	function onChangePassword($info){
 		//check password match
@@ -78,8 +91,11 @@
 		$curU=osBackUser();
 		$info['email']=$curU['email'];
 		$u=new user("");
-		$u->bookInfo($info);
-		#var->message="<center><b><font color=green>Update Successfully!</font></b></center>";
+		$ret=$u->bookInfo($info);
+		if($ret==1)
+			#var->message="<center><b><font color=green>Update Successfully!</font></b></center>";
+		else
+			#var->message="<center><b><font color=red>$ret</font></b></center>";
 		_bookframe(#frm->frm);
 	}
 

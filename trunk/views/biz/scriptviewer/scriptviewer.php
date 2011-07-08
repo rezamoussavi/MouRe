@@ -19,6 +19,8 @@ class scriptviewer {
 
 	//Variables
 	var $script;
+	var $id;
+	var $link;
 
 	//Nodes (bizvars)
 
@@ -42,6 +44,14 @@ class scriptviewer {
 		if(!isset($_SESSION['osNodes'][$fullname]['script']))
 			$_SESSION['osNodes'][$fullname]['script']="[!]";
 		$this->script=&$_SESSION['osNodes'][$fullname]['script'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['id']))
+			$_SESSION['osNodes'][$fullname]['id']=0;
+		$this->id=&$_SESSION['osNodes'][$fullname]['id'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['link']))
+			$_SESSION['osNodes'][$fullname]['link']="";
+		$this->link=&$_SESSION['osNodes'][$fullname]['link'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='scriptviewer';
@@ -102,22 +112,36 @@ JSONDOCREADY;
 
 	function generateScript($adLinkData){
 		$pl=new publink("");
-		$code=$pl->generateScript($adLinkData);
-		if($code!=0){
-			$this->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".$code."&link=".$adLinkData['videoCode']."?version=3' WIDTH='700' HEIGHT='500' allowfullscreen='true' scale='noscale'/>";
+		$this->id=$pl->generateScript($adLinkData);
+		$this->link=$adLinkData['videoCode'];
+		if($this->id!=0){
+			$this->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".$this->id."&link=".$this->link."?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>";
 		}else{
 			$this->script="LOGIN first!";
 		}
 	}
 	function frm(){
-		return <<<PHTMLCODE
+		if($this->id!=0){
+			return <<<PHTMLCODE
 
-			<textarea id="codetopublish{$this->_fullname}" rows="5" cols="75">{$this->script}</textarea>
-			<br><b>Instruction:</b><br>
-			Copy content in the text area and paste it in your weblog/website
-		
+				<input style="display:none;" id="{$this->_fullname}id" value="{$this->id}" />
+				<input style="display:none;" id="{$this->_fullname}link" value="{$this->link}" />
+				<textarea id="{$this->_fullname}scriptarea" rows="5" cols="75">{$this->script}</textarea><br />
+				Width : <input size="10" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px 
+				Height : <input size="10" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
+				<br><b>Instruction:</b><br>
+				Copy content in the text area and paste it in your weblog/website
+			
 PHTMLCODE;
 
+		}else{
+			return <<<PHTMLCODE
+
+				<textarea id="{$this->_fullname}script" rows="5" cols="75">{$this->script}</textarea>
+			
+PHTMLCODE;
+
+		}
 	}
 
 }

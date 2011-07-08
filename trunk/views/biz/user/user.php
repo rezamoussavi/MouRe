@@ -126,9 +126,16 @@ class user {
 		if(is_array($info)){
 			if(isset($info['email'])&&isset($info['Password'])){
 				$hashPass = $this->sha1Hash($info['email'],$info['Password']);
+				query("SELECT * FROM user_info WHERE email='".$info['email']."' AND password='".$hashPass."'");
+				$passcheck=fetch();
+				if(!is_array($passcheck)) return "Incorrect Password!";
 				$q="UPDATE user_info SET email='$info[email]'";
 				if(isset($info['RealName']))
 					$q.=" , userName='$info[RealName]' ";
+				if(isset($info['PostalCode']))
+					$q.=" , PostalCode='$info[PostalCode]' ";
+				if(isset($info['Country']))
+					$q.=" , Country='$info[Country]' ";
 				if(isset($info['BDate']))
 					$q.=", BDate='$info[BDate]'";
 				if(isset($info['Address']))
@@ -143,9 +150,14 @@ class user {
 					$u['BDate']=$info['BDate'];
 				if(isset($info['Address']))
 					$u['Address']=$info['Address'];
+				if(isset($info['PostalCode']))
+					$u['PostalCode']=$info['PostalCode'];
+				if(isset($info['Country']))
+					$u['Country']=$info['Country'];
 				osBookUser($u);
-			}
-		}
+				return 1;
+			}else return "Password required!";
+		}else return "Internal error, try again!";
 	}
 	// $info = array("email"=>xxx,  "Pass"=>xxx,  "NewPass"=>xxx,  "Address"=>xxx,  "BDate"=>xxx,  "Name"=>xxx)
 	function updateUserInfo($info){
