@@ -145,11 +145,10 @@ PHTMLCODE;
 			<center><font color=red>{$this->errMessage}</font><hr></center>
 			<form name="$formname" method="post">
 				<input type="hidden" name="_message" value="frame_addVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				Title: <input id="theTitle" name="title" size=50 onkeypress='JavaScript:checkTitle()' onchange="JavaScript:checkTitle();"><span id="msgTitle"><font color="red">*</font></span><br>
-				Youtube link: <input id="theYLink" name="link" size=50 onkeypress='JavaScript:checkYLink()' onchange="JavaScript:checkYLink();"><span id="msgYLink"><font color="red">*</font></span><br>
-				Your Offer on Price/View: <input id="theAOPV" name="AOPV" size=5 onkeypress='JavaScript:checkAOPV({$of['minAOPV']})' onchange="JavaScript:checkAOPV({$of['minAOPV']});"> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
-				Number of Viewes: <input id="theNOV" name="NOV" size=5 onkeypress='JavaScript:checkNOV({$of['minNOV']})' onchange="JavaScript:checkNOV({$of['minNOV']});"> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
-				Commision: (auto calculate)
+				Title: <input id="theTitle" name="title" size=50 onkeypress='setTimeout("checkTitle()",100)' onchange='JavaScript:checkTitle();'><span id="msgTitle"><font color="red">*</font></span><br>
+				Youtube link: <input id="theYLink" name="link" size=50 onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"><font color="red">*</font></span><br>
+				Your Offer on Price/View: <input id="theAOPV" name="AOPV" size=5 onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
+				Number of Viewes: <input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
 				<hr>
 				Total: <span id="theTotal">0</span>$ - balance:<span id="theBalance">$balance</span> $ <span id="msgTotal"></span><br />
 				<input id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
