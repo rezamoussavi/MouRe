@@ -82,7 +82,7 @@ class bizbank {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' style="width:900px; margin:auto;" ';
+				$_style=' ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -111,8 +111,7 @@ JSONDOCREADY;
 
 
 	function init(){
-		$this->tabbar->bookContent(array("Home","How"));
-		//$this->tabbar->bookSelected("Home");
+		$this->tabbar->bookContent(array("Pricing","Contact us"));
 	}
 	function frm(){
 		$login=$this->login->_backframe();
@@ -120,18 +119,14 @@ JSONDOCREADY;
 		$pages=$this->pages->_backframe();
 		return <<<PHTMLCODE
 
-			<div style="width:900px; float:left;margin:auto; border: 1px dotted #f5f5f5;">
-				<div style="width:695px; float:left;">
-					<img id="bizbanklogo" src="../biz/bizbank/logo.jpg" width=695 />
-					$tab $pages
-				</div>
-				<div style="width:200px; float:left;">
-					$login
-				</div>
-				<div style="width:901px; float:left; background-color:#f5f5f5; height:25px;">
-					&nbsp;
+			<div id="header_bg">
+				<div id="logo_div"><img id="logo_img" alt="" src="./img/logo.png" /></div>
+				<div id="menu_div">
+					$tab
+				    $login
 				</div>
 			</div>
+			$pages
 		
 PHTMLCODE;
 

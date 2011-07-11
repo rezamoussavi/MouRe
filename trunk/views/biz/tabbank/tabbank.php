@@ -90,7 +90,7 @@ class tabbank {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' style="float:left; width:700;" ';
+				$_style=' class="pric_cont"  ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -130,17 +130,22 @@ JSONDOCREADY;
 	*	This frm show all tabs (including selected one) as link
 	*/
     function frm(){
-		$html='';
+		$html=<<<PHTMLCODE
+
+                <ul id="menu_list">
+		
+PHTMLCODE;
+
 		foreach($this->tabs as $t){
-			$link=osBackLinkInfo($this->_fullname,"tab",array("name"=>$this->curTabName),"tab",array("name"=>$t));
+			$link=osBackPageLink($t);
 			$html.=<<<PHTMLCODE
 
-				<a href="{$link}">{$t}</a>
+				<li><a href="{$link}">{$t}</a></li>
 			
 PHTMLCODE;
 
 		}
-		return $html;
+		return $html."</ul>";
 	}
     function onTabSelected($info){
 		if(array_search($info["name"],$this->tabs)!==false){

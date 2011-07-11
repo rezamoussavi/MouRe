@@ -39,11 +39,12 @@ class mainpageviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['tab_tabChanged'][$this->_fullname]=true;
-			$_SESSION['osMsg']['page_Myacc'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc'][$this->_fullname]=true;
 			$_SESSION['osMsg']['page_AdVideo'][$this->_fullname]=true;
 			$_SESSION['osMsg']['page_PubVideo'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Home'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_How'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -77,20 +78,23 @@ class mainpageviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'tab_tabChanged':
-				$this->onTabChanged($info);
+			case 'user_logout':
+				$this->onLogOut($info);
 				break;
 			case 'page_Myacc':
 				$this->onMyAcc($info);
-				break;
-			case 'user_logout':
-				$this->onLogOut($info);
 				break;
 			case 'page_AdVideo':
 				$this->onAdVideo($info);
 				break;
 			case 'page_PubVideo':
 				$this->onPubVideo($info);
+				break;
+			case 'page_Home':
+				$this->onHome($info);
+				break;
+			case 'page_How':
+				$this->onHow($info);
 				break;
 			default:
 				break;
@@ -167,17 +171,13 @@ JSONDOCREADY;
 			$this->_bookframe("frmHome");
 		}
 	}
-	function onTabChanged($info){
-		switch($info['tabName']){
-			case "Home":
-				$this->userpage=0;
-				$this->_bookframe("frmHome");
-				break;
-			case "How":
-				$this->userpage=0;
-				$this->_bookframe("frmHow");
-				break;
-		}
+	function onHow(){
+		$this->userpage=0;
+		$this->_bookframe("frmHow");
+	}
+	function onHome(){
+		$this->userpage=0;
+		$this->_bookframe("frmHome");
 	}
 	function onMyAcc($info){
 		if(osBackUserRole()=="admin"){

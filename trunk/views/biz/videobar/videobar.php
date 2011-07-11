@@ -238,7 +238,6 @@ PHTMLCODE;
 
 	}
 	function frmMyAd(){
-		$frmName=$this->_fullname.$this->data['adUID'];
 		$Title=$this->data['title'];
 		$AOPV=$this->data['AOPV'];
 		$VN=$this->data['viewed'];
@@ -248,6 +247,7 @@ PHTMLCODE;
 		$StatisticsBtn.=" Stats";
 		$frmStatName=$this->_fullname."Stat";
 		$statFrm=$this->backStatFrame();
+		$stopBtn=$this->frmStopBtn();
 		return <<<PHTMLCODE
 
 		<div style="width:650px;height:125;">
@@ -269,10 +269,7 @@ PHTMLCODE;
 				<br />StartDate:{$this->data['startDate']} - Last Date : {$this->data['lastDate']}
 			</div>
 			<div style="float:left;height:100px;width:100px;text-align:right;">
-				<form id="$frmName" method="post" style="display:inline;">
-					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
-					<input type="hidden" name="_message" value="frame_stop" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				</form>
+				$stopBtn
 			</div><br />
 		</div>
 		<div style="float:left;">$statFrm</div>
@@ -280,6 +277,57 @@ PHTMLCODE;
 		
 PHTMLCODE;
 
+	}
+	function frmStopBtn(){
+		$html="";
+		$frmName=$this->_fullname.$this->data['adUID'];
+		/*
+		*	Has been Stoped
+		*/
+		if($this->data['running']==0){
+			$html= <<<PHTMLCODE
+
+				<span style="height:90px;width:90px;text-align:center;">
+					Has been Stop!
+				</span>
+			
+PHTMLCODE;
+
+		}
+		/*
+		*	Not yet to be able to stop
+		*
+		* Today-minCancelTime>startDate
+		*/
+		elseif(date("Y/m/d",mktime(0,0,0,date("m"),date("d") - $this->data['minCancelTime'],date("Y"))) < $this->data['startDate']){
+			$month=substr($this->data['startDate'],5,2);
+			$day=substr($this->data['startDate'],8,2);
+			$year=substr($this->data['startDate'],0,4);
+			$stopDate=date("Y/m/d",mktime(0,0,0,$month,$day + $this->data['minCancelTime'],$year));
+			$html= <<<PHTMLCODE
+
+				<span style="height:90px;width:90px;text-align:center;">
+					Cannot stop till $stopDate
+				</span>
+			
+PHTMLCODE;
+
+		}
+		/*
+		*	Show Stop
+		*/
+		else{
+			$html= <<<PHTMLCODE
+
+				<form id="$frmName" method="post" style="display:inline;">
+					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
+					<input type="hidden" name="_message" value="frame_stop" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				</form>
+			
+PHTMLCODE;
+
+		}
+		return $html;
 	}
 	function backStatFrame(){
 		if(!$this->showStat)

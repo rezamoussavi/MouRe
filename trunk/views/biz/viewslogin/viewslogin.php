@@ -112,19 +112,19 @@ class viewslogin {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frmMain':
-				$_style=' style="float:left; width:200; height:150px;border:1px dotted gray;" ';
+				$_style=' class="log_sign"  ';
 				break;
 			case 'frmLogin':
-				$_style=' style="float:left; width:200; height:150px;border:1px dotted gray;" ';
+				$_style=' class="log_sign"  ';
 				break;
 			case 'frmWelcome':
-				$_style=' style="float:left; width:200; height:150px;border:1px dotted gray;" ';
+				$_style=' class="log_sign"  ';
 				break;
 			case 'frmSignup':
-				$_style=' style="float:left; width:200; height:150px;border:1px dotted gray;" ';
+				$_style=' class="log_sign"  ';
 				break;
 			case 'frmValidation':
-				$_style=' style="float:left; width:200; height:150px;border:1px dotted gray;" ';
+				$_style=' class="log_sign"  ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -210,7 +210,7 @@ JSONDOCREADY;
 			$signup = $u->add($info['email'], $info['password'], $info['passwordagain'], $info['userName'], $info['Address'], $info['Country'], $info['PostalCode'],'user');
 			switch($signup){
 				case 1://All set - user added and logged in!
-					$this->msg="Check Your email an login to set Verification code";
+					$this->msg="Check Your email!";
 					$this->_bookframe("frmMain");
 					break;
 				case -1://user already exist
@@ -238,17 +238,21 @@ JSONDOCREADY;
 		$this->msg="";
 		return <<<PHTMLCODE
 
-			$msg
-			<div style="width:200;height:50px;margin-top:120;margin-left:50px;">
-				<form id="$suFrm" style="display:inline;">
-					<input type="hidden" name="_message" value="frame_signupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="Signup" onclick="JavaScript:sndmsg('$suFrm')"/>
-				</form>
-				<form id="$lgFrm" style="display:inline;">
-					<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')"/>
-				</form>
-			</div>
+			<div style="height:40px;">$msg</div>
+	        <ul>
+	            <li>
+					<form id="$suFrm" style="display:inline;">
+						<input type="hidden" name="_message" value="frame_signupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+	                	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('$suFrm')">Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="$lgFrm" style="display:inline;">
+						<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+	                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('$lgFrm')">Log in</a>
+					</form>
+	            </li>
+	        </ul>
 		
 PHTMLCODE;
 
@@ -259,28 +263,39 @@ PHTMLCODE;
 		$xFrm=$this->_fullname."x";
 		return <<<PHTMLCODE
 
-			<div style="width:200;height:50px;margin-top:120;margin-left:50px;">
-				<form id="$suFrm" style="display:inline;">
-					<input type="hidden" name="_message" value="frame_signupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="Signup" onclick="JavaScript:sndmsg('$suFrm')"/>
-				</form>
-				<form style="display:inline;">
-					<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input disabled type="button" value="Login" />
-				</form>
-			</div>
-			<div style="margin-left:50px;display:block;position:absolute;z-index:1;border:1px solid black;background-color:gray;width:160px;height:100px;">
-				<form id="$lgFrm" method="post">
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+					<form id="$suFrm" style="display:inline;">
+						<input type="hidden" name="_message" value="frame_signupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+	                	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('$suFrm')">Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a disabled id="login-link" >Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="login_div" class="bloop">
+                <form id="$lgFrm" method="post">
 					<input type="hidden" name="_message" value="frame_doLoginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					email: <input name="email" size=10><br />
-					password: <input name="password" type="password" size=10><br />
-					<input type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')"/>
-				</form>
-				<form id="$xFrm" method="post">
-					<input type="hidden" name="_message" value="frame_xBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="X" onclick="JavaScript:sndmsg('$xFrm')"/>
-				</form>
-			</div>
+                    <div class="username_div">
+                        <label class="user_lbl">Username: </label>
+                        <input class="user_tf" name="email" type="text" />
+                    </div>
+                    <div class="password_div">
+                        <label class="pass_lbl">Password: </label>
+                        <input class="pass_tf" name="password" type="password" />
+                    </div>
+				     <div id="forgot_div">
+                    	<a id="forgot" class="login_anc" href="javascript:my_function()">Forgot Password?</a>
+                    </div>
+                    <div id="login_btn_div">
+                        <input class="form_btn" type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
+                    </div>
+                </form>
+            </div>
 		
 PHTMLCODE;
 
@@ -292,6 +307,26 @@ PHTMLCODE;
 		$lgoutFrm=$this->_fullname."lgout";
 		$d=array();
 		$link=osBackPageLink("Myacc");
+		return <<<PHTMLCODE
+
+            <div id="pers_info">
+                Welcome <span id="user_name">$name</span>!
+                <div id="balance_div">Balance: <span id="balance_span">$balance</span></div>
+            </div>
+			<ul>
+				<li>
+					<a id="signup-link" href="$link" >My Acc</a>
+				</li>
+				<li>
+					<form id="$lgoutFrm" style="display:inline;">
+						<input type="hidden" name="_message" value="frame_logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+						<a id="login-link" href="#logout" onclick="JavaScript:sndmsg('$lgoutFrm')">Log out</a>
+					</form>
+				</li>
+			</ul>
+		
+PHTMLCODE;
+
 		return <<<PHTMLCODE
 
 			Welcome $name<br />
@@ -311,32 +346,39 @@ PHTMLCODE;
 		$xFrm=$this->_fullname."x";
 		return <<<PHTMLCODE
 
-			<div style="width:200;height:50px;margin-top:120;margin-left:50px;">
-				<form id="" style="display:inline;">
-					<input disabled type="button" value="Signup" />
-				</form>
-				<form id="$lgFrm" style="display:inline;">
-					<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')"/>
-				</form>
-			</div>
-			<div style="margin-left:-150px;display:block;position:absolute;z-index:1;border:1px solid black;background-color:gray;width:200px;">
-				<form id="$dosuFrm" method="post">
-					<input type="hidden" name="_message" value="frame_doSignupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
-					<div style="width: 100px; margin-top: 10px;">Real Name </div> <input type="input" name="userName" /><br />
-					<div style="width: 100px; margin-top: 10px;">Country </div> <input type="input" name="Country" /><br />
-					<div style="width: 100px; margin-top: 10px;">Address </div> <input type="input" name="Address" /><br />
-					<div style="width: 100px; margin-top: 10px;">Postal Code </div> <input type="input" name="PostalCode" /><br />
-					<div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" /><br />
-					<div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" /><br />
-					<input type="button" value="Sign Up" onclick="JavaScript:sndmsg('$dosuFrm')"/>
-				</form>
-				<form id="$xFrm" method="post">
-					<input type="hidden" name="_message" value="frame_xBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="X" onclick="JavaScript:sndmsg('$xFrm')"/>
-				</form>
-			</div>
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a id="signup-link" >Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="$lgFrm" style="display:inline;">
+						<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+	                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('$lgFrm')">Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="signup_div" class="bloop">
+            	<form id="$dosuFrm" method="post">
+            		<input type="hidden" name="_message" value="frame_doSignupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+            		<div class="username_div">
+                        <label class="user_lbl">Email: </label>
+                        <input class="user_tf" name="email" type="text" />
+                    </div>
+                    <div class="password_div">
+                        <label class="pass_lbl">Password: </label>
+                        <input class="pass_tf" name="password" type="password" />
+                    </div>
+                    <div class="password_div">Confirm: </label>
+                        <input class="confirm_tf" name="passwordagain" type="password" />
+                    </div>
+                    <div id="signup_btn_div">
+                        <input class="form_btn" type="button" value="Sign up" onclick="JavaScript:sndmsg('$dosuFrm')" />
+                    </div>
+            	</form>
+            </div>
 		
 PHTMLCODE;
 
@@ -347,27 +389,30 @@ PHTMLCODE;
 		$xFrm=$this->_fullname."x";
 		return <<<PHTMLCODE
 
-			<div style="width:200;height:50px;margin-top:120;margin-left:50px;">
-				<form id="$suFrm" style="display:inline;">
-					<input type="hidden" name="_message" value="frame_signupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="Signup" onclick="JavaScript:sndmsg('$suFrm')"/>
-				</form>
-				<form style="display:inline;">
-					<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input disabled type="button" value="Login" />
-				</form>
-			</div>
-			<div style="margin-left:50px;display:block;position:absolute;z-index:1;border:1px solid black;background-color:gray;width:160px;height:100px;">
-				<form id="$vFrm" method="post">
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+					<form id="$suFrm" style="display:inline;">
+						<input type="hidden" name="_message" value="frame_signupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+	                	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('$suFrm')">Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a disabled id="login-link" >Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="login_div" class="bloop">
+                <form id="$vFrm" method="post">
 					<input type="hidden" name="_message" value="frame_validateBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					Verification Code: <input name="vcode" size=10><br />
-					<input type="button" value="Login" onclick="JavaScript:sndmsg('$vFrm')"/>
-				</form>
-				<form id="$xFrm" method="post">
-					<input type="hidden" name="_message" value="frame_xBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="X" onclick="JavaScript:sndmsg('$xFrm')"/>
-				</form>
-			</div>
+                    <div class="username_div">
+                        <label class="user_lbl">Code: </label>
+                        <input class="user_tf" name="vcode" type="text" />
+                    </div>
+					<input class="form_btn" type="button" value="Login" onclick="JavaScript:sndmsg('$vFrm')" />
+                </form>
+            </div>
 		
 PHTMLCODE;
 

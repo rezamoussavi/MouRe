@@ -13,11 +13,11 @@
 	msg="",email,password
 
 #frame
-	*frmMain(float:left; width:200; height:150px;border:1px dotted gray;)
-	frmLogin(float:left; width:200; height:150px;border:1px dotted gray;)
-	frmWelcome(float:left; width:200; height:150px;border:1px dotted gray;)
-	frmSignup(float:left; width:200; height:150px;border:1px dotted gray;)
-	frmValidation(float:left; width:200; height:150px;border:1px dotted gray;)
+	*frmMain[log_sign]
+	frmLogin[log_sign]
+	frmWelcome[log_sign]
+	frmSignup[log_sign]
+	frmValidation[log_sign]
 
 #message
 	frame->loginBtn=onLoginBtn
@@ -99,7 +99,7 @@
 
 			switch($signup){
 				case 1://All set - user added and logged in!
-					#var->msg="Check Your email an login to set Verification code";
+					#var->msg="Check Your email!";
 					_bookframe(#frm->frmMain);
 					break;
 
@@ -131,17 +131,21 @@
 		$msg=#var->msg;
 		#var->msg="";
 		return <PHTML>
-			$msg
-			<div style="width:200;height:50px;margin-top:120;margin-left:50px;">
-				<form id="$suFrm" style="display:inline;">
-					<#msg->signupBtn>
-					<input type="button" value="Signup" onclick="JavaScript:sndmsg('$suFrm')"/>
-				</form>
-				<form id="$lgFrm" style="display:inline;">
-					<#msg->loginBtn>
-					<input type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')"/>
-				</form>
-			</div>
+			<div style="height:40px;">$msg</div>
+	        <ul>
+	            <li>
+					<form id="$suFrm" style="display:inline;">
+						<#msg->signupBtn>
+	                	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('$suFrm')">Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="$lgFrm" style="display:inline;">
+						<#msg->loginBtn>
+	                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('$lgFrm')">Log in</a>
+					</form>
+	            </li>
+	        </ul>
 		</PHTML>
 	}
 
@@ -150,28 +154,39 @@
 		$lgFrm=#nodeID."dologin";
 		$xFrm=#nodeID."x";
 		return <PHTML>
-			<div style="width:200;height:50px;margin-top:120;margin-left:50px;">
-				<form id="$suFrm" style="display:inline;">
-					<#msg->signupBtn>
-					<input type="button" value="Signup" onclick="JavaScript:sndmsg('$suFrm')"/>
-				</form>
-				<form style="display:inline;">
-					<#msg->loginBtn>
-					<input disabled type="button" value="Login" />
-				</form>
-			</div>
-			<div style="margin-left:50px;display:block;position:absolute;z-index:1;border:1px solid black;background-color:gray;width:160px;height:100px;">
-				<form id="$lgFrm" method="post">
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+					<form id="$suFrm" style="display:inline;">
+						<#msg->signupBtn>
+	                	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('$suFrm')">Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a disabled id="login-link" >Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="login_div" class="bloop">
+                <form id="$lgFrm" method="post">
 					<#msg->doLoginBtn>
-					email: <input name="email" size=10><br />
-					password: <input name="password" type="password" size=10><br />
-					<input type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')"/>
-				</form>
-				<form id="$xFrm" method="post">
-					<#msg->xBtn>
-					<input type="button" value="X" onclick="JavaScript:sndmsg('$xFrm')"/>
-				</form>
-			</div>
+                    <div class="username_div">
+                        <label class="user_lbl">Username: </label>
+                        <input class="user_tf" name="email" type="text" />
+                    </div>
+                    <div class="password_div">
+                        <label class="pass_lbl">Password: </label>
+                        <input class="pass_tf" name="password" type="password" />
+                    </div>
+				     <div id="forgot_div">
+                    	<a id="forgot" class="login_anc" href="javascript:my_function()">Forgot Password?</a>
+                    </div>
+                    <div id="login_btn_div">
+                        <input class="form_btn" type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
+                    </div>
+                </form>
+            </div>
 		</PHTML>
 	}
 
@@ -182,6 +197,23 @@
 		$lgoutFrm=#nodeID."lgout";
 		$d=array();
 		$link=osBackPageLink("Myacc");
+		return <PHTML>
+            <div id="pers_info">
+                Welcome <span id="user_name">$name</span>!
+                <div id="balance_div">Balance: <span id="balance_span">$balance</span></div>
+            </div>
+			<ul>
+				<li>
+					<a id="signup-link" href="$link" >My Acc</a>
+				</li>
+				<li>
+					<form id="$lgoutFrm" style="display:inline;">
+						<#msg->logoutBtn>
+						<a id="login-link" href="#logout" onclick="JavaScript:sndmsg('$lgoutFrm')">Log out</a>
+					</form>
+				</li>
+			</ul>
+		</PHTML>
 		return <PHTML>
 			Welcome $name<br />
 			Balance $balance<br />
@@ -198,32 +230,39 @@
 		$dosuFrm=#nodeID."dodosignup";
 		$xFrm=#nodeID."x";
 		return <PHTML>
-			<div style="width:200;height:50px;margin-top:120;margin-left:50px;">
-				<form id="" style="display:inline;">
-					<input disabled type="button" value="Signup" />
-				</form>
-				<form id="$lgFrm" style="display:inline;">
-					<#msg->loginBtn>
-					<input type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')"/>
-				</form>
-			</div>
-			<div style="margin-left:-150px;display:block;position:absolute;z-index:1;border:1px solid black;background-color:gray;width:200px;">
-				<form id="$dosuFrm" method="post">
-					<#msg->doSignupBtn>
-					<div style="width: 100px; margin-top: 10px;">Email </div> <input type="input" name="email" /><br />
-					<div style="width: 100px; margin-top: 10px;">Real Name </div> <input type="input" name="userName" /><br />
-					<div style="width: 100px; margin-top: 10px;">Country </div> <input type="input" name="Country" /><br />
-					<div style="width: 100px; margin-top: 10px;">Address </div> <input type="input" name="Address" /><br />
-					<div style="width: 100px; margin-top: 10px;">Postal Code </div> <input type="input" name="PostalCode" /><br />
-					<div style="width: 100px; margin-top: 10px;">Password </div> <input type="password" name="password" /><br />
-					<div style="width: 100px; margin-top: 10px;">Password Again </div> <input type="password" name="passwordagain" /><br />
-					<input type="button" value="Sign Up" onclick="JavaScript:sndmsg('$dosuFrm')"/>
-				</form>
-				<form id="$xFrm" method="post">
-					<#msg->xBtn>
-					<input type="button" value="X" onclick="JavaScript:sndmsg('$xFrm')"/>
-				</form>
-			</div>
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a id="signup-link" >Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="$lgFrm" style="display:inline;">
+						<#msg->loginBtn>
+	                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('$lgFrm')">Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="signup_div" class="bloop">
+            	<form id="$dosuFrm" method="post">
+            		<#msg->doSignupBtn>
+            		<div class="username_div">
+                        <label class="user_lbl">Email: </label>
+                        <input class="user_tf" name="email" type="text" />
+                    </div>
+                    <div class="password_div">
+                        <label class="pass_lbl">Password: </label>
+                        <input class="pass_tf" name="password" type="password" />
+                    </div>
+                    <div class="password_div">Confirm: </label>
+                        <input class="confirm_tf" name="passwordagain" type="password" />
+                    </div>
+                    <div id="signup_btn_div">
+                        <input class="form_btn" type="button" value="Sign up" onclick="JavaScript:sndmsg('$dosuFrm')" />
+                    </div>
+            	</form>
+            </div>
 		</PHTML>
 	}
 
@@ -232,27 +271,30 @@
 		$vFrm=#nodeID."ver";
 		$xFrm=#nodeID."x";
 		return <PHTML>
-			<div style="width:200;height:50px;margin-top:120;margin-left:50px;">
-				<form id="$suFrm" style="display:inline;">
-					<#msg->signupBtn>
-					<input type="button" value="Signup" onclick="JavaScript:sndmsg('$suFrm')"/>
-				</form>
-				<form style="display:inline;">
-					<#msg->loginBtn>
-					<input disabled type="button" value="Login" />
-				</form>
-			</div>
-			<div style="margin-left:50px;display:block;position:absolute;z-index:1;border:1px solid black;background-color:gray;width:160px;height:100px;">
-				<form id="$vFrm" method="post">
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+					<form id="$suFrm" style="display:inline;">
+						<#msg->signupBtn>
+	                	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('$suFrm')">Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a disabled id="login-link" >Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="login_div" class="bloop">
+                <form id="$vFrm" method="post">
 					<#msg->validateBtn>
-					Verification Code: <input name="vcode" size=10><br />
-					<input type="button" value="Login" onclick="JavaScript:sndmsg('$vFrm')"/>
-				</form>
-				<form id="$xFrm" method="post">
-					<#msg->xBtn>
-					<input type="button" value="X" onclick="JavaScript:sndmsg('$xFrm')"/>
-				</form>
-			</div>
+                    <div class="username_div">
+                        <label class="user_lbl">Code: </label>
+                        <input class="user_tf" name="vcode" type="text" />
+                    </div>
+					<input class="form_btn" type="button" value="Login" onclick="JavaScript:sndmsg('$vFrm')" />
+                </form>
+            </div>
 		</PHTML>
 	}
 

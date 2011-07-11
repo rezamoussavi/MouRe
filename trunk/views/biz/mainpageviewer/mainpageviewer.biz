@@ -15,11 +15,12 @@
 	frmHow(float:left; width:700;)
 
 #message
-	tab->tabChanged=onTabChanged
-	page->Myacc=onMyAcc
 	user->logout=onLogOut
+	page->Myacc=onMyAcc
 	page->AdVideo=onAdVideo
 	page->PubVideo=onPubVideo
+	page->Home=onHome
+	page->How=onHow
 
 #node
 	addvideo AddVideo
@@ -53,17 +54,14 @@
 		}
 	}
 
-	function onTabChanged($info){
-		switch($info['tabName']){
-			case "Home":
-				#var->userpage=0;
-				_bookframe(#frm->frmHome);
-				break;
-			case "How":
-				#var->userpage=0;
-				_bookframe(#frm->frmHow);
-				break;
-		}
+	function onHow(){
+		#var->userpage=0;
+		_bookframe(#frm->frmHow);
+	}
+
+	function onHome(){
+		#var->userpage=0;
+		_bookframe(#frm->frmHome);
 	}
 
 	function onMyAcc($info){
