@@ -1,0 +1,48 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	4/21/2011
+	Ver:		0.1
+
+#biz
+	bizbank:bizbank
+
+#node
+	viewslogin login, tabbank tabbar, mainpageviewer pages
+
+#frame
+	frm(width:900px; margin:auto;)
+
+#start
+	init
+
+#JSOnDocReady
+	$("#bizbanklogo").mouseover(function(){   $("#bizbanklogo").fadeTo("fast",0.7)});
+	$("#bizbanklogo").mouseout(function(){   $("#bizbanklogo").fadeTo("fast",1)});
+
+
+#phpfunction
+
+	function init(){
+		#node->tabbar->bookContent(array("Home","How"));
+		//#node->tabbar->bookSelected("Home");
+	}
+
+	function frm(){
+		$login=#node->login->_backframe();
+		$tab=#node->tabbar->_backframe();
+		$pages=#node->pages->_backframe();
+		return <PHTML>
+			<div style="width:900px; float:left;margin:auto; border: 1px dotted #f5f5f5;">
+				<div style="width:695px; float:left;">
+					<img id="bizbanklogo" src="../biz/bizbank/logo.jpg" width=695 />
+					$tab $pages
+				</div>
+				<div style="width:200px; float:left;">
+					$login
+				</div>
+				<div style="width:901px; float:left; background-color:#f5f5f5; height:25px;">
+					&nbsp;
+				</div>
+			</div>
+		</PHTML>
+	}

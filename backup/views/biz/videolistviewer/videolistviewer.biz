@@ -1,0 +1,43 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	5/1/2011
+	Ver:		1.0
+	----------------------------------
+	Author:	Reza Moussavi
+	Date:	4/21/2011
+	Ver:		0.1
+
+#biz
+	videolistviewer
+
+#node
+	adlink
+	videobar VBars[]
+
+#frame
+	frm
+
+#phpfunction
+
+	function bookModeUser($mode,$userID){
+		$al=new adlink("");
+		$Vs=array();
+		$Vs=$al->backVideoList($mode,$userID);
+		#node->VBars=array();
+		foreach($Vs as $v){
+			$vb=new videobar("VBar".#nodeID.count(#node->VBars));
+			$vb->bookInfo($v);
+			$vb->bookMode($mode);
+			#node->VBars[]=$vb;
+		}
+	}
+
+	function frm(){
+		$VBars="";
+		foreach(#node->VBars as $vb){
+			$VBars.="<div style='float:left;border:1px dotted gray;margin:5px;padding:5px;background-color:#F5F5FF;' >".$vb->_backframe()."</div>";
+		}
+		return <PHTML>
+			<br>$VBars
+		</PHTML>
+	}

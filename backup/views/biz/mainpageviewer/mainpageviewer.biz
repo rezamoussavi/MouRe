@@ -1,0 +1,145 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	4/21/2011
+	Ver:		0.1
+
+#biz
+	mainpageviewer
+
+#frame
+	frmAdVideo(float:left; width:700;)
+	*frmPubVideo(float:left; width:700;)
+	frmUser(float:left; width:700;)
+	frmAdmin(float:left; width:700;)
+	frmHome(float:left; width:700;)
+	frmHow(float:left; width:700;)
+
+#message
+	user->logout=onLogOut
+	page->Myacc=onMyAcc
+	page->AdVideo=onAdVideo
+	page->PubVideo=onPubVideo
+	page->Home=onHome
+	page->How=onHow
+
+#node
+	addvideo AddVideo
+	videolistviewer VideoList
+	myaccviewer UserPanel
+	adminviewer AdminPanel
+
+#var
+	userpage=0
+
+#phpfunction
+
+	/**************************************
+	*	MESSAGE Handlers
+	**************************************/
+
+	function onAdVideo($info){
+		#var->userpage=0;
+		_bookframe(#frm->frmAdVideo);
+	}
+
+	function onPubVideo($info){
+		#var->userpage=0;
+		_bookframe(#frm->frmPubVideo);
+	}
+
+	function onLogOut(){
+		if(#var->userpage==1){
+			#var->userpage=0;
+			_bookframe(#frm->frmHome);
+		}
+	}
+
+	function onHow(){
+		#var->userpage=0;
+		_bookframe(#frm->frmHow);
+	}
+
+	function onHome(){
+		#var->userpage=0;
+		_bookframe(#frm->frmHome);
+	}
+
+	function onMyAcc($info){
+		if(osBackUserRole()=="admin"){
+			#var->userpage=1;
+			_bookframe(#frm->frmAdmin);
+		}else{
+			#var->userpage=1;
+			_bookframe(#frm->frmUser);
+		}
+	}
+
+	function on2($info){
+		#var->userpage=0;
+	}
+
+	function on3($info){
+		#var->userpage=0;
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	//			VIEW
+	//////////////////////////////////////////////////////////////////////
+
+	function frmButtons(){
+		$adPage=osBackPageLink("AdVideo");
+		$pubPage=osBackPageLink("PubVideo");
+		return <PHTML>
+			<div style="width:100%; float:left; text-align:center;">
+				<a href="$adPage" style="border:1px;Height:100; width:150;margin-top: 10px; margin-right: 50px;">Ad a Video</a>
+				<a href="$pubPage" style="border:1px;Height:100; width:150; margin-top: 10px; margin-right: 50px;">Publish a Video </a>
+			</div><hr>
+		</PHTML>
+	}
+
+	function frmHow(){
+		$buttons=#fun->frmButtons();
+		return <PHTML>
+			$buttons
+			How Page
+		</PHTML>
+	}
+
+	function frmHome(){
+		$buttons=#fun->frmButtons();
+		return <PHTML>
+			$buttons
+			Home Page
+		</PHTML>
+	}
+
+	function frmAdmin(){
+		$Admin=#node->AdminPanel->_backframe();
+		return <PHTML>
+			$Admin
+		</PHTML>
+	}
+
+	function frmUser(){
+		$U=#node->UserPanel->_backframe();
+		return <PHTML>
+			$U
+		</PHTML>
+	}
+
+	function frmPubVideo(){
+		$btn=#fun->frmButtons();
+		#node->VideoList->bookModeUser("topublish",-1);
+		$VList=#node->VideoList->_backframe();
+		return <PHTML>
+			$btn <br> $VList
+		</PHTML>
+	}
+
+	function frmAdVideo(){
+		$btn=#fun->frmButtons();
+		$adV=#node->AddVideo->_backframe();
+		return <PHTML>
+			$btn <br> $adV
+		</PHTML>
+	}

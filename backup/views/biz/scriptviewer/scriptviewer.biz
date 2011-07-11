@@ -1,0 +1,50 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	5/1/2011
+	Ver:	0.1
+
+#biz
+	scriptviewer
+
+#var
+	script="[!]"
+	id=0
+	link=""
+
+#node
+	publink
+
+#frame
+	frm
+
+#phpfunction
+
+	function generateScript($adLinkData){
+		$pl=new publink("");
+		#var->id=$pl->generateScript($adLinkData);
+		#var->link=$adLinkData['videoCode'];
+		if(#var->id!=0){
+			#var->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".#var->id."&link=".#var->link."?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>";
+		}else{
+			#var->script="LOGIN first!";
+		}
+	}
+
+	function frm(){
+		if(#var->id!=0){
+			return <PHTML>
+				<input style="display:none;" id="{#nodeID}id" value="{#var->id}" />
+				<input style="display:none;" id="{#nodeID}link" value="{#var->link}" />
+				<textarea id="{#nodeID}scriptarea" rows="5" cols="75">{#var->script}</textarea><br />
+				Width : <input size="10" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/>px 
+				Height : <input size="10" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/>px
+				<br><b>Instruction:</b><br>
+				Copy content in the text area and paste it in your weblog/website
+			</PHTML>
+		}else{
+			return <PHTML>
+				<textarea id="{#nodeID}script" rows="5" cols="75">{#var->script}</textarea>
+			</PHTML>
+		}
+	}
+
