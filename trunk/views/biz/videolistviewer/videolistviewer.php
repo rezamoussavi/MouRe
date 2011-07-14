@@ -86,7 +86,7 @@ class videolistviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style='';
+				$_style=' class="box_container"  ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -127,7 +127,7 @@ JSONDOCREADY;
 	function frm(){
 		$VBars="";
 		foreach($this->VBars as $vb){
-			$VBars.="<div style='float:left;border:1px dotted gray;margin:5px;padding:5px;background-color:#F5F5FF;' >".$vb->_backframe()."</div>";
+			$VBars.=$vb->_backframe();
 		}
 		return <<<PHTMLCODE
 

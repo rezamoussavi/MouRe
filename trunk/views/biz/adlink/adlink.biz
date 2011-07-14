@@ -69,6 +69,40 @@
 		query($q);
 	}
 
+	function backLinkByID($id){
+		query("SELECT * FROM #db->info WHERE adUID=$id");
+		if(!($row=fetch())){
+			$row=array();
+		}
+		return $row;
+	}
+
+	function stop($id){
+		$d=date("d");
+		$m=date("m");
+		$y=date("Y");
+		/*	fetch the link */
+		query(" SELECT * FROM #db->info WHERE adUID=$id ");
+		if($row=fetch()){
+			$timeUnlock=date("Y/m/d",mktime(0,0,0,$m,$d - $row['minCancelTime'],$y)) >= $row['startDate'];
+			/*
+			*	Check IF it is running (running==1)
+			*	&& publishe is logedin
+			*	&& more than minLifeTime passed
+			*/
+			if( ($row['advertisor']==osBackUserID()) && ($row['running']==1) && $timeUnlock){
+				/*
+				*	thus stop it (running=-1)
+				*/
+				$lastDate=date("Y/m/d",mktime(0,0,0,$m,$d+$row['minLifeTime'],$y));
+				$q="UPDATE #db->info as d SET d.lastDate='".$lastDate."' , d.running=-1 WHERE d.adUID=$id";
+				query($q);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+
 	/************************************************
 	*
 	*************************************************/
@@ -77,7 +111,7 @@
 		$vl=array();
 		switch($mode){
 			case "topublish":
-				query("SELECT * FROM #db->info WHERE running=1");
+				query("SELECT * FROM #db->info WHERE running<>0 ORDER BY startDate DESC");
 				break;
 			case "myad":
 				$q="SELECT * FROM #db->info WHERE advertisor=".$userID;
@@ -129,3 +163,5 @@
 		$a=strpos($y,"watch?v=")+8;
 		return substr($y,$a,strpos($y."&","&")-$a);
 	}
+
+

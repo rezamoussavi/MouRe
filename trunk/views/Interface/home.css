@@ -8,15 +8,15 @@ body {
 	height: 100px;
 }
 #logo_div {
-	border: 1px solid black;
+	/*border: 1px solid black;*/
 	margin-top: auto;
 	margin-bottom: auto;
 	margin-left: 15%;
 	float: left;
 }
 #logo_img {
-	height: 61px;
-	width: 318px;
+	height: 77px;
+	width: 330px;
 }
 #menu_div {
 	color: white;
@@ -147,6 +147,7 @@ body {
 }
 #publish_btn, #advertise_btn {
 	margin-top: 20px;
+	cursor: pointer;
 }
 #publish_btns button {
 	padding: 0px;
@@ -203,7 +204,7 @@ body {
 	margin-left:15px;
 	float: left;
 }
-#video_image {
+.video_image {
 	width: 320px;
 	height: 180px;
 	margin-top: 12px;
@@ -214,7 +215,7 @@ body {
 .other_n_embed {margin-left: 10px; margin-top: 50px;}
 .video_other_info {
 	font-size: 16px;
-	width: 120px;
+	width: 150px;
     height: 100px;
 	font-weight: bold;
 	text-align: left;
@@ -224,9 +225,9 @@ body {
 .box_open
 {
     float: left;
-    width: 450px;
+    width: 420px;
     margin-left: 3px;
-    border-left: double black 5px;
+    border-left: solid #00afe9 1px;
 }
 
 .video_details {
@@ -244,13 +245,14 @@ body {
 	background-color: #FF9966;
     border-radius: 5px;
 	font-weight: bold;
+	cursor:pointer;
 }
 
 .embed_src{
 	background-color: #99CCFF;
 	/*border-radius: 10px 10px 10px 10px;*/
 	height: 120px;
-	width: 320px;
+	width: 290px;
 	margin-left: 10px;
 	text-align: left;
 }
@@ -265,6 +267,7 @@ body {
 .size_title{
 	font-size: 90%;
 	margin-left: 10px;
+	width: 46px;
     float: left;
 }
 .size_input{

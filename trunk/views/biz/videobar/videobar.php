@@ -14,6 +14,7 @@
 */
 require_once 'biz/scriptviewer/scriptviewer.php';
 require_once 'biz/ipviewer/ipviewer.php';
+require_once 'biz/adlink/adlink.php';
 
 class videobar {
 
@@ -42,6 +43,7 @@ class videobar {
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['frame_getLink'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_StatBtn'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_stopBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
@@ -85,6 +87,9 @@ class videobar {
 			case 'frame_StatBtn':
 				$this->onStatBtn($info);
 				break;
+			case 'frame_stopBtn':
+				$this->onStopBtn($info);
+				break;
 			case 'user_login':
 				$this->onLoginStatusChanged($info);
 				break;
@@ -108,19 +113,19 @@ class videobar {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style='';
+				$_style=' ';
 				break;
 			case 'frmToPublish':
-				$_style='';
+				$_style=' class="video_box"  ';
 				break;
 			case 'frmMyAd':
-				$_style='';
+				$_style=' ';
 				break;
 			case 'frmMyPub':
-				$_style='';
+				$_style=' ';
 				break;
 			case 'frmShort':
-				$_style='';
+				$_style=' ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -155,31 +160,43 @@ JSONDOCREADY;
 	function frmToPublish(){
 		$frmName=$this->_fullname.$this->data['adUID'];
 		$scv=($this->showScript)?$this->scv->_backframe():" ";
-		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
 		$EPV=$this->data['AOPV']*$this->data['APRate'];
 		$Title=htmlspecialchars($this->data['title'], ENT_QUOTES);
+		$lastDate=strlen($this->data['lastDate']." ")>3?"Last Date : ".$this->data['lastDate']:"";
 		return <<<PHTMLCODE
 
-		<div style="width:650px;height:120;">
-			<div style="float:left;height:120px;width:150px;text-align:left;">
-				<a href="{$this->data['link']}" target="_blank">
-					<img src="{$this->data['img']}" />
-				</a>
-				<br /><font size=2>viewd {$this->data['viewed']} of {$this->data['maxViews']}</font>
+			<div class="box_close">
+				<div class="box_image">
+					<a href="{$this->data['link']}" target="_blank">
+						<img class="video_image" src="{$this->data['img']}" />
+					</a>
+				</div>
+				<div class="other_info_container">
+					<div class="video_header">
+						<div class="video_title">{$Title}</div>
+						<div class="details_btn_div">
+							<form id="$frmName" method="post">
+								<input class="getlink_btn" type="button" value="Get link to publish" onclick='JavaScript:sndmsg("$frmName")'/>
+								<input type="hidden" name="_message" value="frame_getLink" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+							</form>
+						</div>
+					</div>
+					<div class="other_n_embed">
+						<div class="video_other_info" >
+							<div class="video_details">
+								Earn/View : $EPV $
+							</div>
+							<div class="video_details">
+								viewed {$this->data['viewed']} of {$this->data['maxViews']}
+							</div>
+							<div class="video_details">
+								$lastDate
+							</div>
+        	    		</div>
+						$scv
+        	    	</div>
+        	    </div>
 			</div>
-			<div style="float:left;height:120px;width:400px;align:right;">
-				{$Title}<br />
-				Last Date : {$this->data['lastDate']}
-				<br />Earn/View : {$EPV}
-			</div>
-			<div style="float:left;height:120px;width:100px;text-align:right;">
-				<form id="$frmName" method="post" style="display:inline;">
-					<input type="button" value="$btnCaption" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
-					<input type="hidden" name="_message" value="frame_getLink" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				</form>
-			</div>
-		</div>
-			$scv
 		
 PHTMLCODE;
 
@@ -282,13 +299,26 @@ PHTMLCODE;
 		$html="";
 		$frmName=$this->_fullname.$this->data['adUID'];
 		/*
-		*	Has been Stoped
+		*	Has been Removed
 		*/
 		if($this->data['running']==0){
 			$html= <<<PHTMLCODE
 
 				<span style="height:90px;width:90px;text-align:center;">
-					Has been Stop!
+					Has been Removed!
+				</span>
+			
+PHTMLCODE;
+
+		}
+		/*
+		*	Has been Stoped
+		*/
+		if($this->data['running']==-1){
+			$html= <<<PHTMLCODE
+
+				<span style="height:90px;width:90px;text-align:center;">
+					Will be stop at {$this->data['lastDate']}
 				</span>
 			
 PHTMLCODE;
@@ -321,7 +351,7 @@ PHTMLCODE;
 
 				<form id="$frmName" method="post" style="display:inline;">
 					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
-					<input type="hidden" name="_message" value="frame_stop" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<input type="hidden" name="_message" value="frame_stopBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				</form>
 			
 PHTMLCODE;
@@ -348,6 +378,13 @@ PHTMLCODE;
 	}
 	function onStatBtn($info){
 		$this->showStat=!$this->showStat;
+		$this->_bookframe($this->_curFrame);
+	}
+	function onStopBtn($info){
+		$al=new adlink("");
+		if($al->stop($this->data['adUID'])){
+			$this->data=$al->backLinkByID($this->data['adUID']);
+		}
 		$this->_bookframe($this->_curFrame);
 	}
 	/******************************************

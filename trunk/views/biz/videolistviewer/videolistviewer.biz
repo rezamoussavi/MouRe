@@ -15,7 +15,7 @@
 	videobar VBars[]
 
 #frame
-	frm
+	frm[box_container]
 
 #phpfunction
 
@@ -35,7 +35,7 @@
 	function frm(){
 		$VBars="";
 		foreach(#node->VBars as $vb){
-			$VBars.="<div style='float:left;border:1px dotted gray;margin:5px;padding:5px;background-color:#F5F5FF;' >".$vb->_backframe()."</div>";
+			$VBars.=$vb->_backframe();
 		}
 		return <PHTML>
 			<br>$VBars

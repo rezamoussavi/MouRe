@@ -169,6 +169,10 @@
 	            </li>
 	        </ul>
             <div id="login_div" class="bloop">
+			    <form name="$xFrm" style="float:right;">
+			    	<#msg->xBtn>
+			    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('$xFrm')">X</a></font>
+			    </form>
                 <form id="$lgFrm" method="post">
 					<#msg->doLoginBtn>
                     <div class="username_div">
@@ -192,7 +196,7 @@
 
 	function frmWelcome(){
 		$u=osBackUser();
-		$name=$u['userName'];
+		$name=strlen($u['userName'])>1?$u['userName']:$u['email'];
 		$balance=$u['balance'];
 		$lgoutFrm=#nodeID."lgout";
 		$d=array();
@@ -200,11 +204,11 @@
 		return <PHTML>
             <div id="pers_info">
                 Welcome <span id="user_name">$name</span>!
-                <div id="balance_div">Balance: <span id="balance_span">$balance</span></div>
+                <div id="balance_div">Balance: <span id="balance_span">$balance $</span></div>
             </div>
 			<ul>
 				<li>
-					<a id="signup-link" href="$link" >My Acc</a>
+					<a id="signup-link" href="$link" >My Account</a>
 				</li>
 				<li>
 					<form id="$lgoutFrm" style="display:inline;">
@@ -213,15 +217,6 @@
 					</form>
 				</li>
 			</ul>
-		</PHTML>
-		return <PHTML>
-			Welcome $name<br />
-			Balance $balance<br />
-			<form id="$lgoutFrm" method="post" style="display:inline;">
-				<#msg->logoutBtn>
-				<input type="button" value="Logout" onclick="JavaScript:sndmsg('$lgoutFrm')"/>
-			</form>			
-			<a href="$link" > My Acc </a>
 		</PHTML>
 	}
 
@@ -245,6 +240,10 @@
 	            </li>
 	        </ul>
             <div id="signup_div" class="bloop">
+			    <form name="$xFrm" style="float:right;">
+			    	<#msg->xBtn>
+			    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('$xFrm')">X</a></font>
+			    </form>
             	<form id="$dosuFrm" method="post">
             		<#msg->doSignupBtn>
             		<div class="username_div">

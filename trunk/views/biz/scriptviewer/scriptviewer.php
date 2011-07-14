@@ -84,7 +84,7 @@ class scriptviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style='';
+				$_style=' class="box_open"  ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -117,11 +117,35 @@ JSONDOCREADY;
 		if($this->id!=0){
 			$this->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".$this->id."&link=".$this->link."?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>";
 		}else{
-			$this->script="LOGIN first!";
+			$this->script="You must be logged in<br /><br /><br />*In order to enable us to track your earnings by sharing this video, you need to be logged in*";
 		}
 	}
 	function frm(){
 		if($this->id!=0){
+			return <<<PHTMLCODE
+
+				<input style="display:none;" id="{$this->_fullname}id" value="{$this->id}" />
+				<input style="display:none;" id="{$this->_fullname}link" value="{$this->link}" />
+				<div class="embed_size">
+					<div class="width_container">
+						<div class="size_title">Width: </div>
+						<div class="size_input">
+							<input class="input_area" type="text" size="1" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px
+						</div>
+					</div>
+					<div class="height_container">
+						<div class="size_title">Height:</div>
+						<div class="size_input">
+							<input class="input_area" type="text" size="1" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
+						</div>
+					</div>
+				</div>
+				<div class="embed_box">
+					<textarea id="{$this->_fullname}scriptarea" class="embed_src" disabled="disabled">{$this->script}</textarea>
+				</div>
+			
+PHTMLCODE;
+
 			return <<<PHTMLCODE
 
 				<input style="display:none;" id="{$this->_fullname}id" value="{$this->id}" />
@@ -137,7 +161,8 @@ PHTMLCODE;
 		}else{
 			return <<<PHTMLCODE
 
-				<textarea id="{$this->_fullname}script" rows="5" cols="75">{$this->script}</textarea>
+				<div style="color:#00ffff;text-align:right;width:100%;"><i><font face="Lucida Fax">You must be logged in</font></i></div>
+				<div style="color:#00ffff;padding-top:100px;;width:100%;"><i><font face="Lucida Fax" size="1px">*In order to enable us to track your earnings by sharing this video, you need to be logged in</font></i></div>
 			
 PHTMLCODE;
 

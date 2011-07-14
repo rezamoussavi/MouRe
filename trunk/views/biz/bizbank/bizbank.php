@@ -117,10 +117,15 @@ JSONDOCREADY;
 		$login=$this->login->_backframe();
 		$tab=$this->tabbar->_backframe();
 		$pages=$this->pages->_backframe();
+		$home=osBackPageLink("PubVideo");
 		return <<<PHTMLCODE
 
 			<div id="header_bg">
-				<div id="logo_div"><img id="logo_img" alt="" src="./img/logo.png" /></div>
+				<div id="logo_div">
+					<a href="$home">
+						<img id="logo_img" alt="" src="./img/logo.png" />
+					</a>
+				</div>
 				<div id="menu_div">
 					$tab
 				    $login

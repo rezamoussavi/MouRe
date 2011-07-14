@@ -278,6 +278,10 @@ PHTMLCODE;
 	            </li>
 	        </ul>
             <div id="login_div" class="bloop">
+			    <form name="$xFrm" style="float:right;">
+			    	<input type="hidden" name="_message" value="frame_xBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+			    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('$xFrm')">X</a></font>
+			    </form>
                 <form id="$lgFrm" method="post">
 					<input type="hidden" name="_message" value="frame_doLoginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
                     <div class="username_div">
@@ -302,7 +306,7 @@ PHTMLCODE;
 	}
 	function frmWelcome(){
 		$u=osBackUser();
-		$name=$u['userName'];
+		$name=strlen($u['userName'])>1?$u['userName']:$u['email'];
 		$balance=$u['balance'];
 		$lgoutFrm=$this->_fullname."lgout";
 		$d=array();
@@ -311,11 +315,11 @@ PHTMLCODE;
 
             <div id="pers_info">
                 Welcome <span id="user_name">$name</span>!
-                <div id="balance_div">Balance: <span id="balance_span">$balance</span></div>
+                <div id="balance_div">Balance: <span id="balance_span">$balance $</span></div>
             </div>
 			<ul>
 				<li>
-					<a id="signup-link" href="$link" >My Acc</a>
+					<a id="signup-link" href="$link" >My Account</a>
 				</li>
 				<li>
 					<form id="$lgoutFrm" style="display:inline;">
@@ -324,18 +328,6 @@ PHTMLCODE;
 					</form>
 				</li>
 			</ul>
-		
-PHTMLCODE;
-
-		return <<<PHTMLCODE
-
-			Welcome $name<br />
-			Balance $balance<br />
-			<form id="$lgoutFrm" method="post" style="display:inline;">
-				<input type="hidden" name="_message" value="frame_logoutBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input type="button" value="Logout" onclick="JavaScript:sndmsg('$lgoutFrm')"/>
-			</form>			
-			<a href="$link" > My Acc </a>
 		
 PHTMLCODE;
 
@@ -361,6 +353,10 @@ PHTMLCODE;
 	            </li>
 	        </ul>
             <div id="signup_div" class="bloop">
+			    <form name="$xFrm" style="float:right;">
+			    	<input type="hidden" name="_message" value="frame_xBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+			    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('$xFrm')">X</a></font>
+			    </form>
             	<form id="$dosuFrm" method="post">
             		<input type="hidden" name="_message" value="frame_doSignupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
             		<div class="username_div">

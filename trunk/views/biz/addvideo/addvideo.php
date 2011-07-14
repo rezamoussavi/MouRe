@@ -94,10 +94,10 @@ class addvideo {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style='';
+				$_style=' ';
 				break;
 			case 'frmSuccess':
-				$_style='';
+				$_style=' ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -194,7 +194,7 @@ PHTMLCODE;
 			$data['advertisor']=osBackUserID();
 			$data['running']=1;
 			$data['lastDate']="";
-			$data['startDate']="";
+			$data['startDate']=date("Y/m/d");
 			$data['link']=$info['link'];
 			$data['title']=$info['title'];
 			$data['maxViews']=$info['NOV'];

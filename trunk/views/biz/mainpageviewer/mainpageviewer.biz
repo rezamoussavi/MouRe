@@ -7,12 +7,12 @@
 	mainpageviewer
 
 #frame
-	frmAdVideo(float:left; width:700;)
-	*frmPubVideo(float:left; width:700;)
-	frmUser(float:left; width:700;)
-	frmAdmin(float:left; width:700;)
-	frmHome(float:left; width:700;)
-	frmHow(float:left; width:700;)
+	frmAdVideo
+	*frmPubVideo
+	frmUser
+	frmAdmin
+	frmHome
+	frmHow
 
 #message
 	user->logout=onLogOut
@@ -90,10 +90,12 @@
 		$adPage=osBackPageLink("AdVideo");
 		$pubPage=osBackPageLink("PubVideo");
 		return <PHTML>
-			<div style="width:100%; float:left; text-align:center;">
-				<a href="$adPage" style="border:1px;Height:100; width:150;margin-top: 10px; margin-right: 50px;">Ad a Video</a>
-				<a href="$pubPage" style="border:1px;Height:100; width:150; margin-top: 10px; margin-right: 50px;">Publish a Video </a>
-			</div><hr>
+			<div id="showbox">
+			</div>
+			<div id="publish_btns">
+				<a href="$pubPage"><button id="publish_btn" type="button"></button></a>
+				<a href="$adPage"><button id="advertise_btn" type="button"></button></a>
+			</div>
 		</PHTML>
 	}
 

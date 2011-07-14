@@ -102,6 +102,38 @@ class adlink {
 		$q.=" VALUES({$info['advertisor']},'{$info['title']}',{$info['running']},'{$info['lastDate']}','{$info['startDate']}','{$videoCode}','{$info['link']}','{$img}','{$embed}',{$info['maxViews']},{$info['AOPV']},{$info['paid']},{$info['APRate']},{$info['minLifeTime']},{$info['minCancelTime']})";
 		query($q);
 	}
+	function backLinkByID($id){
+		query("SELECT * FROM adlink_info WHERE adUID=$id");
+		if(!($row=fetch())){
+			$row=array();
+		}
+		return $row;
+	}
+	function stop($id){
+		$d=date("d");
+		$m=date("m");
+		$y=date("Y");
+		/*	fetch the link */
+		query(" SELECT * FROM adlink_info WHERE adUID=$id ");
+		if($row=fetch()){
+			$timeUnlock=date("Y/m/d",mktime(0,0,0,$m,$d - $row['minCancelTime'],$y)) >= $row['startDate'];
+			/*
+			*	Check IF it is running (running==1)
+			*	&& publishe is logedin
+			*	&& more than minLifeTime passed
+			*/
+			if( ($row['advertisor']==osBackUserID()) && ($row['running']==1) && $timeUnlock){
+				/*
+				*	thus stop it (running=-1)
+				*/
+				$lastDate=date("Y/m/d",mktime(0,0,0,$m,$d+$row['minLifeTime'],$y));
+				$q="UPDATE adlink_info as d SET d.lastDate='".$lastDate."' , d.running=-1 WHERE d.adUID=$id";
+				query($q);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
 	/************************************************
 	*
 	*************************************************/
@@ -109,7 +141,7 @@ class adlink {
 		$vl=array();
 		switch($mode){
 			case "topublish":
-				query("SELECT * FROM adlink_info WHERE running=1");
+				query("SELECT * FROM adlink_info WHERE running<>0 ORDER BY startDate DESC");
 				break;
 			case "myad":
 				$q="SELECT * FROM adlink_info WHERE advertisor=".$userID;

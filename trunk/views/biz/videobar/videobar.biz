@@ -12,7 +12,7 @@
 
 #frame
 	frm
-	frmToPublish
+	frmToPublish[video_box]
 	frmMyAd
 	frmMyPub
 	frmShort
@@ -20,6 +20,7 @@
 #node
 	scriptviewer scv
 	ipviewer
+	adlink
 
 #var
 	data, showScript=false, showStat=false
@@ -27,6 +28,7 @@
 #message
 	frame->getLink=onGetLink
 	frame->StatBtn=onStatBtn
+	frame->stopBtn=onStopBtn
 	user->login=onLoginStatusChanged
 	user->logout=onLoginStatusChanged
 
@@ -43,30 +45,42 @@
 	function frmToPublish(){
 		$frmName=#nodeID.#var->data['adUID'];
 		$scv=(#var->showScript)?#node->scv->_backframe():" ";
-		$btnCaption="Get Link&#13;&#10;to&#13;&#10;Publish";
 		$EPV=#var->data['AOPV']*#var->data['APRate'];
 		$Title=htmlspecialchars(#var->data['title'], ENT_QUOTES);
+		$lastDate=strlen(#var->data['lastDate']." ")>3?"Last Date : ".#var->data['lastDate']:"";
 		return <PHTML>
-		<div style="width:650px;height:120;">
-			<div style="float:left;height:120px;width:150px;text-align:left;">
-				<a href="{#var->data['link']}" target="_blank">
-					<img src="{#var->data['img']}" />
-				</a>
-				<br /><font size=2>viewd {#var->data['viewed']} of {#var->data['maxViews']}</font>
+			<div class="box_close">
+				<div class="box_image">
+					<a href="{#var->data['link']}" target="_blank">
+						<img class="video_image" src="{#var->data['img']}" />
+					</a>
+				</div>
+				<div class="other_info_container">
+					<div class="video_header">
+						<div class="video_title">{$Title}</div>
+						<div class="details_btn_div">
+							<form id="$frmName" method="post">
+								<input class="getlink_btn" type="button" value="Get link to publish" onclick='JavaScript:sndmsg("$frmName")'/>
+								<#msg->getLink>
+							</form>
+						</div>
+					</div>
+					<div class="other_n_embed">
+						<div class="video_other_info" >
+							<div class="video_details">
+								Earn/View : $EPV $
+							</div>
+							<div class="video_details">
+								viewed {#var->data['viewed']} of {#var->data['maxViews']}
+							</div>
+							<div class="video_details">
+								$lastDate
+							</div>
+        	    		</div>
+						$scv
+        	    	</div>
+        	    </div>
 			</div>
-			<div style="float:left;height:120px;width:400px;align:right;">
-				{$Title}<br />
-				Last Date : {#var->data['lastDate']}
-				<br />Earn/View : {$EPV}
-			</div>
-			<div style="float:left;height:120px;width:100px;text-align:right;">
-				<form id="$frmName" method="post" style="display:inline;">
-					<input type="button" value="$btnCaption" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
-					<#msg->getLink>
-				</form>
-			</div>
-		</div>
-			$scv
 		</PHTML>
 	}
 
@@ -162,12 +176,22 @@
 		$html="";
 		$frmName=#nodeID.#var->data['adUID'];
 		/*
-		*	Has been Stoped
+		*	Has been Removed
 		*/
 		if(#var->data['running']==0){
 			$html= <PHTML>
 				<span style="height:90px;width:90px;text-align:center;">
-					Has been Stop!
+					Has been Removed!
+				</span>
+			</PHTML>
+		}
+		/*
+		*	Has been Stoped
+		*/
+		if(#var->data['running']==-1){
+			$html= <PHTML>
+				<span style="height:90px;width:90px;text-align:center;">
+					Will be stop at {#var->data['lastDate']}
 				</span>
 			</PHTML>
 		}
@@ -194,7 +218,7 @@
 			$html= <PHTML>
 				<form id="$frmName" method="post" style="display:inline;">
 					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
-					<#msg->stop>
+					<#msg->stopBtn>
 				</form>
 			</PHTML>
 		}
@@ -224,6 +248,14 @@
 
 	function onStatBtn($info){
 		#var->showStat=!#var->showStat;
+		_bookframe(#var->_curFrame);
+	}
+
+	function onStopBtn($info){
+		$al=new adlink("");
+		if($al->stop(#var->data['adUID'])){
+			#var->data=$al->backLinkByID(#var->data['adUID']);
+		}
 		_bookframe(#var->_curFrame);
 	}
 

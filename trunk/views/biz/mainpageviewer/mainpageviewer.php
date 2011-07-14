@@ -113,22 +113,22 @@ class mainpageviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frmPubVideo':
-				$_style=' style="float:left; width:700;" ';
+				$_style=' ';
 				break;
 			case 'frmAdVideo':
-				$_style=' style="float:left; width:700;" ';
+				$_style=' ';
 				break;
 			case 'frmUser':
-				$_style=' style="float:left; width:700;" ';
+				$_style=' ';
 				break;
 			case 'frmAdmin':
-				$_style=' style="float:left; width:700;" ';
+				$_style=' ';
 				break;
 			case 'frmHome':
-				$_style=' style="float:left; width:700;" ';
+				$_style=' ';
 				break;
 			case 'frmHow':
-				$_style=' style="float:left; width:700;" ';
+				$_style=' ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -202,10 +202,12 @@ JSONDOCREADY;
 		$pubPage=osBackPageLink("PubVideo");
 		return <<<PHTMLCODE
 
-			<div style="width:100%; float:left; text-align:center;">
-				<a href="$adPage" style="border:1px;Height:100; width:150;margin-top: 10px; margin-right: 50px;">Ad a Video</a>
-				<a href="$pubPage" style="border:1px;Height:100; width:150; margin-top: 10px; margin-right: 50px;">Publish a Video </a>
-			</div><hr>
+			<div id="showbox">
+			</div>
+			<div id="publish_btns">
+				<a href="$pubPage"><button id="publish_btn" type="button"></button></a>
+				<a href="$adPage"><button id="advertise_btn" type="button"></button></a>
+			</div>
 		
 PHTMLCODE;
 
