@@ -3,7 +3,8 @@
 	session_start();
 	function myErrorHandler($errno, $errstr, $errfile, $errline){
 		$m="$errstr<hr width=100px align=left>$errfile<br>(line $errline)";
-		osLog("OS","<font color=red>ERROR</font> ($errno) ",$m);
+		$ip=getenv(HTTP_X_FORWARDED_FOR)?getenv(HTTP_X_FORWARDED_FOR):getenv(REMOTE_ADDR);
+		osLog("OS","<font color=red>ERROR</font> ($errno) <br> ip: $ip",$m);
 	}
 	set_error_handler("myErrorHandler");
 	date_default_timezone_set('GMT');
