@@ -1,0 +1,22 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	14/07/2011
+	Ver:	0.1
+
+#biz
+	transaction:transaction
+
+#db
+	history('TID' INT NOT NULL AUTO_INCREMENT; 'UID' INT NOT NULL; 'date' VARCHAR( 10 ) NOT NULL; 'type' VARCHAR( 50 ) NOT NULL; 'amount' FLOAT NOT NULL; 'comments' TEXT NOT NULL ;PRIMARY KEY (  'TID' ))
+
+#db-comment
+	'TID' INT NOT NULL AUTO_INCREMENT ;
+	'UID' INT NOT NULL ;
+	'date' VARCHAR( 10 ) NOT NULL ;
+	'type' VARCHAR( 50 ) NOT NULL ;
+	'amount' FLOAT NOT NULL ;
+	'comments' TEXT NOT NULL ;
+	PRIMARY KEY (  'TID' )
+
+#phpfunction
+

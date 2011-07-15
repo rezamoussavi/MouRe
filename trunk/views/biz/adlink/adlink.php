@@ -138,6 +138,7 @@ class adlink {
 	*
 	*************************************************/
 	function backVideoList($mode,$userID){
+		$this->removeExpired();
 		$vl=array();
 		switch($mode){
 			case "topublish":
@@ -155,6 +156,9 @@ class adlink {
 		}
 		while($row=fetch())	{$vl[]=$row;}
 		return $vl;
+	}
+	function removeExpired(){
+		query("UPDATE adlink_info SET running=0 WHERE lastDate>'2000/01/01' AND lastDate<'".date("Y/m/d")."'");
 	}
 	function backAllUser(){
 		$ret=array();

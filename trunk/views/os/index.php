@@ -61,6 +61,7 @@
 		if(! isset($_POST['_message'])){
 			$bizbank=new bizbank("B");
 		}
+		$page_content="";
 		$JQueryCode=<<<JQUERY
 			<script src="http://www.sam-rad.com/jquery.js" type="text/javascript"></script>
 			<script src="http://www.sam-rad.com/biz.js" type="text/javascript"></script>
@@ -96,15 +97,29 @@ JQUERY;
 				$_SESSION['silentmode']=false;
 			}
 			if(isset($bizbank)){
-				$bizbank->show(true);
+				$page_content=$bizbank->show(false);
 				foreach($_SESSION['osNodes'] as $nodeFN=>$node){
 					if(is_object($node['node'])){
 						$JQueryCode.="if(window.".$nodeFN.")".$nodeFN."();";
 					}
 				}
 			}
-			echo $JQueryCode."}); </script>";
+			echo <<<PHTML
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		$JQueryCode }); </script>
+PHTML;
 			require_once "ajax.php";
+			echo <<<PHTML
+	</head>
+	<body onclick="close_popup()">
+	$page_content
+	<div id="os_message_box" style="visibility:hidden"> </div>
+	</body>
+</html>
+<!-- <div class="instructions" title="Copy content in the text area and paste it in your weblog/website">?</div> -->
+PHTML;
 		}
 
 		foreach($_SESSION['osNodes'] as $node){

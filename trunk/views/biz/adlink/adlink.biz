@@ -108,6 +108,7 @@
 	*************************************************/
 
 	function backVideoList($mode,$userID){
+		#fun->removeExpired();
 		$vl=array();
 		switch($mode){
 			case "topublish":
@@ -125,6 +126,10 @@
 		}
 		while($row=fetch())	{$vl[]=$row;}
 		return $vl;
+	}
+
+	function removeExpired(){
+		query("UPDATE #db->info SET running=0 WHERE lastDate>'2000/01/01' AND lastDate<'".date("Y/m/d")."'");
 	}
 
 	function backAllUser(){

@@ -32,4 +32,4 @@ function getquerystring(bizname) {
     return qstr;
 }
 </script>
-<div id="os_message_box" style="visibility:hidden"> </div>
+
