@@ -163,6 +163,9 @@ JSONDOCREADY;
 		$EPV=$this->data['AOPV']*$this->data['APRate'];
 		$Title=htmlspecialchars($this->data['title'], ENT_QUOTES);
 		$lastDate=strlen($this->data['lastDate']." ")>3?"Last Date : ".$this->data['lastDate']:"";
+		$country="";
+		if(strlen($this->data['country'])>3)
+			$country="<br />only in ".$this->data['country'];
 		return <<<PHTMLCODE
 
 			<div class="box_close">
@@ -184,7 +187,7 @@ JSONDOCREADY;
 					<div class="other_n_embed">
 						<div class="video_other_info" >
 							<div class="video_details">
-								Earn/View : $EPV $
+								Earn/View : $EPV $ $country
 							</div>
 							<div class="video_details">
 								viewed {$this->data['viewed']} of {$this->data['maxViews']}
@@ -211,6 +214,7 @@ PHTMLCODE;
 		$SD=$this->data['startDate'];
 		$LD=$this->data['lastDate'];
 		$UVN=$this->data['totalView'];
+		$country=$this->data['country'];
 		$UE=$UVN*$EPV;
 		return <<<PHTMLCODE
 
@@ -222,7 +226,7 @@ PHTMLCODE;
 			</div>
 			<div style="float:left;height:100px;width:300px;align:right;">
 				<u>{$this->data['title']}</u><br />
-				Earn Per View : {$EPV}<br />
+				Earn Per View (in $country only): {$EPV}<br />
 				Viewed: $VN<br />
 				Remaining: $RM<br />
 				StartDate:$SD - Last Date : $LD

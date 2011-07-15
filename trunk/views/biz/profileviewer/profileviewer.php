@@ -82,7 +82,7 @@ class profileviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style='';
+				$_style=' ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -115,12 +115,18 @@ JSONDOCREADY;
 		$user=osBackUser();
 		$formName=$this->_fullname."ApplyBtn";
 		$formPass=$this->_fullname."Pass";
-		if(strlen($user['userName'])<2){
-			$userBox='<input size=10 name="RealName" />';
-			$bdBox='<input size=10 name="BDate" />';
-		}else{
+		$userNameDefined=TRUE;
+		if(isset($user['userName'])){
+			if(strlen($user['userName'])<2){
+				$userNameDefined=FALSE;
+			}
+		}
+		if($userNameDefined){
 			$userBox=$user['userName'];
 			$bdBox=$user['BDate'];
+		}else{
+			$userBox='<input size=10 name="RealName" />';
+			$bdBox='<input size=10 name="BDate" />';
 		}
 		if(!osUserLogedin()){
 			$html="Please Login First";

@@ -140,6 +140,12 @@ PHTMLCODE;
 		$of=$this->offer->backInfo();
 		$u=osBackUser();
 		$balance=$u['balance'];
+		$countries="<option value='any'>any</option>";
+		query("SELECT DISTINCT CountryName FROM ip_country ORDER BY CountryName");
+		$row=fetch();
+		while($row=fetch()){
+			$countries.="<option value='".$row['CountryName']."'>".$row['CountryName']."</option>";
+		}
 		$html=<<<PHTMLCODE
 
 			<center><font color=red>{$this->errMessage}</font><hr></center>
@@ -149,6 +155,7 @@ PHTMLCODE;
 				Youtube link: <input id="theYLink" name="link" size=50 onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"><font color="red">*</font></span><br>
 				Your Offer on Price/View: <input id="theAOPV" name="AOPV" size=5 onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
 				Number of Viewes: <input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
+				Country: <SELECT name="country" style="width:150px;">$countries</SELECT>
 				<hr>
 				Total: <span id="theTotal">0</span>$ - balance:<span id="theBalance">$balance</span> $ <span id="msgTotal"></span><br />
 				<input id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
@@ -203,6 +210,7 @@ PHTMLCODE;
 			$data['APRate']=$of['APRatio'];
 			$data['minLifeTime']=$of['minLifeTime'];
 			$data['minCancelTime']=$of['minCancelTime'];
+			$data['country']=$info['country'];
 			$al->bookLink($data);
 			$emb=$al->backYEmbed($data['link']);
 			$e="Added Successfully<br>$emb";

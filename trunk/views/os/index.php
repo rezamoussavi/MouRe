@@ -113,7 +113,7 @@ PHTML;
 			require_once "ajax.php";
 			echo <<<PHTML
 	</head>
-	<body onclick="close_popup()">
+	<body>
 	$page_content
 	<div id="os_message_box" style="visibility:hidden"> </div>
 	</body>

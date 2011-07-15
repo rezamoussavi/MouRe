@@ -48,6 +48,9 @@
 		$EPV=#var->data['AOPV']*#var->data['APRate'];
 		$Title=htmlspecialchars(#var->data['title'], ENT_QUOTES);
 		$lastDate=strlen(#var->data['lastDate']." ")>3?"Last Date : ".#var->data['lastDate']:"";
+		$country="";
+		if(strlen(#var->data['country'])>3)
+			$country="<br />only in ".#var->data['country'];
 		return <PHTML>
 			<div class="box_close">
 				<div class="box_image">
@@ -68,7 +71,7 @@
 					<div class="other_n_embed">
 						<div class="video_other_info" >
 							<div class="video_details">
-								Earn/View : $EPV $
+								Earn/View : $EPV $ $country
 							</div>
 							<div class="video_details">
 								viewed {#var->data['viewed']} of {#var->data['maxViews']}
@@ -94,6 +97,7 @@
 		$SD=#var->data['startDate'];
 		$LD=#var->data['lastDate'];
 		$UVN=#var->data['totalView'];
+		$country=#var->data['country'];
 		$UE=$UVN*$EPV;
 		return <PHTML>
 		<div style="width:650px;height:100;">
@@ -104,7 +108,7 @@
 			</div>
 			<div style="float:left;height:100px;width:300px;align:right;">
 				<u>{#var->data['title']}</u><br />
-				Earn Per View : {$EPV}<br />
+				Earn Per View (in $country only): {$EPV}<br />
 				Viewed: $VN<br />
 				Remaining: $RM<br />
 				StartDate:$SD - Last Date : $LD

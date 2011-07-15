@@ -48,18 +48,27 @@
 						$countryName="Unknown";
 					}
 				}
-				/*  UPDATE [publink] number of views*/
-				if($row=SELECT(" * FROM publink_info WHERE pubUID=".$id." AND YTID LIKE '".$link."'")){
-					UPDATE(" publink_info SET totalView=totalView+1 WHERE pubUID=".$id." AND YTID LIKE '".$link."'");
-					/*  UPDATE [adlink] number of views*/
-					UPDATE(" adlink_info SET viewed=viewed+1 WHERE adUID=".$adUID);
-					/* If the country for this adLink exist just update number of views */
-					if($row=SELECT(" * FROM publink_stat WHERE adUID=".$adUID." AND countryName LIKE '".$countryName."'")){
-						UPDATE(" publink_stat SET views=views+1 WHERE adUID=".$adUID." AND countryName LIKE '".$countryName."'");
-					}else{/* If the country for this adLink does not exist add a row and set it to 1 (number of views */
-						INSERT(" INTO publink_stat VALUES('".$adUID."','".$countryCode."','".$countryName."',1)");
+				/* fetch video country */
+				$adInfo=SELECT(" country FROM adlink_info WHERE adUID=".$adUID);
+				$adCountry=$adInfo['country'];
+				/*
+				*	if viewer country match video target country
+				*	will count it otherwise leave it
+				*/
+				if($adCountry==$countryName || $adCountry=="any"){
+					/*  UPDATE [publink] number of views */
+					if($row=SELECT(" * FROM publink_info WHERE pubUID=".$id." AND YTID LIKE '".$link."'")){
+						UPDATE(" publink_info SET totalView=totalView+1 WHERE pubUID=".$id." AND YTID LIKE '".$link."'");
+						/*  UPDATE [adlink] number of views*/
+						UPDATE(" adlink_info SET viewed=viewed+1 WHERE adUID=".$adUID);
+						/* If the country for this adLink exist just update number of views */
+						if($row=SELECT(" * FROM publink_stat WHERE adUID=".$adUID." AND countryName LIKE '".$countryName."'")){
+							UPDATE(" publink_stat SET views=views+1 WHERE adUID=".$adUID." AND countryName LIKE '".$countryName."'");
+						}else{/* If the country for this adLink does not exist add a row and set it to 1 (number of views */
+							INSERT(" INTO publink_stat VALUES('".$adUID."','".$countryCode."','".$countryName."',1)");
+						}
 					}
-				}
+				}//if country is correct
 			}
 		}// not viewed else
 		else{//Has been viewd during last GapView
