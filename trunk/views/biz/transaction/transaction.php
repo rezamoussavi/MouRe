@@ -68,6 +68,55 @@ class transaction {
 //########################################
 
 
+	/*************************************
+	*	APIs
+	*************************************/
+	function bookCharge($amount,$comments){
+		$this->INSERT(osBackUserID(),date("Y/m/d"),"Charge",$amount,$comments);
+	}
+	function bookAdPay($amount,$comments){
+		$this->INSERT(osBackUserID(),date("Y/m/d"),"adPay",-$amount,$comments);
+	}
+	function bookWithdraw($amount,$comments){
+		$this->INSERT(osBackUserID(),date("Y/m/d"),"Withdra",-$amount,$comments);
+	}
+	function bookReimburse($amount,$comments){
+		$this->INSERT(osBackUserID(),date("Y/m/d"),"Reimburse",$amount,$comments);
+	}
+	function backBalance($UID){
+		$earned=0;
+		query("SELECT SUM(PPV * totalView) as earned FROM publink_info WHERE publisher=".$UID);
+		if($row=fetch()){$earned=sprintf("%.2f",$row['earned']);}
+		$trans=0;
+		query("SELECT SUM(amount) as trans FROM transaction_history WHERE UID=".$UID);
+		if($row=fetch()){
+			$trans=$row['trans'];
+		}
+		return $trans+$earned;
+	}
+	function backUserSummary($UID){
+		$ret=array("Balance"=>0,"Charge"=>0,"Earn"=>0,"Reimburse"=>0,"Withdraw"=>0,"adPay"=>0);
+		query("SELECT SUM(PPV * totalView) as earned FROM publink_info WHERE publisher=".$UID);
+		if($row=fetch()){$ret['Earn']=sprintf("%.2f",$row['earned']);}
+		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='Charge'");
+		if($row=fetch()){$ret['Charge']=sprintf("%.2f",$row['total']);}
+		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='adPay'");
+		if($row=fetch()){$ret['adPay']=sprintf("%.2f",$row['total']);}
+		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='Withdraw'");
+		if($row=fetch()){$ret['Withdraw']=sprintf("%.2f",$row['total']);}
+		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='Reimburse'");
+		if($row=fetch()){$ret['Reimburse']=sprintf("%.2f",$row['total']);}
+		$ret['Balance']=$ret['Earn']+$ret['Charge']+$ret['adPay']+$ret['Withdraw']+$ret['Reimburse'];
+		return $ret;
+	}
+	/*************************************
+	*	INTERNAL FUNCTIONS
+	*************************************/
+	function INSERT($UID,$date,$type,$amount,$comments){
+		$s="INSERT INTO transaction_history (UID,date,type,amount,comments) ";
+		$s.=" VALUE ('$UID','$date','$type','$amount','$comments');";
+		query($s);
+	}
 
 }
 

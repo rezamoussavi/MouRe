@@ -10,6 +10,7 @@
 */
 require_once 'biz/profileviewer/profileviewer.php';
 require_once 'biz/videolistviewer/videolistviewer.php';
+require_once 'biz/transaction/transaction.php';
 
 class myaccviewer {
 
@@ -23,6 +24,7 @@ class myaccviewer {
 	var $paid;
 	var $earned;
 	var $reimbursed;
+	var $adpay;
 
 	//Nodes (bizvars)
 	var $profile;
@@ -44,6 +46,7 @@ class myaccviewer {
 			$_SESSION['osMsg']['frame_adLinkBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_balanceBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_reCalc'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_test'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
 		}
@@ -75,6 +78,10 @@ class myaccviewer {
 			$_SESSION['osNodes'][$fullname]['reimbursed']=0;
 		$this->reimbursed=&$_SESSION['osNodes'][$fullname]['reimbursed'];
 
+		if(!isset($_SESSION['osNodes'][$fullname]['adpay']))
+			$_SESSION['osNodes'][$fullname]['adpay']=0;
+		$this->adpay=&$_SESSION['osNodes'][$fullname]['adpay'];
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='myaccviewer';
 	}
@@ -104,6 +111,9 @@ class myaccviewer {
 			case 'frame_reCalc':
 				$this->onReCalc($info);
 				break;
+			case 'frame_test':
+				$this->onTest($info);
+				break;
 			case 'user_login':
 				$this->onReCalc($info);
 				break;
@@ -127,16 +137,16 @@ class myaccviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frmProfile':
-				$_style='';
+				$_style=' ';
 				break;
 			case 'frmPubLinks':
-				$_style='';
+				$_style=' ';
 				break;
 			case 'frmAdLinks':
-				$_style='';
+				$_style=' ';
 				break;
 			case 'frmBalance':
-				$_style='';
+				$_style=' ';
 				break;
 		}
 		$html='<script type="text/javascript" language="Javascript">';
@@ -166,6 +176,11 @@ JSONDOCREADY;
 	*	Message Handlers
 	******************************/
 	function onReCalc($info){
+		$this->reCalc();
+	}
+	function onTest($info){
+		$t=new transaction("");
+		$t->bookCharge($info['amount'],"For TEST purpose ONLY!");
 		$this->reCalc();
 	}
 	function onLogout($info){
@@ -202,16 +217,24 @@ JSONDOCREADY;
 			return "";
 		}
 		$ReCalcFrmName = $this->_fullname."reCalc";
+		$testFrame=$this->_fullname."test";
 		$html=<<<PHTMLCODE
 
 			Balance: {$this->balance} $
 			<a href="http://sam-rad.com/PayPal">Add</a><br />
 			Paid: {$this->paid} $<br />
+			adPay: {$this->adpay} $<br />
 			Re-imbursed: {$this->reimbursed} $<br />
 			Earned: {$this->earned} $<br />
 			<form name="$ReCalcFrmName" method="post">
 				<input type="hidden" name="_message" value="frame_reCalc" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 				<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
+			</form>
+			<hr />
+			<form name="$testFrame" method="post">
+				<input type="hidden" name="_message" value="frame_test" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input name="amount" size=5 />
+				<input value="test" type="button" onclick='JavaScript:sndmsg("$testFrame")' />
 			</form>
 		
 PHTMLCODE;
@@ -252,19 +275,13 @@ PHTMLCODE;
 	*	Functionalities
 	******************************/
 	function reCalc(){
-		$this->balance=0;
-		$this->paid=0;
-		$this->earned=0;
-		$this->reimbursed=0;
-		$u=new user("");
-		if($ud=$u->backUserData(osBackUserID())){
-			$this->balance=$ud['balance'];
-			$al=new adlink("");
-			$this->paid=$al->backTotalPaid();
-			$this->reimbursed=$al->backTotalreimbursed();
-			$pl=new publink("");
-			$this->earned=sprintf("%.2f",$pl->backEarned(osBackUserID()));
-		}
+		$t=new transaction("");
+		$all=$t->backUserSummary(osBackUserID());
+		$this->balance=$all['Balance'];
+		$this->paid=$all['Charge'];
+		$this->adpay=$all['adPay'];
+		$this->earned=$all['Earn'];
+		$this->reimbursed=$all['Reimburse'];
 	}
 
 }

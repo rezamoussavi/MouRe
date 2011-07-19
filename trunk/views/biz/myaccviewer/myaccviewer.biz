@@ -16,6 +16,7 @@
 	profileviewer profile
 	videolistviewer pubLinks
 	videolistviewer adLinks
+	transaction
 
 #message
 	frame->profileBtn=onProfileBtn
@@ -23,6 +24,7 @@
 	frame->adLinkBtn=onAdLinkBtn
 	frame->balanceBtn=onBalanceBtn
 	frame->reCalc=onReCalc
+	frame->test=onTest
 	user->login=onReCalc
 	user->logout=onLogout
 
@@ -31,6 +33,7 @@
 	paid=0
 	earned=0
 	reimbursed=0
+	adpay=0
 
 #phpfunction
 
@@ -39,6 +42,12 @@
 	******************************/
 
 	function onReCalc($info){
+		#fun->reCalc();
+	}
+
+	function onTest($info){
+		$t=new transaction("");
+		$t->bookCharge($info['amount'],"For TEST purpose ONLY!");
 		#fun->reCalc();
 	}
 
@@ -85,15 +94,23 @@
 			return "";
 		}
 		$ReCalcFrmName = #nodeID."reCalc";
+		$testFrame=#nodeID."test";
 		$html=<PHTML>
 			Balance: {#var->balance} $
 			<a href="http://sam-rad.com/PayPal">Add</a><br />
 			Paid: {#var->paid} $<br />
+			adPay: {#var->adpay} $<br />
 			Re-imbursed: {#var->reimbursed} $<br />
 			Earned: {#var->earned} $<br />
 			<form name="$ReCalcFrmName" method="post">
 				<#msg->reCalc>
 				<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
+			</form>
+			<hr />
+			<form name="$testFrame" method="post">
+				<#msg->test>
+				<input name="amount" size=5 />
+				<input value="test" type="button" onclick='JavaScript:sndmsg("$testFrame")' />
 			</form>
 		</PHTML>
 		return #fun->buttons()."<hr>".$html;
@@ -132,18 +149,13 @@
 	******************************/
 
 	function reCalc(){
-		#var->balance=0;
-		#var->paid=0;
-		#var->earned=0;
-		#var->reimbursed=0;
+		$t=new transaction("");
+		$all=$t->backUserSummary(osBackUserID());
 
-		$u=new user("");
-		if($ud=$u->backUserData(osBackUserID())){
-			#var->balance=$ud['balance'];
-			$al=new adlink("");
-			#var->paid=$al->backTotalPaid();
-			#var->reimbursed=$al->backTotalreimbursed();
-			$pl=new publink("");
-			#var->earned=sprintf("%.2f",$pl->backEarned(osBackUserID()));
-		}
+		#var->balance=$all['Balance'];
+		#var->paid=$all['Charge'];
+		#var->adpay=$all['adPay'];
+		#var->earned=$all['Earn'];
+		#var->reimbursed=$all['Reimburse'];
 	}
+

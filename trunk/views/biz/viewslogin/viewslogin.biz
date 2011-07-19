@@ -8,9 +8,11 @@
 
 #node
 	user
+	transaction
 
 #var
 	msg="",email,password
+	balance=0
 
 #frame
 	*frmMain[log_sign]
@@ -56,6 +58,8 @@
 				break;
 			case 1:
 				#var->msg="";
+				$t=new transaction("");
+				#var->balance=$t->backBalance(osBackUserID());
 				_bookframe(#frm->frmWelcome);
 				break;
 			case 2:
@@ -74,6 +78,7 @@
 	function onLogoutBtn($info){
 		$u=new user("");
 		$u->logout();
+		#var->balance=0;
 		_bookframe(#frm->frmMain);
 	}
 
@@ -197,14 +202,13 @@
 	function frmWelcome(){
 		$u=osBackUser();
 		$name=strlen($u['userName'])>1?$u['userName']:$u['email'];
-		$balance=$u['balance'];
 		$lgoutFrm=#nodeID."lgout";
 		$d=array();
 		$link=osBackPageLink("Myacc");
 		return <PHTML>
             <div id="pers_info">
                 Welcome <span id="user_name">$name</span>!
-                <div id="balance_div">Balance: <span id="balance_span">$balance $</span></div>
+                <div id="balance_div">Balance: <span id="balance_span">#var->balance $</span></div>
             </div>
 			<ul>
 				<li>

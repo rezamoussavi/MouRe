@@ -303,7 +303,7 @@ class user {
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => $this->email, "userUID" => $this->userUID, "Address"=>$row["Address"], "balance"=>$row["balance"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
+					osBookUser(array("email" => $this->email, "userUID" => $this->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
                     osBroadcast("user_login", array());
                     return 1;
                 } else {

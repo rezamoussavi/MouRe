@@ -22,7 +22,7 @@
 	user->logout=onLoginStatusChange
 
 #node
-	adlink, offer offer
+	transaction, adlink, offer offer
 
 #phpfunction
 
@@ -39,8 +39,8 @@
 		//else
 		$formname=#nodeID;
 		$of=#node->offer->backInfo();
-		$u=osBackUser();
-		$balance=$u['balance'];
+		$t=new transaction("");
+		$balance=$t->backBalance(osBackUserID());
 		$countries="<option value='any'>any</option>";
 		query("SELECT DISTINCT CountryName FROM ip_country ORDER BY CountryName");
 		$row=fetch();
@@ -113,6 +113,8 @@
 			$al->bookLink($data);
 			$emb=$al->backYEmbed($data['link']);
 			$e="Added Successfully<br>$emb";
+			$t=new transaction("");
+			$t->bookAdPay($info['AOPV']*$info['NOV'],"Ad video - title: ".$info['title']);
 			_bookframe(#frm->frmSuccess);
 		}else{// HAS ERROR
 			$e="ERROR: <br>".$e;
@@ -120,6 +122,5 @@
 		}
 		#var->errMessage=$e;
 	}
-
 
 

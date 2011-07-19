@@ -9,6 +9,7 @@
 
 */
 require_once 'biz/user/user.php';
+require_once 'biz/transaction/transaction.php';
 
 class viewslogin {
 
@@ -21,6 +22,7 @@ class viewslogin {
 	var $msg;
 	var $email;
 	var $password;
+	var $balance;
 
 	//Nodes (bizvars)
 
@@ -59,6 +61,10 @@ class viewslogin {
 		if(!isset($_SESSION['osNodes'][$fullname]['password']))
 			$_SESSION['osNodes'][$fullname]['password']='';
 		$this->password=&$_SESSION['osNodes'][$fullname]['password'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['balance']))
+			$_SESSION['osNodes'][$fullname]['balance']=0;
+		$this->balance=&$_SESSION['osNodes'][$fullname]['balance'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='viewslogin';
@@ -173,6 +179,8 @@ JSONDOCREADY;
 				break;
 			case 1:
 				$this->msg="";
+				$t=new transaction("");
+				$this->balance=$t->backBalance(osBackUserID());
 				$this->_bookframe("frmWelcome");
 				break;
 			case 2:
@@ -189,6 +197,7 @@ JSONDOCREADY;
 	function onLogoutBtn($info){
 		$u=new user("");
 		$u->logout();
+		$this->balance=0;
 		$this->_bookframe("frmMain");
 	}
 	function onMyaccBtn($info){
@@ -307,7 +316,6 @@ PHTMLCODE;
 	function frmWelcome(){
 		$u=osBackUser();
 		$name=strlen($u['userName'])>1?$u['userName']:$u['email'];
-		$balance=$u['balance'];
 		$lgoutFrm=$this->_fullname."lgout";
 		$d=array();
 		$link=osBackPageLink("Myacc");
@@ -315,7 +323,7 @@ PHTMLCODE;
 
             <div id="pers_info">
                 Welcome <span id="user_name">$name</span>!
-                <div id="balance_div">Balance: <span id="balance_span">$balance $</span></div>
+                <div id="balance_div">Balance: <span id="balance_span">$this->balance $</span></div>
             </div>
 			<ul>
 				<li>

@@ -12,6 +12,7 @@
 	Ver:		0.1
 
 */
+require_once 'biz/transaction/transaction.php';
 require_once 'biz/adlink/adlink.php';
 require_once 'biz/offer/offer.php';
 
@@ -138,8 +139,8 @@ PHTMLCODE;
 		//else
 		$formname=$this->_fullname;
 		$of=$this->offer->backInfo();
-		$u=osBackUser();
-		$balance=$u['balance'];
+		$t=new transaction("");
+		$balance=$t->backBalance(osBackUserID());
 		$countries="<option value='any'>any</option>";
 		query("SELECT DISTINCT CountryName FROM ip_country ORDER BY CountryName");
 		$row=fetch();
@@ -214,6 +215,8 @@ PHTMLCODE;
 			$al->bookLink($data);
 			$emb=$al->backYEmbed($data['link']);
 			$e="Added Successfully<br>$emb";
+			$t=new transaction("");
+			$t->bookAdPay($info['AOPV']*$info['NOV'],"Ad video - title: ".$info['title']);
 			$this->_bookframe("frmSuccess");
 		}else{// HAS ERROR
 			$e="ERROR: <br>".$e;
