@@ -320,7 +320,7 @@ public class PHPClass {
 			"\t\tswitch($this->_curFrame){\n";
 			for(Frame f:frames)
 				s+=	"\t\t\tcase '"+f.Name+"':\n" +
-				"\t\t\t\t$_style='"+f.Style+"';\n" +
+				"\t\t\t\t$_style='"+f.Class+" "+f.Style+"';\n" +
 				"\t\t\t\tbreak;\n";
 			s+="\t\t}\n" +
 			"\t\t$html='<script type=\"text/javascript\" language=\"Javascript\">';\n" +

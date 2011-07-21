@@ -170,7 +170,7 @@ JSONDOCREADY;
 
 			<div class="box_close">
 				<div class="box_image">
-					<a href="{$this->data['link']}" target="_blank">
+					<a href="http://www.sam-rad.com/watch?v={$this->data['videoCode']}" target="_blank">
 						<img class="video_image" src="{$this->data['img']}" />
 					</a>
 				</div>

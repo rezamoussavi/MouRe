@@ -341,10 +341,12 @@ class user {
                 query("INSERT INTO user_info (email,password,verificationCode,biznessUID,userName,Address,Country,PostalCode,role) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."','".$userName."','".$Address."','".$Country."','".$PostalCode."','".$role."');");
                 
                 // A welcome message to the user...
-                $msg = "Welcome! Please verify your account using this code: ".$vcode;
-                
+                $msg = "Welcome! Please login to your account and verify by this code: ".$vcode;
+				$mailheader='From: register@sam-rad.com' . "\r\n" .
+							'Reply-To: register@sam-rad.com' . "\r\n" .
+							'X-Mailer: PHP/' . phpversion();
                 //send an email to the user. FIX MAILING FUNCTION!
-                $this->sendEmail($email, "Welcome to buziness!", $msg);
+                $this->sendEmail($email, "Welcome to buziness!", $msg,$mailheader);
                 
                 
                 //to get the fresh userUID...
@@ -389,11 +391,11 @@ class user {
         $hashPassword = sha1($email.$password);
         return $hashPassword;
     }
-    private function sendEmail($to, $title, $msgToSend) {
+    private function sendEmail($to, $title, $msgToSend, $header) {
         /*
          * Needs to be reworked...
          */
-        mail($to, $title, $msgToSend, "From: Bizness");
+        mail($to, $title, $msgToSend, $header);
     }
     private function createRandomChars($toSelectFrom, $length) {
         $i = 0;

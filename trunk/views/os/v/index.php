@@ -9,18 +9,18 @@
 	include_once "../db.php";
 	$osdbcon = mysql_connect ($ServerAddress, $UN, $Pass);
 	$result=false;
-													//$_X.=="A .Welcom<br>";
+													//$_X.="A .Welcom<br>";
 	if ($osdbcon && isset($_GET['id']) && isset($_GET['link'])){
-													//$_X.=.="B. id=".$_GET['id']." - link=".$_GET['link']."<br>";
+													//$_X.="B. id=".$_GET['id']." - link=".$_GET['link']."<br>";
 		mysql_select_db($DataBase,$osdbcon);
-													//$_X.=.="C.1 <br>";
+													//$_X.="C.1 <br>";
 		$id=$_GET['id'];
 		$link=substr($_GET['link'],0,strlen($_GET['link'])-10);
 		/* Timer stuff */
-													//$_X.=.="C.2 <br>";
+													//$_X.="C.2 <br>";
 		if(!isset($_SESSION['video'])){
 			$_SESSION['video']=array();
-													//$_X.=.="C.3 <br>";
+													//$_X.="C.3 <br>";
 		}
 		if(!isset($_SESSION['video']['$link'])){
 			/*
@@ -28,17 +28,17 @@
 			*	Set the time and do view
 			*/
 			$_SESSION['video']['$link']=$Now-$GapTime-100;
-													//$_X.=.="C.4 <br>";
+													//$_X.="C.4 <br>";
 		}
 		if($Now-$_SESSION['video']['$link']>$GapTime){
-													//$_X.=.="C.5 ".$Now-$_SESSION['video']['$link']." > ".$GapTime."(gaptime)<br>";
+													//$_X.="C.5 ".$Now-$_SESSION['video']['$link']." > ".$GapTime."(gaptime)<br>";
 			$_SESSION['video']['$link']=$Now;
 			/*
 			*	Fetch Publisher and adUID
 			*	If the id exists
 			*/
 			if($row=SELECT(" * FROM publink_info WHERE pubUID=".$id)){
-													//$_X.=.="D.<br>";
+													//$_X.="D.<br>";
 				$adUID=$row['adLinkUID'];
 				/* check if custom country has been set */
 				if(isset($_GET['countryCode']) && isset($_GET['countryName'])){
@@ -62,12 +62,12 @@
 				*	if viewer country match video target country
 				*	will count it otherwise leave it
 				*/
-													//$_X.=.="E.<br>";
+													//$_X.="E.<br>";
 				if($adCountry==$countryName || $adCountry=="any"){
-													//$_X.=.="F.<br>";
+													//$_X.="F.<br>";
 					/*  UPDATE [publink] number of views */
 					if($row=SELECT(" * FROM publink_info WHERE pubUID=".$id." AND YTID LIKE '".$link."'")){
-													//$_X.=.="G.<br>";
+													//$_X.="G.<br>";
 						UPDATE(" publink_info SET totalView=totalView+1 WHERE pubUID=".$id." AND YTID LIKE '".$link."'");
 						/*  UPDATE [adlink] number of views*/
 						UPDATE(" adlink_info SET viewed=viewed+1 WHERE adUID=".$adUID);
@@ -116,6 +116,6 @@
 		query("INSERT INTO os_log(TimeStamp,Biz,NodeID,Message) VALUES('$t','$Biz','$NodeID','$Message')");
 	}
 
-//oslog($_X);
+//osLog($_X);
 //echo $_X;
 ?>

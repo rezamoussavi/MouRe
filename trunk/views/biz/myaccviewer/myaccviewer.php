@@ -239,7 +239,40 @@ JSONDOCREADY;
 		
 PHTMLCODE;
 
-		return $this->buttons()."<hr>".$html;
+		return $this->buttons()."<hr />".$html."<gr />".$this->transactionHistory();
+	}
+	function transactionHistory(){
+		$tran="";
+		query("SELECT * FROM transaction_history WHERE UID=".osBackUserID()." ORDER BY date DESC");
+		while($row=fetch()){
+			$tran.=<<<PHTMLCODE
+
+				<div style="float:left;width:800px;">
+					<div style="float:left;width:50px;padding:3px;">{$row['TID']}</div>
+					<div style="float:left;width:100px;padding:3px;">{$row['date']}</div>
+					<div style="float:left;width:100px;padding:3px;">{$row['type']}</div>
+					<div style="float:left;width:100px;padding:3px;">{$row['amount']}</div>
+					<div style="float:left;width:400px;padding:3px;">{$row['comments']}</div>
+				</div>
+			
+PHTMLCODE;
+
+		}
+		return <<<PHTMLCODE
+
+			<div style="float:left;width:800px;">
+				<div style="float:left;width:800px;">
+					<div style="float:left;width:50px;padding:3px;">ID</div>
+					<div style="float:left;width:100px;padding:3px;">Date</div>
+					<div style="float:left;width:100px;padding:3px;">Type</div>
+					<div style="float:left;width:100px;padding:3px;">$</div>
+					<div style="float:left;width:400px;padding:3px;">Comments</div>
+				</div>
+				$tran
+			</div>
+		
+PHTMLCODE;
+
 	}
 	function buttons(){
 		$ProfileFormName=$this->_fullname."profileBtn";

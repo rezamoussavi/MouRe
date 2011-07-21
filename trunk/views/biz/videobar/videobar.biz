@@ -54,7 +54,7 @@
 		return <PHTML>
 			<div class="box_close">
 				<div class="box_image">
-					<a href="{#var->data['link']}" target="_blank">
+					<a href="http://www.sam-rad.com/watch?v={#var->data['videoCode']}" target="_blank">
 						<img class="video_image" src="{#var->data['img']}" />
 					</a>
 				</div>
