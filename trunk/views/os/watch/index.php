@@ -1,8 +1,12 @@
 <?php
 	session_start();
 	include_once "../db.php";
-	if(isset($_GET['v'])){
-		query("");
+	if(isset($_GET['id']) && isset($_GET['link'])){
+		$id=isset($_GET['id']);
+		$link=isset($_GET['link']);
+	}else{
+		$id=1;
+		$link="lLjYV3rMDPM";
 	}
 	$embed=<<<EMBD
 		<EMBED	SRC='http://www.sam-rad.com/YouTubePlayer.swf'
