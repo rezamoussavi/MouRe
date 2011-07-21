@@ -167,7 +167,11 @@
 
 	function backYCode($y){
 		$a=strpos($y,"watch?v=")+8;
-		return substr($y,$a,strpos($y."&","&")-$a);
+		if ($a>9){
+			return substr($y,$a,strpos($y."&","&")-$a);
+		}
+		$a=strpos($y,"youtu.be")+9;
+		return substr($y,$a,strpos($y."?","?")-$a);
 	}
 
 

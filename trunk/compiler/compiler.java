@@ -148,22 +148,30 @@ public class compiler {
 			qfw.write(php.sqlString());
 			qfw.close();
 		}
+		//
+		// Saving .js Compiled File
+		//
+		if(php.hasJS()){
+			FileWriter jfw=new FileWriter(File+".js");
+			jfw.write(php.jsString());
+			jfw.close();
+		}
 		if(DoUpload){
 			//
 			// Uploading .php file
 			//
-			System.out.print(" - [upload php]...");
+			System.out.print(" [up php]");
 			if(PostFile.Post(UpServer, php.Name, File,"php"))
-				System.out.print(" Done!");
+				System.out.print(" ok!");
 			else{
 				throw new IOException("Cannot upload php to Server: <"+UpServer+">");
 			}
 			//
 			// Uploading .biz file
 			//
-			System.out.print(" - [upload biz]...");
+			System.out.print(" [up biz]");
 			if(PostFile.Post(UpServer, php.Name, File,"biz"))
-				System.out.print(" Done!");
+				System.out.print(" ok!");
 			else{
 				throw new IOException("Cannot upload biz to Server: <"+UpServer+">");
 			}
@@ -171,20 +179,40 @@ public class compiler {
 			// Uploading .sql file
 			//
 			if(php.hasSql()){
-				System.out.print(" - [upload DB]...");
+				System.out.print(" [up DB]");
 				if(PostFile.Post(UpServer, php.Name, File,"sql"))
-					System.out.print(" Done!");
+					System.out.print(" ok!");
 				else{
 					throw new IOException("Cannot upload DB to Server: <"+UpServer+">");
 				}
 				//
-				// Uploading .sql file
+				// Creating Database
 				//
-				System.out.print(" - [Create DB]...");
+				System.out.print(" [bld DB]");
 				if(PostFile.Regdb(Server, php.Name))
-					System.out.print(" Done!");
+					System.out.print(" ok!");
 				else{
 					throw new IOException("Cannot Create DB on Server: <"+Server+">");
+				}
+			}
+			//
+			// Uploading .js file
+			//
+			if(php.hasJS()){
+				System.out.print(" [up JS]");
+				if(PostFile.Post(UpServer, php.Name, File,"js"))
+					System.out.print(" ok!");
+				else{
+					throw new IOException("Cannot upload JS to Server: <"+UpServer+">");
+				}
+				//
+				// Append to main .JS
+				//
+				System.out.print(" [apnd JS]");
+				if(PostFile.AppendJS(Server, php.Name))
+					System.out.print(" ok!");
+				else{
+					throw new IOException("Cannot Append JS on Server: <"+Server+">");
 				}
 			}
 		}

@@ -128,15 +128,7 @@ class videobar {
 				$_style=' ';
 				break;
 		}
-		$html='<script type="text/javascript" language="Javascript">';
-		$html.=<<<JAVASCRIPT
-
-JAVASCRIPT;
-		$html.=<<<JSONDOCREADY
-function {$this->_fullname}(){}
-JSONDOCREADY;
-		$html.='</script>
-<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -351,12 +343,20 @@ PHTMLCODE;
 		*	Show Stop
 		*/
 		else{
+			$frmName1=$frmName."1";
 			$html= <<<PHTMLCODE
 
-				<form id="$frmName" method="post" style="display:inline;">
-					<input type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
-					<input type="hidden" name="_message" value="frame_stopBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				</form>
+				<input id="stopBtn1st" type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='document.getElementById("stopBtn1st").style.display="none";document.getElementById("confirmForm").style.display="inline"'/>
+				<span id="confirmForm" style="display:none;">
+					<form id="$frmName" method="post" style="display:inline;">
+						<font size=1px>this video will stop in {$this->data['minLifeTime']} days. Are you sure you want to stop rocketing the views?</font>
+						<input type="button" value="yes" style="height:30px;width:40px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
+						<input type="hidden" name="_message" value="frame_stopBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					</form>
+					<form id="$frmName1" method="post" style="display:inline;">
+						<input type="button" value="no" style="height:30px;width:40px;text-align:center;" onclick='JavaScript:sndmsg("$frmName1")'/>
+					</form>
+				</span>
 			
 PHTMLCODE;
 

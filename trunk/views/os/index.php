@@ -38,6 +38,24 @@
 		$bizdb=$_GET['regdb'];
 		require_once "biz/".$bizdb."/".$bizdb.".sql";
 		bizsql();
+		echo 'ok';	
+	/*
+	*	MODE: log
+	*/
+	}elseif(isset($_GET['appendJS'])){
+		// remove old biz.js file
+		if(file_exists('biz.js')){
+			chmod('biz.js', 0666);
+			unlink('biz.js');
+		}
+		//list of all bizes
+		$bizes=scandir("biz/");
+		//append all together in biz.js
+		foreach($bizes as $js){
+			$source="biz/".$js."/".$js.".js";
+			if(file_exists($source))
+				file_put_contents("biz.js",file_get_contents($source),FILE_APPEND | LOCK_EX);
+		}
 		echo 'ok';
 	/*
 	*	MODE: log

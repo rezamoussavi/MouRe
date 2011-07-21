@@ -102,18 +102,10 @@ class linkviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' style="float:left;width:750px;margin:5px;padding:5px;border:1px solid #A0FFA0;background-color:#F0FFF0;" ';
+				$_style='  style="float:left;width:750px;margin:5px;padding:5px;border:1px solid #A0FFA0;background-color:#F0FFF0;" ';
 				break;
 		}
-		$html='<script type="text/javascript" language="Javascript">';
-		$html.=<<<JAVASCRIPT
-
-JAVASCRIPT;
-		$html.=<<<JSONDOCREADY
-function {$this->_fullname}(){}
-JSONDOCREADY;
-		$html.='</script>
-<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

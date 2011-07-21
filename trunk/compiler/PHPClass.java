@@ -11,9 +11,8 @@ public class PHPClass {
 	public String functions;
 	public String comments;
 	public ArrayList<database> sql;
-	public String JavaScript;
-	public String JSOnDocReady;
-
+	public JavaScript js;
+	
 	public PHPClass(){
 		nodes=new ArrayList<Node>();
 		vars=new ArrayList<Var>();
@@ -22,21 +21,34 @@ public class PHPClass {
 		startFunName="";
 		functions="";
 		comments="";
-		JavaScript="";
-		JSOnDocReady="";
 		sql=new ArrayList<database>();
+		js=null;
 	}
 
 	public boolean hasSql(){
 		return sql.size()>0;
 	}
 
+	public boolean hasJS(){
+		return true;
+/*		if(js!= null)
+			return js.data.length()>0;
+		else
+			return false; 
+*/	}
+
 	public String sqlString(){
 		String s=	"<?PHP\n" +
 					"\tfunction bizsql(){\n";
 		for(database db:sql)
-			s+="\t\tquery(\"CREATE TABLE "+Name+"_"+db.Name+" ("+db.Info+")\");\n";
+			s+="\t\tquery(\"CREATE TABLE IF NOT EXISTS "+Name+"_"+db.Name+" ("+db.Info+")\");\n";
 		s+="\t}\n\n?>";
+		return s;
+	}
+
+	public String jsString(){
+		
+		String s=(js!=null)?"\n//js.begin."+Name+"\n"+js.data+"\n//js.end."+Name+"\n":" ";;
 		return s;
 	}
 
@@ -73,10 +85,9 @@ public class PHPClass {
 				db=new database(se);
 				sql.add(db);
 			}
-		}else if(sec.name.equalsIgnoreCase("javascript")){
-			JavaScript=sec.elements.get(0).data;
-		}else if(sec.name.equalsIgnoreCase("jsondocready")){
-			JSOnDocReady=sec.elements.get(0).data;
+		}else if(sec.name.equalsIgnoreCase("js")
+				|| sec.name.equalsIgnoreCase("javascript")){
+			js=new JavaScript(sec);
 		}else if(sec.name.equalsIgnoreCase("phpfunction")){
 			functions=sec.elements.get(0).data;
 		}else if(sec.name.equalsIgnoreCase("comments")){
@@ -294,10 +305,7 @@ public class PHPClass {
 				$_style='';
 				break;
 		}
-		$html='<script type="text/javascript" language="Javascript">';
-		$html.=<<<JAVASCRIPT\n javascript+nJAVASCRIPT\n;
-		$html.=<<<JSONDOCREADY\n function #nodeID{JSOnDocReady}\nJSONDOCREADY\n;
-		$html.='</script><div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html.='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -323,10 +331,7 @@ public class PHPClass {
 				"\t\t\t\t$_style='"+f.Class+" "+f.Style+"';\n" +
 				"\t\t\t\tbreak;\n";
 			s+="\t\t}\n" +
-			"\t\t$html='<script type=\"text/javascript\" language=\"Javascript\">';\n" +
-			"\t\t$html.=<<<JAVASCRIPT\n"+JavaScript+"\nJAVASCRIPT;\n" +
-			"\t\t$html.=<<<JSONDOCREADY\nfunction {$this->_fullname}(){"+JSOnDocReady+"}\nJSONDOCREADY;\n" +
-			"\t\t$html.='</script>\n<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
+			"\t\t$html.='<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
 			"\t\tif($_SESSION['silentmode'])\n" +
 			"\t\t\treturn;\n" +
 			"\t\tif($echo)\n" +

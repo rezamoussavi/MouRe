@@ -56,7 +56,7 @@
 					}
 				}
 				/* fetch video country */
-				$adInfo=SELECT(" country FROM adlink_info WHERE adUID=".$adUID);
+				$adInfo=SELECT(" country FROM adlink_info WHERE adUID=".$adUID." AND running != 0");
 				$adCountry=$adInfo['country'];
 				/*
 				*	if viewer country match video target country

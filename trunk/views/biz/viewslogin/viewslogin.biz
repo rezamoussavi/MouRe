@@ -104,7 +104,7 @@
 
 			switch($signup){
 				case 1://All set - user added and logged in!
-					#var->msg="Check Your email!";
+					#var->msg="Please Check Your email!";
 					_bookframe(#frm->frmMain);
 					break;
 
@@ -181,18 +181,18 @@
                 <form id="$lgFrm" method="post">
 					<#msg->doLoginBtn>
                     <div class="username_div">
-                        <label class="user_lbl">Username: </label>
-                        <input class="user_tf" name="email" type="text" />
+                        <label class="user_lbl">email: </label>
+                        <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
                     </div>
                     <div class="password_div">
                         <label class="pass_lbl">Password: </label>
-                        <input class="pass_tf" name="password" type="password" />
+                        <input class="pass_tf" tabindex=2 name="password" type="password" />
                     </div>
 				     <div id="forgot_div">
-                    	<a id="forgot" class="login_anc" href="javascript:my_function()">Forgot Password?</a>
+                    	<a id="forgot" class="login_anc" tabindex=4 href="javascript:my_function()">Forgot Password?</a>
                     </div>
                     <div id="login_btn_div">
-                        <input class="form_btn" type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
+                        <input class="form_btn" tabindex=3 type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
                     </div>
                 </form>
             </div>
@@ -252,17 +252,17 @@
             		<#msg->doSignupBtn>
             		<div class="username_div">
                         <label class="user_lbl">Email: </label>
-                        <input class="user_tf" name="email" type="text" />
+                        <input class="user_tf" tabindex=1 name="email" type="text" />
                     </div>
                     <div class="password_div">
                         <label class="pass_lbl">Password: </label>
-                        <input class="pass_tf" name="password" type="password" />
+                        <input class="pass_tf" tabindex=2 name="password" type="password" />
                     </div>
                     <div class="password_div">Confirm: </label>
-                        <input class="confirm_tf" name="passwordagain" type="password" />
+                        <input class="confirm_tf" tabindex=3 name="passwordagain" type="password" />
                     </div>
                     <div id="signup_btn_div">
-                        <input class="form_btn" type="button" value="Sign up" onclick="JavaScript:sndmsg('$dosuFrm')" />
+                        <input class="form_btn" tabindex=4 type="button" value="Sign up" onclick="JavaScript:sndmsg('$dosuFrm')" />
                     </div>
             	</form>
             </div>

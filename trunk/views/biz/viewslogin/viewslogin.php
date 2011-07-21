@@ -133,15 +133,7 @@ class viewslogin {
 				$_style=' class="log_sign"  ';
 				break;
 		}
-		$html='<script type="text/javascript" language="Javascript">';
-		$html.=<<<JAVASCRIPT
-
-JAVASCRIPT;
-		$html.=<<<JSONDOCREADY
-function {$this->_fullname}(){}
-JSONDOCREADY;
-		$html.='</script>
-<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -219,7 +211,7 @@ JSONDOCREADY;
 			$signup = $u->add($info['email'], $info['password'], $info['passwordagain'], $info['userName'], $info['Address'], $info['Country'], $info['PostalCode'],'user');
 			switch($signup){
 				case 1://All set - user added and logged in!
-					$this->msg="Check Your email!";
+					$this->msg="Please Check Your email!";
 					$this->_bookframe("frmMain");
 					break;
 				case -1://user already exist
@@ -294,18 +286,18 @@ PHTMLCODE;
                 <form id="$lgFrm" method="post">
 					<input type="hidden" name="_message" value="frame_doLoginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
                     <div class="username_div">
-                        <label class="user_lbl">Username: </label>
-                        <input class="user_tf" name="email" type="text" />
+                        <label class="user_lbl">email: </label>
+                        <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
                     </div>
                     <div class="password_div">
                         <label class="pass_lbl">Password: </label>
-                        <input class="pass_tf" name="password" type="password" />
+                        <input class="pass_tf" tabindex=2 name="password" type="password" />
                     </div>
 				     <div id="forgot_div">
-                    	<a id="forgot" class="login_anc" href="javascript:my_function()">Forgot Password?</a>
+                    	<a id="forgot" class="login_anc" tabindex=4 href="javascript:my_function()">Forgot Password?</a>
                     </div>
                     <div id="login_btn_div">
-                        <input class="form_btn" type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
+                        <input class="form_btn" tabindex=3 type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
                     </div>
                 </form>
             </div>
@@ -369,17 +361,17 @@ PHTMLCODE;
             		<input type="hidden" name="_message" value="frame_doSignupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
             		<div class="username_div">
                         <label class="user_lbl">Email: </label>
-                        <input class="user_tf" name="email" type="text" />
+                        <input class="user_tf" tabindex=1 name="email" type="text" />
                     </div>
                     <div class="password_div">
                         <label class="pass_lbl">Password: </label>
-                        <input class="pass_tf" name="password" type="password" />
+                        <input class="pass_tf" tabindex=2 name="password" type="password" />
                     </div>
                     <div class="password_div">Confirm: </label>
-                        <input class="confirm_tf" name="passwordagain" type="password" />
+                        <input class="confirm_tf" tabindex=3 name="passwordagain" type="password" />
                     </div>
                     <div id="signup_btn_div">
-                        <input class="form_btn" type="button" value="Sign up" onclick="JavaScript:sndmsg('$dosuFrm')" />
+                        <input class="form_btn" tabindex=4 type="button" value="Sign up" onclick="JavaScript:sndmsg('$dosuFrm')" />
                     </div>
             	</form>
             </div>

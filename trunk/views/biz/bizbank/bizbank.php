@@ -85,17 +85,7 @@ class bizbank {
 				$_style=' ';
 				break;
 		}
-		$html='<script type="text/javascript" language="Javascript">';
-		$html.=<<<JAVASCRIPT
-
-JAVASCRIPT;
-		$html.=<<<JSONDOCREADY
-function {$this->_fullname}(){	$("#bizbanklogo").mouseover(function(){   $("#bizbanklogo").fadeTo("fast",0.7)});
-	$("#bizbanklogo").mouseout(function(){   $("#bizbanklogo").fadeTo("fast",1)});
-}
-JSONDOCREADY;
-		$html.='</script>
-<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

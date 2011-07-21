@@ -99,24 +99,16 @@ class userviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style='';
+				$_style=' ';
 				break;
 			case 'frmBar':
-				$_style=' style="float:left;width:700px;border:1px solid #0000FF;background-color:#EFEFFF;margin:5px;padding:5px;" ';
+				$_style='  style="float:left;width:700px;border:1px solid #0000FF;background-color:#EFEFFF;margin:5px;padding:5px;" ';
 				break;
 			case 'frmShort':
-				$_style=' style="float:left;width:300px;border:1px dotted #E0E0FF;background-color:#EFEFFF;margin:5px;padding:5px;" ';
+				$_style='  style="float:left;width:300px;border:1px dotted #E0E0FF;background-color:#EFEFFF;margin:5px;padding:5px;" ';
 				break;
 		}
-		$html='<script type="text/javascript" language="Javascript">';
-		$html.=<<<JAVASCRIPT
-
-JAVASCRIPT;
-		$html.=<<<JSONDOCREADY
-function {$this->_fullname}(){}
-JSONDOCREADY;
-		$html.='</script>
-<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

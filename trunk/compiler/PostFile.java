@@ -46,6 +46,39 @@ public class PostFile {
 		return false;
 	}
 
+	public static boolean AppendJS(String URL, String biz){
+		URL+="?appendJS="+biz;
+		HttpClient httpclient = new DefaultHttpClient();
+		httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+
+		HttpPost httppost = new HttpPost(URL);
+		MultipartEntity mpEntity= null;
+		try{
+			mpEntity = new MultipartEntity();
+		}catch(Exception e){
+			return false;
+		}
+
+		httppost.setEntity(mpEntity);
+		HttpResponse response;
+		try {
+			response = httpclient.execute(httppost);
+		} catch (Exception e) {
+			return false;
+		}
+		HttpEntity resEntity = response.getEntity();
+		if (resEntity != null) {
+			try {
+				boolean ret=EntityUtils.toString(resEntity).endsWith("ok");
+				return ret;
+			} catch (Exception e) {
+				return false;
+			}
+	    }
+		httpclient.getConnectionManager().shutdown();
+		return false;
+	}
+
 	public static boolean Post(String URL,String biz,String FileName,String FileExtension){
 		HttpClient httpclient = new DefaultHttpClient();
 		httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
