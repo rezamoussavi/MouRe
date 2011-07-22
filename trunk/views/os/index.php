@@ -40,7 +40,7 @@
 		bizsql();
 		echo 'ok';	
 	/*
-	*	MODE: log
+	*	MODE: appendJS
 	*/
 	}elseif(isset($_GET['appendJS'])){
 		// remove old biz.js file
@@ -55,6 +55,27 @@
 			$source="biz/".$js."/".$js.".js";
 			if(file_exists($source))
 				file_put_contents("biz.js",file_get_contents($source),FILE_APPEND | LOCK_EX);
+		}
+		echo 'ok';
+	/*
+	*	MODE: appendCSS
+	*/
+	}elseif(isset($_GET['appendCSS'])){
+		// remove old biz.js file
+		if(file_exists('biz.css')){
+			chmod('biz.css', 0666);
+			unlink('biz.css');
+		}
+		//list of all bizes
+		$bizes=scandir("biz/");
+		//append all together in biz.js
+		foreach($bizes as $cs){
+			$source="biz/".$cs."/".$cs.".css";
+			echo $source;
+			if(file_exists($source)){
+				file_put_contents("biz.css",file_get_contents($source),FILE_APPEND | LOCK_EX);
+				echo "Add ok\n";
+			}else echo "not Added\n";
 		}
 		echo 'ok';
 	/*
@@ -84,6 +105,7 @@
 		$JQueryCode=<<<JQUERY
 			<script src="http://www.sam-rad.com/jquery.js" type="text/javascript"></script>
 			<script src="http://www.sam-rad.com/biz.js" type="text/javascript"></script>
+			<link rel="stylesheet" type="text/css" href="./biz.css" />
 			<link rel="stylesheet" type="text/css" href="./home.css" />
 			<script type="text/javascript">
 				$(document).ready(function(){

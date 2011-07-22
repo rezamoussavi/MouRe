@@ -86,7 +86,7 @@ class ipviewer {
 				$_style='  style="float:left;border:1px solid #000000;margin:5px;padding:2px;width:200px;" ';
 				break;
 		}
-		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

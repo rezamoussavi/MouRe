@@ -156,6 +156,14 @@ public class compiler {
 			jfw.write(php.jsString());
 			jfw.close();
 		}
+		//
+		// Saving .css Compiled File
+		//
+		if(php.hasCSS()){
+			FileWriter cfw=new FileWriter(File+".css");
+			cfw.write(php.cssString());
+			cfw.close();
+		}
 		if(DoUpload){
 			//
 			// Uploading .php file
@@ -176,23 +184,23 @@ public class compiler {
 				throw new IOException("Cannot upload biz to Server: <"+UpServer+">");
 			}
 			//
-			// Uploading .sql file
+			// Uploading .css file
 			//
-			if(php.hasSql()){
-				System.out.print(" [up DB]");
-				if(PostFile.Post(UpServer, php.Name, File,"sql"))
+			if(php.hasCSS()){
+				System.out.print(" [up css]");
+				if(PostFile.Post(UpServer, php.Name, File,"css"))
 					System.out.print(" ok!");
 				else{
-					throw new IOException("Cannot upload DB to Server: <"+UpServer+">");
+					throw new IOException("Cannot upload CSS to Server: <"+UpServer+">");
 				}
 				//
-				// Creating Database
+				// Append to main .css
 				//
-				System.out.print(" [bld DB]");
-				if(PostFile.Regdb(Server, php.Name))
+				System.out.print(" [apnd CSS]");
+				if(PostFile.AppendCSS(Server, php.Name))
 					System.out.print(" ok!");
 				else{
-					throw new IOException("Cannot Create DB on Server: <"+Server+">");
+					throw new IOException("Cannot Append CSS on Server: <"+Server+">");
 				}
 			}
 			//
@@ -213,6 +221,26 @@ public class compiler {
 					System.out.print(" ok!");
 				else{
 					throw new IOException("Cannot Append JS on Server: <"+Server+">");
+				}
+			}
+			//
+			// Uploading .sql file
+			//
+			if(php.hasSql()){
+				System.out.print(" [up DB]");
+				if(PostFile.Post(UpServer, php.Name, File,"sql"))
+					System.out.print(" ok!");
+				else{
+					throw new IOException("Cannot upload DB to Server: <"+UpServer+">");
+				}
+				//
+				// Creating Database
+				//
+				System.out.print(" [bld DB]");
+				if(PostFile.Regdb(Server, php.Name))
+					System.out.print(" ok!");
+				else{
+					throw new IOException("Cannot Create DB on Server: <"+Server+">");
 				}
 			}
 		}

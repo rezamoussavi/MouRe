@@ -149,7 +149,7 @@ class myaccviewer {
 				$_style=' ';
 				break;
 		}
-		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -291,6 +291,17 @@ PHTMLCODE;
 					<input type="button" value="My Advertised Links" onclick = 'JavaScript:sndmsg("$adLinkFormName")'  />
 				</form>
 			</div>
+		
+PHTMLCODE;
+
+		$html=<<<PHTMLCODE
+
+		    <div id="content_menu"> 
+		        <div class="content_menu_lst" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1')" onclick='JavaScript:sndevent("{$this->_fullname}","frame_profileBtn");menu_click("cml_1");'>Profile</div> 
+		        <div class="content_menu_lst" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2')" onclick="menu_click('cml_2');">My Published Videos</div> 
+		        <div class="content_menu_lst" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3')" onclick="menu_click('cml_3')">My Ads</div> 
+		        <div class="content_menu_lst" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_balanceBtn');menu_click('cml_4');">Credit</div> 
+		    </div> 
 		
 PHTMLCODE;
 

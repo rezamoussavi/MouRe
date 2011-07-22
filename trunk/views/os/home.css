@@ -1,6 +1,7 @@
 body {
 	margin: 0px;
-	font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    background-image: url('./img/formsbg.png');
 }
 #header_bg {
 	background: url('./img/headerbg.png') repeat-x top center;

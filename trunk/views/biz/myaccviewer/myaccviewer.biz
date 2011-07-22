@@ -35,6 +35,20 @@
 	reimbursed=0
 	adpay=0
 
+#javascript
+	function menu_hover(elem)
+	{
+		document.getElementById(elem).style.backgroundColor = '#F0EDEE';
+	}
+	function menu_out(elem)
+	{
+		document.getElementById(elem).style.backgroundColor = 'white';
+	}
+	function menu_click(elem)
+	{
+		document.getElementById(elem).style.backgroundColor = '#E3E1E1';
+}
+
 #phpfunction
 
 	/******************************
@@ -168,6 +182,14 @@
 					<input type="button" value="My Advertised Links" onclick = 'JavaScript:sndmsg("$adLinkFormName")'  />
 				</form>
 			</div>
+		</PHTML>
+		$html=<PHTML>
+		    <div id="content_menu"> 
+		        <div class="content_menu_lst" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1')" onclick='JavaScript:sndmsg("#msg->profileBtn");menu_click("cml_1");'>Profile</div> 
+		        <div class="content_menu_lst" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2')" onclick="menu_click('cml_2');">My Published Videos</div> 
+		        <div class="content_menu_lst" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3')" onclick="menu_click('cml_3')">My Ads</div> 
+		        <div class="content_menu_lst" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4')" onclick="JavaScript:sndmsg('#msg->balanceBtn');menu_click('cml_4');">Credit</div> 
+		    </div> 
 		</PHTML>
 		return $html;
 	}

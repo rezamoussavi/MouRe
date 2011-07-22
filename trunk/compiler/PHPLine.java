@@ -8,10 +8,11 @@ public class PHPLine {
 	public static String parse(String line){
 		line=messageInForms(line);//Should be before toThisTags
 		line=msgInForms(line);//Should be before toThisTags
+		line=msgToEvent(line);
 		line=toThisTags(line);
 		line=dbTags(line);
 		line=toStringTags(line);
-		line=nodeIDTag(line);
+		line=replace(line,"#nodeID","$this->_fullname");
 		line=replace(line, "<PHTML>", "<<<PHTMLCODE\n");
 		line=replace(line, "</PHTML>;", "\nPHTMLCODE;\n");
 		line=replace(line, "</PHTML>", "\nPHTMLCODE;\n");
@@ -27,6 +28,14 @@ public class PHPLine {
 		return line;
 	}
 
+	private static String msgToEvent(String line){
+		line=replace(line, "sndmsg (", "sndmsg(");
+		line=replace(line, "sndmsg( '", "sndmsg('");
+		line=replace(line, "sndmsg( \"", "sndmsg(\"");
+		line=replace(line, "sndmsg('#msg->", "sndevent('{$this->_fullname}','frame_");
+		line=replace(line, "sndmsg(\"#msg->", "sndevent(\"{$this->_fullname}\",\"frame_");
+		return line;
+	}
 	private static String messageInForms(String line){
 		int eom=0,i=line.indexOf("<#message->");
 		String msg="";
@@ -55,10 +64,6 @@ public class PHPLine {
 			i=line.indexOf("<#msg->");
 		}
 		return line;
-	}
-
-	private static String nodeIDTag(String line){
-		return replace(line,"#nodeID","$this->_fullname");
 	}
 
 	private static String toStringTags(String line){

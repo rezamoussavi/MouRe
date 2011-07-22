@@ -5,11 +5,11 @@
 
 	Author:	Reza Moussavi
 	Date:	4/27/2011
-	Ver:		1.0
+	Ver:	1.0
 	-----------------------
 	Author:	Reza Moussavi
 	Date:	4/21/2011
-	Ver:		0.1
+	Ver:	0.1
 
 */
 require_once 'biz/transaction/transaction.php';
@@ -101,7 +101,7 @@ class addvideo {
 				$_style=' ';
 				break;
 		}
-		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

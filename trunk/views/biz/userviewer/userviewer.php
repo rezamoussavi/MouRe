@@ -108,7 +108,7 @@ class userviewer {
 				$_style='  style="float:left;width:300px;border:1px dotted #E0E0FF;background-color:#EFEFFF;margin:5px;padding:5px;" ';
 				break;
 		}
-		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

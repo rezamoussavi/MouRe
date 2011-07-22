@@ -119,7 +119,7 @@ class mainpageviewer {
 				$_style=' ';
 				break;
 			case 'frmUser':
-				$_style=' ';
+				$_style=' class="content_container"  ';
 				break;
 			case 'frmAdmin':
 				$_style=' ';
@@ -131,7 +131,7 @@ class mainpageviewer {
 				$_style=' ';
 				break;
 		}
-		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

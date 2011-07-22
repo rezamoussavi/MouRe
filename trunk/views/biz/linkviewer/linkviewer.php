@@ -105,7 +105,7 @@ class linkviewer {
 				$_style='  style="float:left;width:750px;margin:5px;padding:5px;border:1px solid #A0FFA0;background-color:#F0FFF0;" ';
 				break;
 		}
-		$html.='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)

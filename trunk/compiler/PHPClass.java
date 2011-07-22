@@ -12,6 +12,7 @@ public class PHPClass {
 	public String comments;
 	public ArrayList<database> sql;
 	public JavaScript js;
+	public Css css;
 	
 	public PHPClass(){
 		nodes=new ArrayList<Node>();
@@ -23,6 +24,7 @@ public class PHPClass {
 		comments="";
 		sql=new ArrayList<database>();
 		js=null;
+		css=null;
 	}
 
 	public boolean hasSql(){
@@ -37,6 +39,14 @@ public class PHPClass {
 			return false; 
 */	}
 
+	public boolean hasCSS(){
+		return true;
+/*		if(css!= null)
+			return css.data.length()>0;
+		else
+			return false; 
+*/	}
+
 	public String sqlString(){
 		String s=	"<?PHP\n" +
 					"\tfunction bizsql(){\n";
@@ -47,8 +57,12 @@ public class PHPClass {
 	}
 
 	public String jsString(){
-		
 		String s=(js!=null)?"\n//js.begin."+Name+"\n"+js.data+"\n//js.end."+Name+"\n":" ";;
+		return s;
+	}
+
+	public String cssString(){
+		String s=(css!=null)?"\n"+css.data+"\n":" ";;
 		return s;
 	}
 
@@ -88,6 +102,8 @@ public class PHPClass {
 		}else if(sec.name.equalsIgnoreCase("js")
 				|| sec.name.equalsIgnoreCase("javascript")){
 			js=new JavaScript(sec);
+		}else if(sec.name.equalsIgnoreCase("css")){
+			css=new Css(sec);
 		}else if(sec.name.equalsIgnoreCase("phpfunction")){
 			functions=sec.elements.get(0).data;
 		}else if(sec.name.equalsIgnoreCase("comments")){
@@ -305,7 +321,7 @@ public class PHPClass {
 				$_style='';
 				break;
 		}
-		$html.='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
+		$html='<div id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
 			return;
 		if($echo)
@@ -331,7 +347,7 @@ public class PHPClass {
 				"\t\t\t\t$_style='"+f.Class+" "+f.Style+"';\n" +
 				"\t\t\t\tbreak;\n";
 			s+="\t\t}\n" +
-			"\t\t$html.='<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
+			"\t\t$html='<div '.$_style.' id=\"' . $this->_fullname . '\">'.call_user_func(array($this, $this->_curFrame)).'</div>';\n" +
 			"\t\tif($_SESSION['silentmode'])\n" +
 			"\t\t\treturn;\n" +
 			"\t\tif($echo)\n" +
