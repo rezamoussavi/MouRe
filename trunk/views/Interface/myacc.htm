@@ -1,0 +1,250 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html> 
+ 
+<head> 
+	<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" /> 
+	<title>your_title</title> 
+    <link rel="stylesheet" type="text/css" href="./myacc.css" /> 
+    <script type="text/javascript"> 
+        function menu_hover(elem)
+        {
+            document.getElementById(elem).style.backgroundColor = '#F0EDEE';
+        }
+        function menu_out(elem)
+        {
+            document.getElementById(elem).style.backgroundColor = 'white';
+        }
+        function menu_click(elem)
+        {
+            document.getElementById(elem).style.backgroundColor = '#E3E1E1';
+        }
+    </script> 
+    
+</head> 
+<body> 
+    <div id="header_bg"> 
+        <div id="header_cont"> 
+            <div id="logo_div"><img id="logo_img" alt="" src="./logo.png" /></div> 
+            <div id="menu_div"> 
+                <div id="pric_cont"> 
+                    <ul id="menu_list"> 
+                        <li><a href="javascript:my_function()">Pricing</a></li> 
+                        <li><a href="javascript:my_function()">Contact us</a></li> 
+                    </ul> 
+                </div> 
+                <div id="myacc_log"> 
+                    <div id="pers_info"> 
+                        Welcome <span id="user_name">your_name</span>!
+                        <div id="balance_div">Balance: <span id="balance_span">1000</span></div> 
+                    </div> 
+                    <ul> 
+                        <li><a id="myacc-link" href="#signup">Sign up</a></li> 
+                        <li><a id="logout-link" href="#login">Log in</a></li> 
+                    </ul> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
+    <div id="content_container"> 
+        <div id="content_menu"> 
+            <div class="content_menu_lst" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1')" onclick="menu_click('cml_1')">Profile</div> 
+            <div class="content_menu_lst" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2')" onclick="menu_click('cml_2')">My Published Videos</div> 
+            <div class="content_menu_lst" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3')" onclick="menu_click('cml_3')">My Ads</div> 
+            <div class="content_menu_lst" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4')" onclick="menu_click('cml_4')">Credit</div> 
+        </div> 
+        <div id="content_area"> 
+            <div id="profile_area_div"> 
+                <span class="profile_title_span">Personal Information</span> 
+                <form id="persinf_frm" method="post" action="your_action"> 
+                    <label class="bold" id="profile_name_lbl">Full name <span class="red_star">*</span></label> 
+                    <input class="persinf_inp" id="profile_name_inp" type="text" size="30" /> 
+                    <br /><br /> 
+                    <label class="bold" id="profile_birth_lbl">Birth date <span class="red_star">*</span></label> 
+                    <input class="persinf_inp" id="profile_birth_inp" type="text" size="30" /> 
+                    <br /><br /> 
+                    <label class="notes" id="profile_note_1">* These information must be real for future security checkings (can be filled once)</label> 
+                    <br /><br /> 
+                    <label class="bold" id="profile_address_lbl">Full Address</label> 
+                    <input class="persinf_inp" id="profile_address_inp" type="text" size="30" /> 
+                    <br /><br /> 
+                    <label class="bold" id="profile_country_lbl">Country</label> 
+                    <input class="persinf_inp" id="profile_country_inp" type="text" size="30" /> 
+                    <br /><br /> 
+                    <label class="bold" id="profile_zipcode_lbl">Postal Code</label> 
+                    <input class="persinf_inp" id="profile_zipcode_inp" type="text" size="30" /> 
+                    <br /><br /> 
+                    <input class="persinf_inp" class="bold" id="profile_save_btn" type="button" value="Save" /> 
+                    <br /><br /> 
+                    <div id="persinf_confirm_div"> 
+                        <label class="bold">Password: </label> 
+                        <input type="text" size="30" /> 
+                        <input class="persinf_inp" type="button" value="Confirm" /> 
+                    </div> 
+                </form> 
+                <span class="profile_title_span">Change Password</span> 
+                <form id="change_pass_frm" method="post" action="your_action"> 
+                    <label class="bold" id="newpass_lbl">New Password</label> 
+                    <input class="persinf_inp" id="newpass_inp" type="text" size="30" /> 
+                    <br /><br /> 
+                    <label class="bold" id="conf_newpass_lbl">Confirm New Pass</label> 
+                    <input class="persinf_inp" id="conf_newpass_inp" type="text" size="30" /> 
+                    <br /><br /> 
+                    <label class="bold" id="oldpass_lbl">Confirm New Pass</label> 
+                    <input class="persinf_inp" id="oldpass_inp" type="text" size="30" /> 
+                    <br /><br /> 
+                    <input class="persinf_inp" class="bold" id="confpass_btn" type="button" value="Save" /> 
+                </form> 
+            </div> 
+            <div id="published_vids_div"> 
+                <div class="box_container"> 
+            	    <div class="video_box"> 
+                        <div class="box_close"> 
+                            <div class="box_image"> 
+                                <a href="http://www.youtube.com/watch?v=Hbib-A6NpW8" target="_blank"> 
+                                    <img id="video_image" src="http://img.youtube.com/vi/Hbib-A6NpW8/2.jpg" /> 
+           						</a> 
+            	    		</div> 
+                            <div class="other_info_container"> 
+                                <div class="video_header"> 
+                                    <div class="video_title">Official virgin atlantic advert 2011 test test test test</div> 
+                                </div> 
+                                <div class="other_n_embed"> 
+                                    <div class="video_other_info" > 
+                                        <div class="video_details"> 
+                                            Viewd 23 of 20000
+                                        </div> 
+                                        <div class="video_details"> 
+                                            Last Date : 
+                                        </div> 
+                                        <div class="video_details"> 
+                                            Earn/View : 0.07 		
+                   	    				</div> 
+                                    </div> 
+                 	    		    <div class="box_open"> 
+                                        <div class="pubvid_num_div"">Your published videos: 3500</div> 
+                                        <div class="earned_div">You earned: $12.4</div> 
+                                    </div> 
+                                </div> 
+                            </div> 
+                        </div> 
+            	    </div> 
+            	    <div class="video_box"> 
+            	    	
+            	    </div> 
+                </div> 
+            </div> 
+            <div id="my_adds_div"> 
+                <div class="box_container"> 
+            	    <div class="adds_video_box"> 
+                        <div class="box_close"> 
+                            <div class="box_image"> 
+                                <a href="http://www.youtube.com/watch?v=Hbib-A6NpW8" target="_blank"> 
+                                    <img id="video_image" src="http://img.youtube.com/vi/Hbib-A6NpW8/2.jpg" /> 
+           						</a> 
+            	    		</div> 
+                            <div class="other_info_container"> 
+                                <div class="video_header"> 
+                                    <div class="video_title">Official virgin atlantic advert 2011 test test test test</div> 
+                                    <div class="details_btn_div"> 
+                                        <input class="stop_btn" type="button" value="Stop" /> 
+                                    </div> 
+                                </div> 
+                                <div class="stop_conf_dif"> 
+                                    <div class="stop_not_txt">This video will be removed from publishing lists in 7 days <br />and you will be re-imbursed with teh remaining number of views.</div> 
+                                    <div class="stop_not_div"> 
+                                        <label class="bold">Password: </label> 
+                                        <input type="text" size="30" /> 
+                                        <input class="stop_conf_btn" type="button" value="OK!" /> 
+                                    </div> 
+                                </div> 
+                                <div class="other_n_embed"> 
+                                    <div class="video_other_info" > 
+                                        <div class="video_details"> 
+                                            Viewd 23 of 20000
+                                        </div> 
+                                        <div class="video_details"> 
+                                            Start Date : 2011.05.17
+                                        </div> 
+                                        <div class="video_details"> 
+                                            Finishing Date : 2011.10.23		
+                   	    				</div> 
+                                    </div> 
+                 	    		    <div class="box_open"> 
+                                        <div class="pubvid_num_div">Your published videos: 3500</div> 
+                                        <div class="earned_div">You earned: $12.4</div> 
+                                    </div> 
+                                </div> 
+                            </div> 
+                            <div class="stats_btn_div"> 
+                                <input class="getlink_btn" type="submit" value="+Statistics" /> 
+                            </div> 
+                        </div> 
+                        <div class="stats_div"> 
+                            <table class="stats_table"> 
+                                <tr> 
+                                    <th class="stats_country_td">Country</th> 
+                                    <th class="stats_views_td">Views</th> 
+                                    <th class="stats_prcnt_td">%</th> 
+                                    <th class="stats_empty_td"></th> 
+                                    <th class="stats_country_td">Country</th> 
+                                    <th class="stats_views_td">Views</th> 
+                                    <th class="stats_prcnt_td">%</th> 
+                                    <th class="stats_empty_td"></th> 
+                                    <th class="stats_country_td">Country</th> 
+                                    <th class="stats_views_td">Views</th> 
+                                    <th class="stats_prcnt_td">%</th> 
+                                    <th class="stats_empty_td"></th> 
+                                    <th class="stats_country_td">Country</th> 
+                                    <th class="stats_views_td">Views</th> 
+                                    <th class="stats_prcnt_td">%</th> 
+                                </tr> 
+                                <tr> 
+                                    <td>Sweden</td> 
+                                    <td>200</td> 
+                                    <td>45</td> 
+                                    <td class="stats_empty_td"></td> 
+                                    <td>United States</td> 
+                                    <td class="stats_views_td">3499728</td> 
+                                    <td>83</td> 
+                                    <td class="stats_empty_td"></td> 
+                                    <td>Iran</td> 
+                                    <td>5</td> 
+                                    <td>2</td> 
+                                    <td class="stats_empty_td"></td> 
+                                    <td>Iran</td> 
+                                    <td>5</td> 
+                                    <td>2</td> 
+                                </tr> 
+                                <tr> 
+                                    <td></td> 
+                                    <td></td> 
+                                    <td></td> 
+                                    <td class="stats_empty_td"></td> 
+                                    <td></td> 
+                                    <td></td> 
+                                    <td></td> 
+                                    <td class="stats_empty_td"></td> 
+                                    <td></td> 
+                                    <td></td> 
+                                    <td></td> 
+                                    <td class="stats_empty_td"></td> 
+                                    <td></td> 
+                                    <td></td> 
+                                    <td></td> 
+                                </tr> 
+                            </table> 
+                            <div class="show_map_div"> 
+                                <input class="show_map_btn" type="button" value="Show location demographics on map" /> 
+                            </div> 
+                        </div> 
+            	    </div> 
+            	    <div class="video_box"> 
+            	    	
+            	    </div> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
+</body> 
+</html>
