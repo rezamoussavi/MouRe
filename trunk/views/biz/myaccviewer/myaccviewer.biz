@@ -92,15 +92,15 @@
 	******************************/
 
 	function frmProfile(){
-		return #fun->buttons()."<hr>".#node->profile->_backframe();
+		return #fun->buttons().#node->profile->_backframe();
 	}
 
 	function frmPubLinks(){
-		return #fun->buttons()."<hr>".#node->pubLinks->_backframe();
+		return #fun->buttons().#node->pubLinks->_backframe();
 	}
 
 	function frmAdLinks(){
-		return #fun->buttons()."<hr>".#node->adLinks->_backframe();
+		return #fun->buttons().#node->adLinks->_backframe();
 	}
 
 	function frmBalance(){
@@ -127,7 +127,7 @@
 				<input value="test" type="button" onclick='JavaScript:sndmsg("$testFrame")' />
 			</form>
 		</PHTML>
-		return #fun->buttons()."<hr />".$html."<gr />".#fun->transactionHistory();
+		return #fun->buttons().$html."<hr />".#fun->transactionHistory();
 	}
 
 	function transactionHistory(){
@@ -164,30 +164,10 @@
 		$pubLinkFormName=#nodeID."pubLinkBtn";
 		$adLinkFormName=#nodeID."adLinkBtn";
 		$html=<PHTML>
-			<div style="float:left;width:800px;">
-				<form name={$ProfileFormName} method="post" style="float:left;">
-					<#msg->profileBtn>
-					<input type="button" value="Profile" onclick = 'JavaScript:sndmsg("$ProfileFormName")'  />
-				</form>
-				<form name={$BalanceFormName} method="post" style="float:left;">
-					<#msg->balanceBtn>
-					<input type="button" value="Balance" onclick = 'JavaScript:sndmsg("$BalanceFormName")'  />
-				</form>
-				<form name={$pubLinkFormName} method="post" style="float:left;">
-					<#msg->pubLinkBtn>
-					<input type="button" value="My Published Links" onclick = 'JavaScript:sndmsg("$pubLinkFormName")'  />
-				</form>
-				<form name={$adLinkFormName} method="post" style="float:left;">
-					<#msg->adLinkBtn>
-					<input type="button" value="My Advertised Links" onclick = 'JavaScript:sndmsg("$adLinkFormName")'  />
-				</form>
-			</div>
-		</PHTML>
-		$html=<PHTML>
 		    <div id="content_menu"> 
-		        <div class="content_menu_lst" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1')" onclick='JavaScript:sndmsg("#msg->profileBtn");menu_click("cml_1");'>Profile</div> 
-		        <div class="content_menu_lst" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2')" onclick="menu_click('cml_2');">My Published Videos</div> 
-		        <div class="content_menu_lst" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3')" onclick="menu_click('cml_3')">My Ads</div> 
+		        <div class="content_menu_lst" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1')" onclick="JavaScript:sndmsg('#msg->profileBtn');menu_click('cml_1');">Profile</div> 
+		        <div class="content_menu_lst" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2')" onclick="JavaScript:sndmsg('#msg->pubLinkBtn');menu_click('cml_2');">My Published Videos</div> 
+		        <div class="content_menu_lst" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3')" onclick="JavaScript:sndmsg('#msg->adLinkBtn');menu_click('cml_3');">My Ads</div> 
 		        <div class="content_menu_lst" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4')" onclick="JavaScript:sndmsg('#msg->balanceBtn');menu_click('cml_4');">Credit</div> 
 		    </div> 
 		</PHTML>

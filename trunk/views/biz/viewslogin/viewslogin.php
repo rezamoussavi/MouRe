@@ -233,8 +233,6 @@ class viewslogin {
 	*			FRAMES
 	**********************************/
 	function frmMain(){
-		$suFrm=$this->_fullname."signup";
-		$lgFrm=$this->_fullname."login";
 		$msg=$this->msg;
 		$this->msg="";
 		return <<<PHTMLCODE
@@ -242,16 +240,10 @@ class viewslogin {
 			<div style="height:40px;">$msg</div>
 	        <ul>
 	            <li>
-					<form id="$suFrm" style="display:inline;">
-						<input type="hidden" name="_message" value="frame_signupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-	                	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('$suFrm')">Sign up</a>
-					</form>
+	                <a id="signup-link" href="#signup" onclick="JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
 	            </li>
 	            <li>
-					<form id="$lgFrm" style="display:inline;">
-						<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-	                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('$lgFrm')">Log in</a>
-					</form>
+                	<a id="login-link" href="#login" onclick="JavaScript:sndevent('{$this->_fullname}','frame_loginBtn')">Log in</a>
 	            </li>
 	        </ul>
 		
@@ -267,10 +259,7 @@ PHTMLCODE;
 			<div style="height:40px;"></div>
 	        <ul>
 	            <li>
-					<form id="$suFrm" style="display:inline;">
-						<input type="hidden" name="_message" value="frame_signupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-	                	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('$suFrm')">Sign up</a>
-					</form>
+	               	<a id="signup-link" href="#signup" onclick="JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
 	            </li>
 	            <li>
 					<form id="" style="display:inline;">
@@ -279,10 +268,7 @@ PHTMLCODE;
 	            </li>
 	        </ul>
             <div id="login_div" class="bloop">
-			    <form name="$xFrm" style="float:right;">
-			    	<input type="hidden" name="_message" value="frame_xBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-			    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('$xFrm')">X</a></font>
-			    </form>
+		    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndevent('{$this->_fullname}','frame_xBtn')">X</a></font>
                 <form id="$lgFrm" method="post">
 					<input type="hidden" name="_message" value="frame_doLoginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
                     <div class="username_div">

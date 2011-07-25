@@ -106,7 +106,6 @@
 			<script src="http://www.sam-rad.com/jquery.js" type="text/javascript"></script>
 			<script src="http://www.sam-rad.com/biz.js" type="text/javascript"></script>
 			<link rel="stylesheet" type="text/css" href="./biz.css" />
-			<link rel="stylesheet" type="text/css" href="./home.css" />
 			<script type="text/javascript">
 				$(document).ready(function(){
 JQUERY;

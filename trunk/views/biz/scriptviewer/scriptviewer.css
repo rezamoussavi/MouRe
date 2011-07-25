@@ -1,1 +1,10 @@
- 
+
+	.box_open
+	{
+		float: right;
+		margin-right: 20px;
+		width: 100%
+		margin-left: 3px;
+		border-left: 1px dotted #4969E6;
+	}
+

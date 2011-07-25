@@ -24,6 +24,13 @@
 #message
 	client->tab=onTabSelected
 
+#css
+	.pric_cont {
+		float: left;
+		margin-top: 43px;
+		display:inline;
+	}
+
 #phpfunction
 
     function bookContent($content){//String[]

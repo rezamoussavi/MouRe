@@ -119,7 +119,7 @@ class videobar {
 				$_style=' class="video_box"  ';
 				break;
 			case 'frmMyAd':
-				$_style=' ';
+				$_style=' class="adds_video_box"  ';
 				break;
 			case 'frmMyPub':
 				$_style=' ';
@@ -160,7 +160,7 @@ class videobar {
 			$country="<br />only in ".$this->data['country'];
 		return <<<PHTMLCODE
 
-			<div class="box_close">
+			<div class="box_closed">
 				<div class="box_image">
 					<a href="http://www.sam-rad.com/watch?v={$this->data['videoCode']}" target="_blank">
 						<img class="video_image" src="{$this->data['img']}" />
@@ -177,7 +177,7 @@ class videobar {
 						</div>
 					</div>
 					<div class="other_n_embed">
-						<div class="video_other_info" >
+						<div class="video_other_info_topub" >
 							<div class="video_details">
 								Earn/View : $EPV $ $country
 							</div>
@@ -263,7 +263,113 @@ PHTMLCODE;
 		$stopBtn=$this->frmStopBtn();
 		return <<<PHTMLCODE
 
-		<div style="width:650px;height:125;">
+			<div class="box_close"> 
+				<div class="box_image"> 
+				    <a href="http://www.youtube.com/watch?v=Hbib-A6NpW8" target="_blank"> 
+				        <img class="video_image" src="http://img.youtube.com/vi/Hbib-A6NpW8/2.jpg" /> 
+					</a> 
+				</div> 
+				<div class="other_info_container"> 
+				    <div class="video_header"> 
+				        <div class="video_title">Official virgin atlantic advert 2011 test test test test</div> 
+				        <div class="details_btn_div"> 
+				            <input class="stop_btn" type="button" value="Stop" /> 
+				        </div> 
+				    </div> 
+				    <div class="stop_conf_dif"> 
+				        <div class="stop_not_txt">This video will be removed from publishing lists in 7 days <br />and you will be re-imbursed with teh remaining number of views.</div> 
+				        <div class="stop_not_div"> 
+				            <label class="bold">Password: </label> 
+				            <input type="text" size="30" /> 
+				            <input class="stop_conf_btn" type="button" value="OK!" /> 
+				        </div> 
+				    </div> 
+				    <div class="other_n_embed"> 
+				        <div class="video_other_info" > 
+				            <div class="video_details"> 
+				                Viewd 23 of 20000
+				            </div> 
+				            <div class="video_details"> 
+				                Start Date : 2011.05.17
+				            </div> 
+				            <div class="video_details"> 
+				                Finishing Date : 2011.10.23		
+							</div> 
+				        </div> 
+						<div class="box_open"> 
+				            <div class="pubvid_num_div">Your published videos: 3500</div> 
+				            <div class="earned_div">You earned: $12.4</div> 
+				        </div> 
+				    </div> 
+				</div> 
+				<div class="stats_btn_div"> 
+				    <input class="statistics_btn" type="submit" value="+Statistics" /> 
+				</div> 
+			</div> 
+			<div class="stats_div"> 
+				<table class="stats_table"> 
+				    <tr> 
+				        <th class="stats_country_td">Country</th> 
+				        <th class="stats_views_td">Views</th> 
+				        <th class="stats_prcnt_td">%</th> 
+				        <th class="stats_empty_td"></th> 
+				        <th class="stats_country_td">Country</th> 
+				        <th class="stats_views_td">Views</th> 
+				        <th class="stats_prcnt_td">%</th> 
+				        <th class="stats_empty_td"></th> 
+				        <th class="stats_country_td">Country</th> 
+				        <th class="stats_views_td">Views</th> 
+				        <th class="stats_prcnt_td">%</th> 
+				        <th class="stats_empty_td"></th> 
+				        <th class="stats_country_td">Country</th> 
+				        <th class="stats_views_td">Views</th> 
+				        <th class="stats_prcnt_td">%</th> 
+				    </tr> 
+				    <tr> 
+				        <td>Sweden</td> 
+				        <td>200</td> 
+				        <td>45</td> 
+				        <td class="stats_empty_td"></td> 
+				        <td>United States</td> 
+				        <td class="stats_views_td">3499728</td> 
+				        <td>83</td> 
+				        <td class="stats_empty_td"></td> 
+				        <td>Iran</td> 
+				        <td>5</td> 
+				        <td>2</td> 
+				        <td class="stats_empty_td"></td> 
+				        <td>Iran</td> 
+				        <td>5</td> 
+				        <td>2</td> 
+				    </tr> 
+				    <tr> 
+				        <td></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td class="stats_empty_td"></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td class="stats_empty_td"></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td class="stats_empty_td"></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td></td> 
+				    </tr> 
+				</table> 
+				<div class="show_map_div"> 
+				    <input class="show_map_btn" type="button" value="Show location demographics on map" /> 
+				</div> 
+			</div> 
+		
+PHTMLCODE;
+
+		return <<<PHTMLCODE
+
+		<div>
 			<div style="float:left;height:120px;width:150px;text-align:left;">
 				<a href="{$this->data['link']}" target="_blank">
 					<img src="{$this->data['img']}" />
@@ -285,8 +391,7 @@ PHTMLCODE;
 				$stopBtn
 			</div><br />
 		</div>
-		<div style="float:left;">$statFrm</div>
-		<br />
+		<div>$statFrm</div>
 		
 PHTMLCODE;
 

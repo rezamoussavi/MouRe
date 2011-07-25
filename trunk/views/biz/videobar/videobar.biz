@@ -13,7 +13,7 @@
 #frame
 	frm
 	frmToPublish[video_box]
-	frmMyAd
+	frmMyAd[adds_video_box]
 	frmMyPub
 	frmShort
 
@@ -52,7 +52,7 @@
 		if(strlen(#var->data['country'])>3)
 			$country="<br />only in ".#var->data['country'];
 		return <PHTML>
-			<div class="box_close">
+			<div class="box_closed">
 				<div class="box_image">
 					<a href="http://www.sam-rad.com/watch?v={#var->data['videoCode']}" target="_blank">
 						<img class="video_image" src="{#var->data['img']}" />
@@ -69,7 +69,7 @@
 						</div>
 					</div>
 					<div class="other_n_embed">
-						<div class="video_other_info" >
+						<div class="video_other_info_topub" >
 							<div class="video_details">
 								Earn/View : $EPV $ $country
 							</div>
@@ -148,8 +148,114 @@
 		$frmStatName=#nodeID."Stat";
 		$statFrm=#fun->backStatFrame();
 		$stopBtn=#fun->frmStopBtn();
+
 		return <PHTML>
-		<div style="width:650px;height:125;">
+			<div class="box_close"> 
+				<div class="box_image"> 
+				    <a href="http://www.youtube.com/watch?v=Hbib-A6NpW8" target="_blank"> 
+				        <img class="video_image" src="http://img.youtube.com/vi/Hbib-A6NpW8/2.jpg" /> 
+					</a> 
+				</div> 
+				<div class="other_info_container"> 
+				    <div class="video_header"> 
+				        <div class="video_title">Official virgin atlantic advert 2011 test test test test</div> 
+				        <div class="details_btn_div"> 
+				            <input class="stop_btn" type="button" value="Stop" /> 
+				        </div> 
+				    </div> 
+				    <div class="stop_conf_dif"> 
+				        <div class="stop_not_txt">This video will be removed from publishing lists in 7 days <br />and you will be re-imbursed with teh remaining number of views.</div> 
+				        <div class="stop_not_div"> 
+				            <label class="bold">Password: </label> 
+				            <input type="text" size="30" /> 
+				            <input class="stop_conf_btn" type="button" value="OK!" /> 
+				        </div> 
+				    </div> 
+				    <div class="other_n_embed"> 
+				        <div class="video_other_info" > 
+				            <div class="video_details"> 
+				                Viewd 23 of 20000
+				            </div> 
+				            <div class="video_details"> 
+				                Start Date : 2011.05.17
+				            </div> 
+				            <div class="video_details"> 
+				                Finishing Date : 2011.10.23		
+							</div> 
+				        </div> 
+						<div class="box_open"> 
+				            <div class="pubvid_num_div">Your published videos: 3500</div> 
+				            <div class="earned_div">You earned: $12.4</div> 
+				        </div> 
+				    </div> 
+				</div> 
+				<div class="stats_btn_div"> 
+				    <input class="statistics_btn" type="submit" value="+Statistics" /> 
+				</div> 
+			</div> 
+			<div class="stats_div"> 
+				<table class="stats_table"> 
+				    <tr> 
+				        <th class="stats_country_td">Country</th> 
+				        <th class="stats_views_td">Views</th> 
+				        <th class="stats_prcnt_td">%</th> 
+				        <th class="stats_empty_td"></th> 
+				        <th class="stats_country_td">Country</th> 
+				        <th class="stats_views_td">Views</th> 
+				        <th class="stats_prcnt_td">%</th> 
+				        <th class="stats_empty_td"></th> 
+				        <th class="stats_country_td">Country</th> 
+				        <th class="stats_views_td">Views</th> 
+				        <th class="stats_prcnt_td">%</th> 
+				        <th class="stats_empty_td"></th> 
+				        <th class="stats_country_td">Country</th> 
+				        <th class="stats_views_td">Views</th> 
+				        <th class="stats_prcnt_td">%</th> 
+				    </tr> 
+				    <tr> 
+				        <td>Sweden</td> 
+				        <td>200</td> 
+				        <td>45</td> 
+				        <td class="stats_empty_td"></td> 
+				        <td>United States</td> 
+				        <td class="stats_views_td">3499728</td> 
+				        <td>83</td> 
+				        <td class="stats_empty_td"></td> 
+				        <td>Iran</td> 
+				        <td>5</td> 
+				        <td>2</td> 
+				        <td class="stats_empty_td"></td> 
+				        <td>Iran</td> 
+				        <td>5</td> 
+				        <td>2</td> 
+				    </tr> 
+				    <tr> 
+				        <td></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td class="stats_empty_td"></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td class="stats_empty_td"></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td class="stats_empty_td"></td> 
+				        <td></td> 
+				        <td></td> 
+				        <td></td> 
+				    </tr> 
+				</table> 
+				<div class="show_map_div"> 
+				    <input class="show_map_btn" type="button" value="Show location demographics on map" /> 
+				</div> 
+			</div> 
+		</PHTML>
+
+
+		return <PHTML>
+		<div>
 			<div style="float:left;height:120px;width:150px;text-align:left;">
 				<a href="{#var->data['link']}" target="_blank">
 					<img src="{#var->data['img']}" />
@@ -171,8 +277,7 @@
 				$stopBtn
 			</div><br />
 		</div>
-		<div style="float:left;">$statFrm</div>
-		<br />
+		<div>$statFrm</div>
 		</PHTML>
 	}
 
@@ -302,3 +407,197 @@
 	function generateScript(){
 		#node->scv->generateScript(#var->data);
 	}
+
+
+#css
+	.adds_video_box
+	{
+		color: white;
+		margin-top: 15px;
+		margin-bottom: 15px;
+		margin-left: 0px;
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		border-radius: 20px 20px 20px 20px;
+		padding-bottom: 10px;
+	}
+	.bold{font-weight:  bold; font-size: 14px;}
+	.box_close {height: 250px;}
+	.box_closed {
+		height: 120px;
+		width: 100px;
+		margin-left: 10px auto;
+		margin-right: 10px auto;
+	}
+	.box_image
+	{
+		margin-left:15px;
+		float: left;
+	}
+	.details_btn_div {float: left; margin-left: 10px;}
+	.getlink_btn {
+		margin-right: 17px;
+		margin-left: 485px;
+		width: 150px;
+		height: 30px;
+		color: white;
+		background-color: #FF9966;
+		border-radius: 5px;
+		font-weight: bold;
+	}
+	.statistics_btn {
+		margin-right: 17px;
+		margin-left: 485px;
+		width: 100px;
+		height: 30px;
+		color: white;
+		background-color: #FF9966;
+		border-radius: 5px;
+		font-weight: bold;
+	}
+	.box_open
+	{
+		font-size: 13px;
+		font-weight: bold;
+		float: right;
+		margin-right: 20px;
+		width: 340px;
+		margin-left: 3px;
+		border-left: 1px dotted #4969E6;
+	}
+	.earned_div {margin-top: 10px;}
+	.other_info_container
+	{
+		float: left;
+		margin-top: 18px;
+	}
+	.other_n_embed
+	{
+		margin-left: 10px;
+		margin-top: 50px;
+	}
+	.earned_div {margin-top: 10px;}
+	.show_map_btn
+	{
+		margin-left: 600px;
+		width: 300px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.stats_btn_div {float: right; width: 610px; margin-top: -30px;}
+	.stats_table
+	{
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+		/*border: 1px solid black;*/
+	}
+	.stats_div
+	{
+		margin-top: 10px;
+		width: 900px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.stats_table th {border-bottom: 1px solid white}
+	.stats_table th.stats_empty_td {border-bottom: 10px;}
+	.stats_table th, td {padding: 5px; font-size: 12px;}
+	.stats_country_td {width: 80px;}
+	.stats_views_td {width: 40px;}
+	.stats_prcnt_td {width: 20px;}
+	.stats_empty_td {width: 20px;}
+	.stop_btn
+	{
+		margin-left: 55px;
+		width: 100px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.stop_conf_dif {margin-left: 10px;}
+	.stop_conf_btn
+	{
+		margin-left: 5px;
+		width: 50px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.stop_not_div
+	{
+		margin-top: 5px;
+		margin-left: 100px;
+		float: left;
+		width: 500px;
+	}
+	.stop_not_div
+	{
+		margin-top: 5px;
+		margin-left: 100px;
+		float: left;
+		width: 500px;
+	}
+	.stop_not_div label {margin-left: 130px;}
+	.stop_not_txt
+	{
+		font-family: Lucida Fax;
+		font-style: italic;
+		font-size: 14px;
+		text-align: right;
+		margin-top: 35px;
+		margin-left: 80px;
+		width: 500px;
+		color: cyan;
+	}
+	.video_header {}
+	.video_image {
+		width: 320px;
+		height: 180px;
+		margin-top: 12px;
+		border: 4px solid #6DC8E0;
+		border-radius: 10px 10px 10px 10px;
+	}
+	.video_title
+	{
+		margin-left: 10px;
+		float: left;
+		width: 420px;
+		font-weight: bold;
+	}
+	.video_other_info
+	{
+		font-size: 13px;
+		width: 180px;
+		height: 100px;
+		font-weight: bold;
+		text-align: left;
+		float: left;
+	}
+	.video_other_info_topub {
+		font-size: 16px;
+		width: 120px;
+		height: 100px;
+		font-weight: bold;
+		text-align: left;
+		float: left;
+	}
+	.video_details {
+		margin-bottom: 5px;
+	}
+	.video_box {
+		height: 214px;
+		color: white;
+		margin-top: 15px;
+		margin-bottom: 15px;
+		margin-left: 10px;
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		border-radius: 20px 20px 20px 20px;
+	}
+
+

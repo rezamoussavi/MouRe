@@ -3,20 +3,20 @@ body {
 	font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 #header_bg {
-	background: url('./img/headerbg.png') repeat-x top center;
+	background: url('./headerbg.png') repeat-x top center;
 	padding-top: 36px;
 	height: 100px;
 }
 #logo_div {
-	/*border: 1px solid black;*/
+	border: 1px solid black;
 	margin-top: auto;
 	margin-bottom: auto;
 	margin-left: 15%;
 	float: left;
 }
 #logo_img {
-	height: 77px;
-	width: 330px;
+	height: 61px;
+	width: 318px;
 }
 #menu_div {
 	color: white;
@@ -32,22 +32,23 @@ body {
 	float:  left;
 	margin-left: 25px;
 }
-.pric_cont {
+#pric_cont {
 	float: left;
 	margin-top: 43px;
 }
-.log_sign {
+#log_sign {
 	margin-left: 20px;
 	float: left;
 	margin-top: 0px;
 }
-.log_sign ul {
+#log_sign ul {
 	padding-left: 0px;
 }
 #pers_info {
 	font-size: 80%;
 	margin-left: 20px;
 	text-align: center;
+	visibility: hidden;
 }
 #balance_div {
 	margin-top: 10px;
@@ -60,34 +61,33 @@ body {
 	border-bottom: 2px solid #1260DE;
 }
 #login_div {
-	background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+	background: url('./formsbg.png') repeat scroll 0 0 transparent;
 	color: white;
-	margin-top: 50px;
-	margin-left: -100px;
+	display: none;
+	position:absolute;
+	top: 16%;
+	left: 61%;
 	padding: 15px;
 	border-radius: 0px 0px 20px 20px;
 	/*opacity: 0.85;*/
 	width:250px;
 	height:120px;
+	z-index: 9002;
 }
 #signup_div {
-	background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+	background: url('./formsbg.png') repeat scroll 0 0 transparent;
 	color: white;
-	margin-top: 50px;
-	margin-left: -100px;
+	display: none;
+	position:absolute;
+	top: 15%;
+	left: 61%;
 	padding: 15px;
 	border-radius: 0px 0px 20px 20px;
 	/*opacity: 0.85;*/
 	width:260px;
 	height:130px;
+	z-index: 9002;
 }
-
-.bloop{
-	display:block;
-	position:absolute;
-	z-index:1;
-}
-
 .username_div, .password_div {
 	font-size: 80%;
 	margin-top: 10px;
@@ -133,10 +133,9 @@ body {
 	border: 5px solid #1ABABA;
 	border-radius: 10px;
 	font-weight: bold;
-	cursor:pointer;
 }
 #showbox {
-	background: url('./img/showbox.png') repeat scroll 0 0 transparent;
+	background: url('./showbox.png') repeat scroll 0 0 transparent;
 	border-bottom: 2px solid #E1E3DC;
 	/*display: none;*/
 	padding: 36px 0;
@@ -147,7 +146,6 @@ body {
 }
 #publish_btn, #advertise_btn {
 	margin-top: 20px;
-	cursor: pointer;
 }
 #publish_btns button {
 	padding: 0px;
@@ -157,10 +155,10 @@ body {
     border-radius: 10px 10px 10px 10px;
 }
 #publish_btn {
-	background-image: url('./img/pub_btn.png');
+	background-image: url('./pub_btn.png');
 }
 #advertise_btn {
-	background-image: url('./img/ad_btn.png');
+	background-image: url('./ad_btn.png');
 	margin-left: 25px;
 }
 .box_container{
@@ -189,9 +187,10 @@ body {
 .video_box {
 	height: 214px;
 	color: white;
-	margin-top: 20px;
+	margin-top: 15px;
+    margin-bottom: 15px;
 	margin-left: 10px;
-	background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+	background: url('./formsbg.png') repeat scroll 0 0 transparent;
 	border-radius: 20px 20px 20px 20px;
 }
 .box_closed {
@@ -204,7 +203,7 @@ body {
 	margin-left:15px;
 	float: left;
 }
-.video_image {
+#video_image {
 	width: 320px;
 	height: 180px;
 	margin-top: 12px;
@@ -215,7 +214,7 @@ body {
 .other_n_embed {margin-left: 10px; margin-top: 50px;}
 .video_other_info {
 	font-size: 16px;
-	width: 150px;
+	width: 120px;
     height: 100px;
 	font-weight: bold;
 	text-align: left;
@@ -224,10 +223,11 @@ body {
 
 .box_open
 {
-    float: left;
-    width: 420px;
+    float: right;
+    margin-right: 20px;
+    width: 100%
     margin-left: 3px;
-    border-left: solid #00afe9 1px;
+    border-left: 1px dotted #4969E6;
 }
 
 .video_details {
@@ -238,21 +238,21 @@ body {
 .details_btn_div {float: left; margin-left: 10px;}
 
 .getlink_btn {
-    margin-right: 10px;
+    margin-right: 17px;
 	width: 150px;
 	height: 30px;
     color: white;
 	background-color: #FF9966;
     border-radius: 5px;
 	font-weight: bold;
-	cursor:pointer;
 }
 
 .embed_src{
 	background-color: #99CCFF;
+    border-color: white;
 	/*border-radius: 10px 10px 10px 10px;*/
-	height: 120px;
-	width: 290px;
+	height: 121px;
+	width: 320px;
 	margin-left: 10px;
 	text-align: left;
 }
@@ -260,19 +260,23 @@ body {
 .embed_size 
 {
     float: left;
-    margin-top: 20px;
+    margin-top: 30px;
+    width: 110px;
 }
-.embed_box {float: left;}
-.height_container {margin-top: 15px;}
+.embed_box
+{
+    float: right;
+}
+.height_container {margin-top: 30px;}
 .size_title{
+    margin-top: 5px;
 	font-size: 90%;
 	margin-left: 10px;
-	width: 46px;
     float: left;
 }
 .size_input{
-    float: left;
-	margin-left: 3px;
+    float: right;
+	margin-left: 10px;
 	border-radius: 5px 5px 5px 5px;
 }
 .instructions{

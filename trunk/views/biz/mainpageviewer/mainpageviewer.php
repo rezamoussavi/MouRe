@@ -194,8 +194,6 @@ class mainpageviewer {
 		$pubPage=osBackPageLink("PubVideo");
 		return <<<PHTMLCODE
 
-			<div id="showbox">
-			</div>
 			<div id="publish_btns">
 				<a href="$pubPage"><button id="publish_btn" type="button"></button></a>
 				<a href="$adPage"><button id="advertise_btn" type="button"></button></a>
@@ -248,7 +246,12 @@ PHTMLCODE;
 		$VList=$this->VideoList->_backframe();
 		return <<<PHTMLCODE
 
-			$btn <br> $VList
+			<div id="showbox">
+			</div>
+			<div class="content_container" >
+				$btn
+				$VList
+			</div>
 		
 PHTMLCODE;
 

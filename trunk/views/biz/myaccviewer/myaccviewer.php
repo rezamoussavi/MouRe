@@ -196,13 +196,13 @@ class myaccviewer {
 	*	Frames
 	******************************/
 	function frmProfile(){
-		return $this->buttons()."<hr>".$this->profile->_backframe();
+		return $this->buttons().$this->profile->_backframe();
 	}
 	function frmPubLinks(){
-		return $this->buttons()."<hr>".$this->pubLinks->_backframe();
+		return $this->buttons().$this->pubLinks->_backframe();
 	}
 	function frmAdLinks(){
-		return $this->buttons()."<hr>".$this->adLinks->_backframe();
+		return $this->buttons().$this->adLinks->_backframe();
 	}
 	function frmBalance(){
 		if(!osUserLogedin()){
@@ -231,7 +231,7 @@ class myaccviewer {
 		
 PHTMLCODE;
 
-		return $this->buttons()."<hr />".$html."<gr />".$this->transactionHistory();
+		return $this->buttons().$html."<hr />".$this->transactionHistory();
 	}
 	function transactionHistory(){
 		$tran="";
@@ -273,33 +273,10 @@ PHTMLCODE;
 		$adLinkFormName=$this->_fullname."adLinkBtn";
 		$html=<<<PHTMLCODE
 
-			<div style="float:left;width:800px;">
-				<form name={$ProfileFormName} method="post" style="float:left;">
-					<input type="hidden" name="_message" value="frame_profileBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="Profile" onclick = 'JavaScript:sndmsg("$ProfileFormName")'  />
-				</form>
-				<form name={$BalanceFormName} method="post" style="float:left;">
-					<input type="hidden" name="_message" value="frame_balanceBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="Balance" onclick = 'JavaScript:sndmsg("$BalanceFormName")'  />
-				</form>
-				<form name={$pubLinkFormName} method="post" style="float:left;">
-					<input type="hidden" name="_message" value="frame_pubLinkBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="My Published Links" onclick = 'JavaScript:sndmsg("$pubLinkFormName")'  />
-				</form>
-				<form name={$adLinkFormName} method="post" style="float:left;">
-					<input type="hidden" name="_message" value="frame_adLinkBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="My Advertised Links" onclick = 'JavaScript:sndmsg("$adLinkFormName")'  />
-				</form>
-			</div>
-		
-PHTMLCODE;
-
-		$html=<<<PHTMLCODE
-
 		    <div id="content_menu"> 
-		        <div class="content_menu_lst" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1')" onclick='JavaScript:sndevent("{$this->_fullname}","frame_profileBtn");menu_click("cml_1");'>Profile</div> 
-		        <div class="content_menu_lst" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2')" onclick="menu_click('cml_2');">My Published Videos</div> 
-		        <div class="content_menu_lst" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3')" onclick="menu_click('cml_3')">My Ads</div> 
+		        <div class="content_menu_lst" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_profileBtn');menu_click('cml_1');">Profile</div> 
+		        <div class="content_menu_lst" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_pubLinkBtn');menu_click('cml_2');">My Published Videos</div> 
+		        <div class="content_menu_lst" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_adLinkBtn');menu_click('cml_3');">My Ads</div> 
 		        <div class="content_menu_lst" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_balanceBtn');menu_click('cml_4');">Credit</div> 
 		    </div> 
 		

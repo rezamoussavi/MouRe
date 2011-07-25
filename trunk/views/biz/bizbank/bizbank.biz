@@ -15,11 +15,6 @@
 #start
 	init
 
-#JSOnDocReady
-	$("#bizbanklogo").mouseover(function(){   $("#bizbanklogo").fadeTo("fast",0.7)});
-	$("#bizbanklogo").mouseout(function(){   $("#bizbanklogo").fadeTo("fast",1)});
-
-
 #phpfunction
 
 	function init(){
@@ -46,3 +41,56 @@
 			$pages
 		</PHTML>
 	}
+
+
+#css
+	body
+	{
+		margin: 0px;
+		font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+		background-image: url('./img/formsbg.png');
+	}
+
+	#header_bg {
+		background: url('./img/headerbg.png') repeat-x top center;
+		padding-top: 36px;
+		height: 100px;
+	}
+	#logo_div {
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-left: 15%;
+		float: left;
+	}
+	#logo_img {
+		height: 61px;
+		width: 318px;
+	}
+	#menu_div {
+		color: white;
+		margin-left: 15%;
+		float: left;
+		font-size: 16px;
+		font-weight: bold;
+	}
+	#menu_div ul {
+		list-style: none;
+	}
+	#menu_div li {
+		float:  left;
+		margin-left: 25px;
+	}
+	#menu_div a {
+		text-decoration: none;
+		color: inherit;
+	}
+	#menu_div a:hover {
+		border-bottom: 2px solid #1260DE;
+	}
+	#header_bg {
+		background: url('./img/headerbg.png') repeat-x top center;
+		padding-top: 36px;
+		height: 100px;
+	}
+
+

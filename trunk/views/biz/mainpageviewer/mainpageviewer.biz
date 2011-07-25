@@ -31,38 +31,6 @@
 #var
 	userpage=0
 
-#css
-	.content_container
-	{
-		/*border: 5px solid black;*/
-		border-radius: 15px;
-		background-color: white;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		width: 970px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	#content_menu
-	{
-		width: 840px;
-		height: 80px;
-		border-bottom: 2px solid #DBD7D8;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	.content_menu_lst
-	{
-		margin-top: 5px;
-		padding: 20px 40px 20px 40px;
-		font-size: 24px;
-		font-weight: bold;
-		/*border-radius: 5px;*/
-		float: left;
-	}
-	#cml_1, #cml_2, #cml_3 {border-right: 1px solid #DBD7D8;}
-	#cml_1 {margin-left: 20px;}
-
 #phpfunction
 
 	/**************************************
@@ -122,8 +90,6 @@
 		$adPage=osBackPageLink("AdVideo");
 		$pubPage=osBackPageLink("PubVideo");
 		return <PHTML>
-			<div id="showbox">
-			</div>
 			<div id="publish_btns">
 				<a href="$pubPage"><button id="publish_btn" type="button"></button></a>
 				<a href="$adPage"><button id="advertise_btn" type="button"></button></a>
@@ -166,7 +132,12 @@
 		#node->VideoList->bookModeUser("topublish",-1);
 		$VList=#node->VideoList->_backframe();
 		return <PHTML>
-			$btn <br> $VList
+			<div id="showbox">
+			</div>
+			<div class="content_container" >
+				$btn
+				$VList
+			</div>
 		</PHTML>
 	}
 
@@ -177,3 +148,67 @@
 			$btn <br> $adV
 		</PHTML>
 	}
+
+
+#css
+	.content_container
+	{
+		/*border: 5px solid black;*/
+		border-radius: 15px;
+		background-color: white;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		width: 970px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	#content_menu
+	{
+		width: 840px;
+		height: 80px;
+		border-bottom: 2px solid #DBD7D8;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.content_menu_lst
+	{
+		margin-top: 5px;
+		padding: 20px 40px 20px 40px;
+		font-size: 24px;
+		font-weight: bold;
+		/*border-radius: 5px;*/
+		float: left;
+	}
+	#cml_1, #cml_2, #cml_3 {border-right: 1px solid #DBD7D8;}
+	#cml_1 {margin-left: 20px;}
+	#showbox {
+		background: url('./img/showbox.png') repeat scroll 0 0 transparent;
+		border-bottom: 2px solid #E1E3DC;
+		/*display: none;*/
+		padding: 36px 0;
+		height: 200px;
+		margin:auto;
+	}
+	#publish_btns {
+		text-align: center;
+	}
+	#publish_btn, #advertise_btn {
+		margin-top: 20px;
+		cursor:pointer;
+	}
+	#publish_btns button {
+		padding: 0px;
+		border: 1px solid #76c7e7;
+		width: 453px;
+		height: 96px;
+		border-radius: 10px 10px 10px 10px;
+	}
+	#publish_btn {
+		background-image: url('./img/pub_btn.png');
+	}
+	#advertise_btn {
+		background-image: url('./img/ad_btn.png');
+		margin-left: 25px;
+	}
+
+

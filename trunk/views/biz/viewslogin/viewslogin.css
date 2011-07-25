@@ -1,1 +1,91 @@
- 
+
+	#login_div {
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		color: white;
+		margin-top: 55px;
+		margin-left: -115px;
+		padding: 15px;
+		border-radius: 0px 0px 20px 20px;
+		/* opacity: 0.85; */
+		width:250px;
+		height:120px;
+		z-index: 9002;
+	}
+	.log_sign ul {
+		padding-left: 0px;
+	}
+	.log_sign {
+		margin-left: 20px;
+		float: left;
+		margin-top: 0px;
+		display:inline;
+	}
+	#pers_info {
+		font-size: 80%;
+		margin-left: 20px;
+		text-align: center;
+		visibility: hidden;
+	}
+	#balance_div {
+		margin-top: 10px;
+	}
+	#signup_div {
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		color: white;
+		position:absolute;
+		margin-top: 55px;
+		margin-left: -125px;
+		padding: 15px;
+		border-radius: 0px 0px 20px 20px;
+		/*opacity: 0.85;*/
+		width:260px;
+		height:130px;
+		z-index: 9002;
+	}
+	.username_div, .password_div {
+		font-size: 80%;
+		margin-top: 10px;
+		margin-left: 10px;
+	}
+	.user_tf, .pass_tf {
+		width: 150px;
+		margin-left: 10px;
+		border-radius: 5px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+	.confirm_tf {
+		width: 150px;
+		margin-left: 22px;
+		border-radius: 5px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+	#remember_div {
+		margin-top: 20px;
+	}
+	#login_btn_div {
+		margin-top: -20px;
+		margin-left: 145px;
+	}
+	#signup_btn_div {
+		margin-top: 13px;
+		margin-left: 90px;
+	}
+	#forgot, #remember {
+		font-size: 70%;
+		margin-left: 10px;
+	}
+	#forgot_div, #remember_div a:hover {
+		margin-top: 20px;
+		/* border-bottom: none; */
+	}
+	.form_btn {
+		width: 100px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+

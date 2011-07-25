@@ -1,1 +1,7 @@
- 
+
+	.pric_cont {
+		float: left;
+		margin-top: 43px;
+		display:inline;
+	}
+
