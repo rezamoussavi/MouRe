@@ -4,13 +4,9 @@
 	{
 		document.getElementById(elem).style.backgroundColor = '#F0EDEE';
 	}
-	function menu_out(elem)
+	function menu_out(elem,color)
 	{
-		document.getElementById(elem).style.backgroundColor = 'white';
+		document.getElementById(elem).style.backgroundColor = color;
 	}
-	function menu_click(elem)
-	{
-		document.getElementById(elem).style.backgroundColor = '#E3E1E1';
-}
 
 //js.end.myaccviewer

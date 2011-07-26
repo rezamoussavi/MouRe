@@ -1,1 +1,23 @@
- 
+
+	.stats_table
+	{
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+		/*border: 1px solid black;*/
+	}
+	.stats_div
+	{
+		margin-top: 10px;
+		width: 900px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.stats_table th {border-bottom: 1px solid white}
+	.stats_table th.stats_empty_td {border-bottom: 10px;}
+	.stats_table th, td {padding: 5px; font-size: 12px;}
+	.stats_country_td {width: 80px;}
+	.stats_views_td {width: 40px;}
+	.stats_prcnt_td {width: 20px;}
+	.stats_empty_td {width: 20px;}
+

@@ -83,7 +83,7 @@ class ipviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style='  style="float:left;border:1px solid #000000;margin:5px;padding:2px;width:200px;" ';
+				$_style=' class="stats_div"  ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -105,6 +105,69 @@ class ipviewer {
 	*	Frame
 	*******************************/
 	function frm(){
+		return <<<PHTMLCODE
+
+			<table class="stats_table"> 
+			    <tr> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			        <th class="stats_empty_td"></th> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			        <th class="stats_empty_td"></th> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			        <th class="stats_empty_td"></th> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			    </tr> 
+			    <tr> 
+			        <td>Sweden</td> 
+			        <td>200</td> 
+			        <td>45</td> 
+			        <td class="stats_empty_td"></td> 
+			        <td>United States</td> 
+			        <td class="stats_views_td">3499728</td> 
+			        <td>83</td> 
+			        <td class="stats_empty_td"></td> 
+			        <td>Iran</td> 
+			        <td>5</td> 
+			        <td>2</td> 
+			        <td class="stats_empty_td"></td> 
+			        <td>Iran</td> 
+			        <td>5</td> 
+			        <td>2</td> 
+			    </tr> 
+			    <tr> 
+			        <td></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td class="stats_empty_td"></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td class="stats_empty_td"></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td class="stats_empty_td"></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td></td> 
+			    </tr> 
+			</table> 
+			<div class="show_map_div"> 
+			    <input class="show_map_btn" type="button" value="Show location demographics on map" /> 
+			</div> 
+		
+PHTMLCODE;
+
+	}
+	function frm_OLD(){
 		$pl=new publink("");
 		$data=$pl->backStat($this->linkID);
 		if(!is_array($data)){

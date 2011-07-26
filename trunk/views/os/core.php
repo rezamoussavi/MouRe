@@ -105,6 +105,10 @@
 		return isset($_SESSION['user']['userUID'])? $_SESSION['user']['userUID'] : -1;
 	}
 
+	function osBackUserEmail(){
+		return isset($_SESSION['user']['email'])? $_SESSION['user']['email'] : -1;
+	}
+
 	function osUserLogedin(){
 		return isset($_SESSION['user']['userUID'])? ($_SESSION['user']['userUID']>-1)?true:false : false;
 	}

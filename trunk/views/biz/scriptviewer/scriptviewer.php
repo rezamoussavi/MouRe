@@ -84,7 +84,7 @@ class scriptviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' class="box_open"  ';
+				$_style=' class="box_open_scv"  ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -118,22 +118,22 @@ class scriptviewer {
 
 				<input style="display:none;" id="{$this->_fullname}id" value="{$this->id}" />
 				<input style="display:none;" id="{$this->_fullname}link" value="{$this->link}" />
-				<div class="embed_size">
+				<div class="embed_size_scv">
 					<div class="width_container">
-						<div class="size_title">Width: </div>
-						<div class="size_input">
-							<input class="input_area" type="text" size="1" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px
+						<div class="size_title_scv">Width: </div>
+						<div class="size_input_scv">
+							<input class="input_area_scv" type="text" size="2" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px
 						</div>
 					</div>
 					<div class="height_container">
-						<div class="size_title">Height:</div>
-						<div class="size_input">
-							<input class="input_area" type="text" size="1" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
+						<div class="size_title_scv">Height:</div>
+						<div class="size_input_scv">
+							<input class="input_area_scv" type="text" size="2" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
 						</div>
 					</div>
 				</div>
-				<div class="embed_box">
-					<textarea id="{$this->_fullname}scriptarea" class="embed_src" disabled="disabled">{$this->script}</textarea>
+				<div class="embed_box_scv">
+					<textarea id="{$this->_fullname}scriptarea" class="embed_src_scv" disabled="disabled">{$this->script}</textarea>
 				</div>
 			
 PHTMLCODE;

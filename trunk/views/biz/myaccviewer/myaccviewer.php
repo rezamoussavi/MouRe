@@ -25,6 +25,7 @@ class myaccviewer {
 	var $earned;
 	var $reimbursed;
 	var $adpay;
+	var $cur_menue;
 
 	//Nodes (bizvars)
 	var $profile;
@@ -81,6 +82,10 @@ class myaccviewer {
 		if(!isset($_SESSION['osNodes'][$fullname]['adpay']))
 			$_SESSION['osNodes'][$fullname]['adpay']=0;
 		$this->adpay=&$_SESSION['osNodes'][$fullname]['adpay'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['cur_menue']))
+			$_SESSION['osNodes'][$fullname]['cur_menue']="profile";;
+		$this->cur_menue=&$_SESSION['osNodes'][$fullname]['cur_menue'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='myaccviewer';
@@ -179,17 +184,21 @@ class myaccviewer {
 		$this->_bookframe("frmProfile");
 	}
 	function onProfileBtn($info){
+		$this->cur_menue="profile";
 		$this->_bookframe("frmProfile");
 	}
 	function onPubLinkBtn($info){
+		$this->cur_menue="mypub";
 		$this->pubLinks->bookModeUser("mypub",osBackUserID());
 		$this->_bookframe("frmPubLinks");
 	}
 	function onAdLinkBtn($info){
+		$this->cur_menue="myad";
 		$this->adLinks->bookModeUser("myad",osBackUserID());
 		$this->_bookframe("frmAdLinks");
 	}
 	function onBalanceBtn($info){
+		$this->cur_menue="credit";
 		$this->_bookframe("frmBalance");
 	}
 	/******************************
@@ -271,13 +280,17 @@ PHTMLCODE;
 		$BalanceFormName=$this->_fullname."balanceBtn";
 		$pubLinkFormName=$this->_fullname."pubLinkBtn";
 		$adLinkFormName=$this->_fullname."adLinkBtn";
+		$mnu_bg_profile=($this->cur_menue=="profile")?"#E3E1E1":"white";
+		$mnu_bg_myad=($this->cur_menue=="myad")?"#E3E1E1":"white";
+		$mnu_bg_mypub=($this->cur_menue=="mypub")?"#E3E1E1":"white";
+		$mnu_bg_credit=($this->cur_menue=="credit")?"#E3E1E1":"white";
 		$html=<<<PHTMLCODE
 
 		    <div id="content_menu"> 
-		        <div class="content_menu_lst" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_profileBtn');menu_click('cml_1');">Profile</div> 
-		        <div class="content_menu_lst" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_pubLinkBtn');menu_click('cml_2');">My Published Videos</div> 
-		        <div class="content_menu_lst" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_adLinkBtn');menu_click('cml_3');">My Ads</div> 
-		        <div class="content_menu_lst" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_balanceBtn');menu_click('cml_4');">Credit</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_profile;" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1','$mnu_bg_profile')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_profileBtn');menu_click('cml_1');">Profile</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_mypub;" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2','$mnu_bg_mypub')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_pubLinkBtn');menu_click('cml_2');">My Published Videos</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_myad;" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3','$mnu_bg_myad')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_adLinkBtn');menu_click('cml_3');">My Ads</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_credit;" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4','$mnu_bg_credit')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_balanceBtn');menu_click('cml_4');">Credit</div> 
 		    </div> 
 		
 PHTMLCODE;

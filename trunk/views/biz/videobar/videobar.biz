@@ -21,6 +21,7 @@
 	scriptviewer scv
 	ipviewer
 	adlink
+	user
 
 #var
 	data, showScript=false, showStat=false
@@ -29,6 +30,7 @@
 	frame->getLink=onGetLink
 	frame->StatBtn=onStatBtn
 	frame->stopBtn=onStopBtn
+	frame->notStop
 	user->login=onLoginStatusChanged
 	user->logout=onLoginStatusChanged
 
@@ -52,7 +54,7 @@
 		if(strlen(#var->data['country'])>3)
 			$country="<br />only in ".#var->data['country'];
 		return <PHTML>
-			<div class="box_closed">
+			<div class="box_close_topub">
 				<div class="box_image">
 					<a href="http://www.sam-rad.com/watch?v={#var->data['videoCode']}" target="_blank">
 						<img class="video_image" src="{#var->data['img']}" />
@@ -152,24 +154,16 @@
 		return <PHTML>
 			<div class="box_close"> 
 				<div class="box_image"> 
-				    <a href="http://www.youtube.com/watch?v=Hbib-A6NpW8" target="_blank"> 
-				        <img class="video_image" src="http://img.youtube.com/vi/Hbib-A6NpW8/2.jpg" /> 
+				    <a href="{#var->data['link']}" target="_blank"> 
+				        <img class="video_image" src="{#var->data['img']}" /> 
 					</a> 
 				</div> 
 				<div class="other_info_container"> 
 				    <div class="video_header"> 
-				        <div class="video_title">Official virgin atlantic advert 2011 test test test test</div> 
-				        <div class="details_btn_div"> 
-				            <input class="stop_btn" type="button" value="Stop" /> 
-				        </div> 
+				        <div class="video_title" style="width:100%;">$Title</div> 
 				    </div> 
-				    <div class="stop_conf_dif"> 
-				        <div class="stop_not_txt">This video will be removed from publishing lists in 7 days <br />and you will be re-imbursed with teh remaining number of views.</div> 
-				        <div class="stop_not_div"> 
-				            <label class="bold">Password: </label> 
-				            <input type="text" size="30" /> 
-				            <input class="stop_conf_btn" type="button" value="OK!" /> 
-				        </div> 
+				    <div class="stop_conf_dif">
+				    	$stopBtn
 				    </div> 
 				    <div class="other_n_embed"> 
 				        <div class="video_other_info" > 
@@ -190,67 +184,10 @@
 				    </div> 
 				</div> 
 				<div class="stats_btn_div"> 
-				    <input class="statistics_btn" type="submit" value="+Statistics" /> 
+				    <input class="statistics_btn" type="button" value="$StatisticsBtn" onclick="javascript:sndmsg('#msg->StatBtn')"/> 
 				</div> 
 			</div> 
-			<div class="stats_div"> 
-				<table class="stats_table"> 
-				    <tr> 
-				        <th class="stats_country_td">Country</th> 
-				        <th class="stats_views_td">Views</th> 
-				        <th class="stats_prcnt_td">%</th> 
-				        <th class="stats_empty_td"></th> 
-				        <th class="stats_country_td">Country</th> 
-				        <th class="stats_views_td">Views</th> 
-				        <th class="stats_prcnt_td">%</th> 
-				        <th class="stats_empty_td"></th> 
-				        <th class="stats_country_td">Country</th> 
-				        <th class="stats_views_td">Views</th> 
-				        <th class="stats_prcnt_td">%</th> 
-				        <th class="stats_empty_td"></th> 
-				        <th class="stats_country_td">Country</th> 
-				        <th class="stats_views_td">Views</th> 
-				        <th class="stats_prcnt_td">%</th> 
-				    </tr> 
-				    <tr> 
-				        <td>Sweden</td> 
-				        <td>200</td> 
-				        <td>45</td> 
-				        <td class="stats_empty_td"></td> 
-				        <td>United States</td> 
-				        <td class="stats_views_td">3499728</td> 
-				        <td>83</td> 
-				        <td class="stats_empty_td"></td> 
-				        <td>Iran</td> 
-				        <td>5</td> 
-				        <td>2</td> 
-				        <td class="stats_empty_td"></td> 
-				        <td>Iran</td> 
-				        <td>5</td> 
-				        <td>2</td> 
-				    </tr> 
-				    <tr> 
-				        <td></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td class="stats_empty_td"></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td class="stats_empty_td"></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td class="stats_empty_td"></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td></td> 
-				    </tr> 
-				</table> 
-				<div class="show_map_div"> 
-				    <input class="show_map_btn" type="button" value="Show location demographics on map" /> 
-				</div> 
-			</div> 
+			$statFrm
 		</PHTML>
 
 
@@ -289,19 +226,17 @@
 		*/
 		if(#var->data['running']==0){
 			$html= <PHTML>
-				<span style="height:90px;width:90px;text-align:center;">
-					Has been Removed!
-				</span>
+		        <div class="stop_btn_div"> 
+		        	<div class="stop_not_txt">Has been Removed!</div>
+		        </div> 
 			</PHTML>
 		}
 		/*
 		*	Has been Stoped
 		*/
-		if(#var->data['running']==-1){
+		elseif(#var->data['running']==-1){
 			$html= <PHTML>
-				<span style="height:90px;width:90px;text-align:center;">
-					Will be stop at {#var->data['lastDate']}
-				</span>
+		        <div class="stop_not_txt">This video will be removed from publishing at {#var->data['lastDate']}<br />and you will be re-imbursed with teh remaining number of views.</div> 
 			</PHTML>
 		}
 		/*
@@ -315,9 +250,9 @@
 			$year=substr(#var->data['startDate'],0,4);
 			$stopDate=date("Y/m/d",mktime(0,0,0,$month,$day + #var->data['minCancelTime'],$year));
 			$html= <PHTML>
-				<span style="height:90px;width:90px;text-align:center;">
-					Cannot stop till $stopDate
-				</span>
+		        <div class="stop_btn_div"> 
+		        	<div class="stop_not_txt">Cannot stop till $stopDate</div>
+		        </div> 
 			</PHTML>
 		}
 		/*
@@ -326,17 +261,20 @@
 		else{
 			$frmName1=$frmName."1";
 			$html= <PHTML>
-				<input id="stopBtn1st" type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='document.getElementById("stopBtn1st").style.display="none";document.getElementById("confirmForm").style.display="inline"'/>
-				<span id="confirmForm" style="display:none;">
-					<form id="$frmName" method="post" style="display:inline;">
-						<font size=1px>this video will stop in {#var->data['minLifeTime']} days. Are you sure you want to stop rocketing the views?</font>
-						<input type="button" value="yes" style="height:30px;width:40px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
+		        <div class="stop_btn_div" id="stopBtn1st"> 
+		            <input class="stop_btn" type="button" value="Stop" onclick='document.getElementById("stopBtn1st").style.display="none";document.getElementById("confirmForm").style.display="inline"'/> 
+		        </div> 
+		        <div class="stop_not_div" id="confirmForm" style="display:none;"> 
+   					<form id="$frmName" method="post" style="display:inline;">
 						<#msg->stopBtn>
+						<font size=1px>this video will stop in {#var->data['minLifeTime']} days. Are you sure you want to stop rocketing the views?</font>
+						<br />
+				        <label class="bold">Password: </label> 
+				        <input name="password" type="password" size="20" /> 
+				        <input class="stop_conf_btn" type="button" value="OK!" onclick='JavaScript:sndmsg("$frmName")'/> 
+				        <input class="stop_conf_btn" type="button" value="Dont stop" onclick='JavaScript:sndmsg("#msg->notStop")'/> 
 					</form>
-					<form id="$frmName1" method="post" style="display:inline;">
-						<input type="button" value="no" style="height:30px;width:40px;text-align:center;" onclick='JavaScript:sndmsg("$frmName1")'/>
-					</form>
-				</span>
+		        </div> 
 			</PHTML>
 		}
 		return $html;
@@ -370,8 +308,11 @@
 
 	function onStopBtn($info){
 		$al=new adlink("");
-		if($al->stop(#var->data['adUID'])){
-			#var->data=$al->backLinkByID(#var->data['adUID']);
+		$u=new user("");
+		if($u->changePass($info['password'])){
+			if($al->stop(#var->data['adUID'])){
+				#var->data=$al->backLinkByID(#var->data['adUID']);
+			}
 		}
 		_bookframe(#var->_curFrame);
 	}
@@ -434,9 +375,9 @@
 		float: left;
 	}
 	.details_btn_div {float: left; margin-left: 10px;}
+	.stop_btn_div {float: right; margin-right: 10px;}
 	.getlink_btn {
 		margin-right: 17px;
-		margin-left: 485px;
 		width: 150px;
 		height: 30px;
 		color: white;
@@ -487,27 +428,6 @@
 		font-weight: bold;
 	}
 	.stats_btn_div {float: right; width: 610px; margin-top: -30px;}
-	.stats_table
-	{
-		margin-left: auto;
-		margin-right: auto;
-		text-align: center;
-		/*border: 1px solid black;*/
-	}
-	.stats_div
-	{
-		margin-top: 10px;
-		width: 900px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	.stats_table th {border-bottom: 1px solid white}
-	.stats_table th.stats_empty_td {border-bottom: 10px;}
-	.stats_table th, td {padding: 5px; font-size: 12px;}
-	.stats_country_td {width: 80px;}
-	.stats_views_td {width: 40px;}
-	.stats_prcnt_td {width: 20px;}
-	.stats_empty_td {width: 20px;}
 	.stop_btn
 	{
 		margin-left: 55px;
@@ -543,7 +463,7 @@
 		float: left;
 		width: 500px;
 	}
-	.stop_not_div label {margin-left: 130px;}
+	.stop_not_div label {margin-left: 30px;}
 	.stop_not_txt
 	{
 		font-family: Lucida Fax;
@@ -588,6 +508,7 @@
 		float: left;
 	}
 	.video_details {
+		font-size: 80%;
 		margin-bottom: 5px;
 	}
 	.video_box {

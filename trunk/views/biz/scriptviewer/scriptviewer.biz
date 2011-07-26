@@ -15,7 +15,7 @@
 	publink
 
 #frame
-	frm[box_open]
+	frm[box_open_scv]
 
 #phpfunction
 
@@ -35,22 +35,22 @@
 			return <PHTML>
 				<input style="display:none;" id="{#nodeID}id" value="{#var->id}" />
 				<input style="display:none;" id="{#nodeID}link" value="{#var->link}" />
-				<div class="embed_size">
+				<div class="embed_size_scv">
 					<div class="width_container">
-						<div class="size_title">Width: </div>
-						<div class="size_input">
-							<input class="input_area" type="text" size="1" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/>px
+						<div class="size_title_scv">Width: </div>
+						<div class="size_input_scv">
+							<input class="input_area_scv" type="text" size="2" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/>px
 						</div>
 					</div>
 					<div class="height_container">
-						<div class="size_title">Height:</div>
-						<div class="size_input">
-							<input class="input_area" type="text" size="1" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/>px
+						<div class="size_title_scv">Height:</div>
+						<div class="size_input_scv">
+							<input class="input_area_scv" type="text" size="2" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/>px
 						</div>
 					</div>
 				</div>
-				<div class="embed_box">
-					<textarea id="{#nodeID}scriptarea" class="embed_src" disabled="disabled">{#var->script}</textarea>
+				<div class="embed_box_scv">
+					<textarea id="{#nodeID}scriptarea" class="embed_src_scv" disabled="disabled">{#var->script}</textarea>
 				</div>
 			</PHTML>
 
@@ -102,12 +102,48 @@
 	}
 
 #css
-	.box_open
+	.box_open_scv
 	{
 		float: right;
 		margin-right: 20px;
-		width: 100%
 		margin-left: 3px;
 		border-left: 1px dotted #4969E6;
+	}
+	.embed_src_scv{
+		background-color: #99CCFF;
+		border-color: white;
+		/*border-radius: 10px 10px 10px 10px;*/
+		height: 121px;
+		width: 320px;
+		margin-left: 10px;
+		text-align: left;
+	}
+	.input_area_scv{
+		background-color: #99CCFF;
+		border-color: white;
+		border-width:1px;
+		text-align: left;
+	}
+
+	.embed_size_scv
+	{
+		float: left;
+		margin-top: 30px;
+		width: 110px;
+	}
+	.embed_box_scv
+	{
+		float: right;
+	}
+	.size_title_scv{
+		margin-top: 5px;
+		font-size: 90%;
+		margin-left: 10px;
+		float: left;
+	}
+	.size_input_scv{
+		float: right;
+		margin-left: 2px;
+		border-radius: 5px 5px 5px 5px;
 	}
 

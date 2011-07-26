@@ -23,9 +23,9 @@
 		float: left;
 	}
 	.details_btn_div {float: left; margin-left: 10px;}
+	.stop_btn_div {float: right; margin-right: 10px;}
 	.getlink_btn {
 		margin-right: 17px;
-		margin-left: 485px;
 		width: 150px;
 		height: 30px;
 		color: white;
@@ -76,27 +76,6 @@
 		font-weight: bold;
 	}
 	.stats_btn_div {float: right; width: 610px; margin-top: -30px;}
-	.stats_table
-	{
-		margin-left: auto;
-		margin-right: auto;
-		text-align: center;
-		/*border: 1px solid black;*/
-	}
-	.stats_div
-	{
-		margin-top: 10px;
-		width: 900px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	.stats_table th {border-bottom: 1px solid white}
-	.stats_table th.stats_empty_td {border-bottom: 10px;}
-	.stats_table th, td {padding: 5px; font-size: 12px;}
-	.stats_country_td {width: 80px;}
-	.stats_views_td {width: 40px;}
-	.stats_prcnt_td {width: 20px;}
-	.stats_empty_td {width: 20px;}
 	.stop_btn
 	{
 		margin-left: 55px;
@@ -132,7 +111,7 @@
 		float: left;
 		width: 500px;
 	}
-	.stop_not_div label {margin-left: 130px;}
+	.stop_not_div label {margin-left: 30px;}
 	.stop_not_txt
 	{
 		font-family: Lucida Fax;
@@ -177,6 +156,7 @@
 		float: left;
 	}
 	.video_details {
+		font-size: 80%;
 		margin-bottom: 5px;
 	}
 	.video_box {

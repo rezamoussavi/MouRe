@@ -15,38 +15,7 @@
 .details_btn_div {float: left; margin-left: 10px;}
 
 
-.embed_src{
-	background-color: #99CCFF;
-    border-color: white;
-	/*border-radius: 10px 10px 10px 10px;*/
-	height: 121px;
-	width: 320px;
-	margin-left: 10px;
-	text-align: left;
-}
-
-.embed_size 
-{
-    float: left;
-    margin-top: 30px;
-    width: 110px;
-}
-.embed_box
-{
-    float: right;
-}
 .height_container {margin-top: 30px;}
-.size_title{
-    margin-top: 5px;
-	font-size: 90%;
-	margin-left: 10px;
-    float: left;
-}
-.size_input{
-    float: right;
-	margin-left: 10px;
-	border-radius: 5px 5px 5px 5px;
-}
 .instructions{
 	margin-left: 10px;
     color: #FFAF87;

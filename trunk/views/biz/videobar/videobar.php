@@ -15,6 +15,7 @@
 require_once 'biz/scriptviewer/scriptviewer.php';
 require_once 'biz/ipviewer/ipviewer.php';
 require_once 'biz/adlink/adlink.php';
+require_once 'biz/user/user.php';
 
 class videobar {
 
@@ -160,7 +161,7 @@ class videobar {
 			$country="<br />only in ".$this->data['country'];
 		return <<<PHTMLCODE
 
-			<div class="box_closed">
+			<div class="box_close_topub">
 				<div class="box_image">
 					<a href="http://www.sam-rad.com/watch?v={$this->data['videoCode']}" target="_blank">
 						<img class="video_image" src="{$this->data['img']}" />
@@ -265,24 +266,16 @@ PHTMLCODE;
 
 			<div class="box_close"> 
 				<div class="box_image"> 
-				    <a href="http://www.youtube.com/watch?v=Hbib-A6NpW8" target="_blank"> 
-				        <img class="video_image" src="http://img.youtube.com/vi/Hbib-A6NpW8/2.jpg" /> 
+				    <a href="{$this->data['link']}" target="_blank"> 
+				        <img class="video_image" src="{$this->data['img']}" /> 
 					</a> 
 				</div> 
 				<div class="other_info_container"> 
 				    <div class="video_header"> 
-				        <div class="video_title">Official virgin atlantic advert 2011 test test test test</div> 
-				        <div class="details_btn_div"> 
-				            <input class="stop_btn" type="button" value="Stop" /> 
-				        </div> 
+				        <div class="video_title" style="width:100%;">$Title</div> 
 				    </div> 
-				    <div class="stop_conf_dif"> 
-				        <div class="stop_not_txt">This video will be removed from publishing lists in 7 days <br />and you will be re-imbursed with teh remaining number of views.</div> 
-				        <div class="stop_not_div"> 
-				            <label class="bold">Password: </label> 
-				            <input type="text" size="30" /> 
-				            <input class="stop_conf_btn" type="button" value="OK!" /> 
-				        </div> 
+				    <div class="stop_conf_dif">
+				    	$stopBtn
 				    </div> 
 				    <div class="other_n_embed"> 
 				        <div class="video_other_info" > 
@@ -303,67 +296,10 @@ PHTMLCODE;
 				    </div> 
 				</div> 
 				<div class="stats_btn_div"> 
-				    <input class="statistics_btn" type="submit" value="+Statistics" /> 
+				    <input class="statistics_btn" type="button" value="$StatisticsBtn" onclick="javascript:sndevent('{$this->_fullname}','frame_StatBtn')"/> 
 				</div> 
 			</div> 
-			<div class="stats_div"> 
-				<table class="stats_table"> 
-				    <tr> 
-				        <th class="stats_country_td">Country</th> 
-				        <th class="stats_views_td">Views</th> 
-				        <th class="stats_prcnt_td">%</th> 
-				        <th class="stats_empty_td"></th> 
-				        <th class="stats_country_td">Country</th> 
-				        <th class="stats_views_td">Views</th> 
-				        <th class="stats_prcnt_td">%</th> 
-				        <th class="stats_empty_td"></th> 
-				        <th class="stats_country_td">Country</th> 
-				        <th class="stats_views_td">Views</th> 
-				        <th class="stats_prcnt_td">%</th> 
-				        <th class="stats_empty_td"></th> 
-				        <th class="stats_country_td">Country</th> 
-				        <th class="stats_views_td">Views</th> 
-				        <th class="stats_prcnt_td">%</th> 
-				    </tr> 
-				    <tr> 
-				        <td>Sweden</td> 
-				        <td>200</td> 
-				        <td>45</td> 
-				        <td class="stats_empty_td"></td> 
-				        <td>United States</td> 
-				        <td class="stats_views_td">3499728</td> 
-				        <td>83</td> 
-				        <td class="stats_empty_td"></td> 
-				        <td>Iran</td> 
-				        <td>5</td> 
-				        <td>2</td> 
-				        <td class="stats_empty_td"></td> 
-				        <td>Iran</td> 
-				        <td>5</td> 
-				        <td>2</td> 
-				    </tr> 
-				    <tr> 
-				        <td></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td class="stats_empty_td"></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td class="stats_empty_td"></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td class="stats_empty_td"></td> 
-				        <td></td> 
-				        <td></td> 
-				        <td></td> 
-				    </tr> 
-				</table> 
-				<div class="show_map_div"> 
-				    <input class="show_map_btn" type="button" value="Show location demographics on map" /> 
-				</div> 
-			</div> 
+			$statFrm
 		
 PHTMLCODE;
 
@@ -405,9 +341,9 @@ PHTMLCODE;
 		if($this->data['running']==0){
 			$html= <<<PHTMLCODE
 
-				<span style="height:90px;width:90px;text-align:center;">
-					Has been Removed!
-				</span>
+		        <div class="stop_btn_div"> 
+		        	<div class="stop_not_txt">Has been Removed!</div>
+		        </div> 
 			
 PHTMLCODE;
 
@@ -415,12 +351,10 @@ PHTMLCODE;
 		/*
 		*	Has been Stoped
 		*/
-		if($this->data['running']==-1){
+		elseif($this->data['running']==-1){
 			$html= <<<PHTMLCODE
 
-				<span style="height:90px;width:90px;text-align:center;">
-					Will be stop at {$this->data['lastDate']}
-				</span>
+		        <div class="stop_not_txt">This video will be removed from publishing at {$this->data['lastDate']}<br />and you will be re-imbursed with teh remaining number of views.</div> 
 			
 PHTMLCODE;
 
@@ -437,9 +371,9 @@ PHTMLCODE;
 			$stopDate=date("Y/m/d",mktime(0,0,0,$month,$day + $this->data['minCancelTime'],$year));
 			$html= <<<PHTMLCODE
 
-				<span style="height:90px;width:90px;text-align:center;">
-					Cannot stop till $stopDate
-				</span>
+		        <div class="stop_btn_div"> 
+		        	<div class="stop_not_txt">Cannot stop till $stopDate</div>
+		        </div> 
 			
 PHTMLCODE;
 
@@ -451,17 +385,20 @@ PHTMLCODE;
 			$frmName1=$frmName."1";
 			$html= <<<PHTMLCODE
 
-				<input id="stopBtn1st" type="button" value="STOP" style="height:90px;width:90px;text-align:center;" onclick='document.getElementById("stopBtn1st").style.display="none";document.getElementById("confirmForm").style.display="inline"'/>
-				<span id="confirmForm" style="display:none;">
-					<form id="$frmName" method="post" style="display:inline;">
-						<font size=1px>this video will stop in {$this->data['minLifeTime']} days. Are you sure you want to stop rocketing the views?</font>
-						<input type="button" value="yes" style="height:30px;width:40px;text-align:center;" onclick='JavaScript:sndmsg("$frmName")'/>
+		        <div class="stop_btn_div" id="stopBtn1st"> 
+		            <input class="stop_btn" type="button" value="Stop" onclick='document.getElementById("stopBtn1st").style.display="none";document.getElementById("confirmForm").style.display="inline"'/> 
+		        </div> 
+		        <div class="stop_not_div" id="confirmForm" style="display:none;"> 
+   					<form id="$frmName" method="post" style="display:inline;">
 						<input type="hidden" name="_message" value="frame_stopBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+						<font size=1px>this video will stop in {$this->data['minLifeTime']} days. Are you sure you want to stop rocketing the views?</font>
+						<br />
+				        <label class="bold">Password: </label> 
+				        <input name="password" type="password" size="20" /> 
+				        <input class="stop_conf_btn" type="button" value="OK!" onclick='JavaScript:sndmsg("$frmName")'/> 
+				        <input class="stop_conf_btn" type="button" value="Dont stop" onclick='JavaScript:sndevent("{$this->_fullname}","frame_notStop")'/> 
 					</form>
-					<form id="$frmName1" method="post" style="display:inline;">
-						<input type="button" value="no" style="height:30px;width:40px;text-align:center;" onclick='JavaScript:sndmsg("$frmName1")'/>
-					</form>
-				</span>
+		        </div> 
 			
 PHTMLCODE;
 
@@ -491,8 +428,11 @@ PHTMLCODE;
 	}
 	function onStopBtn($info){
 		$al=new adlink("");
-		if($al->stop($this->data['adUID'])){
-			$this->data=$al->backLinkByID($this->data['adUID']);
+		$u=new user("");
+		if($u->changePass($info['password'])){
+			if($al->stop($this->data['adUID'])){
+				$this->data=$al->backLinkByID($this->data['adUID']);
+			}
 		}
 		$this->_bookframe($this->_curFrame);
 	}

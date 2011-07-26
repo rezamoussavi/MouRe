@@ -5,6 +5,11 @@
 		font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
 		background-image: url('./img/formsbg.png');
 	}
+	input[type="button"]{cursor:pointer;}
+	.bloop{
+		position:absolute;
+		index:1000;
+	}
 	#header_bg {
 		background: url('./img/headerbg.png') repeat-x top center;
 		padding-top: 36px;

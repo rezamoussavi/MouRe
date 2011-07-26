@@ -261,7 +261,12 @@ PHTMLCODE;
 		$adV=$this->AddVideo->_backframe();
 		return <<<PHTMLCODE
 
-			$btn <br> $adV
+			<div id="showbox">
+			</div>
+			<div class="content_container" >
+				$btn
+				$adV
+			</div>
 		
 PHTMLCODE;
 

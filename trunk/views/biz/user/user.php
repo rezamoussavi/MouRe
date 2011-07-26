@@ -277,6 +277,13 @@ class user {
         }
     }
     /*     * **************************General Biz functionality*************************** */
+	function checkPass($password){
+		$email=osBackUserEmail();
+        $hashPassword = $this->sha1Hash($email,$password);
+        $s = "SELECT * FROM user_info WHERE email='" . $email . "' AND password='" . $hashPassword . "';";
+        query($s);
+        return ($row = fetch())?TRUE:FALSE;
+	}
     function login($email, $password) {        
         //First check if the email even exists in the database...
         query("SELECT * FROM user_info WHERE email='" . $email . "' AND biznessUID= '" . osBackBizness() . "';");

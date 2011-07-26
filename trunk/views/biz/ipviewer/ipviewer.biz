@@ -14,7 +14,7 @@
 	linkID, title
 
 #frame
-	frm(float:left;border:1px solid #000000;margin:5px;padding:2px;width:200px;)
+	frm[stats_div]
 
 #node
 	publink
@@ -26,6 +26,67 @@
 	*******************************/
 
 	function frm(){
+		return <PHTML>
+			<table class="stats_table"> 
+			    <tr> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			        <th class="stats_empty_td"></th> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			        <th class="stats_empty_td"></th> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			        <th class="stats_empty_td"></th> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			    </tr> 
+			    <tr> 
+			        <td>Sweden</td> 
+			        <td>200</td> 
+			        <td>45</td> 
+			        <td class="stats_empty_td"></td> 
+			        <td>United States</td> 
+			        <td class="stats_views_td">3499728</td> 
+			        <td>83</td> 
+			        <td class="stats_empty_td"></td> 
+			        <td>Iran</td> 
+			        <td>5</td> 
+			        <td>2</td> 
+			        <td class="stats_empty_td"></td> 
+			        <td>Iran</td> 
+			        <td>5</td> 
+			        <td>2</td> 
+			    </tr> 
+			    <tr> 
+			        <td></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td class="stats_empty_td"></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td class="stats_empty_td"></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td class="stats_empty_td"></td> 
+			        <td></td> 
+			        <td></td> 
+			        <td></td> 
+			    </tr> 
+			</table> 
+			<div class="show_map_div"> 
+			    <input class="show_map_btn" type="button" value="Show location demographics on map" /> 
+			</div> 
+		</PHTML>
+	}
+
+	function frm_OLD(){
 		$pl=new publink("");
 		$data=$pl->backStat(#var->linkID);
 		if(!is_array($data)){
@@ -56,3 +117,30 @@
 		#var->linkID=$id;
 		#var->title=$title;
 	}
+
+#css
+	.stats_table
+	{
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+		/*border: 1px solid black;*/
+	}
+	.stats_div
+	{
+		margin-top: 10px;
+		width: 900px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.stats_table th {border-bottom: 1px solid white}
+	.stats_table th.stats_empty_td {border-bottom: 10px;}
+	.stats_table th, td {padding: 5px; font-size: 12px;}
+	.stats_country_td {width: 80px;}
+	.stats_views_td {width: 40px;}
+	.stats_prcnt_td {width: 20px;}
+	.stats_empty_td {width: 20px;}
+
+
+
+

@@ -82,7 +82,7 @@ class profileviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' ';
+				$_style=' class="profile_area_div"  ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -104,6 +104,87 @@ class profileviewer {
 	*		FRAME
 	********************************************/
 	function frm(){
+		$user=osBackUser();
+		$formName=$this->_fullname."ApplyBtn";
+		$formPass=$this->_fullname."Pass";
+		$userNameDefined=TRUE;
+		if(isset($user['userName'])){
+			if(strlen($user['userName'])<2){
+				$userNameDefined=FALSE;
+			}
+		}
+		if($userNameDefined){
+			$userBox=<<<PHTMLCODE
+<input class="persinf_inp" id="profile_name_inp" type="text" size="30" name="RealName" value="{$user['userName']}" disabled/>
+PHTMLCODE;
+
+			$bdBox=<<<PHTMLCODE
+<input class="persinf_inp" id="profile_birth_inp" type="text" size="30" name="BDate" value="{$user['BDate']}" disabled/>
+PHTMLCODE;
+
+		}else{
+			$userBox='<input class="persinf_inp" id="profile_name_inp" type="text" size="30" name="RealName"/>';
+			$bdBox='<input class="persinf_inp" id="profile_birth_inp" type="text" size="30" name="BDate"/>';
+		}
+		if(!osUserLogedin()){
+			$html="Please Login First";
+		}else{
+			$html=<<<PHTMLCODE
+
+				{$this->message}
+				<span class="profile_title_span">Personal Information</span> 
+				<form id="$formName" class="persinf_frm" method="post">
+					<input type="hidden" name="_message" value="frame_updateInfo" /><input type = "hidden" name="_target" value="{$this->_fullname}" /><br />
+					<label class="bold" id="profile_email_lbl">email <span class="red_star">*</span></label> 
+					<input class="persinf_inp" id="profile_email_inp" type="text" size="30" value="{$user['email']}" disabled/> 
+					<br /><br /> 					
+					<label class="bold" id="profile_name_lbl">Full name <span class="red_star">*</span></label> 
+					{$userBox}
+					<br /><br /> 
+					<label class="bold" id="profile_birth_lbl">Birth date <span class="red_star">*</span></label> 
+					{$bdBox}
+					<br /><br /> 					
+					<label class="notes" id="profile_note_1">* These information must be real for future security checkings (can be filled once)</label> 
+					<br /><br /> 
+					<label class="bold" id="profile_address_lbl">Full Address</label> 
+					<input class="persinf_inp" id="profile_address_inp" type="text" size="30" name="Address" value="{$user['Address']}"/> 
+					<br /><br /> 
+					<label class="bold" id="profile_country_lbl">Country</label> 
+					<input class="persinf_inp" id="profile_country_inp" type="text" size="30" name="Country" value="{$user['Country']}"/> 
+					<br /><br /> 
+					<label class="bold" id="profile_zipcode_lbl">Postal Code</label> 
+					<input class="persinf_inp" id="profile_zipcode_inp" type="text" size="30" name="PostalCode" value="{$user['PostalCode']}" /> 
+					<br /><br /> 
+					<input class="persinf_inp" id="profile_save_btn" type="button" value="Save" onclick='document.getElementById("{$this->_fullname}getPassword").style.display="block";document.getElementById("profile_save_btn").style.display="none";'/> 
+					<div class="persinf_confirm_div" id="{$this->_fullname}getPassword"> 
+						<label class="bold">Password: </label> 
+						<input type="password" size="30" name="Password"/> 
+						<input class="persinf_inp" type="button" value="Confirm" onclick='Javascript:sndmsg("$formName")'/> 
+					</div> 
+					<br /><br /> 
+				</form> 
+				<span class="profile_title_span">Change Password</span> 
+				<form id="$formPass" class="change_pass_frm" method="post"> 
+					<input type="hidden" name="_message" value="frame_changePassword" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<label class="bold" id="newpass_lbl">New Password</label> 
+					<input class="persinf_inp" id="newpass_inp" name="NewPass1" type="password" size="30" /> 
+					<br /><br /> 
+					<label class="bold" id="conf_newpass_lbl">Confirm New Pass</label> 
+					<input class="persinf_inp" id="conf_newpass_inp" name="NewPass2" type="password" size="30" /> 
+					<br /><br /> 
+					<label class="bold" id="oldpass_lbl">Current Pass</label> 
+					<input class="persinf_inp" id="oldpass_inp" name="Password" type="password" size="30" /> 
+					<br /><br /> 
+					<input class="persinf_inp" class="bold" id="confpass_btn" type="button" value="Save" onclick='Javascript:sndmsg("$formPass")'/> 
+				</form> 
+			
+PHTMLCODE;
+
+		}
+		$this->message="";
+		return $html;
+	}
+	function frm_OLD(){
 		$user=osBackUser();
 		$formName=$this->_fullname."ApplyBtn";
 		$formPass=$this->_fullname."Pass";
