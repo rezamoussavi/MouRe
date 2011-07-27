@@ -317,4 +317,35 @@ HTMLSTYLE;
 			return $a;
 		}
 	}
+
+	function arr2strOpt($a){
+		return arr2strOptimized($a,1,"Ar");
+	}
+
+	function arr2strOptimized($a,$tabs,$id){
+		if(is_array($a)){
+			$tab=TabToSpace($tabs);
+			$ret=<<<PHTML
+				<b style="cursor:pointer;" onclick="getElementById('$id').style.display='none'"> [ </b> <div id="$id" style="display:none;">
+PHTML;
+			$idCounter=0;
+			foreach($a as $k=>$v){
+				$idCounter++;
+				$ret.=$tab.$k."=>".arr2strOptimized($v,$tabs+1,$id.$idCounter)."<br />";
+			}
+			//$ret=substr($ret,0,strlen($ret)-2);
+			$ret.=<<<PHTML
+				</div> $tab <b style="cursor:pointer;" onclick="getElementById('$id').style.display='block'"> ] </b>
+PHTML;
+			return $ret;
+		}else{
+			return htmlspecialchars($a, ENT_QUOTES);
+		}
+	}
+
+	function TabToSpace($tabs){
+		$ret="";
+		if ($tabs>0) for ($i=0;$i<$tabs;$i++) $ret.="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		return $ret;
+	}
 ?>

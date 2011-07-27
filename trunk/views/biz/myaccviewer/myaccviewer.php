@@ -287,10 +287,10 @@ PHTMLCODE;
 		$html=<<<PHTMLCODE
 
 		    <div id="content_menu"> 
-		        <div class="content_menu_lst" style="background-Color:$mnu_bg_profile;" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1','$mnu_bg_profile')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_profileBtn');menu_click('cml_1');">Profile</div> 
-		        <div class="content_menu_lst" style="background-Color:$mnu_bg_mypub;" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2','$mnu_bg_mypub')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_pubLinkBtn');menu_click('cml_2');">My Published Videos</div> 
-		        <div class="content_menu_lst" style="background-Color:$mnu_bg_myad;" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3','$mnu_bg_myad')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_adLinkBtn');menu_click('cml_3');">My Ads</div> 
-		        <div class="content_menu_lst" style="background-Color:$mnu_bg_credit;" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4','$mnu_bg_credit')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_balanceBtn');menu_click('cml_4');">Credit</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_profile;" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1','$mnu_bg_profile')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_profileBtn');">Profile</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_mypub;" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2','$mnu_bg_mypub')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_pubLinkBtn');">My Published Videos</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_myad;" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3','$mnu_bg_myad')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_adLinkBtn');">My Ads</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_credit;" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4','$mnu_bg_credit')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_balanceBtn');">Credit</div> 
 		    </div> 
 		
 PHTMLCODE;

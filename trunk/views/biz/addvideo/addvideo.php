@@ -150,7 +150,7 @@ PHTMLCODE;
 				Number of Viewes: <input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
 				Country: <SELECT name="country" style="width:150px;">$countries</SELECT>
 				<hr>
-				Total: <span id="theTotal">0</span>$ - balance:<span id="theBalance">$balance</span> $ <span id="msgTotal"></span><br />
+				Total: $<input type="text" class="totalPrice" value="0" name="total" id="theTotal" size=10 disabled/> - balance:<span id="theBalance">$balance</span> $ <span id="msgTotal"></span><br />
 				<input id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
 			</form>
 		
@@ -204,6 +204,7 @@ PHTMLCODE;
 			$data['minLifeTime']=$of['minLifeTime'];
 			$data['minCancelTime']=$of['minCancelTime'];
 			$data['country']=$info['country'];
+			$data['paid']=$info['total'];
 			$al->bookLink($data);
 			$emb=$al->backYEmbed($data['link']);
 			$e="Added Successfully<br>$emb";

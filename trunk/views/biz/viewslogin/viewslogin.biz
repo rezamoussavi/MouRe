@@ -29,12 +29,17 @@
 	frame->logoutBtn=onLogoutBtn
 	frame->validateBtn=onValidateBtn
 	frame->doSignupBtn=onDoSignupBtn
+	transaction->update=onTransactionUpdate
 
 #phpfunction
 
 	/**********************************
 	*			Message Handler
 	**********************************/
+
+	function onTransactionUpdate($info){
+		if(isset($info['balance']))	{#var->balance=$info['balance'];}
+	}
 
 	function onLoginBtn($info){
 		_bookframe(#frm->frmLogin);
@@ -312,7 +317,6 @@
 		font-size: 80%;
 		margin-left: 20px;
 		text-align: center;
-		visibility: hidden;
 	}
 	#balance_div {
 		margin-top: 10px;

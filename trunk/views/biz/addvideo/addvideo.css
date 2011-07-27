@@ -1,1 +1,8 @@
- 
+
+	.totalPrice{
+		background-color:transparent;
+		border-width:0px;
+		color:black;
+		font-size:100%;
+	}
+

@@ -107,6 +107,7 @@ class transaction {
 		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='Reimburse'");
 		if($row=fetch()){$ret['Reimburse']=sprintf("%.2f",$row['total']);}
 		$ret['Balance']=$ret['Earn']+$ret['Charge']+$ret['adPay']+$ret['Withdraw']+$ret['Reimburse'];
+		osBroadcast("transaction_update",array("balance"=>$ret['Balance']));
 		return $ret;
 	}
 	/*************************************

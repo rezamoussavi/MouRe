@@ -48,7 +48,7 @@
 	function checkAll(){
 		var total=document.getElementById('theAOPV').value * document.getElementById('theNOV').value;
 		var balance=document.getElementById('theBalance').innerHTML;
-		document.getElementById("theTotal").innerHTML = total;
+		document.getElementById("theTotal").value = total;
 		var msgTotal="";
 		if( balance<total)
 			msgTotal="<font color=red>Insufficient Balance</font><a href='/paypal'>charge</a>";

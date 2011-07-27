@@ -73,6 +73,7 @@
 
 		$ret['Balance']=$ret['Earn']+$ret['Charge']+$ret['adPay']+$ret['Withdraw']+$ret['Reimburse'];
 
+		osBroadcast(#msg->update,array("balance"=>$ret['Balance']));
 		return $ret;
 	}
 

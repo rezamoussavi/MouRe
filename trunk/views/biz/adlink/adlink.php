@@ -145,12 +145,12 @@ class adlink {
 				query("SELECT * FROM adlink_info WHERE running<>0 ORDER BY startDate DESC");
 				break;
 			case "myad":
-				$q="SELECT * FROM adlink_info WHERE advertisor=".$userID;
+				$q="SELECT * FROM adlink_info WHERE advertisor=".$userID." ORDER BY startDate DESC";
 				query($q);
 				break;
 			case "mypub":
 				//$q="SELECT * FROM adlink_info WHERE adUID IN(SELECT distinct adlinkUID from publink_info where publisher=".$userID." and totalView>0)";
-				$q="SELECT * FROM adlink_info as al,publink_info as pl WHERE al.adUID=pl.adlinkUID AND pl.publisher=".$userID." and pl.totalView>0";
+				$q="SELECT * FROM adlink_info as al,publink_info as pl WHERE al.adUID=pl.adlinkUID AND pl.publisher=".$userID." and pl.totalView>0 ORDER BY startDate DESC";
 				query($q);
 				break;
 		}

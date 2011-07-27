@@ -43,6 +43,7 @@ class viewslogin {
 			$_SESSION['osMsg']['frame_logoutBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_validateBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_doSignupBtn'][$this->_fullname]=true;
+			$_SESSION['osMsg']['transaction_update'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -101,6 +102,9 @@ class viewslogin {
 			case 'frame_doSignupBtn':
 				$this->onDoSignupBtn($info);
 				break;
+			case 'transaction_update':
+				$this->onTransactionUpdate($info);
+				break;
 			default:
 				break;
 		}
@@ -151,6 +155,9 @@ class viewslogin {
 	/**********************************
 	*			Message Handler
 	**********************************/
+	function onTransactionUpdate($info){
+		if(isset($info['balance']))	{$this->balance=$info['balance'];}
+	}
 	function onLoginBtn($info){
 		$this->_bookframe("frmLogin");
 	}

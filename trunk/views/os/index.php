@@ -84,6 +84,23 @@
 	}elseif(isset($_GET['log'])){
 		showLogPage();
 	/*
+	*	MODE: session_report
+	*/
+	}elseif(isset($_GET['session_report'])){
+		$session_content=arr2strOpt($_SESSION);
+		echo <<<PHTML
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+	</head>
+	<body>
+	$session_content
+	<div id="os_message_box" style="visibility:hidden"> </div>
+	</body>
+</html>
+<!-- <div class="instructions" title="Copy content in the text area and paste it in your weblog/website">?</div> -->
+PHTML;
+	/*
 	*	MODE: normal
 	*/
 	}else{
@@ -103,8 +120,9 @@
 		}
 		$page_content="";
 		$JQueryCode=<<<JQUERY
-			<script src="http://www.sam-rad.com/jquery.js" type="text/javascript"></script>
-			<script src="http://www.sam-rad.com/biz.js" type="text/javascript"></script>
+			<script src="./jquery.js" type="text/javascript"></script>
+			<script src="./biz.js" type="text/javascript"></script>
+			<script src="./ajax.js" type="text/javascript"></script>
 			<link rel="stylesheet" type="text/css" href="./biz.css" />
 			<script type="text/javascript">
 				$(document).ready(function(){
@@ -140,7 +158,7 @@ JQUERY;
 				$page_content=$bizbank->show(false);
 				foreach($_SESSION['osNodes'] as $nodeFN=>$node){
 					if(is_object($node['node'])){
-						$JQueryCode.="if(window.".$nodeFN.")".$nodeFN."();";
+//						$JQueryCode.="if(window.".$nodeFN.")".$nodeFN."();";
 					}
 				}
 			}
@@ -148,10 +166,8 @@ JQUERY;
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		$JQueryCode }); </script>
-PHTML;
-			require_once "ajax.php";
-			echo <<<PHTML
+		$JQueryCode });
+		</script>
 	</head>
 	<body>
 	$page_content

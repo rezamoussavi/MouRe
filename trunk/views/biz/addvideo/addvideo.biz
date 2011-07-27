@@ -24,6 +24,113 @@
 #node
 	transaction, adlink, offer offer
 
+#phpfunction
+
+	/************************************************
+	*		FRAMES
+	************************************************/
+
+	function frm(){
+		if(!osUserLogedin()){
+			return <PHTML>
+				<div style="text-align:center; width=100%;">Log in first</div>
+			</PHTML>
+		}
+		//else
+		$formname=#nodeID;
+		$of=#node->offer->backInfo();
+		$t=new transaction("");
+		$balance=$t->backBalance(osBackUserID());
+		$countries="<option value='any'>any</option>";
+		query("SELECT DISTINCT CountryName FROM ip_country ORDER BY CountryName");
+		$row=fetch();
+		while($row=fetch()){
+			$countries.="<option value='".$row['CountryName']."'>".$row['CountryName']."</option>";
+		}
+		$html=<PHTML>
+			<center><font color=red>{#var->errMessage}</font><hr></center>
+			<form name="$formname" method="post">
+				<#msg->addVideo>
+				Title: <input id="theTitle" name="title" size=50 onkeypress='setTimeout("checkTitle()",100)' onchange='JavaScript:checkTitle();'><span id="msgTitle"><font color="red">*</font></span><br>
+				Youtube link: <input id="theYLink" name="link" size=50 onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"><font color="red">*</font></span><br>
+				Your Offer on Price/View: <input id="theAOPV" name="AOPV" size=5 onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
+				Number of Viewes: <input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
+				Country: <SELECT name="country" style="width:150px;">$countries</SELECT>
+				<hr>
+				Total: $<input type="text" class="totalPrice" value="0" name="total" id="theTotal" size=10 disabled/> - balance:<span id="theBalance">$balance</span> $ <span id="msgTotal"></span><br />
+				<input id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
+			</form>
+		</PHTML>
+		#var->errMessage="";
+		return $html;
+	}
+
+	function frmSuccess(){
+		$msg=#var->errMessage;
+		#var->errMessage="";
+		_bookframe(#frm->frm);
+		return <PHTML>
+			<center><font color=green>{$msg}</font><hr></center>
+		</PHTML>
+	}
+
+	/*************************************************
+	*		MESSAGES
+	*************************************************/
+
+	function onLoginStatusChange($info){
+		//REFRESH AUTOMATICALLY
+	}
+
+	function onAddVideo($info){
+		$of=#node->offer->backInfo();
+		$e="";
+		if(strlen($info['link'])<5){
+			$e.="Enter a valid link<br>";
+		}
+		if($info['AOPV']<$of['minAOPV']){
+			$e.="Minimum Offer should be ".$of['minAOPV']."<br>";
+		}
+		if($info['NOV']<$of['minNOV']){
+			$e.="Minimum Number of Views should be ".$of['minNOV']."<br>";
+		}
+		if(strlen($e)<2){// NO ERROR
+			$al=new adlink("");
+			$data=array();
+			$data['advertisor']=osBackUserID();
+			$data['running']=1;
+			$data['lastDate']="";
+			$data['startDate']=date("Y/m/d");
+			$data['link']=$info['link'];
+			$data['title']=$info['title'];
+			$data['maxViews']=$info['NOV'];
+			$data['AOPV']=$info['AOPV'];
+			$data['paid']=0;
+			$data['APRate']=$of['APRatio'];
+			$data['minLifeTime']=$of['minLifeTime'];
+			$data['minCancelTime']=$of['minCancelTime'];
+			$data['country']=$info['country'];
+			$data['paid']=$info['total'];
+			$al->bookLink($data);
+			$emb=$al->backYEmbed($data['link']);
+			$e="Added Successfully<br>$emb";
+			$t=new transaction("");
+			$t->bookAdPay($info['AOPV']*$info['NOV'],"Ad video - title: ".$info['title']);
+			_bookframe(#frm->frmSuccess);
+		}else{// HAS ERROR
+			$e="ERROR: <br>".$e;
+			_bookframe(#frm->frm);
+		}
+		#var->errMessage=$e;
+	}
+
+#css
+	.totalPrice{
+		background-color:transparent;
+		border-width:0px;
+		color:black;
+		font-size:100%;
+	}
 #js
 	var okTitle=false;
 	var okYLink=false;
@@ -79,7 +186,7 @@
 	function checkAll(){
 		var total=document.getElementById('theAOPV').value * document.getElementById('theNOV').value;
 		var balance=document.getElementById('theBalance').innerHTML;
-		document.getElementById("theTotal").innerHTML = total;
+		document.getElementById("theTotal").value = total;
 
 		var msgTotal="";
 		if( balance<total)
@@ -89,105 +196,6 @@
 			document.getElementById('theButton').disabled=0;
 		else
 			document.getElementById('theButton').disabled=1;
-	}
-
-#phpfunction
-
-	/************************************************
-	*		FRAMES
-	************************************************/
-
-	function frm(){
-		if(!osUserLogedin()){
-			return <PHTML>
-				<div style="text-align:center; width=100%;">Log in first</div>
-			</PHTML>
-		}
-		//else
-		$formname=#nodeID;
-		$of=#node->offer->backInfo();
-		$t=new transaction("");
-		$balance=$t->backBalance(osBackUserID());
-		$countries="<option value='any'>any</option>";
-		query("SELECT DISTINCT CountryName FROM ip_country ORDER BY CountryName");
-		$row=fetch();
-		while($row=fetch()){
-			$countries.="<option value='".$row['CountryName']."'>".$row['CountryName']."</option>";
-		}
-		$html=<PHTML>
-			<center><font color=red>{#var->errMessage}</font><hr></center>
-			<form name="$formname" method="post">
-				<#msg->addVideo>
-				Title: <input id="theTitle" name="title" size=50 onkeypress='setTimeout("checkTitle()",100)' onchange='JavaScript:checkTitle();'><span id="msgTitle"><font color="red">*</font></span><br>
-				Youtube link: <input id="theYLink" name="link" size=50 onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"><font color="red">*</font></span><br>
-				Your Offer on Price/View: <input id="theAOPV" name="AOPV" size=5 onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
-				Number of Viewes: <input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
-				Country: <SELECT name="country" style="width:150px;">$countries</SELECT>
-				<hr>
-				Total: <span id="theTotal">0</span>$ - balance:<span id="theBalance">$balance</span> $ <span id="msgTotal"></span><br />
-				<input id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
-			</form>
-		</PHTML>
-		#var->errMessage="";
-		return $html;
-	}
-
-	function frmSuccess(){
-		$msg=#var->errMessage;
-		#var->errMessage="";
-		_bookframe(#frm->frm);
-		return <PHTML>
-			<center><font color=green>{$msg}</font><hr></center>
-		</PHTML>
-	}
-
-	/*************************************************
-	*		MESSAGES
-	*************************************************/
-
-	function onLoginStatusChange($info){
-		//REFRESH AUTOMATICALLY
-	}
-
-	function onAddVideo($info){
-		$of=#node->offer->backInfo();
-		$e="";
-		if(strlen($info['link'])<5){
-			$e.="Enter a valid link<br>";
-		}
-		if($info['AOPV']<$of['minAOPV']){
-			$e.="Minimum Offer should be ".$of['minAOPV']."<br>";
-		}
-		if($info['NOV']<$of['minNOV']){
-			$e.="Minimum Number of Views should be ".$of['minNOV']."<br>";
-		}
-		if(strlen($e)<2){// NO ERROR
-			$al=new adlink("");
-			$data=array();
-			$data['advertisor']=osBackUserID();
-			$data['running']=1;
-			$data['lastDate']="";
-			$data['startDate']=date("Y/m/d");
-			$data['link']=$info['link'];
-			$data['title']=$info['title'];
-			$data['maxViews']=$info['NOV'];
-			$data['AOPV']=$info['AOPV'];
-			$data['paid']=0;
-			$data['APRate']=$of['APRatio'];
-			$data['minLifeTime']=$of['minLifeTime'];
-			$data['minCancelTime']=$of['minCancelTime'];
-			$data['country']=$info['country'];
-			$al->bookLink($data);
-			$emb=$al->backYEmbed($data['link']);
-			$e="Added Successfully<br>$emb";
-			$t=new transaction("");
-			$t->bookAdPay($info['AOPV']*$info['NOV'],"Ad video - title: ".$info['title']);
-			_bookframe(#frm->frmSuccess);
-		}else{// HAS ERROR
-			$e="ERROR: <br>".$e;
-			_bookframe(#frm->frm);
-		}
-		#var->errMessage=$e;
 	}
 
 

@@ -262,6 +262,7 @@ PHTMLCODE;
 		$frmStatName=$this->_fullname."Stat";
 		$statFrm=$this->backStatFrame();
 		$stopBtn=$this->frmStopBtn();
+		$lastDate=(strlen($this->data['lastDate'])>2)?$this->data['lastDate']:"&lt;yet open&gt;";
 		return <<<PHTMLCODE
 
 			<div class="box_close"> 
@@ -280,18 +281,18 @@ PHTMLCODE;
 				    <div class="other_n_embed"> 
 				        <div class="video_other_info" > 
 				            <div class="video_details"> 
-				                Viewd 23 of 20000
+				                Viewd $VN of $TV<br />(remaining: $RM)
 				            </div> 
 				            <div class="video_details"> 
-				                Start Date : 2011.05.17
+				                Start Date : {$this->data['startDate']}
 				            </div> 
 				            <div class="video_details"> 
-				                Finishing Date : 2011.10.23		
+				                Finishing Date : {$lastDate}
 							</div> 
 				        </div> 
 						<div class="box_open"> 
-				            <div class="pubvid_num_div">Your published videos: 3500</div> 
-				            <div class="earned_div">You earned: $12.4</div> 
+				            <div class="pubvid_num_div">Total Paid: {$this->data['paid']}</div>
+				            <div class="earned_div">Pay Per View : {$AOPV}</div>
 				        </div> 
 				    </div> 
 				</div> 
@@ -300,34 +301,6 @@ PHTMLCODE;
 				</div> 
 			</div> 
 			$statFrm
-		
-PHTMLCODE;
-
-		return <<<PHTMLCODE
-
-		<div>
-			<div style="float:left;height:120px;width:150px;text-align:left;">
-				<a href="{$this->data['link']}" target="_blank">
-					<img src="{$this->data['img']}" />
-				</a><br />
-				<form id="$frmStatName" method="post">
-					<input type="hidden" name="_message" value="frame_StatBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-					<input type="button" value="$StatisticsBtn" onclick="javascript:sndmsg('$frmStatName')" style="border:0px;cursor:pointer;background-color:transparent;" />
-				</form>
-			</div>
-			<div style="float:left;height:100px;width:400px;align:right;">
-				<u>$Title</u>
-				<br />Total Paid: {$this->data['paid']} - Pay Per View : {$AOPV}
-				<br />Viewed: $VN
-				<br />Remaining: $RM
-				<br />Total: $TV
-				<br />StartDate:{$this->data['startDate']} - Last Date : {$this->data['lastDate']}
-			</div>
-			<div style="float:left;height:100px;width:100px;text-align:right;">
-				$stopBtn
-			</div><br />
-		</div>
-		<div>$statFrm</div>
 		
 PHTMLCODE;
 
