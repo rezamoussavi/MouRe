@@ -91,7 +91,7 @@ class publink {
 	}
 	function backStat($adUID){
 		$data=array();
-		query("SELECT countryCode,countryName,views FROM publink_stat WHERE adUID=$adUID");
+		query("SELECT countryCode,countryName,views FROM publink_stat WHERE adUID=$adUID ORDER BY views DESC");
 		while($row=fetch()){
 			$data[]=$row;
 		}

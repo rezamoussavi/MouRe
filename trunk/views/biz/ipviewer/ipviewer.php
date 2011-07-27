@@ -104,8 +104,8 @@ class ipviewer {
 	/*******************************
 	*	Frame
 	*******************************/
-	function frm(){
-		return <<<PHTMLCODE
+/*
+		$html= <<<PHTMLCODE
 
 			<table class="stats_table"> 
 			    <tr> 
@@ -142,26 +142,71 @@ class ipviewer {
 			        <td>5</td> 
 			        <td>2</td> 
 			    </tr> 
-			    <tr> 
-			        <td></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td class="stats_empty_td"></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td class="stats_empty_td"></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td class="stats_empty_td"></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td></td> 
-			    </tr> 
-			</table> 
+			</table>
+		
+PHTMLCODE;
+
+*/
+	function frm(){
+		$pl=new publink("");
+		$data=$pl->backStat($this->linkID);
+		if(!is_array($data)){
+			return "No Record for Statistics";
+		}
+		$total=0;
+		foreach($data as $d)	$total+=$d['views'];
+		
+		$html= <<<PHTMLCODE
+
+			<div class="tstats_table">
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_empty"></div> 
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_empty"></div> 
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_empty"></div> 
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_row"> </div> 
+		
+PHTMLCODE;
+
+		$posinrow=1;
+		foreach($data as $d){
+			$percent=sprintf("%01.2f", $d['views']*100/$total);
+			$html.=<<<PHTMLCODE
+
+			        <div class="tstats_country">{$d['countryName']}</div> 
+			        <div class="tstats_views">{$d['views']}</div> 
+			        <div class="tstats_prcnt">{$percent}</div> 
+			
+PHTMLCODE;
+
+			if($posinrow<4){
+				$html.='<div class="tstats_empty"></div>';
+				$posinrow++;
+			}else $posinrow=1;
+		}
+		$html.=<<<PHTMLCODE
+
+			</div>
+		
+PHTMLCODE;
+
+		return <<<PHTMLCODE
+
+			$html
 			<div class="show_map_div"> 
-			    <input class="show_map_btn" type="button" value="Show location demographics on map" /> 
+			    <a target="_blank" href="/worldmap?video={$this->linkID}&title={$this->title}" title="Open in new window">
+			    	<input class="show_map_btn" type="button" value="Show location demographics on map" />
+			    </a>
 			</div> 
 		
 PHTMLCODE;

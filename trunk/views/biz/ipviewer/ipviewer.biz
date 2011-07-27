@@ -24,9 +24,8 @@
 	/*******************************
 	*	Frame
 	*******************************/
-
-	function frm(){
-		return <PHTML>
+/*
+		$html= <PHTML>
 			<table class="stats_table"> 
 			    <tr> 
 			        <th class="stats_country_td">Country</th> 
@@ -49,39 +48,80 @@
 			        <td>Sweden</td> 
 			        <td>200</td> 
 			        <td>45</td> 
+
 			        <td class="stats_empty_td"></td> 
+
 			        <td>United States</td> 
 			        <td class="stats_views_td">3499728</td> 
 			        <td>83</td> 
+
 			        <td class="stats_empty_td"></td> 
+
 			        <td>Iran</td> 
 			        <td>5</td> 
 			        <td>2</td> 
+
 			        <td class="stats_empty_td"></td> 
+
 			        <td>Iran</td> 
 			        <td>5</td> 
 			        <td>2</td> 
 			    </tr> 
-			    <tr> 
-			        <td></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td class="stats_empty_td"></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td class="stats_empty_td"></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td class="stats_empty_td"></td> 
-			        <td></td> 
-			        <td></td> 
-			        <td></td> 
-			    </tr> 
-			</table> 
+			</table>
+		</PHTML>
+*/
+
+	function frm(){
+		$pl=new publink("");
+		$data=$pl->backStat(#var->linkID);
+		if(!is_array($data)){
+			return "No Record for Statistics";
+		}
+		$total=0;
+		foreach($data as $d)	$total+=$d['views'];
+		
+		$html= <PHTML>
+			<div class="tstats_table">
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_empty"></div> 
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_empty"></div> 
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_empty"></div> 
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+
+			        <div class="tstats_row"> </div> 
+		</PHTML>
+		$posinrow=1;
+		foreach($data as $d){
+			$percent=sprintf("%01.2f", $d['views']*100/$total);
+			$html.=<PHTML>
+			        <div class="tstats_country">{$d['countryName']}</div> 
+			        <div class="tstats_views">{$d['views']}</div> 
+			        <div class="tstats_prcnt">{$percent}</div> 
+			</PHTML>
+			if($posinrow<4){
+				$html.='<div class="tstats_empty"></div>';
+				$posinrow++;
+			}else $posinrow=1;
+		}
+		$html.=<PHTML>
+			</div>
+		</PHTML>
+		return <PHTML>
+			$html
 			<div class="show_map_div"> 
-			    <input class="show_map_btn" type="button" value="Show location demographics on map" /> 
+			    <a target="_blank" href="/worldmap?video={#var->linkID}&title={#var->title}" title="Open in new window">
+			    	<input class="show_map_btn" type="button" value="Show location demographics on map" />
+			    </a>
 			</div> 
 		</PHTML>
 	}
@@ -141,6 +181,14 @@
 	.stats_prcnt_td {width: 20px;}
 	.stats_empty_td {width: 20px;}
 
-
+	.tstats_table {width: 770px;text-align: center;margin: 5px; font-size: 12px;}
+	.tstats_row {width: 770px;height:10px;float:left;}
+	.tstats_countryh{ width: 90px; float:left; display:inline;border-bottom: 1px solid white;}
+	.tstats_viewsh{ width: 50px; float:left; display:inline;border-bottom: 1px solid white;}
+	.tstats_prcnth{ width: 30px; float:left; display:inline;border-bottom: 1px solid white;}
+	.tstats_country{ width: 90px; float:left; display:inline;}
+	.tstats_views{ width: 50px; float:left; display:inline;}
+	.tstats_prcnt{ width: 30px; float:left; display:inline;}
+	.tstats_empty{ width: 30px; height:10px; float:left; display:inline;}
 
 

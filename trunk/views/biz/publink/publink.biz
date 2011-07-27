@@ -54,7 +54,7 @@
 
 	function backStat($adUID){
 		$data=array();
-		query("SELECT countryCode,countryName,views FROM #db->stat WHERE adUID=$adUID");
+		query("SELECT countryCode,countryName,views FROM #db->stat WHERE adUID=$adUID ORDER BY views DESC");
 		while($row=fetch()){
 			$data[]=$row;
 		}

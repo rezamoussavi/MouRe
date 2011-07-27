@@ -20,4 +20,13 @@
 	.stats_views_td {width: 40px;}
 	.stats_prcnt_td {width: 20px;}
 	.stats_empty_td {width: 20px;}
+	.tstats_table {width: 770px;text-align: center;margin: 5px; font-size: 12px;}
+	.tstats_row {width: 770px;height:10px;float:left;}
+	.tstats_countryh{ width: 90px; float:left; display:inline;border-bottom: 1px solid white;}
+	.tstats_viewsh{ width: 50px; float:left; display:inline;border-bottom: 1px solid white;}
+	.tstats_prcnth{ width: 30px; float:left; display:inline;border-bottom: 1px solid white;}
+	.tstats_country{ width: 90px; float:left; display:inline;}
+	.tstats_views{ width: 50px; float:left; display:inline;}
+	.tstats_prcnt{ width: 30px; float:left; display:inline;}
+	.tstats_empty{ width: 30px; height:10px; float:left; display:inline;}
 
