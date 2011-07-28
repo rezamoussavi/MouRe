@@ -9,7 +9,7 @@
 #frame
 	frmAdVideo
 	*frmPubVideo
-	frmUser[content_container]
+	frmUser[user_content_container]
 	frmAdmin
 	frmHome
 	frmHow
@@ -50,7 +50,7 @@
 	function onLogOut(){
 		if(#var->userpage==1){
 			#var->userpage=0;
-			_bookframe(#frm->frmHome);
+			_bookframe(#frm->frmPubVideo);
 		}
 	}
 
@@ -65,21 +65,12 @@
 	}
 
 	function onMyAcc($info){
+		#var->userpage=1;
 		if(osBackUserRole()=="admin"){
-			#var->userpage=1;
 			_bookframe(#frm->frmAdmin);
 		}else{
-			#var->userpage=1;
 			_bookframe(#frm->frmUser);
 		}
-	}
-
-	function on2($info){
-		#var->userpage=0;
-	}
-
-	function on3($info){
-		#var->userpage=0;
 	}
 
 	//////////////////////////////////////////////////////////////////////
@@ -158,7 +149,12 @@
 #css
 	.content_container
 	{
-		/*border: 5px solid black;*/
+		background-color: white;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.user_content_container
+	{
 		border-radius: 15px;
 		background-color: white;
 		margin-top: 20px;

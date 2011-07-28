@@ -14,7 +14,7 @@
 	frm
 	frmToPublish[video_box]
 	frmMyAd[adds_video_box]
-	frmMyPub
+	frmMyPub[adds_video_box]
 	frmShort
 
 #node
@@ -101,6 +101,45 @@
 		$UVN=#var->data['totalView'];
 		$country=#var->data['country'];
 		$UE=$UVN*$EPV;
+		$lastDate=(strlen(#var->data['lastDate'])>2)?#var->data['lastDate']:"&lt;yet open&gt;";
+		return <PHTML>
+			<div class="box_close"> 
+				<div class="box_image"> 
+				    <a href="{#var->data['link']}" target="_blank"> 
+				        <img class="video_image" src="{#var->data['img']}" /> 
+					</a> 
+				</div> 
+				<div class="other_info_container"> 
+				    <div class="video_header"> 
+				        <div class="video_title" style="width:100%;">{#var->data['title']}</div> 
+				    </div> 
+				    <div class="stop_conf_dif">
+				    </div> 
+				    <div class="other_n_embed"> 
+				        <div class="video_other_info" > 
+				            <div class="video_details btnbrdr"> 
+				                Viewd $VN of {#var->data['maxViews']}<br />(remaining: $RM)
+				            </div> 
+				            <div class="video_details btnbrdr"> 
+								Earn Per View: {$EPV}<br />(country: $country)
+				            </div> 
+				            <div class="video_details btnbrdr"> 
+				                Start Date : {#var->data['startDate']}
+				            </div> 
+				            <div class="video_details btnbrdr"> 
+				                Finishing Date : {$lastDate}
+							</div> 
+				        </div> 
+						<div class="box_open_mypub"> 
+				            <div class="pubvid_num_div">Viewd by You: {$UVN}</div>
+				            <div class="earned_div">You earned: {$UE}$ </div>
+				        </div> 
+				    </div> 
+				</div> 
+			</div> 
+		</PHTML>
+
+
 		return <PHTML>
 		<div style="width:650px;height:100;">
 			<div style="float:left;height:100px;width:150px;text-align:left;">
@@ -378,6 +417,16 @@
 		margin-left: 3px;
 		border-left: 1px dotted #4969E6;
 	}
+	.box_open_mypub
+	{
+		font-weight: bold;
+		float: right;
+		margin-right: 20px;
+		width: 150px;
+		margin-left: 150px;
+		border: 1px dotted #4969E6;
+		padding: 10px;
+	}
 	.earned_div {margin-top: 10px;}
 	.other_info_container
 	{
@@ -493,5 +542,9 @@
 		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
 		border-radius: 20px 20px 20px 20px;
 	}
-
+	.btnbrdr{
+		margin-bottom:4px;
+		padding-bottom:4px;
+		border-bottom:1px dotted white;
+	}
 

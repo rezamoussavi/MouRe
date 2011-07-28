@@ -43,6 +43,8 @@ class viewslogin {
 			$_SESSION['osMsg']['frame_logoutBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_validateBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_doSignupBtn'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_forgotPassword'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_sendMePassBtn'][$this->_fullname]=true;
 			$_SESSION['osMsg']['transaction_update'][$this->_fullname]=true;
 		}
 
@@ -102,6 +104,12 @@ class viewslogin {
 			case 'frame_doSignupBtn':
 				$this->onDoSignupBtn($info);
 				break;
+			case 'frame_forgotPassword':
+				$this->onForgotPassword($info);
+				break;
+			case 'frame_sendMePassBtn':
+				$this->onSendMePass($info);
+				break;
 			case 'transaction_update':
 				$this->onTransactionUpdate($info);
 				break;
@@ -136,6 +144,9 @@ class viewslogin {
 			case 'frmValidation':
 				$_style=' class="log_sign"  ';
 				break;
+			case 'frmForgotPassword':
+				$_style=' class="log_sign"  ';
+				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
 		if($_SESSION['silentmode'])
@@ -155,6 +166,14 @@ class viewslogin {
 	/**********************************
 	*			Message Handler
 	**********************************/
+	function onForgotPassword($info){
+		$this->_bookframe("frmForgotPassword");
+	}
+	function onSendMePass($info){
+		$u=new user("");
+		$this->msg=isset($info['email'])?$u->sendNewPassword($info['email'])?"New Password has been sent to your email":"cannot send email, try again!":"Email field empty! try again";
+		$this->_bookframe("frmMain");
+	}
 	function onTransactionUpdate($info){
 		if(isset($info['balance']))	{$this->balance=$info['balance'];}
 	}
@@ -244,7 +263,7 @@ class viewslogin {
 		$this->msg="";
 		return <<<PHTMLCODE
 
-			<div style="height:40px;">$msg</div>
+			<div class="login_msg">$msg</div>
 	        <ul>
 	            <li>
 	                <a id="signup-link" href="#signup" onclick="JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
@@ -253,6 +272,43 @@ class viewslogin {
                 	<a id="login-link" href="#login" onclick="JavaScript:sndevent('{$this->_fullname}','frame_loginBtn')">Log in</a>
 	            </li>
 	        </ul>
+		
+PHTMLCODE;
+
+	}
+	function frmForgotPassword(){
+		$suFrm=$this->_fullname."signup";
+		$lgFrm=$this->_fullname."sendPass";
+		$xFrm=$this->_fullname."x";
+		return <<<PHTMLCODE
+
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+	               	<a id="signup-link" href="#signup" onclick="JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
+	            </li>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a disabled id="login-link" >Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="login_div" class="bloop">
+		    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndevent('{$this->_fullname}','frame_xBtn')">X</a></font>
+                <form id="$lgFrm" method="post">
+					<input type="hidden" name="_message" value="frame_sendMePassBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					New password will be sent to you!
+                    <div class="username_div">
+                        <label class="user_lbl">email: </label>
+                        <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
+                    </div>
+					<div id="forgot_div">
+					</div>
+                    <div id="login_btn_div">
+                        <input class="form_btn" tabindex=2 type="button" value="Reset" onclick="JavaScript:sndmsg('$lgFrm')" />
+                    </div>
+                </form>
+            </div>
 		
 PHTMLCODE;
 
@@ -287,7 +343,7 @@ PHTMLCODE;
                         <input class="pass_tf" tabindex=2 name="password" type="password" />
                     </div>
 				     <div id="forgot_div">
-                    	<a id="forgot" class="login_anc" tabindex=4 href="javascript:my_function()">Forgot Password?</a>
+                    	<a id="forgot" class="login_anc" tabindex=4 onclick="JavaScript:sndevent('{$this->_fullname}','frame_forgotPassword')" >Forgot Password?</a>
                     </div>
                     <div id="login_btn_div">
                         <input class="form_btn" tabindex=3 type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />

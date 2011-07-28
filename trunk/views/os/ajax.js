@@ -14,8 +14,10 @@ function sndmsg(frmName) {
 			document.getElementById("os_message_box").innerHTML = xmlHttpReq.responseText;
 			var mails=document.getElementById("os_message_box").childNodes;
 			for(var i=0;i<mails.length;i++)
-				if(mails[i].tagName=="DIV")
+				if(mails[i].tagName=="DIV"){
 					document.getElementById(mails[i].id).innerHTML=mails[i].innerHTML;
+					document.getElementById(mails[i].id).setAttribute("class",mails[i].getAttribute("class"));
+				}
 			document.getElementById("os_message_box").innerHTML =" ";
 		}
     }

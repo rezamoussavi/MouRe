@@ -119,7 +119,7 @@ class mainpageviewer {
 				$_style=' ';
 				break;
 			case 'frmUser':
-				$_style=' class="content_container"  ';
+				$_style=' class="user_content_container"  ';
 				break;
 			case 'frmAdmin':
 				$_style=' ';
@@ -160,7 +160,7 @@ class mainpageviewer {
 	function onLogOut(){
 		if($this->userpage==1){
 			$this->userpage=0;
-			$this->_bookframe("frmHome");
+			$this->_bookframe("frmPubVideo");
 		}
 	}
 	function onHow(){
@@ -172,19 +172,12 @@ class mainpageviewer {
 		$this->_bookframe("frmHome");
 	}
 	function onMyAcc($info){
+		$this->userpage=1;
 		if(osBackUserRole()=="admin"){
-			$this->userpage=1;
 			$this->_bookframe("frmAdmin");
 		}else{
-			$this->userpage=1;
 			$this->_bookframe("frmUser");
 		}
-	}
-	function on2($info){
-		$this->userpage=0;
-	}
-	function on3($info){
-		$this->userpage=0;
 	}
 	//////////////////////////////////////////////////////////////////////
 	//			VIEW

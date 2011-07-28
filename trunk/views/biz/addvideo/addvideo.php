@@ -95,10 +95,10 @@ class addvideo {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' ';
+				$_style=' class="addvideo_area_div"  ';
 				break;
 			case 'frmSuccess':
-				$_style=' ';
+				$_style=' class="addvideo_area_div"  ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -123,7 +123,7 @@ class addvideo {
 		if(!osUserLogedin()){
 			return <<<PHTMLCODE
 
-				<div style="text-align:center; width=100%;">Log in first</div>
+				<div class="addvideo_login_msg">Log in first</div>
 			
 PHTMLCODE;
 
@@ -141,17 +141,53 @@ PHTMLCODE;
 		}
 		$html=<<<PHTMLCODE
 
-			<center><font color=red>{$this->errMessage}</font><hr></center>
+			<center><font color=red>{$this->errMessage}</font><br></center>
 			<form name="$formname" method="post">
 				<input type="hidden" name="_message" value="frame_addVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				Title: <input id="theTitle" name="title" size=50 onkeypress='setTimeout("checkTitle()",100)' onchange='JavaScript:checkTitle();'><span id="msgTitle"><font color="red">*</font></span><br>
-				Youtube link: <input id="theYLink" name="link" size=50 onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"><font color="red">*</font></span><br>
-				Your Offer on Price/View: <input id="theAOPV" name="AOPV" size=5 onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
-				Number of Viewes: <input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
-				Country: <SELECT name="country" style="width:150px;">$countries</SELECT>
+				<div class="addvideo_label">
+					Title:
+				</div>
+				<div class="addvideo_field">
+					<input id="theTitle" name="title" size=40 onkeypress='setTimeout("checkTitle()",100)' onchange='JavaScript:checkTitle();'><span id="msgTitle"><font color="red">*</font></span><br />
+				</div>
+				<div class="addvideo_label">
+					Youtube link:
+				</div>
+				<div class="addvideo_field">
+					<input id="theYLink" name="link" size=40 onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"><font color="red">*</font></span><br />
+				</div>
+				<div class="addvideo_label">
+					Your Offer on Price/View:
+				</div>
+				<div class="addvideo_field">
+					<input id="theAOPV" name="AOPV" size=5 onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
+				</div>
+				<div class="addvideo_label">
+					Number of Viewes:
+				</div>
+				<div class="addvideo_field">
+					<input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
+				</div>
+				<div class="addvideo_label">
+					Country:
+				</div>
+				<div class="addvideo_field">
+					<SELECT name="country" style="width:150px;">$countries</SELECT>
+				</div>
 				<hr>
-				Total: $<input type="text" class="totalPrice" value="0" name="total" id="theTotal" size=10 disabled/> - balance:<span id="theBalance">$balance</span> $ <span id="msgTotal"></span><br />
-				<input id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
+				<div class="addvideo_label">
+					Total:
+				</div>
+				<div class="addvideo_field">
+					$<input type="text" class="total_price" value="0" name="total" id="theTotal" size=10 disabled/><span id="msgTotal"></span><br />
+				</div>
+				<div class="addvideo_label">
+					Balance:
+				</div>
+				<div class="addvideo_field">
+					$<span id="theBalance">$balance</span><br />
+				</div>
+				<input style="float:right;" id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
 			</form>
 		
 PHTMLCODE;

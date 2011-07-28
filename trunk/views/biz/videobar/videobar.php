@@ -123,7 +123,7 @@ class videobar {
 				$_style=' class="adds_video_box"  ';
 				break;
 			case 'frmMyPub':
-				$_style=' ';
+				$_style=' class="adds_video_box"  ';
 				break;
 			case 'frmShort':
 				$_style=' ';
@@ -209,6 +209,46 @@ PHTMLCODE;
 		$UVN=$this->data['totalView'];
 		$country=$this->data['country'];
 		$UE=$UVN*$EPV;
+		$lastDate=(strlen($this->data['lastDate'])>2)?$this->data['lastDate']:"&lt;yet open&gt;";
+		return <<<PHTMLCODE
+
+			<div class="box_close"> 
+				<div class="box_image"> 
+				    <a href="{$this->data['link']}" target="_blank"> 
+				        <img class="video_image" src="{$this->data['img']}" /> 
+					</a> 
+				</div> 
+				<div class="other_info_container"> 
+				    <div class="video_header"> 
+				        <div class="video_title" style="width:100%;">{$this->data['title']}</div> 
+				    </div> 
+				    <div class="stop_conf_dif">
+				    </div> 
+				    <div class="other_n_embed"> 
+				        <div class="video_other_info" > 
+				            <div class="video_details btnbrdr"> 
+				                Viewd $VN of {$this->data['maxViews']}<br />(remaining: $RM)
+				            </div> 
+				            <div class="video_details btnbrdr"> 
+								Earn Per View: {$EPV}<br />(country: $country)
+				            </div> 
+				            <div class="video_details btnbrdr"> 
+				                Start Date : {$this->data['startDate']}
+				            </div> 
+				            <div class="video_details btnbrdr"> 
+				                Finishing Date : {$lastDate}
+							</div> 
+				        </div> 
+						<div class="box_open_mypub"> 
+				            <div class="pubvid_num_div">Viewd by You: {$UVN}</div>
+				            <div class="earned_div">You earned: {$UE}$ </div>
+				        </div> 
+				    </div> 
+				</div> 
+			</div> 
+		
+PHTMLCODE;
+
 		return <<<PHTMLCODE
 
 		<div style="width:650px;height:100;">

@@ -106,7 +106,11 @@
 			$buttons
 			<div class="balance_area_div">
 				<div class="balance_info">
-					<span class="balance_title_span">Credit Information</span><br />
+					<div class="balance_title_area">
+						<span class="balance_title_span">Credit Information</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input value="ReCalculate" type="button" class="btn_flat" onclick="JavaScript:sndmsg('#msg->reCalc')" />
+					</div>
 					<div class="balance_label">Balance:</div>
 						 <div class="balance_data">{#var->balance} $</div>
 					<div class="balance_label">Paid:</div>
@@ -119,10 +123,6 @@
 						<div class="balance_data">{#var->earned} $</div>
 				</div>
 				<div class="balance_section">
-					<form name="$ReCalcFrmName" method="post">
-						<#msg->reCalc>
-						<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
-					</form>
 					<div class="balance_test">
 						<form name="$testFrame" method="post">
 							<#msg->test>
@@ -236,6 +236,10 @@
 		margin-bottom:10px;
 		margin-left:-20px;
 	}
+	.balance_title_area
+	{
+		width: 300px;
+	}
 	.balance_info{
 		width: 250px;
 		height: 200px;
@@ -276,5 +280,11 @@
 		padding: 5px;
 		margin-top: 20px;
 		margin-bottom: 20px;
+	}
+	.btn_flat{
+		border:1px solid #DDDDDD;
+		padding:5px;
+		margin:5px;
+		background-color:transparent;
 	}
 

@@ -129,7 +129,7 @@
 	.profile_area_div
 	{
 		margin: 30px auto auto 120px;
-		width: 460px;
+		width: 500px;
 		overflow: auto;
 		padding-bottom: 100px;
 		/*display: none;*/

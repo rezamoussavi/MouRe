@@ -84,4 +84,9 @@
 		border-radius: 10px;
 		font-weight: bold;
 	}
+	.login_msg{
+		height: 40px;
+		width: 200px;
+		font-size: 70%;
+	}
 

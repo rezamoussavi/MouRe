@@ -53,6 +53,16 @@
 		margin-left: 3px;
 		border-left: 1px dotted #4969E6;
 	}
+	.box_open_mypub
+	{
+		font-weight: bold;
+		float: right;
+		margin-right: 20px;
+		width: 150px;
+		margin-left: 150px;
+		border: 1px dotted #4969E6;
+		padding: 10px;
+	}
 	.earned_div {margin-top: 10px;}
 	.other_info_container
 	{
@@ -167,5 +177,10 @@
 		margin-left: 10px;
 		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
 		border-radius: 20px 20px 20px 20px;
+	}
+	.btnbrdr{
+		margin-bottom:4px;
+		padding-bottom:4px;
+		border-bottom:1px dotted white;
 	}
 

@@ -1,8 +1,30 @@
 
-	.totalPrice{
-		background-color:transparent;
-		border-width:0px;
+	.addvideo_area_div
+	{
+		margin: 30px auto auto 200px;
+		width: 600px;
+		overflow: auto;
+		padding-bottom: 100px;
+		font-size:75%;
+	}
+	.addvideo_label{
+		float: left;
+		width: 200px;
+	}
+	.addvideo_field{
+		float:left;
+		width: 400px;
+	}
+	.addvideo_login_msg{
+		margin: 30px auto auto 200px;
+		width: 200px;
+		overflow: auto;
+		padding-bottom: 100px;
+		font-size:125%;
+		color: red;
+	}
+	.total_price{
+		border:0;
 		color:black;
-		font-size:100%;
 	}
 

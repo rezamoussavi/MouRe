@@ -11,7 +11,8 @@
 	addvideo
 
 #frame
-	*frm,frmSuccess
+	*frm[addvideo_area_div]
+	frmSuccess[addvideo_area_div]
 
 #var
 	errMessage=""
@@ -33,7 +34,7 @@
 	function frm(){
 		if(!osUserLogedin()){
 			return <PHTML>
-				<div style="text-align:center; width=100%;">Log in first</div>
+				<div class="addvideo_login_msg">Log in first</div>
 			</PHTML>
 		}
 		//else
@@ -48,17 +49,53 @@
 			$countries.="<option value='".$row['CountryName']."'>".$row['CountryName']."</option>";
 		}
 		$html=<PHTML>
-			<center><font color=red>{#var->errMessage}</font><hr></center>
+			<center><font color=red>{#var->errMessage}</font><br></center>
 			<form name="$formname" method="post">
 				<#msg->addVideo>
-				Title: <input id="theTitle" name="title" size=50 onkeypress='setTimeout("checkTitle()",100)' onchange='JavaScript:checkTitle();'><span id="msgTitle"><font color="red">*</font></span><br>
-				Youtube link: <input id="theYLink" name="link" size=50 onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"><font color="red">*</font></span><br>
-				Your Offer on Price/View: <input id="theAOPV" name="AOPV" size=5 onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
-				Number of Viewes: <input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
-				Country: <SELECT name="country" style="width:150px;">$countries</SELECT>
+				<div class="addvideo_label">
+					Title:
+				</div>
+				<div class="addvideo_field">
+					<input id="theTitle" name="title" size=40 onkeypress='setTimeout("checkTitle()",100)' onchange='JavaScript:checkTitle();'><span id="msgTitle"><font color="red">*</font></span><br />
+				</div>
+				<div class="addvideo_label">
+					Youtube link:
+				</div>
+				<div class="addvideo_field">
+					<input id="theYLink" name="link" size=40 onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"><font color="red">*</font></span><br />
+				</div>
+				<div class="addvideo_label">
+					Your Offer on Price/View:
+				</div>
+				<div class="addvideo_field">
+					<input id="theAOPV" name="AOPV" size=5 onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
+				</div>
+				<div class="addvideo_label">
+					Number of Viewes:
+				</div>
+				<div class="addvideo_field">
+					<input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
+				</div>
+				<div class="addvideo_label">
+					Country:
+				</div>
+				<div class="addvideo_field">
+					<SELECT name="country" style="width:150px;">$countries</SELECT>
+				</div>
 				<hr>
-				Total: $<input type="text" class="totalPrice" value="0" name="total" id="theTotal" size=10 disabled/> - balance:<span id="theBalance">$balance</span> $ <span id="msgTotal"></span><br />
-				<input id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
+				<div class="addvideo_label">
+					Total:
+				</div>
+				<div class="addvideo_field">
+					$<input type="text" class="total_price" value="0" name="total" id="theTotal" size=10 disabled/><span id="msgTotal"></span><br />
+				</div>
+				<div class="addvideo_label">
+					Balance:
+				</div>
+				<div class="addvideo_field">
+					$<span id="theBalance">$balance</span><br />
+				</div>
+				<input style="float:right;" id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
 			</form>
 		</PHTML>
 		#var->errMessage="";
@@ -197,5 +234,36 @@
 		else
 			document.getElementById('theButton').disabled=1;
 	}
+
+#css
+	.addvideo_area_div
+	{
+		margin: 30px auto auto 200px;
+		width: 600px;
+		overflow: auto;
+		padding-bottom: 100px;
+		font-size:75%;
+	}
+	.addvideo_label{
+		float: left;
+		width: 200px;
+	}
+	.addvideo_field{
+		float:left;
+		width: 400px;
+	}
+	.addvideo_login_msg{
+		margin: 30px auto auto 200px;
+		width: 200px;
+		overflow: auto;
+		padding-bottom: 100px;
+		font-size:125%;
+		color: red;
+	}
+	.total_price{
+		border:0;
+		color:black;
+	}
+
 
 

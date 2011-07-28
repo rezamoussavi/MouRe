@@ -20,6 +20,7 @@
 	frmWelcome[log_sign]
 	frmSignup[log_sign]
 	frmValidation[log_sign]
+	frmForgotPassword[log_sign]
 
 #message
 	frame->loginBtn=onLoginBtn
@@ -29,6 +30,8 @@
 	frame->logoutBtn=onLogoutBtn
 	frame->validateBtn=onValidateBtn
 	frame->doSignupBtn=onDoSignupBtn
+	frame->forgotPassword=onForgotPassword
+	frame->sendMePassBtn=onSendMePass
 	transaction->update=onTransactionUpdate
 
 #phpfunction
@@ -36,6 +39,16 @@
 	/**********************************
 	*			Message Handler
 	**********************************/
+
+	function onForgotPassword($info){
+		_bookframe(#frm->frmForgotPassword);
+	}
+
+	function onSendMePass($info){
+		$u=new user("");
+		#var->msg=isset($info['email'])?$u->sendNewPassword($info['email'])?"New Password has been sent to your email":"cannot send email, try again!":"Email field empty! try again";
+		_bookframe(#frm->frmMain);
+	}
 
 	function onTransactionUpdate($info){
 		if(isset($info['balance']))	{#var->balance=$info['balance'];}
@@ -139,7 +152,7 @@
 		$msg=#var->msg;
 		#var->msg="";
 		return <PHTML>
-			<div style="height:40px;">$msg</div>
+			<div class="login_msg">$msg</div>
 	        <ul>
 	            <li>
 	                <a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
@@ -148,6 +161,41 @@
                 	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('#msg->loginBtn')">Log in</a>
 	            </li>
 	        </ul>
+		</PHTML>
+	}
+
+	function frmForgotPassword(){
+		$suFrm=#nodeID."signup";
+		$lgFrm=#nodeID."sendPass";
+		$xFrm=#nodeID."x";
+		return <PHTML>
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+	               	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
+	            </li>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a disabled id="login-link" >Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="login_div" class="bloop">
+		    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('#msg->xBtn')">X</a></font>
+                <form id="$lgFrm" method="post">
+					<#msg->sendMePassBtn>
+					New password will be sent to you!
+                    <div class="username_div">
+                        <label class="user_lbl">email: </label>
+                        <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
+                    </div>
+					<div id="forgot_div">
+					</div>
+                    <div id="login_btn_div">
+                        <input class="form_btn" tabindex=2 type="button" value="Reset" onclick="JavaScript:sndmsg('$lgFrm')" />
+                    </div>
+                </form>
+            </div>
 		</PHTML>
 	}
 
@@ -180,7 +228,7 @@
                         <input class="pass_tf" tabindex=2 name="password" type="password" />
                     </div>
 				     <div id="forgot_div">
-                    	<a id="forgot" class="login_anc" tabindex=4 href="javascript:my_function()">Forgot Password?</a>
+                    	<a id="forgot" class="login_anc" tabindex=4 onclick="JavaScript:sndmsg('#msg->forgotPassword')" >Forgot Password?</a>
                     </div>
                     <div id="login_btn_div">
                         <input class="form_btn" tabindex=3 type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
@@ -378,5 +426,9 @@
 		border-radius: 10px;
 		font-weight: bold;
 	}
-
+	.login_msg{
+		height: 40px;
+		width: 200px;
+		font-size: 70%;
+	}
 

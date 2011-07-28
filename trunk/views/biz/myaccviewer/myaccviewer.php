@@ -226,7 +226,11 @@ class myaccviewer {
 			$buttons
 			<div class="balance_area_div">
 				<div class="balance_info">
-					<span class="balance_title_span">Credit Information</span><br />
+					<div class="balance_title_area">
+						<span class="balance_title_span">Credit Information</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input value="ReCalculate" type="button" class="btn_flat" onclick="JavaScript:sndevent('{$this->_fullname}','frame_reCalc')" />
+					</div>
 					<div class="balance_label">Balance:</div>
 						 <div class="balance_data">{$this->balance} $</div>
 					<div class="balance_label">Paid:</div>
@@ -239,10 +243,6 @@ class myaccviewer {
 						<div class="balance_data">{$this->earned} $</div>
 				</div>
 				<div class="balance_section">
-					<form name="$ReCalcFrmName" method="post">
-						<input type="hidden" name="_message" value="frame_reCalc" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-						<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
-					</form>
 					<div class="balance_test">
 						<form name="$testFrame" method="post">
 							<input type="hidden" name="_message" value="frame_test" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
