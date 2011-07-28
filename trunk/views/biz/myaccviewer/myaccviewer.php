@@ -219,36 +219,51 @@ class myaccviewer {
 		}
 		$ReCalcFrmName = $this->_fullname."reCalc";
 		$testFrame=$this->_fullname."test";
-		$html=<<<PHTMLCODE
+		$buttons=$this->buttons();
+		$transaction_history=$this->transactionHistory();
+		return<<<PHTMLCODE
 
-			Balance: {$this->balance} $
-			<a href="http://sam-rad.com/PayPal">Add</a><br />
-			Paid: {$this->paid} $<br />
-			adPay: {$this->adpay} $<br />
-			Re-imbursed: {$this->reimbursed} $<br />
-			Earned: {$this->earned} $<br />
-			<form name="$ReCalcFrmName" method="post">
-				<input type="hidden" name="_message" value="frame_reCalc" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
-			</form>
-			<hr />
-			<form name="$testFrame" method="post">
-				<input type="hidden" name="_message" value="frame_test" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-				<input name="amount" size=5 />
-				<input value="test" type="button" onclick='JavaScript:sndmsg("$testFrame")' />
-			</form>
+			$buttons
+			<div class="balance_area_div">
+				<div class="balance_info">
+					<span class="balance_title_span">Credit Information</span><br />
+					<div class="balance_label">Balance:</div>
+						 <div class="balance_data">{$this->balance} $</div>
+					<div class="balance_label">Paid:</div>
+						<div class="balance_data">{$this->paid} $</div>
+					<div class="balance_label">adPay:</div>
+						<div class="balance_data">{$this->adpay} $</div>
+					<div class="balance_label">Re-imbursed:</div>
+						<div class="balance_data">{$this->reimbursed} $</div>
+					<div class="balance_label">Earned:</div>
+						<div class="balance_data">{$this->earned} $</div>
+				</div>
+				<div class="balance_section">
+					<form name="$ReCalcFrmName" method="post">
+						<input type="hidden" name="_message" value="frame_reCalc" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+						<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
+					</form>
+					<div class="balance_test">
+						<form name="$testFrame" method="post">
+							<input type="hidden" name="_message" value="frame_test" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+							<input name="amount" size=5 />
+							<input value="test" type="button" onclick='JavaScript:sndmsg("$testFrame")' />
+						</form>
+					</div>
+					$transaction_history
+				</div>
+			</div>
 		
 PHTMLCODE;
 
-		return $this->buttons().$html."<hr />".$this->transactionHistory();
 	}
 	function transactionHistory(){
 		$tran="";
-		query("SELECT * FROM transaction_history WHERE UID=".osBackUserID()." ORDER BY date DESC");
+		query("SELECT * FROM transaction_history WHERE UID=".osBackUserID()." ORDER BY date DESC, TID DESC");
 		while($row=fetch()){
 			$tran.=<<<PHTMLCODE
 
-				<div style="float:left;width:800px;">
+				<div class="balance_row">
 					<div style="float:left;width:50px;padding:3px;">{$row['TID']}</div>
 					<div style="float:left;width:100px;padding:3px;">{$row['date']}</div>
 					<div style="float:left;width:100px;padding:3px;">{$row['type']}</div>
@@ -262,7 +277,7 @@ PHTMLCODE;
 		return <<<PHTMLCODE
 
 			<div style="float:left;width:800px;">
-				<div style="float:left;width:800px;">
+				<div class="balance_row_head">
 					<div style="float:left;width:50px;padding:3px;">ID</div>
 					<div style="float:left;width:100px;padding:3px;">Date</div>
 					<div style="float:left;width:100px;padding:3px;">Type</div>

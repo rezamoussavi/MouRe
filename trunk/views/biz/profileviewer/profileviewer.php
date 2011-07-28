@@ -184,61 +184,6 @@ PHTMLCODE;
 		$this->message="";
 		return $html;
 	}
-	function frm_OLD(){
-		$user=osBackUser();
-		$formName=$this->_fullname."ApplyBtn";
-		$formPass=$this->_fullname."Pass";
-		$userNameDefined=TRUE;
-		if(isset($user['userName'])){
-			if(strlen($user['userName'])<2){
-				$userNameDefined=FALSE;
-			}
-		}
-		if($userNameDefined){
-			$userBox=$user['userName'];
-			$bdBox=$user['BDate'];
-		}else{
-			$userBox='<input size=10 name="RealName" />';
-			$bdBox='<input size=10 name="BDate" />';
-		}
-		if(!osUserLogedin()){
-			$html="Please Login First";
-		}else{
-			$html=<<<PHTMLCODE
-
-				{$this->message}
-				<div style="float:left;">
-					<form id="$formName" method="post" style="margin:10px;background-color:#FFCCFF;float:left;">
-						<input type="hidden" name="_message" value="frame_updateInfo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-						Real Name: {$userBox}<br/>
-						eMail: {$user['email']}<br/>
-						Birth Date: {$bdBox}<br/>
-						Address: <br><textarea name="Address" rows=4 cols=30>{$user['Address']}</textarea><br>
-						Country: <input name="Country" value="{$user['Country']}" /><br/>
-						Postal Code: <input name="PostalCode" value="{$user['PostalCode']}" /><br/>
-						<div align=right><input type="button" value="Apply" onclick='document.getElementById("{$this->_fullname}getPassword").style.display="block"'></div>
-						<div id="{$this->_fullname}getPassword" style="display:none;z-index:1;border:1 dotted black;background-color:red;">
-							Please enter your Password:<br />
-							<input name="Password" type="password" size=20><br />
-							<input type="button" value="Cancel" onclick='document.getElementById("{$this->_fullname}getPassword").style.display="none"'>
-							<input type="button" value="OK" onclick='Javascript:sndmsg("$formName")'>
-						</div>
-					</form>
-					<form id="$formPass" method="post" style="margin:10px;background-color:#CCFFFF;float:left;">
-						<input type="hidden" name="_message" value="frame_changePassword" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-						New Password: <input name="NewPass1" size=20 type="password"><br>
-						Confirm : <input name="NewPass2" size=20 type="password"><br>
-						Old Password: <input name="Password" type="password" size=20><br>
-						<div align=right><input type="button" value="Change Password" onclick='Javascript:sndmsg("$formPass")'></div>
-					</form>
-				</div>
-			
-PHTMLCODE;
-
-		}
-		$this->message="";
-		return $html;
-	}
 	/********************************************
 	*		Message Handlers
 	********************************************/

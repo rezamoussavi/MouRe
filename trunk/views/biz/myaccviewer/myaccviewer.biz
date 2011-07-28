@@ -100,33 +100,48 @@
 		}
 		$ReCalcFrmName = #nodeID."reCalc";
 		$testFrame=#nodeID."test";
-		$html=<PHTML>
-			Balance: {#var->balance} $
-			<a href="http://sam-rad.com/PayPal">Add</a><br />
-			Paid: {#var->paid} $<br />
-			adPay: {#var->adpay} $<br />
-			Re-imbursed: {#var->reimbursed} $<br />
-			Earned: {#var->earned} $<br />
-			<form name="$ReCalcFrmName" method="post">
-				<#msg->reCalc>
-				<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
-			</form>
-			<hr />
-			<form name="$testFrame" method="post">
-				<#msg->test>
-				<input name="amount" size=5 />
-				<input value="test" type="button" onclick='JavaScript:sndmsg("$testFrame")' />
-			</form>
+		$buttons=#fun->buttons();
+		$transaction_history=#fun->transactionHistory();
+		return<PHTML>
+			$buttons
+			<div class="balance_area_div">
+				<div class="balance_info">
+					<span class="balance_title_span">Credit Information</span><br />
+					<div class="balance_label">Balance:</div>
+						 <div class="balance_data">{#var->balance} $</div>
+					<div class="balance_label">Paid:</div>
+						<div class="balance_data">{#var->paid} $</div>
+					<div class="balance_label">adPay:</div>
+						<div class="balance_data">{#var->adpay} $</div>
+					<div class="balance_label">Re-imbursed:</div>
+						<div class="balance_data">{#var->reimbursed} $</div>
+					<div class="balance_label">Earned:</div>
+						<div class="balance_data">{#var->earned} $</div>
+				</div>
+				<div class="balance_section">
+					<form name="$ReCalcFrmName" method="post">
+						<#msg->reCalc>
+						<input value="ReCalculate" type="button" onclick='JavaScript:sndmsg("$ReCalcFrmName")' />
+					</form>
+					<div class="balance_test">
+						<form name="$testFrame" method="post">
+							<#msg->test>
+							<input name="amount" size=5 />
+							<input value="test" type="button" onclick='JavaScript:sndmsg("$testFrame")' />
+						</form>
+					</div>
+					$transaction_history
+				</div>
+			</div>
 		</PHTML>
-		return #fun->buttons().$html."<hr />".#fun->transactionHistory();
 	}
 
 	function transactionHistory(){
 		$tran="";
-		query("SELECT * FROM transaction_history WHERE UID=".osBackUserID()." ORDER BY date DESC");
+		query("SELECT * FROM transaction_history WHERE UID=".osBackUserID()." ORDER BY date DESC, TID DESC");
 		while($row=fetch()){
 			$tran.=<PHTML>
-				<div style="float:left;width:800px;">
+				<div class="balance_row">
 					<div style="float:left;width:50px;padding:3px;">{$row['TID']}</div>
 					<div style="float:left;width:100px;padding:3px;">{$row['date']}</div>
 					<div style="float:left;width:100px;padding:3px;">{$row['type']}</div>
@@ -137,7 +152,7 @@
 		}
 		return <PHTML>
 			<div style="float:left;width:800px;">
-				<div style="float:left;width:800px;">
+				<div class="balance_row_head">
 					<div style="float:left;width:50px;padding:3px;">ID</div>
 					<div style="float:left;width:100px;padding:3px;">Date</div>
 					<div style="float:left;width:100px;padding:3px;">Type</div>
@@ -206,7 +221,60 @@
 	}
 	#cml_1, #cml_2, #cml_3 {border-right: 1px solid #DBD7D8;}
 	#cml_1 {margin-left: 20px;}
-
-
-
+	.balance_area_div
+	{
+		margin: 30px auto auto 70px;
+		width: 800px;
+		overflow: auto;
+		padding-bottom: 20px;
+	}
+	.balance_title_span
+	{
+		color: #00c0ee;
+		font-size: 20px;
+		font-weight: bold;
+		margin-bottom:10px;
+		margin-left:-20px;
+	}
+	.balance_info{
+		width: 250px;
+		height: 200px;
+		padding-right: 400px;
+		margin-left: 50px;
+	}
+	.balance_section{
+		width:750px;
+	}
+	.balance_label{
+		padding:5px;
+		color:black;
+		width:100px;
+		display:inline;
+		float:left;
+	}
+	.balance_data{
+		padding:5px;
+		color:#222222;
+		display:inline;
+		float:left;
+	}
+	.balance_row{
+		border-bottom:1px dotted gray;
+		float:left;
+		width:800px;
+		font-size:90%;
+	}
+	.balance_row_head{
+		border-bottom:2px solid black;
+		float:left;
+		width:800px;
+	}
+	.balance_test{
+		background-color: #DDDDDD;
+		border: 1px solid #BBBBBB;
+		width: 750px;
+		padding: 5px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
 
