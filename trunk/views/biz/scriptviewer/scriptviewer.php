@@ -19,6 +19,7 @@ class scriptviewer {
 
 	//Variables
 	var $script;
+	var $script_link;
 	var $id;
 	var $link;
 
@@ -44,6 +45,10 @@ class scriptviewer {
 		if(!isset($_SESSION['osNodes'][$fullname]['script']))
 			$_SESSION['osNodes'][$fullname]['script']="[!]";
 		$this->script=&$_SESSION['osNodes'][$fullname]['script'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['script_link']))
+			$_SESSION['osNodes'][$fullname]['script_link']="[!]";
+		$this->script_link=&$_SESSION['osNodes'][$fullname]['script_link'];
 
 		if(!isset($_SESSION['osNodes'][$fullname]['id']))
 			$_SESSION['osNodes'][$fullname]['id']=0;
@@ -108,6 +113,8 @@ class scriptviewer {
 		$this->link=$adLinkData['videoCode'];
 		if($this->id!=0){
 			$this->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".$this->id."&link=".$this->link."?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>";
+			$rnd=substr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",rand(1,52)-1,1);
+			$this->script_link="http://www.sam-rad.com/watch?".$this->id."$rnd".$this->link;			
 		}else{
 			$this->script="You must be logged in<br /><br /><br />*In order to enable us to track your earnings by sharing this video, you need to be logged in*";
 		}
@@ -119,20 +126,23 @@ class scriptviewer {
 				<input style="display:none;" id="{$this->_fullname}id" value="{$this->id}" />
 				<input style="display:none;" id="{$this->_fullname}link" value="{$this->link}" />
 				<div class="embed_size_scv">
+					<div class="link_title_scv">Link: </div>
 					<div class="width_container">
 						<div class="size_title_scv">Width: </div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="2" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px
+							<input class="input_area_scv" type="text" size="1" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px
 						</div>
 					</div>
 					<div class="height_container">
 						<div class="size_title_scv">Height:</div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="2" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
+							<input class="input_area_scv" type="text" size="1" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
 						</div>
 					</div>
 				</div>
 				<div class="embed_box_scv">
+					<textarea id="{$this->_fullname}scriptarea_link" class="link_src_scv" disabled="disabled">{$this->script_link}</textarea>
+					<br/>
 					<textarea id="{$this->_fullname}scriptarea" class="embed_src_scv" disabled="disabled">{$this->script}</textarea>
 				</div>
 			
