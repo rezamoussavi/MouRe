@@ -78,8 +78,10 @@
 		#var->userpage=1;
 		if(osBackUserRole()=="admin"){
 			_bookframe(#frm->frmAdmin);
-		}else{
+		}else if(osBackUserRole()=="user"){
 			_bookframe(#frm->frmUser);
+		}else{
+			_bookframe(#frm->frmPubVideo);
 		}
 	}
 

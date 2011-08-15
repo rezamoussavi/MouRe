@@ -261,6 +261,26 @@ PHTMLCODE;
 
 	}
 	function frmPaypal(){
+		return <<<PHTMLCODE
+
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<input type="hidden" name="cmd" value="_xclick">
+			<input type="hidden" name="business" value="KATDYWARKWSXS">
+			<input type="hidden" name="lc" value="SE">
+			<input type="hidden" name="item_name" value="RocketViews Balance">
+			<input type="hidden" name="item_number" value="7">
+			<input  name="amount" value="103.00">
+			<input type="hidden" name="currency_code" value="USD">
+			<input type="hidden" name="button_subtype" value="services">
+			<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+			<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+			</form>
+		
+PHTMLCODE;
+
+	}
+	function frmPaypal_OLD(){
 		if(isset($_SESSION['paypal_confirm'])){
 			if($_SESSION['paypal_confirm']=="true"){
 				$pay=$_SESSION['paypal_amount'];

@@ -198,8 +198,10 @@ class mainpageviewer {
 		$this->userpage=1;
 		if(osBackUserRole()=="admin"){
 			$this->_bookframe("frmAdmin");
-		}else{
+		}else if(osBackUserRole()=="user"){
 			$this->_bookframe("frmUser");
+		}else{
+			$this->_bookframe("frmPubVideo");
 		}
 	}
 	//////////////////////////////////////////////////////////////////////
