@@ -1,0 +1,59 @@
+function sndmsg(frmName) {
+    
+	//create xmlHttp setup...
+	var xmlHttpReq = false;
+    // Mozilla/Safari
+    if (window.XMLHttpRequest) {xmlHttpReq = new XMLHttpRequest();}
+    // IE
+    else if (window.ActiveXObject) {xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");}
+	 
+    xmlHttpReq.open('POST', "index.php", true);
+    xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlHttpReq.onreadystatechange = function() {
+        if (xmlHttpReq.readyState == 4 && xmlHttpReq.status==200) {
+			document.getElementById("os_message_box").innerHTML = xmlHttpReq.responseText;
+			var mails=document.getElementById("os_message_box").childNodes;
+			for(var i=0;i<mails.length;i++)
+				if(mails[i].tagName=="DIV"){
+					document.getElementById(mails[i].id).innerHTML=mails[i].innerHTML;
+					document.getElementById(mails[i].id).setAttribute("class",mails[i].getAttribute("class"));
+				}
+			document.getElementById("os_message_box").innerHTML =" ";
+		}
+    }
+    xmlHttpReq.send(getquerystring(frmName));
+}
+
+function getquerystring(frmName) {
+    var form = document.forms[frmName];
+    var size = form.elements.length;
+    var qstr ="";
+	for(var i=0;i<size;i=i+1)
+		qstr = qstr+form.elements[i].name+"="+escape(form.elements[i].value)+"&";
+    return qstr;
+}
+
+function sndevent(_target,_message){
+
+	//create xmlHttp setup...
+	var xmlHttpReq = false;
+    // Mozilla/Safari
+    if (window.XMLHttpRequest) {xmlHttpReq = new XMLHttpRequest();}
+    // IE
+    else if (window.ActiveXObject) {xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");}
+	 
+    xmlHttpReq.open('POST', "index.php", true);
+    xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlHttpReq.onreadystatechange = function() {
+        if (xmlHttpReq.readyState == 4 && xmlHttpReq.status==200) {
+			document.getElementById("os_message_box").innerHTML = xmlHttpReq.responseText;
+			var mails=document.getElementById("os_message_box").childNodes;
+			for(var i=0;i<mails.length;i++)
+				if(mails[i].tagName=="DIV")
+					document.getElementById(mails[i].id).innerHTML=mails[i].innerHTML;
+			document.getElementById("os_message_box").innerHTML =" ";
+		}
+    }
+    xmlHttpReq.send("_target="+escape(_target)+"&_message="+escape(_message));
+}
+

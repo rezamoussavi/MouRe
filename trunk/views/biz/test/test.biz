@@ -1,0 +1,10 @@
+#biz
+	test:test
+
+#frame
+	frm
+
+#phpfunction
+	function frm(){
+		return "<hr>I am test.biz<hr>";
+	}

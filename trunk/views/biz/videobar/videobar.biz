@@ -56,7 +56,7 @@
 		return <PHTML>
 			<div class="box_close_topub">
 				<div class="box_image">
-					<a href="http://www.sam-rad.com/watch?v={#var->data['videoCode']}" target="_blank">
+					<a href="http://www.RocketViews.com/watch?v={#var->data['videoCode']}" target="_blank">
 						<img class="video_image" src="{#var->data['img']}" />
 					</a>
 				</div>

@@ -112,9 +112,9 @@ class scriptviewer {
 		$this->id=$pl->generateScript($adLinkData);
 		$this->link=$adLinkData['videoCode'];
 		if($this->id!=0){
-			$this->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".$this->id."&link=".$this->link."?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>";
+			$this->script="<EMBED SRC='http://www.RocketViews.com/YouTubePlayer.swf' FlashVars='id=".$this->id."&link=".$this->link."?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>";
 			$rnd=substr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",rand(1,52)-1,1);
-			$this->script_link="http://www.sam-rad.com/watch?".$this->id."$rnd".$this->link;			
+			$this->script_link="http://www.RocketViews.com/watch?".$this->id."$rnd".$this->link;			
 		}else{
 			$this->script="You must be logged in<br /><br /><br />*In order to enable us to track your earnings by sharing this video, you need to be logged in*";
 		}
@@ -164,7 +164,11 @@ PHTMLCODE;
 			return <<<PHTMLCODE
 
 				<div style="color:#00ffff;text-align:right;width:100%;"><i><font face="Lucida Fax">You must be logged in</font></i></div>
-				<div style="color:#00ffff;padding-top:100px;;width:100%;"><i><font face="Lucida Fax" size="1px">*In order to enable us to track your earnings by sharing this video, you need to be logged in</font></i></div>
+				<div style="color:#00ffff;padding-top:80px;width:100%;">
+					<i><font face="Lucida Fax" size="1px">*In order to enable us to track your earnings by sharing this video,</font></i>
+					<br/>
+					<i><font face="Lucida Fax" size="1px"> you need to be logged in</font></i>
+				</div>
 			
 PHTMLCODE;
 

@@ -1,12 +1,13 @@
 <?php
 	session_cache_expire(10);
 	session_start();
+ini_set('display_errors', 1);
 	function myErrorHandler($errno, $errstr, $errfile, $errline){
 		$m="$errstr<hr width=100px align=left>$errfile<br>(line $errline)";
 		$ip=getenv(HTTP_X_FORWARDED_FOR)?getenv(HTTP_X_FORWARDED_FOR):getenv(REMOTE_ADDR);
 		osLog("OS","<font color=red>ERROR</font> ($errno) <br> ip: $ip",$m);
 	}
-	set_error_handler("myErrorHandler");
+//	set_error_handler("myErrorHandler");
 	date_default_timezone_set('GMT');
 	$UN="_biz";
 	$Pass="";
@@ -15,7 +16,6 @@
 	require_once "biz/bizbank/bizbank.php";
 	if(file_exists("db.php")) include_once "db.php";
 	require_once "core.php";
-
 	unset($bizbank);
 	if(!isset($_SESSION['logMessages'])){
 		$_SESSION['logMessages']=false;
@@ -45,7 +45,7 @@
 	}elseif(isset($_GET['appendJS'])){
 		// remove old biz.js file
 		if(file_exists('biz.js')){
-			chmod('biz.js', 0666);
+//			chmod('biz.js', 0666);
 			unlink('biz.js');
 		}
 		//list of all bizes
@@ -63,7 +63,7 @@
 	}elseif(isset($_GET['appendCSS'])){
 		// remove old biz.js file
 		if(file_exists('biz.css')){
-			chmod('biz.css', 0666);
+			//chmod('biz.css', 0666);
 			unlink('biz.css');
 		}
 		//list of all bizes
@@ -71,11 +71,9 @@
 		//append all together in biz.js
 		foreach($bizes as $cs){
 			$source="biz/".$cs."/".$cs.".css";
-			echo $source;
 			if(file_exists($source)){
 				file_put_contents("biz.css",file_get_contents($source),FILE_APPEND | LOCK_EX);
-				echo "Add ok\n";
-			}else echo "not Added\n";
+			}
 		}
 		echo 'ok';
 	/*

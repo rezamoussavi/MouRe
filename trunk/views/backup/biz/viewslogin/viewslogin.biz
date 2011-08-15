@@ -1,0 +1,434 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	7/05/2010
+	Version:1.0
+
+#biz
+	viewslogin:user
+
+#node
+	user
+	transaction
+
+#var
+	msg="",email,password
+	balance=0
+
+#frame
+	*frmMain[log_sign]
+	frmLogin[log_sign]
+	frmWelcome[log_sign]
+	frmSignup[log_sign]
+	frmValidation[log_sign]
+	frmForgotPassword[log_sign]
+
+#message
+	frame->loginBtn=onLoginBtn
+	frame->signupBtn=onSignupBtn
+	frame->doLoginBtn=onDoLoginBtn
+	frame->xBtn=onXBtn
+	frame->logoutBtn=onLogoutBtn
+	frame->validateBtn=onValidateBtn
+	frame->doSignupBtn=onDoSignupBtn
+	frame->forgotPassword=onForgotPassword
+	frame->sendMePassBtn=onSendMePass
+	transaction->update=onTransactionUpdate
+
+#phpfunction
+
+	/**********************************
+	*			Message Handler
+	**********************************/
+
+	function onForgotPassword($info){
+		_bookframe(#frm->frmForgotPassword);
+	}
+
+	function onSendMePass($info){
+		$u=new user("");
+		#var->msg=isset($info['email'])?$u->sendNewPassword($info['email'])?"New Password has been sent to your email":"cannot send email, try again!":"Email field empty! try again";
+		_bookframe(#frm->frmMain);
+	}
+
+	function onTransactionUpdate($info){
+		if(isset($info['balance']))	{#var->balance=$info['balance'];}
+	}
+
+	function onLoginBtn($info){
+		_bookframe(#frm->frmLogin);
+	}
+
+	function onSignupBtn($info){
+		_bookframe(#frm->frmSignup);
+	}
+
+	function onDoLoginBtn($info){
+		$u=new user("");
+		$u->login($info['email'],$info['password']);
+		switch($u->loggedIn){
+			case -1:
+				#var->msg="Incorrect Password";
+				_bookframe(#frm->frmMain);
+				break;
+			case -2:
+				#var->msg="Account does not exist";
+				_bookframe(#frm->frmMain);
+				break;
+			case 1:
+				#var->msg="";
+				$t=new transaction("");
+				#var->balance=$t->backBalance(osBackUserID());
+				_bookframe(#frm->frmWelcome);
+				break;
+			case 2:
+				#var->msg="";
+				#var->email=$info['email'];
+				#var->password=$info['password'];
+				_bookframe(#frm->frmValidation);
+				break;
+		}
+	}
+
+	function onXBtn($info){
+		_bookframe(#frm->frmMain);
+	}
+
+	function onLogoutBtn($info){
+		$u=new user("");
+		$u->logout();
+		#var->balance=0;
+		_bookframe(#frm->frmMain);
+	}
+
+	function onMyaccBtn($info){
+		if($info['Page']=="show"){
+			$data=array();
+			osBroadcast(#msg->showMyAccount,$data);
+		}
+	}
+
+	function onValidateBtn($info){
+		$u=new user("");
+		$u->login(#var->email,#var->password);
+		$u->validate($info['vcode']);
+		#fun->onDoLoginBtn(array("email"=>#var->email,"password"=>#var->password));
+	}
+
+	function onDoSignupBtn($info){
+		if($info['email'] != "" && $info['password'] != "" && $info['passwordagain'] != "")
+		{
+			$u=new user("");
+			$signup = $u->add($info['email'], $info['password'], $info['passwordagain'], $info['userName'], $info['Address'], $info['Country'], $info['PostalCode'],'user');
+
+			switch($signup){
+				case 1://All set - user added and logged in!
+					#var->msg="Please Check Your email!";
+					_bookframe(#frm->frmMain);
+					break;
+
+				case -1://user already exist
+					#var->msg="user already exist";
+					_bookframe(#frm->frmMain);
+					break;
+
+				case -2://passwords didn't match...
+					#var->msg="passwords didn't match...";
+					_bookframe(#frm->frmMain);
+					break;
+
+				default:
+					osLog("##### weird...");
+					_bookframe(#frm->frmMain);
+					break;
+			}
+		}
+	}
+
+	/**********************************
+	*			FRAMES
+	**********************************/
+
+	function frmMain(){
+		$msg=#var->msg;
+		#var->msg="";
+		return <PHTML>
+			<div class="login_msg">$msg</div>
+	        <ul>
+	            <li>
+	                <a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
+	            </li>
+	            <li>
+                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('#msg->loginBtn')">Log in</a>
+	            </li>
+	        </ul>
+		</PHTML>
+	}
+
+	function frmForgotPassword(){
+		$suFrm=#nodeID."signup";
+		$lgFrm=#nodeID."sendPass";
+		$xFrm=#nodeID."x";
+		return <PHTML>
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+	               	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
+	            </li>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a disabled id="login-link" >Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="login_div" class="bloop">
+		    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('#msg->xBtn')">X</a></font>
+                <form id="$lgFrm" method="post">
+					<#msg->sendMePassBtn>
+					New password will be sent to you!
+                    <div class="username_div">
+                        <label class="user_lbl">email: </label>
+                        <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
+                    </div>
+					<div id="forgot_div">
+					</div>
+                    <div id="login_btn_div">
+                        <input class="form_btn" tabindex=2 type="button" value="Reset" onclick="JavaScript:sndmsg('$lgFrm')" />
+                    </div>
+                </form>
+            </div>
+		</PHTML>
+	}
+
+	function frmLogin(){
+		$suFrm=#nodeID."signup";
+		$lgFrm=#nodeID."dologin";
+		$xFrm=#nodeID."x";
+		return <PHTML>
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+	               	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
+	            </li>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a disabled id="login-link" >Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="login_div" class="bloop">
+		    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('#msg->xBtn')">X</a></font>
+                <form id="$lgFrm" method="post">
+					<#msg->doLoginBtn>
+                    <div class="username_div">
+                        <label class="user_lbl">email: </label>
+                        <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
+                    </div>
+                    <div class="password_div">
+                        <label class="pass_lbl">Password: </label>
+                        <input class="pass_tf" tabindex=2 name="password" type="password" />
+                    </div>
+				     <div id="forgot_div">
+                    	<a id="forgot" class="login_anc" tabindex=4 onclick="JavaScript:sndmsg('#msg->forgotPassword')" >Forgot Password?</a>
+                    </div>
+                    <div id="login_btn_div">
+                        <input class="form_btn" tabindex=3 type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
+                    </div>
+                </form>
+            </div>
+		</PHTML>
+	}
+
+	function frmWelcome(){
+		$u=osBackUser();
+		$name=strlen($u['userName'])>1?$u['userName']:$u['email'];
+		$lgoutFrm=#nodeID."lgout";
+		$d=array();
+		$link=osBackPageLink("Myacc");
+		return <PHTML>
+            <div id="pers_info">
+                Welcome <span id="user_name">$name</span>!
+                <div id="balance_div">Balance: <span id="balance_span">#var->balance $</span></div>
+            </div>
+			<ul>
+				<li>
+					<a id="signup-link" href="$link" >My Account</a>
+				</li>
+				<li>
+					<form id="$lgoutFrm" style="display:inline;">
+						<#msg->logoutBtn>
+						<a id="login-link" href="#logout" onclick="JavaScript:sndmsg('$lgoutFrm')">Log out</a>
+					</form>
+				</li>
+			</ul>
+		</PHTML>
+	}
+
+	function frmSignup(){
+		$lgFrm=#nodeID."login";
+		$dosuFrm=#nodeID."dodosignup";
+		$xFrm=#nodeID."x";
+		return <PHTML>
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a id="signup-link" >Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="$lgFrm" style="display:inline;">
+						<#msg->loginBtn>
+	                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('$lgFrm')">Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="signup_div" class="bloop">
+			    <form name="$xFrm" style="float:right;">
+			    	<#msg->xBtn>
+			    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('$xFrm')">X</a></font>
+			    </form>
+            	<form id="$dosuFrm" method="post">
+            		<#msg->doSignupBtn>
+            		<div class="username_div">
+                        <label class="user_lbl">Email: </label>
+                        <input class="user_tf" tabindex=1 name="email" type="text" />
+                    </div>
+                    <div class="password_div">
+                        <label class="pass_lbl">Password: </label>
+                        <input class="pass_tf" tabindex=2 name="password" type="password" />
+                    </div>
+                    <div class="password_div">Confirm: </label>
+                        <input class="confirm_tf" tabindex=3 name="passwordagain" type="password" />
+                    </div>
+                    <div id="signup_btn_div">
+                        <input class="form_btn" tabindex=4 type="button" value="Sign up" onclick="JavaScript:sndmsg('$dosuFrm')" />
+                    </div>
+            	</form>
+            </div>
+		</PHTML>
+	}
+
+	function frmValidation(){
+		$suFrm=#nodeID."signup";
+		$vFrm=#nodeID."ver";
+		$xFrm=#nodeID."x";
+		return <PHTML>
+			<div style="height:40px;"></div>
+	        <ul>
+	            <li>
+					<form id="$suFrm" style="display:inline;">
+						<#msg->signupBtn>
+	                	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('$suFrm')">Sign up</a>
+					</form>
+	            </li>
+	            <li>
+					<form id="" style="display:inline;">
+	                	<a disabled id="login-link" >Log in</a>
+					</form>
+	            </li>
+	        </ul>
+            <div id="login_div" class="bloop">
+                <form id="$vFrm" method="post">
+					<#msg->validateBtn>
+                    <div class="username_div">
+                        <label class="user_lbl">Code: </label>
+                        <input class="user_tf" name="vcode" type="text" />
+                    </div>
+					<input class="form_btn" type="button" value="Login" onclick="JavaScript:sndmsg('$vFrm')" />
+                </form>
+            </div>
+		</PHTML>
+	}
+
+#css
+	#login_div {
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		color: white;
+		margin-top: 55px;
+		margin-left: -115px;
+		padding: 15px;
+		border-radius: 0px 0px 20px 20px;
+		/* opacity: 0.85; */
+		width:250px;
+		height:120px;
+	}
+	.log_sign ul {
+		padding-left: 0px;
+	}
+	.log_sign {
+		margin-left: 20px;
+		float: left;
+		margin-top: 0px;
+		display:inline;
+	}
+	#pers_info {
+		font-size: 80%;
+		margin-left: 20px;
+		text-align: center;
+	}
+	#balance_div {
+		margin-top: 10px;
+	}
+	#signup_div {
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		color: white;
+		margin-top: 55px;
+		margin-left: -125px;
+		padding: 15px;
+		border-radius: 0px 0px 20px 20px;
+		/*opacity: 0.85;*/
+		width:260px;
+		height:130px;
+	}
+	.username_div, .password_div {
+		font-size: 80%;
+		margin-top: 10px;
+		margin-left: 10px;
+	}
+	.user_tf, .pass_tf {
+		width: 150px;
+		margin-left: 10px;
+		border-radius: 5px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+	.confirm_tf {
+		width: 150px;
+		margin-left: 22px;
+		border-radius: 5px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+	#remember_div {
+		margin-top: 20px;
+	}
+	#login_btn_div {
+		margin-top: -20px;
+		margin-left: 145px;
+	}
+	#signup_btn_div {
+		margin-top: 13px;
+		margin-left: 90px;
+	}
+	#forgot, #remember {
+		font-size: 70%;
+		margin-left: 10px;
+	}
+	#forgot_div, #remember_div a:hover {
+		margin-top: 20px;
+		/* border-bottom: none; */
+	}
+	.form_btn {
+		width: 100px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.login_msg{
+		height: 40px;
+		width: 200px;
+		font-size: 70%;
+	}
+

@@ -1,0 +1,33 @@
+
+	.profile_area_div
+	{
+		margin: 30px auto auto 120px;
+		width: 500px;
+		overflow: auto;
+		padding-bottom: 100px;
+		/*display: none;*/
+	}
+	.profile_area_div form
+	{
+		margin-top: 20px;
+		margin-left: 40px;
+	}
+	.persinf_frm {margin-bottom: 20px; border-bottom: 3px solid #E3E1E1; padding-bottom: 20px;}
+	.bold{font-weight:  bold; font-size: 14px;}
+	.red_star {color: red;}
+	.persinf_inp {float: right;}
+	.notes {color: red; font-weight: normal; font-style: italic; font-size: 12px;}
+	.persinf_confirm_div
+	{
+		background-color: #F0EDEE;
+		border: 1px solid #E3E1E1;
+		display:none;
+	}
+	.profile_title_span
+	{
+		color: #00c0ee;
+		font-size: 20px;
+		font-weight: bold;
+	}
+	
+

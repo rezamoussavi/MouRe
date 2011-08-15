@@ -25,9 +25,9 @@
 		#var->id=$pl->generateScript($adLinkData);
 		#var->link=$adLinkData['videoCode'];
 		if(#var->id!=0){
-			#var->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".#var->id."&link=".#var->link."?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>";
+			#var->script="<EMBED SRC='http://www.RocketViews.com/YouTubePlayer.swf' FlashVars='id=".#var->id."&link=".#var->link."?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>";
 			$rnd=substr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",rand(1,52)-1,1);
-			#var->script_link="http://www.sam-rad.com/watch?".#var->id."$rnd".#var->link;			
+			#var->script_link="http://www.RocketViews.com/watch?".#var->id."$rnd".#var->link;			
 		}else{
 			#var->script="You must be logged in<br /><br /><br />*In order to enable us to track your earnings by sharing this video, you need to be logged in*";
 		}
@@ -72,7 +72,11 @@
 		}else{
 			return <PHTML>
 				<div style="color:#00ffff;text-align:right;width:100%;"><i><font face="Lucida Fax">You must be logged in</font></i></div>
-				<div style="color:#00ffff;padding-top:100px;;width:100%;"><i><font face="Lucida Fax" size="1px">*In order to enable us to track your earnings by sharing this video, you need to be logged in</font></i></div>
+				<div style="color:#00ffff;padding-top:80px;width:100%;">
+					<i><font face="Lucida Fax" size="1px">*In order to enable us to track your earnings by sharing this video,</font></i>
+					<br/>
+					<i><font face="Lucida Fax" size="1px"> you need to be logged in</font></i>
+				</div>
 			</PHTML>
 		}
 	}

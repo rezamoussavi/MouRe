@@ -101,7 +101,8 @@ class bizbank {
 
 
 	function init(){
-		$this->tabbar->bookContent(array("Pricing","Contact us"));
+		$tabs=array('Contact us','contactus','Pricing','pricing');/* caption, page, caption , page ,... */
+		$this->tabbar->bookContent($tabs);
 	}
 	function frm(){
 		$login=$this->login->_backframe();

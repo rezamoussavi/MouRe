@@ -92,7 +92,7 @@ class transaction {
 		if($row=fetch()){
 			$trans=$row['trans'];
 		}
-		return $trans+$earned;
+		return sprintf("%.2f",$trans+$earned);
 	}
 	function backUserSummary($UID){
 		$ret=array("Balance"=>0,"Charge"=>0,"Earn"=>0,"Reimburse"=>0,"Withdraw"=>0,"adPay"=>0);

@@ -1,0 +1,69 @@
+#comments
+
+	Author: Reza Moussavi
+	Date:	3/10/2010
+	Version: 1.5
+    ------------------
+	Author: Max Mirkia
+	Date:	2/14/2010
+	Version: 1.0
+    ------------------
+    Author: Max Mirkia
+	Date:	2/7/2010
+	Version: 0.1
+
+#biz
+	tabbank:tab
+
+#var
+	tabs, curTabName
+
+#frame
+    frm[pric_cont]
+
+#message
+	client->tab=onTabSelected
+
+#css
+	.pric_cont {
+		float: left;
+		margin-top: 43px;
+		display:inline;
+	}
+
+#phpfunction
+
+    function bookContent($content){//String[]
+        #var->tabs=array();
+        foreach($content as $c){
+            #var->tabs[]=$c;
+        }
+	}
+
+	function bookSelected($sel){
+		#var->curTabName=$sel;
+		osBroadcast(#msg->tabChanged,array("tabName"=>$sel));
+    }
+
+	/*
+	*	This frm show all tabs (including selected one) as link
+	*/
+    function frm(){
+		$html=<PHTML>
+                <ul id="menu_list">
+		</PHTML>
+		foreach(#var->tabs as $t){
+			$link=osBackPageLink($t);
+			$html.=<PHTML>
+				<li><a href="{$link}">{$t}</a></li>
+			</PHTML>
+		}
+		return $html."</ul>";
+	}
+
+    function onTabSelected($info){
+		if(array_search($info["name"],#var->tabs)!==false){
+			#fun->bookSelected($info["name"]);
+		}
+	}
+

@@ -359,7 +359,7 @@ PHTMLCODE;
 		$name=strlen($u['userName'])>1?$u['userName']:$u['email'];
 		$lgoutFrm=$this->_fullname."lgout";
 		$d=array();
-		$link=osBackPageLink("Myacc");
+		$link=osBackPageLink("Myacc_profile");
 		return <<<PHTMLCODE
 
             <div id="pers_info">

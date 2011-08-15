@@ -1,0 +1,101 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	4/21/2011
+	Ver:		0.1
+
+#biz
+	bizbank:bizbank
+
+#node
+	viewslogin login, tabbank tabbar, mainpageviewer pages
+
+#frame
+	frm
+
+#start
+	init
+
+#phpfunction
+
+	function init(){
+		#node->tabbar->bookContent(array("Pricing","Contact us"));
+	}
+
+	function frm(){
+		$login=#node->login->_backframe();
+		$tab=#node->tabbar->_backframe();
+		$pages=#node->pages->_backframe();
+		$home=osBackPageLink("PubVideo");
+		return <PHTML>
+			<div id="header_bg">
+				<div id="logo_div">
+					<a href="$home">
+						<img id="logo_img" alt="" src="./img/logo.png" />
+					</a>
+				</div>
+				<div id="menu_div">
+					$tab
+				    $login
+				</div>
+			</div>
+			$pages
+		</PHTML>
+	}
+
+
+#css
+	body
+	{
+		margin: 0px;
+		font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+		background-image: url('./img/formsbg.png');
+	}
+
+	input[type="button"]{cursor:pointer;}
+	.bloop{
+		position:absolute;
+		index:1000;
+	}
+	#header_bg {
+		background: url('./img/headerbg.png') repeat-x top center;
+		padding-top: 36px;
+		height: 100px;
+	}
+	#logo_div {
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-left: 15%;
+		float: left;
+	}
+	#logo_img {
+		height: 61px;
+		width: 318px;
+	}
+	#menu_div {
+		color: white;
+		margin-left: 15%;
+		float: left;
+		font-size: 16px;
+		font-weight: bold;
+	}
+	#menu_div ul {
+		list-style: none;
+	}
+	#menu_div li {
+		float:  left;
+		margin-left: 25px;
+	}
+	#menu_div a {
+		text-decoration: none;
+		color: inherit;
+	}
+	#menu_div a:hover {
+		border-bottom: 2px solid #1260DE;
+	}
+	#header_bg {
+		background: url('./img/headerbg.png') repeat-x top center;
+		padding-top: 36px;
+		height: 100px;
+	}
+
+

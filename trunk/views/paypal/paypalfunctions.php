@@ -49,6 +49,8 @@
 	if (session_id() == "") 
 		session_start();
 
+    $_SESSION["Payment_Amount"]=$_POST['amount'];
+
 	/* An express checkout transaction starts with a token, that
 	   identifies to PayPal your transaction
 	   In this example, when the script sees a token, the script

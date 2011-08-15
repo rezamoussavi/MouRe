@@ -1,0 +1,75 @@
+#comments
+
+	Author:	Reza Moussavi
+	Date:	7/30/2011
+	Ver:	1.0
+	---------------------
+	Author:	Reza Moussavi
+	Date:	6/03/2011
+	Ver:	0.1
+
+#biz
+	profilewidget:user
+
+#frame
+	frm(float:left; width:200;)
+
+#message
+	frame->showMyAccount=onShowMyAccount
+	user->logout=onLogout
+	user->login=onLogin
+
+#var
+	balance=0
+
+#node
+	user, adlink, publink
+
+#phpfunction
+
+	/******************************
+	*	Message Handlers
+	******************************/
+
+	function onLogin($info){
+		$u=new user("");
+		if($ud=$u->backUserData(osBackUserID())){
+			#var->balance=$ud['balance'];
+		}
+	}
+
+	function onLogout($info){
+		/*
+		*	Since the biz is interested in a message
+		*	It needs a callback function
+		*	But by this specific message we need to refresh the biz frame
+		*	by default each biz which is alive will be refreshed
+		*	So there is no need to put any code on this function
+		*/
+	}
+	
+	function onShowMyAccount($info){
+		$data=array();
+		osBroadcast(#msg->showMyAccount,$data);
+	}
+
+	/******************************
+	*	Frames
+	******************************/
+
+	function frm(){
+		if(!osUserLogedin()){
+			return "";
+		}
+		$myAccFormName = #nodeID."myacc";
+		$html=<PHTML>
+			Balance: {#var->balance} $
+			<form name="$myAccFormName" method="post">
+				<#msg->showMyAccount>
+				<input value ="My Page" type = "button" onclick = 'JavaScript:sndmsg("$myAccFormName")'  class="press" style="margin-top: 0px;" />
+			</form>
+		</PHTML>
+		return $html;
+	}
+
+

@@ -1,6 +1,6 @@
 <?php
-	$UN="samrad_db";
+	$UN="RocketViews";
 	$Pass="maxmirkia";
-	$DataBase="samrad_db";
+	$DataBase="RocketViews_biz";
 	$ServerAddress="localhost";
 ?>

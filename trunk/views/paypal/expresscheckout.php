@@ -11,7 +11,6 @@ require_once ("paypalfunctions.php");
 //' earlier in a session variable 
 //' by the shopping cart page
 //'------------------------------------
-$_SESSION["Payment_Amount"] = 10;
 $paymentAmount = $_SESSION["Payment_Amount"];
 
 //'------------------------------------
@@ -27,7 +26,7 @@ $paymentType = "Sale";
 //'
 //' This is set to the value entered on the Integration Assistant 
 //'------------------------------------
-$returnURL = "http://sam-rad.com/paypal/return.html";
+$returnURL = "http://RocketViews.com/paypal/return.php";
 
 //'------------------------------------
 //' The cancelURL is the location buyers are sent to when they hit the
@@ -35,7 +34,7 @@ $returnURL = "http://sam-rad.com/paypal/return.html";
 //'
 //' This is set to the value entered on the Integration Assistant 
 //'------------------------------------
-$cancelURL = "http://sam-rad.com/paypal/cancel.html";
+$cancelURL = "http://RocketViews.com/paypal/cancel.php";
 
 //'------------------------------------
 //' Calls the SetExpressCheckout API call

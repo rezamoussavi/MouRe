@@ -5,7 +5,7 @@
 
 	Author:	Reza Moussavi
 	Date:	5/5/2011
-	Ver:		1.0
+	Ver:	1.0
 
 */
 require_once 'biz/profileviewer/profileviewer.php';
@@ -42,14 +42,14 @@ class myaccviewer {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['frame_profileBtn'][$this->_fullname]=true;
-			$_SESSION['osMsg']['frame_pubLinkBtn'][$this->_fullname]=true;
-			$_SESSION['osMsg']['frame_adLinkBtn'][$this->_fullname]=true;
-			$_SESSION['osMsg']['frame_balanceBtn'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc_profile'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc_pubLink'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc_adLink'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc_balance'][$this->_fullname]=true;
 			$_SESSION['osMsg']['frame_reCalc'][$this->_fullname]=true;
-			$_SESSION['osMsg']['frame_test'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_login'][$this->_fullname]=true;
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_paypal'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -101,29 +101,29 @@ class myaccviewer {
 
 	function message($message, $info) {
 		switch($message){
-			case 'frame_profileBtn':
+			case 'page_Myacc_profile':
 				$this->onProfileBtn($info);
 				break;
-			case 'frame_pubLinkBtn':
+			case 'page_Myacc_pubLink':
 				$this->onPubLinkBtn($info);
 				break;
-			case 'frame_adLinkBtn':
+			case 'page_Myacc_adLink':
 				$this->onAdLinkBtn($info);
 				break;
-			case 'frame_balanceBtn':
+			case 'page_Myacc_balance':
 				$this->onBalanceBtn($info);
 				break;
 			case 'frame_reCalc':
 				$this->onReCalc($info);
-				break;
-			case 'frame_test':
-				$this->onTest($info);
 				break;
 			case 'user_login':
 				$this->onReCalc($info);
 				break;
 			case 'user_logout':
 				$this->onLogout($info);
+				break;
+			case 'page_paypal':
+				$this->onPayPal($info);
 				break;
 			default:
 				break;
@@ -175,10 +175,18 @@ class myaccviewer {
 	function onReCalc($info){
 		$this->reCalc();
 	}
-	function onTest($info){
-		$t=new transaction("");
-		$t->bookCharge($info['amount'],"For TEST purpose ONLY!");
-		$this->reCalc();
+	function onPayPal($info){
+		if(isset($_SESSION['paypal_paid'])){
+			if($_SESSION['paypal_paid']>0){
+				$txnid="UNKNOWN";
+				if(isset($_SESSION['paypal_txnid'])) $txnid=$_SESSION['paypal_txnid'];
+				$t=new transaction("");
+				$t->bookCharge($_SESSION['paypal_paid'],"Paid via PayPal, TransactionID: ".$txnid);
+				$this->reCalc();
+			}
+		}
+		unset($_SESSION['paypal_paid']);
+		unset($_SESSION['paypal_txnid']);
 	}
 	function onLogout($info){
 		$this->_bookframe("frmProfile");
@@ -217,6 +225,7 @@ class myaccviewer {
 		if(!osUserLogedin()){
 			return "";
 		}
+		$paypal=$this->frmPaypal();
 		$ReCalcFrmName = $this->_fullname."reCalc";
 		$testFrame=$this->_fullname."test";
 		$buttons=$this->buttons();
@@ -243,19 +252,62 @@ class myaccviewer {
 						<div class="balance_data">{$this->earned} $</div>
 				</div>
 				<div class="balance_section">
-					<div class="balance_test">
-						<form name="$testFrame" method="post">
-							<input type="hidden" name="_message" value="frame_test" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-							<input name="amount" size=5 />
-							<input value="test" type="button" onclick='JavaScript:sndmsg("$testFrame")' />
-						</form>
-					</div>
+					$paypal
 					$transaction_history
 				</div>
 			</div>
 		
 PHTMLCODE;
 
+	}
+	function frmPaypal(){
+		if(isset($_SESSION['paypal_confirm'])){
+			if($_SESSION['paypal_confirm']=="true"){
+				$pay=$_SESSION['paypal_amount'];
+				$charge=$pay*$_SESSION['paypal_charge'];
+				$total=$pay+$charge;
+				$html=<<<PHTMLCODE
+
+					<div class="balance_test">
+						<form action="paypal/DoExpressCheckoutPayment.php" method="POST">
+							Confirm payment to your balance at RocketViews.com
+							<br/>
+							<b>Add to Balance:</b> {$pay}
+							<br/>
+							<b>Paypal charge:</b> {$charge}
+							<br />
+							<hr><b>Order Total:</b>{$total}
+							<br />
+							<input type="submit" value="Pay" />
+						</form>
+					</div>
+				
+PHTMLCODE;
+
+			}
+		}else{
+			$msg="";
+			if(isset($_SESSION['paypal_done'])){
+				if($_SESSION['paypal_done']="true"){
+					$msg="<b><font color=green>Transaction colpleted Succesfully!</font></b>";
+				}
+			}
+			unset($_SESSION['paypal_done']);
+			$html=<<<PHTMLCODE
+
+				<div class="balance_test">
+					$msg
+					<form action='./paypal/ReviewOrder.php' METHOD='POST'>
+						<input name="L_AMT0" />
+						<input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0' align='top' alt='Check out with PayPal'/>
+					</form>
+				</div>
+			
+PHTMLCODE;
+
+		}
+		unset($_SESSION['paypal_confirm']);
+		return $html;
 	}
 	function transactionHistory(){
 		$tran="";
@@ -299,13 +351,17 @@ PHTMLCODE;
 		$mnu_bg_myad=($this->cur_menue=="myad")?"#E3E1E1":"white";
 		$mnu_bg_mypub=($this->cur_menue=="mypub")?"#E3E1E1":"white";
 		$mnu_bg_credit=($this->cur_menue=="credit")?"#E3E1E1":"white";
+		$link_profile=osBackPageLink("Myacc_profile");
+		$link_pubLink=osBackPageLink("Myacc_pubLink");
+		$link_adLink=osBackPageLink("Myacc_adLink");
+		$link_balance=osBackPageLink("Myacc_balance");
 		$html=<<<PHTMLCODE
 
 		    <div id="content_menu"> 
-		        <div class="content_menu_lst" style="background-Color:$mnu_bg_profile;" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1','$mnu_bg_profile')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_profileBtn');">Profile</div> 
-		        <div class="content_menu_lst" style="background-Color:$mnu_bg_mypub;" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2','$mnu_bg_mypub')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_pubLinkBtn');">My Published Videos</div> 
-		        <div class="content_menu_lst" style="background-Color:$mnu_bg_myad;" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3','$mnu_bg_myad')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_adLinkBtn');">My Ads</div> 
-		        <div class="content_menu_lst" style="background-Color:$mnu_bg_credit;" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4','$mnu_bg_credit')" onclick="JavaScript:sndevent('{$this->_fullname}','frame_balanceBtn');">Credit</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_profile;" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1','$mnu_bg_profile')" onclick="window.location.href='{$link_profile}';">Profile</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_mypub;" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2','$mnu_bg_mypub')" onclick="window.location.href='{$link_pubLink}';">My Published Videos</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_myad;" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3','$mnu_bg_myad')" onclick="window.location.href='{$link_adLink}';">My Ads</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_credit;" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4','$mnu_bg_credit')" onclick="window.location.href='{$link_balance}';">Credit</div> 
 		    </div> 
 		
 PHTMLCODE;

@@ -40,7 +40,6 @@ class tabbank {
 		if(!isset($_SESSION['osNodes'][$fullname])){
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
-			$_SESSION['osMsg']['client_tab'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -70,9 +69,6 @@ class tabbank {
 
 	function message($message, $info) {
 		switch($message){
-			case 'client_tab':
-				$this->onTabSelected($info);
-				break;
 			default:
 				break;
 		}
@@ -108,15 +104,17 @@ class tabbank {
 //########################################
 
 
-    function bookContent($content){//String[]
+    function bookContent($content){/* array[caption=caption, page=page, caption=caption, page=page ...] */
         $this->tabs=array();
-        foreach($content as $c){
-            $this->tabs[]=$c;
+        foreach($content as $k=>$v){
+            $this->tabs[$k]=$v;
         }
 	}
 	function bookSelected($sel){
-		$this->curTabName=$sel;
-		osBroadcast("tab_tabChanged",array("tabName"=>$sel));
+/*
+*		$this->curTabName=$sel;
+*		osBroadcast("tab_tabChanged",array("tabName"=>$sel));
+*/
     }
 	/*
 	*	This frm show all tabs (including selected one) as link
@@ -128,11 +126,21 @@ class tabbank {
 		
 PHTMLCODE;
 
-		foreach($this->tabs as $t){
-			$link=osBackPageLink($t);
+		$menu=array();
+		$cap="";/* caption */
+		foreach($this->tabs as $el){
+			if($cap==""){
+				$cap=$el;
+			}else{/* caption it is*/
+				$menu[]=array('caption'=>$cap,'page'=>$el);
+				$cap="";
+			}
+		}
+		foreach($menu as $t){
+			$link=osBackPageLink($t['page']);
 			$html.=<<<PHTMLCODE
 
-				<li><a href="{$link}">{$t}</a></li>
+				<li><a href="{$link}">{$t['caption']}</a></li>
 			
 PHTMLCODE;
 
@@ -140,9 +148,12 @@ PHTMLCODE;
 		return $html."</ul>";
 	}
     function onTabSelected($info){
-		if(array_search($info["name"],$this->tabs)!==false){
-			$this->bookSelected($info["name"]);
-		}
+/*
+*		if(array_search($info["name"],$this->tabs)!==false){
+*			$this->bookSelected($info["name"]);
+*
+*		}
+*/
 	}
 
 }

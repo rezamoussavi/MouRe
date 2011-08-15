@@ -1,0 +1,64 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	6/02/2011
+	Ver:	1.0
+
+#biz
+	linklistviewer
+
+#node
+	adlink
+	linkviewer links[]
+
+#frame
+	frmList
+
+#message
+	user->logout=onLogout
+
+#start
+	init
+
+#phpfunction
+
+	/********************************
+	*	Functionalities
+	*********************************/
+
+	function init(){
+		#node->links=array();
+		$al=new adlink("");
+		$all=$al->backAllLink();
+		$user=new user("");
+		$i=0;
+		foreach($all as $LData){
+			$u=$user->backUserData($LData['advertisor']);
+			$LData['userName']=$u['userName'];
+			$l=new linkviewer(#nodeID.$i++);
+			$l->bookData($LData);
+			#node->links[]=$l;
+		}
+	}
+
+	/********************************
+	*	Frames
+	*********************************/
+
+	function frmList(){
+		if(!osIsAdmin()){
+			return '<font style="background-color:#000000;color:#00FF00;">. Admin Access Only! .</font>';
+		}
+		$html="";
+		foreach(#node->links as $l){
+			$html.=$l->_backframe();
+		}
+		return $html;
+	}
+
+	/********************************
+	*	Message Handlers
+	*********************************/
+
+	function onLogout(){
+		_bookframe(#frm->frmList);
+	}

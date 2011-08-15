@@ -8,11 +8,13 @@
 			//##################################// Creat biz directory if not exists
 			mkdir("biz/".$_POST['biz']);
 		}
-		if(move_uploaded_file($_FILES["file"]["tmp_name"],"biz/".$_POST['biz']."/" . $_FILES["file"]["name"])){
+		$source=$_FILES["file"]["tmp_name"];
+		$dest="biz/".$_POST['biz']."/" . $_FILES["file"]["name"];
+		if(move_uploaded_file($source,$dest)){
 			//##################################// uploaded/copied successfully
 			echo "ok";
 		}else{
-			echo "error";
+			echo "error:\n $source \n $dest \n";
 		}
 	}
 ?>

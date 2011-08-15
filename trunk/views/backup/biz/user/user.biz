@@ -1,0 +1,396 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	6/03/2011
+	Version:1.5
+	---------------------
+	Author:	Reza Moussavi
+	Date:	2/16/2011
+	Version:1.3
+	---------------------
+	Author:	Reza Moussavi
+	Date:	1/26/2010
+	Version:1.2
+
+#biz
+	user:user
+
+#var
+	userUID,userName,email,loggedIn,BDate,Address,role
+
+#db
+	info ('userUID' int(11) NOT NULL auto_increment; 'email' varchar(50) NOT NULL; 'userName' varchar(50) NOT NULL; 'BDate' varchar(10) NOT NULL; 'Address' varchar(255) NOT NULL; 'Country' varchar(100) NOT NULL; 'PostalCode' varchar(25) NOT NULL; 'password' varchar(50) NOT NULL; 'verificationCode' varchar(50) NOT NULL; 'biznessUID' int(11) NOT NULL; 'role' varchar(50) NOT NULL COMMENT 'user / admin'; PRIMARY KEY  ('userUID'); UNIQUE KEY 'email' ('email'))
+#db-comment
+	'userUID' int(11)
+	'email' varchar(50)
+	'userName' varchar(50)
+	'BDate' varchar(10)
+	'Address' varchar(255)
+	'Country' varchar(100)
+	'PostalCode' varchar(25)
+	'password' varchar(50)
+	'verificationCode' varchar(50)
+	'biznessUID' int(11)
+	'role' varchar(50)
+
+#phpfunction
+
+	function changePass($old,$new){
+		$u=osBackUser();
+		$hashPass = #fun->sha1Hash($u['email'],$old);
+		$newPass = #fun->sha1Hash($u['email'],$new);
+		query("SELECT * FROM #db->info WHERE password='$hashPass'");
+		if(fetch()){
+			query("UPDATE #db->info SET password='$newPass' WHERE password='$hashPass'");
+			return true;
+		}else
+			return false;
+	}
+
+	function bookInfo($info){
+		if(is_array($info)){
+			if(isset($info['email'])&&isset($info['Password'])){
+				$hashPass = #fun->sha1Hash($info['email'],$info['Password']);
+				query("SELECT * FROM #db->info WHERE email='".$info['email']."' AND password='".$hashPass."'");
+				$passcheck=fetch();
+				if(!is_array($passcheck)) return "Incorrect Password!";
+				$q="UPDATE #db->info SET email='$info[email]'";
+				if(isset($info['RealName']))
+					$q.=" , userName='$info[RealName]' ";
+				if(isset($info['PostalCode']))
+					$q.=" , PostalCode='$info[PostalCode]' ";
+				if(isset($info['Country']))
+					$q.=" , Country='$info[Country]' ";
+				if(isset($info['BDate']))
+					$q.=", BDate='$info[BDate]'";
+				if(isset($info['Address']))
+					$q.=" , Address='$info[Address]'";
+				$q.="  WHERE password='$hashPass'";
+				query($q);
+				$u=osBackUser();
+				$u['email']=$info['email'];
+				if(isset($info['RealName']))
+					$u['userName']=$info['RealName'];
+				if(isset($info['BDate']))
+					$u['BDate']=$info['BDate'];
+				if(isset($info['Address']))
+					$u['Address']=$info['Address'];
+				if(isset($info['PostalCode']))
+					$u['PostalCode']=$info['PostalCode'];
+				if(isset($info['Country']))
+					$u['Country']=$info['Country'];
+				osBookUser($u);
+				return 1;
+			}else return "Password required!";
+		}else return "Internal error, try again!";
+	}
+
+	// $info = array("email"=>xxx,  "Pass"=>xxx,  "NewPass"=>xxx,  "Address"=>xxx,  "BDate"=>xxx,  "Name"=>xxx)
+	function updateUserInfo($info){
+		$email='';	$pass='';	$message='ok';
+
+		//#######################
+		// check if email and pass included
+		// and have values also if there is a bdate if it is in right format
+		// else RETURN propper error message
+
+		if(isset($info['email']))	{$email=$info['email'];}	else{return 'Enter email!';}
+		if(isset($info['Pass']))	{$pass=$info['Pass'];}		else{return 'Enter Password';}
+		if(strlen(trim($pass))<1)	{return 'Enter Password';}
+		$bdate=isset($info['BDate'])?#fun->convertBDate($info['BDate']):'';
+		if($bdate=='error')	{return 'Incorrect BDate Format';}
+
+		//#######################
+		// Extract other info from $info
+		// put empty string if is not set
+
+		$newpass=isset($info['NewPass'])?$info['NewPass']:'';
+		$address=isset($info['Address'])?$info['Address']:'';
+		$name=isset($info['Name'])?$info['Name']:'';
+
+		//#######################
+		// update user if pass is correct
+		//
+
+		$hashPassword = #fun->sha1Hash($email,$pass);
+		query("SELECT * FROM #db->info WHERE email='" . $email . "' AND password='" . $hashPassword . "'  AND biznessUID= '" . osBackBizness() . "';");
+		if($row=fetch()){// Password correct
+			$UID=$row['userUID'];
+			$newpass = (strlen(trim($newpass))<1)?$hashPassword:#fun->sha1Hash($email,$newpass);
+			$q="UPDATE #db->info SET password='".$newpass."', Address='".$address."', BDate='".$bdate."', userName='".$name."' WHERE userUID='".$UID."'";
+			if(!query($q)){
+				$message='DB ERROR:<br />'.$q;
+			}
+		}else{//Incorrect password
+			$message='Incorrect Password';
+		}
+		if($message=='ok'){
+			osBookUser(array("email" => $email, "userUID" => $UID, "Address"=>$address, "userName"=>$name, "BDate"=>$info['BDate']));
+		}
+		return $message;
+	}
+
+	function convertBDate($b){
+		$b=trim($b);
+		if(strlen($b)!=10)
+			return 'error';
+		if(substr($b,4,1)!="/" || substr($b,7,1)!="/")
+			return 'error';
+		return substr($b,0,4).substr($b,5,2).substr($b,8,2);
+	}
+
+	function backName(){
+		$n='{no name}';
+		$u=osBackUser();
+		if(isset($u['userName'])){
+			$n=$u['userName'];
+		}
+		return $n;
+	}
+
+	function backEmail(){
+		$n='{no email}';
+		$u=osBackUser();
+		if(isset($u['email'])){
+			$n=$u['email'];
+		}
+		return $n;
+	}
+
+	function backAddress(){
+		$n='{no address}';
+		$u=osBackUser();
+		if(isset($u['Address'])){
+			$n=$u['Address'];
+		}
+		return $n;
+	}
+
+	function backBDate(){
+		$n='{no b-date}';
+		$u=osBackUser();
+		if(isset($u['BDate'])){
+			$n=$u['BDate'];
+		}
+		return $n;
+	}
+
+	function addSlash2BDate($b){
+		return substr($b,0,4)."/".substr($b,4,2)."/".substr($b,6,2);
+	}
+
+    function logout() {
+        #var->loggedIn = 0;
+		osBookUser(array("email" => "", "userUID" => -1, "name"=>""));
+        osBroadcast(#msg->logout, array());
+    }
+
+    function isLoggedin() {
+        return #var->loggedIn;
+    }
+
+    function backUID($email) {
+        return #var->userUID;
+    }
+
+    function sendVerificationCode() {
+        #fun->sendEmail(#var->email, "Verify", #fun->createVerificationCode());
+    }
+
+    function validate($verificationCode) {        
+        query("SELECT * FROM #db->info WHERE userUID='" . #var->userUID . "' ;");
+        if ($row = fetch()) {
+            //correct code
+            if ($verificationCode == $row["verificationCode"]) {
+                query("UPDATE #db->info SET verificationCode='0' WHERE userUID = '" . #var->userUID . "';");
+                #var->loggedIn = 1;
+                return TRUE;
+            }
+            //wrong code
+            else
+            {
+                #var->loggedIn = 3;
+                return FALSE;
+            } 
+        }
+        //shouldn't be possible
+        else
+        {
+            echo 'this should really not be possible...';
+        }
+    }
+
+    /*     * **************************General Biz functionality*************************** */
+
+	function checkPass($password){
+		$email=osBackUserEmail();
+        $hashPassword = #fun->sha1Hash($email,$password);
+        $s = "SELECT * FROM #db->info WHERE email='" . $email . "' AND password='" . $hashPassword . "';";
+        query($s);
+        return ($row = fetch())?TRUE:FALSE;
+	}
+
+    function login($email, $password) {        
+        //First check if the email even exists in the database...
+        query("SELECT * FROM #db->info WHERE email='" . $email . "' AND biznessUID= '" . osBackBizness() . "';");
+        $row = fetch();
+        
+        //Didn't exist...
+        if (count($row) == 1) {
+            #var->loggedIn = -2;
+            return -2;
+        }
+        //Email did exist
+        else
+        {
+            $hashPassword = #fun->sha1Hash($email,$password);
+            $s = "SELECT * FROM #db->info WHERE email='" . $email . "' AND password='" . $hashPassword . "'  AND biznessUID= '" . osBackBizness() . "';";
+            query($s);
+            
+            if ($row = fetch()) {
+                #var->email = $email;
+                #var->userUID = $row["userUID"];
+                #var->userName = $row["userName"];
+                if ($row["verificationCode"] == '0') {
+                    // login succefull
+                    #var->loggedIn = 1;
+                    
+                    // let bizes know we're logged in!
+					osBookUser(array("email" => #var->email, "userUID" => #var->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
+                    osBroadcast(#msg->login, array());
+                    return 1;
+                } else {
+                    //login succefull but need to validation
+                    #var->loggedIn = 2;
+                    return 2;
+                }
+            }
+            else
+            {
+                //login failed
+                #var->loggedIn = -1;
+                return -1; 
+            }
+        }
+        
+    }
+
+    function add($email, $password, $passwordagain, $userName, $Address, $Country, $PostalCode, $role) {
+        //check if the email is already registered 
+        query("SELECT * FROM #db->info WHERE email='" . $email . "' ;");
+        if ($row = fetch())
+        {
+            if ($email == $row["email"]) {
+                return -1; //user already exist
+            }
+        }
+        //if not, proceed! 
+        else
+        {
+            if($password == $passwordagain)
+            {
+                //save the new user in the database
+                $vcode = #fun->createVerificationCode();
+                $hashPassword = #fun->sha1Hash($email,$password);
+                query("INSERT INTO #db->info (email,password,verificationCode,biznessUID,userName,Address,Country,PostalCode,role) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."','".$userName."','".$Address."','".$Country."','".$PostalCode."','".$role."');");
+                
+                // A welcome message to the user...
+                $msg = "Welcome! Please login to your account and verify by this code: ".$vcode;
+
+				$mailheader='From: register@sam-rad.com' . "\r\n" .
+							'Reply-To: register@sam-rad.com' . "\r\n" .
+							'X-Mailer: PHP/' . phpversion();
+                //send an email to the user. FIX MAILING FUNCTION!
+                #fun->sendEmail($email, "Welcome to buziness!", $msg,$mailheader);
+                
+                
+                //to get the fresh userUID...
+                query("SELECT * FROM #db->info WHERE email='" . $email . "' ;");
+                if ($row = fetch())
+                    {
+                        #var->userUID = $row['userUID'];
+                    }
+                #var->loggedIn = 2;
+                
+                //All set - user added and logged in!
+                return 1; 
+            }
+            //passwords didn't match...
+            else
+            {
+                return -2;
+            }
+        }
+    }
+
+    function backUIDByEmail($email) {
+        query("SELECT * FROM #db->info WHERE email='" . $email . "' ;");
+        if ($row = fetch()) {
+            return $row["userUID"];
+        } else {
+            return -1;
+        }
+    }
+
+    function sendNewPassword($email) {
+        query("SELECT * FROM #db->info WHERE email='" . $email . "';");
+        if ($row = fetch()) {
+                $password = #fun->generateRandomPassword();
+                $hashPassword = #fun->sha1Hash($email,$password);
+                query("UPDATE #db->info SET password = '" . $hashPassword . "' WHERE email = '" . $email . "';");
+                #fun->sendEmail($email, "New Password", $password);
+                return TRUE; //email succefully sent
+        }
+        return FALSE; //email wasn't found in db
+    }
+
+    /*     * **************************Internal Biz functionality*************************** */
+
+    private function sha1Hash($email,$password) {
+        $hashPassword = sha1($email.$password);
+        return $hashPassword;
+    }
+    private function sendEmail($to, $title, $msgToSend, $header) {
+        /*
+         * Needs to be reworked...
+         */
+        mail($to, $title, $msgToSend, $header);
+    }
+
+    private function createRandomChars($toSelectFrom, $length) {
+        $i = 0;
+        $pass = '';
+        while ($i < $length) {
+            $num = rand(0, strlen($toSelectFrom) - 1);
+            $tmp = substr($toSelectFrom, $num, 1);
+            $pass = $pass . $tmp;
+            $i++;
+        }
+        return $pass;
+    }
+
+    private function generateRandomPassword() {
+        $toSelectFrom = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
+        return #fun->createRandomChars($toSelectFrom, 8);
+    }
+
+    private function createVerificationCode() {
+        $toSelectFrom = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return #fun->createRandomChars($toSelectFrom, 10);
+    }
+
+	function backUserData($userUID){
+		query("SELECT * FROM #db->info WHERE userUID='".$userUID."'");
+		return fetch();
+	}
+
+	function backAll(){
+		$users=array();
+		if(!osIsAdmin()){	return $users;	}
+		query("SELECT * FROM #db->info WHERE role='user'");
+		while($row=fetch()){
+			unset($row['password']);
+			unset($row['verificationCode']);
+			$users[]=$row;
+		}
+		return $users;
+	}

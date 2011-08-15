@@ -1,0 +1,550 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	6/13/2011
+	Ver:	1.0
+	----------------------
+	Author:	Reza Moussavi
+	Date:	5/1/2011
+	Ver:	0.1
+
+#biz
+	videobar
+
+#frame
+	frm
+	frmToPublish[video_box]
+	frmMyAd[adds_video_box]
+	frmMyPub[adds_video_box]
+	frmShort
+
+#node
+	scriptviewer scv
+	ipviewer
+	adlink
+	user
+
+#var
+	data, showScript=false, showStat=false
+
+#message
+	frame->getLink=onGetLink
+	frame->StatBtn=onStatBtn
+	frame->stopBtn=onStopBtn
+	frame->notStop
+	user->login=onLoginStatusChanged
+	user->logout=onLoginStatusChanged
+
+#phpfunction
+
+	/******************************************
+	*		Frames
+	******************************************/
+
+	function frm(){
+		return "[ Video Bar! ]";
+	}
+
+	function frmToPublish(){
+		$frmName=#nodeID.#var->data['adUID'];
+		$scv=(#var->showScript)?#node->scv->_backframe():" ";
+		$EPV=#var->data['AOPV']*#var->data['APRate'];
+		$Title=htmlspecialchars(#var->data['title'], ENT_QUOTES);
+		$lastDate=strlen(#var->data['lastDate']." ")>3?"Last Date : ".#var->data['lastDate']:"";
+		$country="";
+		if(strlen(#var->data['country'])>3)
+			$country="<br />only in ".#var->data['country'];
+		return <PHTML>
+			<div class="box_close_topub">
+				<div class="box_image">
+					<a href="http://www.sam-rad.com/watch?v={#var->data['videoCode']}" target="_blank">
+						<img class="video_image" src="{#var->data['img']}" />
+					</a>
+				</div>
+				<div class="other_info_container">
+					<div class="video_header">
+						<div class="video_title">{$Title}</div>
+						<div class="details_btn_div">
+							<form id="$frmName" method="post">
+								<input class="getlink_btn" type="button" value="Get link to publish" onclick='JavaScript:sndmsg("$frmName")'/>
+								<#msg->getLink>
+							</form>
+						</div>
+					</div>
+					<div class="other_n_embed">
+						<div class="video_other_info_topub" >
+							<div class="video_details">
+								Earn/View : $EPV $ $country
+							</div>
+							<div class="video_details">
+								viewed {#var->data['viewed']} of {#var->data['maxViews']}
+							</div>
+							<div class="video_details">
+								$lastDate
+							</div>
+        	    		</div>
+						$scv
+        	    	</div>
+        	    </div>
+			</div>
+		</PHTML>
+	}
+
+	function frmMyPub(){
+		$frmName=#nodeID.#var->data['adUID'];
+		$AOPV=#var->data['AOPV'];
+		$APRate=#var->data['APRate'];
+		$EPV=$AOPV*$APRate;
+		$VN=#var->data['viewed'];
+		$RM=#var->data['maxViews']-$VN;
+		$SD=#var->data['startDate'];
+		$LD=#var->data['lastDate'];
+		$UVN=#var->data['totalView'];
+		$country=#var->data['country'];
+		$UE=$UVN*$EPV;
+		$lastDate=(strlen(#var->data['lastDate'])>2)?#var->data['lastDate']:"&lt;yet open&gt;";
+		return <PHTML>
+			<div class="box_close"> 
+				<div class="box_image"> 
+				    <a href="{#var->data['link']}" target="_blank"> 
+				        <img class="video_image" src="{#var->data['img']}" /> 
+					</a> 
+				</div> 
+				<div class="other_info_container"> 
+				    <div class="video_header"> 
+				        <div class="video_title" style="width:100%;">{#var->data['title']}</div> 
+				    </div> 
+				    <div class="stop_conf_dif">
+				    </div> 
+				    <div class="other_n_embed"> 
+				        <div class="video_other_info" > 
+				            <div class="video_details btnbrdr"> 
+				                Viewd $VN of {#var->data['maxViews']}<br />(remaining: $RM)
+				            </div> 
+				            <div class="video_details btnbrdr"> 
+								Earn Per View: {$EPV}<br />(country: $country)
+				            </div> 
+				            <div class="video_details btnbrdr"> 
+				                Start Date : {#var->data['startDate']}
+				            </div> 
+				            <div class="video_details btnbrdr"> 
+				                Finishing Date : {$lastDate}
+							</div> 
+				        </div> 
+						<div class="box_open_mypub"> 
+				            <div class="pubvid_num_div">Viewd by You: {$UVN}</div>
+				            <div class="earned_div">You earned: {$UE}$ </div>
+				        </div> 
+				    </div> 
+				</div> 
+			</div> 
+		</PHTML>
+
+
+		return <PHTML>
+		<div style="width:650px;height:100;">
+			<div style="float:left;height:100px;width:150px;text-align:left;">
+				<a href="{#var->data['link']}" target="_blank">
+					<img src="{#var->data['img']}" />
+				</a>
+			</div>
+			<div style="float:left;height:100px;width:300px;align:right;">
+				<u>{#var->data['title']}</u><br />
+				Earn Per View (in $country only): {$EPV}<br />
+				Viewed: $VN<br />
+				Remaining: $RM<br />
+				StartDate:$SD - Last Date : $LD
+			</div>
+			<div style="float:left;height:75px;width:150px;text-align:left;border:1px solid #FFFFFF;margin:5px;padding:5px;background-color:#E0E0FF;">
+				Viewed by you: $UVN<br />
+				You earned: $UE<br />
+			</div>
+		</div>
+		</PHTML>
+	}
+
+	function frmShort(){
+		$Title=htmlspecialchars(#var->data['title'], ENT_QUOTES);
+		return <PHTML>
+		<div style="width:650px;height:120;">
+			<div style="float:left;height:120px;width:150px;text-align:left;">
+				<a href="{#var->data['link']}" target="_blank">
+					<img src="{#var->data['img']}" />
+				</a>
+			</div>
+			<div style="float:left;height:120px;width:400px;align:right;">
+				Title : {$Title}
+			</div>
+		</div>
+		</PHTML>
+	}
+
+	function frmMyAd(){
+		$Title=#var->data['title'];
+		$AOPV=#var->data['AOPV'];
+		$VN=#var->data['viewed'];
+		$TV=#var->data['maxViews'];
+		$RM=$TV-$VN;
+		$StatisticsBtn=#var->showStat?"[-]":"[+]";
+		$StatisticsBtn.=" Stats";
+		$frmStatName=#nodeID."Stat";
+		$statFrm=#fun->backStatFrame();
+		$stopBtn=#fun->frmStopBtn();
+		$lastDate=(strlen(#var->data['lastDate'])>2)?#var->data['lastDate']:"&lt;yet open&gt;";
+		return <PHTML>
+			<div class="box_close"> 
+				<div class="box_image"> 
+				    <a href="{#var->data['link']}" target="_blank"> 
+				        <img class="video_image" src="{#var->data['img']}" /> 
+					</a> 
+				</div> 
+				<div class="other_info_container"> 
+				    <div class="video_header"> 
+				        <div class="video_title" style="width:100%;">$Title</div> 
+				    </div> 
+				    <div class="stop_conf_dif">
+				    	$stopBtn
+				    </div> 
+				    <div class="other_n_embed"> 
+				        <div class="video_other_info" > 
+				            <div class="video_details"> 
+				                Viewd $VN of $TV<br />(remaining: $RM)
+				            </div> 
+				            <div class="video_details"> 
+				                Start Date : {#var->data['startDate']}
+				            </div> 
+				            <div class="video_details"> 
+				                Finishing Date : {$lastDate}
+							</div> 
+				        </div> 
+						<div class="box_open"> 
+				            <div class="pubvid_num_div">Total Paid: {#var->data['paid']}</div>
+				            <div class="earned_div">Pay Per View : {$AOPV}</div>
+				        </div> 
+				    </div> 
+				</div> 
+				<div class="stats_btn_div"> 
+				    <input class="statistics_btn" type="button" value="$StatisticsBtn" onclick="javascript:sndmsg('#msg->StatBtn')"/> 
+				</div> 
+			</div> 
+			$statFrm
+		</PHTML>
+	}
+
+	function frmStopBtn(){
+		$html="";
+		$frmName=#nodeID.#var->data['adUID'];
+		/*
+		*	Has been Removed
+		*/
+		if(#var->data['running']==0){
+			$html= <PHTML>
+		        <div class="stop_btn_div"> 
+		        	<div class="stop_not_txt">Has been Removed!</div>
+		        </div> 
+			</PHTML>
+		}
+		/*
+		*	Has been Stoped
+		*/
+		elseif(#var->data['running']==-1){
+			$html= <PHTML>
+		        <div class="stop_not_txt">This video will be removed from publishing at {#var->data['lastDate']}<br />and you will be re-imbursed with teh remaining number of views.</div> 
+			</PHTML>
+		}
+		/*
+		*	Not yet to be able to stop
+		*
+		* Today-minCancelTime>startDate
+		*/
+		elseif(date("Y/m/d",mktime(0,0,0,date("m"),date("d") - #var->data['minCancelTime'],date("Y"))) < #var->data['startDate']){
+			$month=substr(#var->data['startDate'],5,2);
+			$day=substr(#var->data['startDate'],8,2);
+			$year=substr(#var->data['startDate'],0,4);
+			$stopDate=date("Y/m/d",mktime(0,0,0,$month,$day + #var->data['minCancelTime'],$year));
+			$html= <PHTML>
+		        <div class="stop_btn_div"> 
+		        	<div class="stop_not_txt">Cannot stop till $stopDate</div>
+		        </div> 
+			</PHTML>
+		}
+		/*
+		*	Show Stop
+		*/
+		else{
+			$frmName1=$frmName."1";
+			$html= <PHTML>
+		        <div class="stop_btn_div" id="stopBtn1st"> 
+		            <input class="stop_btn" type="button" value="Stop" onclick='document.getElementById("stopBtn1st").style.display="none";document.getElementById("confirmForm").style.display="inline"'/> 
+		        </div> 
+		        <div class="stop_not_div" id="confirmForm" style="display:none;"> 
+   					<form id="$frmName" method="post" style="display:inline;">
+						<#msg->stopBtn>
+						<font size=1px>this video will stop in {#var->data['minLifeTime']} days. Are you sure you want to stop rocketing the views?</font>
+						<br />
+				        <label class="bold">Password: </label> 
+				        <input name="password" type="password" size="20" /> 
+				        <input class="stop_conf_btn" type="button" value="OK!" onclick='JavaScript:sndmsg("$frmName")'/> 
+				        <input class="stop_conf_btn" type="button" value="Dont stop" onclick='JavaScript:sndmsg("#msg->notStop")'/> 
+					</form>
+		        </div> 
+			</PHTML>
+		}
+		return $html;
+	}
+
+	function backStatFrame(){
+		if(!#var->showStat)
+			return "";
+		$ipv=new ipviewer("");
+		$ipv->bookInfo(#var->data['adUID'],#var->data['title']);
+		return $ipv->_backframe();
+	}
+
+	/******************************************
+	*		Message Handlers
+	******************************************/
+
+	function onGetLink($info){
+		#var->showScript=!#var->showScript;
+		_bookframe(#var->_curFrame);
+	}
+
+	function onLoginStatusChanged($info){
+		#fun->generateScript();
+	}
+
+	function onStatBtn($info){
+		#var->showStat=!#var->showStat;
+		_bookframe(#var->_curFrame);
+	}
+
+	function onStopBtn($info){
+		$al=new adlink("");
+		$u=new user("");
+		if($u->changePass($info['password'])){
+			if($al->stop(#var->data['adUID'])){
+				#var->data=$al->backLinkByID(#var->data['adUID']);
+			}
+		}
+		_bookframe(#var->_curFrame);
+	}
+
+	/******************************************
+	*		Functionalities
+	******************************************/
+
+	function bookMode($mode){
+		switch($mode){
+			case "topublish":
+				_bookframe(#frm->frmToPublish);
+				break;
+			case "myad":
+				_bookframe(#frm->frmMyAd);
+				break;
+			case "mypub":
+				_bookframe(#frm->frmMyPub);
+				break;
+			case "short":
+				_bookframe(#frm->frmShort);
+				break;
+			default:
+				_bookframe(#frm->frm);
+		}
+	}
+
+	function bookInfo($data){
+		#var->data=$data;
+		#fun->generateScript();
+	}
+
+	function generateScript(){
+		#node->scv->generateScript(#var->data);
+	}
+
+
+#css
+	.adds_video_box
+	{
+		color: white;
+		margin-top: 15px;
+		margin-bottom: 15px;
+		margin-left: 0px;
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		border-radius: 20px 20px 20px 20px;
+		padding-bottom: 10px;
+	}
+	.bold{font-weight:  bold; font-size: 14px;}
+	.box_close {height: 250px;}
+	.box_closed {
+		height: 120px;
+		width: 100px;
+		margin-left: 10px auto;
+		margin-right: 10px auto;
+	}
+	.box_image
+	{
+		margin-left:15px;
+		float: left;
+	}
+	.details_btn_div {float: left; margin-left: 10px;}
+	.stop_btn_div {float: right; margin-right: 10px;}
+	.getlink_btn {
+		margin-right: 17px;
+		width: 150px;
+		height: 30px;
+		color: white;
+		background-color: #FF9966;
+		border-radius: 5px;
+		font-weight: bold;
+	}
+	.statistics_btn {
+		margin-right: 17px;
+		margin-left: 485px;
+		width: 100px;
+		height: 30px;
+		color: white;
+		background-color: #FF9966;
+		border-radius: 5px;
+		font-weight: bold;
+	}
+	.box_open
+	{
+		font-size: 13px;
+		font-weight: bold;
+		float: right;
+		margin-right: 20px;
+		width: 340px;
+		margin-left: 3px;
+		border-left: 1px dotted #4969E6;
+	}
+	.box_open_mypub
+	{
+		font-weight: bold;
+		float: right;
+		margin-right: 20px;
+		width: 150px;
+		margin-left: 150px;
+		border: 1px dotted #4969E6;
+		padding: 10px;
+	}
+	.earned_div {margin-top: 10px;}
+	.other_info_container
+	{
+		float: left;
+		margin-top: 18px;
+	}
+	.other_n_embed
+	{
+		margin-left: 10px;
+		margin-top: 50px;
+	}
+	.earned_div {margin-top: 10px;}
+	.show_map_btn
+	{
+		margin-left: 600px;
+		width: 300px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.stats_btn_div {float: right; width: 610px; margin-top: -30px;}
+	.stop_btn
+	{
+		margin-left: 55px;
+		width: 100px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.stop_conf_dif {margin-left: 10px;}
+	.stop_conf_btn
+	{
+		margin-left: 5px;
+		width: 50px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.stop_not_div
+	{
+		margin-top: 5px;
+		margin-left: 100px;
+		float: left;
+		width: 500px;
+	}
+	.stop_not_div
+	{
+		margin-top: 5px;
+		margin-left: 100px;
+		float: left;
+		width: 500px;
+	}
+	.stop_not_div label {margin-left: 30px;}
+	.stop_not_txt
+	{
+		font-family: Lucida Fax;
+		font-style: italic;
+		font-size: 14px;
+		text-align: right;
+		margin-top: 35px;
+		margin-left: 80px;
+		width: 500px;
+		color: cyan;
+	}
+	.video_header {}
+	.video_image {
+		width: 320px;
+		height: 180px;
+		margin-top: 12px;
+		border: 4px solid #6DC8E0;
+		border-radius: 10px 10px 10px 10px;
+	}
+	.video_title
+	{
+		margin-left: 10px;
+		float: left;
+		width: 420px;
+		font-weight: bold;
+	}
+	.video_other_info
+	{
+		font-size: 13px;
+		width: 180px;
+		height: 100px;
+		font-weight: bold;
+		text-align: left;
+		float: left;
+	}
+	.video_other_info_topub {
+		font-size: 16px;
+		width: 120px;
+		height: 100px;
+		font-weight: bold;
+		text-align: left;
+		float: left;
+	}
+	.video_details {
+		font-size: 80%;
+		margin-bottom: 5px;
+	}
+	.video_box {
+		height: 214px;
+		color: white;
+		margin-top: 15px;
+		margin-bottom: 15px;
+		margin-left: 10px;
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		border-radius: 20px 20px 20px 20px;
+	}
+	.btnbrdr{
+		margin-bottom:4px;
+		padding-bottom:4px;
+		border-bottom:1px dotted white;
+	}
+

@@ -50,7 +50,7 @@
 
 	function osBackPageLink($page){
 		$_SESSION['osPage']=$page;
-		return "?p=".$page;
+		return "http://".$_SERVER['SERVER_NAME']."?p=".$page;
 	}
 
 	function osBackLink($node,$curLink,$linkto){
@@ -338,8 +338,10 @@ PHTML;
 				</div> $tab <b style="cursor:pointer;" onclick="getElementById('$id').style.display='block'"> ] </b>
 PHTML;
 			return $ret;
-		}else{
+		}else if (is_string($a)){
 			return htmlspecialchars($a, ENT_QUOTES);
+		}else{
+			return "[?]";
 		}
 	}
 

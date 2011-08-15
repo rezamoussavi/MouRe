@@ -1,0 +1,65 @@
+
+	.box_open_scv
+	{
+		float: right;
+		margin-right: 20px;
+		margin-left: 3px;
+		border-left: 1px dotted #4969E6;
+	}
+	.embed_src_scv{
+		background-color: #99CCFF;
+		border-color: white;
+		/*border-radius: 10px 10px 10px 10px;*/
+		height: 75px;
+		width: 320px;
+		margin-left: 10px;
+		text-align: left;
+		/* font-size:90%; */
+	}
+	.link_src_scv{
+		background-color: #99CCFF;
+		border-color: white;
+		/*border-radius: 10px 10px 10px 10px;*/
+		height: 40px;
+		width: 320px;
+		margin-left: 10px;
+		text-align: left;
+		/* font-size:90%; */
+	}
+	.input_area_scv{
+		background-color: #99CCFF;
+		border-color: white;
+		border-width:1px;
+		text-align: left;
+	}
+	.embed_size_scv
+	{
+		float: left;
+		/* margin-top: 30px; */
+		width: 110px;
+		font-weight: bold;
+		font-size: 90%;
+	}
+	.embed_box_scv
+	{
+		float: right;
+	}
+	.size_title_scv{
+		margin-top: 5px;
+		font-size: 80%;
+		margin-left: 10px;
+		float: left;
+	}
+	.size_input_scv{
+		float: right;
+		margin-left: 2px;
+		border-radius: 5px 5px 5px 5px;
+	}
+	.link_title_scv{
+		margin-top:10px;
+		padding-left:10px;
+		float:left;
+		margin-bottom:40px;
+		width: 110px;
+	}
+

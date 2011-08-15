@@ -51,7 +51,7 @@
 		document.getElementById("theTotal").value = total;
 		var msgTotal="";
 		if( balance<total)
-			msgTotal="<font color=red>Insufficient Balance</font><a href='/paypal'>charge</a>";
+			msgTotal="<font color=red>Insufficient Balance</font><a href='/?p=Myacc_balance'>charge</a>";
 		document.getElementById("msgTotal").innerHTML = msgTotal;
 		if(okTitle && okYLink && okAOPV && okNOV && ( balance>=total))
 			document.getElementById('theButton').disabled=0;

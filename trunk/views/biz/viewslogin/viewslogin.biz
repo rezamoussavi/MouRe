@@ -243,7 +243,7 @@
 		$name=strlen($u['userName'])>1?$u['userName']:$u['email'];
 		$lgoutFrm=#nodeID."lgout";
 		$d=array();
-		$link=osBackPageLink("Myacc");
+		$link=osBackPageLink("Myacc_profile");
 		return <PHTML>
             <div id="pers_info">
                 Welcome <span id="user_name">$name</span>!

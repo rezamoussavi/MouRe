@@ -1,0 +1,186 @@
+
+	.adds_video_box
+	{
+		color: white;
+		margin-top: 15px;
+		margin-bottom: 15px;
+		margin-left: 0px;
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		border-radius: 20px 20px 20px 20px;
+		padding-bottom: 10px;
+	}
+	.bold{font-weight:  bold; font-size: 14px;}
+	.box_close {height: 250px;}
+	.box_closed {
+		height: 120px;
+		width: 100px;
+		margin-left: 10px auto;
+		margin-right: 10px auto;
+	}
+	.box_image
+	{
+		margin-left:15px;
+		float: left;
+	}
+	.details_btn_div {float: left; margin-left: 10px;}
+	.stop_btn_div {float: right; margin-right: 10px;}
+	.getlink_btn {
+		margin-right: 17px;
+		width: 150px;
+		height: 30px;
+		color: white;
+		background-color: #FF9966;
+		border-radius: 5px;
+		font-weight: bold;
+	}
+	.statistics_btn {
+		margin-right: 17px;
+		margin-left: 485px;
+		width: 100px;
+		height: 30px;
+		color: white;
+		background-color: #FF9966;
+		border-radius: 5px;
+		font-weight: bold;
+	}
+	.box_open
+	{
+		font-size: 13px;
+		font-weight: bold;
+		float: right;
+		margin-right: 20px;
+		width: 340px;
+		margin-left: 3px;
+		border-left: 1px dotted #4969E6;
+	}
+	.box_open_mypub
+	{
+		font-weight: bold;
+		float: right;
+		margin-right: 20px;
+		width: 150px;
+		margin-left: 150px;
+		border: 1px dotted #4969E6;
+		padding: 10px;
+	}
+	.earned_div {margin-top: 10px;}
+	.other_info_container
+	{
+		float: left;
+		margin-top: 18px;
+	}
+	.other_n_embed
+	{
+		margin-left: 10px;
+		margin-top: 50px;
+	}
+	.earned_div {margin-top: 10px;}
+	.show_map_btn
+	{
+		margin-left: 600px;
+		width: 300px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.stats_btn_div {float: right; width: 610px; margin-top: -30px;}
+	.stop_btn
+	{
+		margin-left: 55px;
+		width: 100px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.stop_conf_dif {margin-left: 10px;}
+	.stop_conf_btn
+	{
+		margin-left: 5px;
+		width: 50px;
+		height: 30px;
+		background-color: #A2E3F5;
+		border: 5px solid #1ABABA;
+		border-radius: 10px;
+		font-weight: bold;
+	}
+	.stop_not_div
+	{
+		margin-top: 5px;
+		margin-left: 100px;
+		float: left;
+		width: 500px;
+	}
+	.stop_not_div
+	{
+		margin-top: 5px;
+		margin-left: 100px;
+		float: left;
+		width: 500px;
+	}
+	.stop_not_div label {margin-left: 30px;}
+	.stop_not_txt
+	{
+		font-family: Lucida Fax;
+		font-style: italic;
+		font-size: 14px;
+		text-align: right;
+		margin-top: 35px;
+		margin-left: 80px;
+		width: 500px;
+		color: cyan;
+	}
+	.video_header {}
+	.video_image {
+		width: 320px;
+		height: 180px;
+		margin-top: 12px;
+		border: 4px solid #6DC8E0;
+		border-radius: 10px 10px 10px 10px;
+	}
+	.video_title
+	{
+		margin-left: 10px;
+		float: left;
+		width: 420px;
+		font-weight: bold;
+	}
+	.video_other_info
+	{
+		font-size: 13px;
+		width: 180px;
+		height: 100px;
+		font-weight: bold;
+		text-align: left;
+		float: left;
+	}
+	.video_other_info_topub {
+		font-size: 16px;
+		width: 120px;
+		height: 100px;
+		font-weight: bold;
+		text-align: left;
+		float: left;
+	}
+	.video_details {
+		font-size: 80%;
+		margin-bottom: 5px;
+	}
+	.video_box {
+		height: 214px;
+		color: white;
+		margin-top: 15px;
+		margin-bottom: 15px;
+		margin-left: 10px;
+		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
+		border-radius: 20px 20px 20px 20px;
+	}
+	.btnbrdr{
+		margin-bottom:4px;
+		padding-bottom:4px;
+		border-bottom:1px dotted white;
+	}
+

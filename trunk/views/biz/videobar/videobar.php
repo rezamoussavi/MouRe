@@ -163,7 +163,7 @@ class videobar {
 
 			<div class="box_close_topub">
 				<div class="box_image">
-					<a href="http://www.sam-rad.com/watch?v={$this->data['videoCode']}" target="_blank">
+					<a href="http://www.RocketViews.com/watch?v={$this->data['videoCode']}" target="_blank">
 						<img class="video_image" src="{$this->data['img']}" />
 					</a>
 				</div>

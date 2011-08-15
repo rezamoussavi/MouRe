@@ -1,0 +1,174 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	5/1/2011
+	Ver:	0.1
+
+#biz
+	scriptviewer
+
+#var
+	script="[!]"
+	script_link="[!]"
+	id=0
+	link=""
+
+#node
+	publink
+
+#frame
+	frm[box_open_scv]
+
+#phpfunction
+
+	function generateScript($adLinkData){
+		$pl=new publink("");
+		#var->id=$pl->generateScript($adLinkData);
+		#var->link=$adLinkData['videoCode'];
+		if(#var->id!=0){
+			#var->script="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=".#var->id."&link=".#var->link."?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>";
+			$rnd=substr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",rand(1,52)-1,1);
+			#var->script_link="http://www.sam-rad.com/watch?".#var->id."$rnd".#var->link;			
+		}else{
+			#var->script="You must be logged in<br /><br /><br />*In order to enable us to track your earnings by sharing this video, you need to be logged in*";
+		}
+	}
+
+	function frm(){
+		if(#var->id!=0){
+			return <PHTML>
+				<input style="display:none;" id="{#nodeID}id" value="{#var->id}" />
+				<input style="display:none;" id="{#nodeID}link" value="{#var->link}" />
+				<div class="embed_size_scv">
+					<div class="link_title_scv">Link: </div>
+					<div class="width_container">
+						<div class="size_title_scv">Width: </div>
+						<div class="size_input_scv">
+							<input class="input_area_scv" type="text" size="1" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/>px
+						</div>
+					</div>
+					<div class="height_container">
+						<div class="size_title_scv">Height:</div>
+						<div class="size_input_scv">
+							<input class="input_area_scv" type="text" size="1" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/>px
+						</div>
+					</div>
+				</div>
+				<div class="embed_box_scv">
+					<textarea id="{#nodeID}scriptarea_link" class="link_src_scv" disabled="disabled">{#var->script_link}</textarea>
+					<br/>
+					<textarea id="{#nodeID}scriptarea" class="embed_src_scv" disabled="disabled">{#var->script}</textarea>
+				</div>
+			</PHTML>
+
+			return <PHTML>
+				<input style="display:none;" id="{#nodeID}id" value="{#var->id}" />
+				<input style="display:none;" id="{#nodeID}link" value="{#var->link}" />
+				<textarea id="{#nodeID}scriptarea" rows="5" cols="75">{#var->script}</textarea><br />
+				Width : <input size="10" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/>px 
+				Height : <input size="10" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/>px
+				<br><b>Instruction:</b><br>
+				Copy content in the text area and paste it in your weblog/website
+			</PHTML>
+		}else{
+			return <PHTML>
+				<div style="color:#00ffff;text-align:right;width:100%;"><i><font face="Lucida Fax">You must be logged in</font></i></div>
+				<div style="color:#00ffff;padding-top:100px;;width:100%;"><i><font face="Lucida Fax" size="1px">*In order to enable us to track your earnings by sharing this video, you need to be logged in</font></i></div>
+			</PHTML>
+		}
+	}
+
+#js
+	var nodeID;
+	function onWChange(nID){
+		nodeID=nID;
+		setTimeout("onWChanged()",100);
+	}
+	function onWChanged(){
+		var W=document.getElementById(nodeID+'W').value;
+		document.getElementById(nodeID+'H').value=Math.floor(W*9/16);
+		generateScript();
+	}
+
+	function onHChange(nID){
+		nodeID=nID;
+		setTimeout("onHChanged()",100);
+	}
+	function onHChanged(){
+		var H=document.getElementById(nodeID+'H').value;
+		document.getElementById(nodeID+'W').value=Math.floor(H*16/9);
+		generateScript();
+	}
+
+	function generateScript(){
+		var id=document.getElementById(nodeID+'id').value;
+		var link=document.getElementById(nodeID+'link').value;
+		var W=document.getElementById(nodeID+'W').value;
+		var H=document.getElementById(nodeID+'H').value;
+		document.getElementById(nodeID+'scriptarea').value="<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id="+id+"&link="+link+"?version=3' WIDTH='"+W+"' HEIGHT='"+H+"' allowfullscreen='true' scale='noscale'/>";
+	}
+
+#css
+	.box_open_scv
+	{
+		float: right;
+		margin-right: 20px;
+		margin-left: 3px;
+		border-left: 1px dotted #4969E6;
+	}
+	.embed_src_scv{
+		background-color: #99CCFF;
+		border-color: white;
+		/*border-radius: 10px 10px 10px 10px;*/
+		height: 75px;
+		width: 320px;
+		margin-left: 10px;
+		text-align: left;
+		/* font-size:90%; */
+	}
+	.link_src_scv{
+		background-color: #99CCFF;
+		border-color: white;
+		/*border-radius: 10px 10px 10px 10px;*/
+		height: 40px;
+		width: 320px;
+		margin-left: 10px;
+		text-align: left;
+		/* font-size:90%; */
+	}
+	.input_area_scv{
+		background-color: #99CCFF;
+		border-color: white;
+		border-width:1px;
+		text-align: left;
+	}
+
+	.embed_size_scv
+	{
+		float: left;
+		/* margin-top: 30px; */
+		width: 110px;
+		font-weight: bold;
+		font-size: 90%;
+	}
+	.embed_box_scv
+	{
+		float: right;
+	}
+	.size_title_scv{
+		margin-top: 5px;
+		font-size: 80%;
+		margin-left: 10px;
+		float: left;
+	}
+	.size_input_scv{
+		float: right;
+		margin-left: 2px;
+		border-radius: 5px 5px 5px 5px;
+	}
+	.link_title_scv{
+		margin-top:10px;
+		padding-left:10px;
+		float:left;
+		margin-bottom:40px;
+		width: 110px;
+	}

@@ -13,14 +13,19 @@
 	frmAdmin
 	frmHome
 	frmHow
+	frmContactUs
 
 #message
 	user->logout=onLogOut
-	page->Myacc=onMyAcc
+	page->Myacc_profile=onMyAcc
+	page->Myacc_pubLink=onMyAcc
+	page->Myacc_adLink=onMyAcc
+	page->Myacc_balance=onMyAcc
 	page->AdVideo=onAdVideo
 	page->PubVideo=onPubVideo
 	page->Home=onHome
 	page->How=onHow
+	page->contactus=onContactUs
 
 #node
 	addvideo AddVideo
@@ -64,6 +69,11 @@
 		_bookframe(#frm->frmHome);
 	}
 
+	function onContactUs(){
+		#var->userpage=0;
+		_bookframe(#frm->frmContactUs);
+	}
+
 	function onMyAcc($info){
 		#var->userpage=1;
 		if(osBackUserRole()=="admin"){
@@ -101,6 +111,14 @@
 		return <PHTML>
 			$buttons
 			Home Page
+		</PHTML>
+	}
+
+	function frmContactUs(){
+		$buttons=#fun->frmButtons();
+		return <PHTML>
+			$buttons
+			Contact Us
 		</PHTML>
 	}
 

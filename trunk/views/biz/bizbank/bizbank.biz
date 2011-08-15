@@ -18,7 +18,8 @@
 #phpfunction
 
 	function init(){
-		#node->tabbar->bookContent(array("Pricing","Contact us"));
+		$tabs=array('Contact us','contactus','Pricing','pricing');/* caption, page, caption , page ,... */
+		#node->tabbar->bookContent($tabs);
 	}
 
 	function frm(){

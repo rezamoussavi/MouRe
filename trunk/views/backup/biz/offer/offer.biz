@@ -1,0 +1,57 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	4/28/2011
+	Ver:		1.0
+	-----------------------------------
+	Author:	Reza Moussavi
+	Date:	4/27/2011
+	Ver:		0.2
+	-----------------------------------
+	Author:	Reza Moussavi
+	Date:	4/21/2011
+	Ver:		0.1
+
+#biz
+	offer
+
+#start
+	init
+
+#var
+	data
+
+#db
+	info ('offerUID' int(11) NOT NULL auto_increment; 'available' tinyint(4); 'minAOPV' float NOT NULL; 'APRatio' int(11) NOT NULL; 'minLifeTime' int(11) NOT NULL; 'minCancelTime' int(11) NOT NULL; 'minNOV' int(11) NOT NULL; PRIMARY KEY  ('offerUID'))
+#db-comment
+	info:
+		offerUID  int
+		available tinyint
+		minAOPV float
+		APRatio int
+		minLifeTime int
+		minCancelTime int
+		minNOV int
+
+#phpfunction
+
+	function bookInfo($info){
+		query("UPDATE #db->info SET available=0 WHERE available=1");
+		query("INSERT INTO #db->info(available,minAOPV,APRatio,minLifeTime,minCancelTime,minNOV) VALUES(1,$info[minAOPV],$info[APRatio],$info[minLifeTime],$info[minCancelTime],$info[minNOV])");
+		#var->data=$info;
+	}
+
+	function backInfo(){
+		query("SELECT * FROM #db->info WHERE available=1");
+		if(#var->data=fetch())
+			return #var->data;
+		return array("minNOV"=>"","minAOPV"=>"APRatio",""=>"","minLifeTime"=>"","minCancelTime"=>"","APRatio"=>"");
+	}
+
+	function init(){
+		#var->data=array();
+		query("SELECT * FROM #db->info WHERE available=1;");
+		$row=fetch();
+		if($row){
+			#var->data=$row;
+		}
+	}

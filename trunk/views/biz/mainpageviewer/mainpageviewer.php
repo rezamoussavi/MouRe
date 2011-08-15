@@ -40,11 +40,15 @@ class mainpageviewer {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
-			$_SESSION['osMsg']['page_Myacc'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc_profile'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc_pubLink'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc_adLink'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_Myacc_balance'][$this->_fullname]=true;
 			$_SESSION['osMsg']['page_AdVideo'][$this->_fullname]=true;
 			$_SESSION['osMsg']['page_PubVideo'][$this->_fullname]=true;
 			$_SESSION['osMsg']['page_Home'][$this->_fullname]=true;
 			$_SESSION['osMsg']['page_How'][$this->_fullname]=true;
+			$_SESSION['osMsg']['page_contactus'][$this->_fullname]=true;
 		}
 
 		//default frame if exists
@@ -81,7 +85,16 @@ class mainpageviewer {
 			case 'user_logout':
 				$this->onLogOut($info);
 				break;
-			case 'page_Myacc':
+			case 'page_Myacc_profile':
+				$this->onMyAcc($info);
+				break;
+			case 'page_Myacc_pubLink':
+				$this->onMyAcc($info);
+				break;
+			case 'page_Myacc_adLink':
+				$this->onMyAcc($info);
+				break;
+			case 'page_Myacc_balance':
 				$this->onMyAcc($info);
 				break;
 			case 'page_AdVideo':
@@ -95,6 +108,9 @@ class mainpageviewer {
 				break;
 			case 'page_How':
 				$this->onHow($info);
+				break;
+			case 'page_contactus':
+				$this->onContactUs($info);
 				break;
 			default:
 				break;
@@ -128,6 +144,9 @@ class mainpageviewer {
 				$_style=' ';
 				break;
 			case 'frmHow':
+				$_style=' ';
+				break;
+			case 'frmContactUs':
 				$_style=' ';
 				break;
 		}
@@ -171,6 +190,10 @@ class mainpageviewer {
 		$this->userpage=0;
 		$this->_bookframe("frmHome");
 	}
+	function onContactUs(){
+		$this->userpage=0;
+		$this->_bookframe("frmContactUs");
+	}
 	function onMyAcc($info){
 		$this->userpage=1;
 		if(osBackUserRole()=="admin"){
@@ -211,6 +234,16 @@ PHTMLCODE;
 
 			$buttons
 			Home Page
+		
+PHTMLCODE;
+
+	}
+	function frmContactUs(){
+		$buttons=$this->frmButtons();
+		return <<<PHTMLCODE
+
+			$buttons
+			Contact Us
 		
 PHTMLCODE;
 

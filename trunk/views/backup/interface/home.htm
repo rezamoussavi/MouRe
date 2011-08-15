@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+	<title></title>
+    <link rel="stylesheet" type="text/css" href="./home.css" />
+    <script type="text/javascript" src="./jquery.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function() {
+			$("#login-link").click( function() {
+				$("#login_div").slideToggle(200);
+				$("#signup_div").hide(0);
+			})
+			$("#signup-link").click( function() {
+				$("#signup_div").slideToggle(200);
+				$("#login_div").hide(0);
+			})
+		})
+</script>
+
+    <script type="text/javascript">
+		var popup_onfocus = false;
+		var on_login = false;
+		function login_popup() {
+			var elem = document.getElementById("login_div");
+			elem.style.display = 'block';
+			elem.focus();
+			//elem.style.opacity = 0.9;
+			//elem.style.filter = 'alpha(opacity=' + 90 + ')';
+			setTimeout( function() {
+				popup_onfocus = true
+			}, 100);
+		}
+
+		function close_popup() {
+			if(!on_login && popup_onfocus) {
+				//if(document.getElementById("login_div").style.opacity > 0)
+				//                {
+				//                    document.getElementById("login_div").innerHTML = document.getElementById("login_div").style.opacity;
+				//                    var sdfdsd = setInterval(change_opac(), 100);
+				//                }
+				popup_onfocus = false;
+				document.getElementById("login_div").style.display = 'none';
+			}
+		}
+
+		function change_opac() {
+			document.getElementById("login_div").style.opacity = document.getElementById("login_div").style.opacity - 0.3;
+
+		}
+
+		function hover_login(bool) {
+			on_login = bool;
+		}
+</script>
+</head>
+
+<body onclick="close_popup()">
+    <div id="header_bg">
+        <div id="logo_div"><img id="logo_img" alt="" src="./logo.png" /></div>
+        <div id="menu_div">
+            <div id="pric_cont">
+                <ul id="menu_list">
+                    <li><a href="javascript:my_function()">Pricing</a></li>
+                    <li><a href="javascript:my_function()">Contact us</a></li>
+                </ul>
+            </div>
+            <div id="log_sign">
+                <div id="pers_info">
+                    Welcome <span id="user_name">your_name</span>!
+                    <div id="balance_div">Balance: </span><span id="balance_span">1000</div>
+                </div>
+                <ul>
+                    <li><a id="signup-link" href="#signup">Sign up</a></li>
+                    <li><a id="login-link" href="#login">Log in</a></li>
+                </ul>
+            </div>
+            <div id="login_div" onmouseover="hover_login(true)" onmouseout="hover_login(false)">
+                <form method="post">
+                    <div class="username_div">
+                        <label class="user_lbl">Username: </label>
+                        <input class="user_tf" name="user_tf" type="text" />
+                    </div>
+                    <div class="password_div">
+                        <label class="pass_lbl">Password: </label>
+                        <input class="pass_tf" name="pass_tf" type="text" />
+                    </div>
+				     <div id="forgot_div">
+                    	<a id="forgot" class="login_anc" href="javascript:my_function()">Forgot Password?</a>
+                    </div>
+                    <div id="login_btn_div">
+                        <input class="form_btn" type="submit" value="Login" />
+                    </div>
+                </form>
+            </div>
+            <div id="signup_div">
+            	<form method="post">
+            		<div class="username_div">
+                        <label class="user_lbl">Username: </label>
+                        <input class="user_tf" name="user_tf" type="text" />
+                    </div>
+                    <div class="password_div">
+                        <label class="pass_lbl">Password: </label>
+                        <input class="pass_tf" name="pass_tf" type="text" />
+                    </div>
+                    <div class="password_div">Confirm: </label>
+                        <input class="confirm_tf" name="pass_tf" type="text" />
+                    </div>
+                    <div id="signup_btn_div">
+                        <input class="form_btn" type="submit" value="Sign up" />
+                    </div>
+            	</form>
+            </div>
+        </div>
+    </div>
+    <div id="showbox">
+    
+    </div>
+    <div id="publish_btns">
+        <button id="publish_btn" type="button"></button>
+        <button id="advertise_btn" type="button"></button>
+    </div>
+    <div class="box_container">
+	    <div class="video_box">
+	    	<div class="box_close">
+	    		<div class="box_image">
+	    			<div >
+	    				<a href="http://www.youtube.com/watch?v=Hbib-A6NpW8" target="_blank">
+							<img id="video_image" src="http://img.youtube.com/vi/Hbib-A6NpW8/2.jpg" />
+						</a>
+	    				
+	    			</div>
+	    		</div>
+                <div class="other_info_container">
+                    <div class="video_header">
+                        <div class="video_title">Official virgin atlantic advert 2011 test test test test</div>
+                        <div class="details_btn_div">
+      					     <input class="getlink_btn" type="submit" value="Get link to publish" />
+       				     </div>
+                    </div>
+                    <div class="other_n_embed">
+    	    		     <div class="video_other_info" >
+        	    				<div class="video_details">
+        	    					viewd 23 of 20000
+        						</div>		
+        	    				<div class="video_details">
+        	    					Last Date : 		
+        	    				</div>
+        	    				<div class="video_details">
+        	    					Earn/View : 0.07 		
+        	    				</div>
+        	    			</div>
+         	    		    <div class="box_open">
+                                <div class="embed_size">
+                	    	          <div class="width_container">
+                                              <div class="size_title">
+                        	    		         Width:
+                        	    	          </div>
+                        	    	          <div class="size_input">
+                        	    		         <input class="input_area"  type="text" size="1" />
+                        	    	          </div>  
+                                        </div>
+                                        <div class="height_container">
+                        	    	          <div class="size_title">
+                        	    		         Height:
+                        	    	          </div>
+                        	    	          <div class="size_input">
+                        	    		         <input class="input_area" type="text" size="1" />
+                        	    	          </div>
+                                          </div>
+                                    </div>
+                	    			<div class="embed_box">
+                	    				<textarea class="embed_src" disabled="disabled">"<EMBED SRC='http://www.sam-rad.com/YouTubePlayer.swf' FlashVars='id=11&link=Hbib-A6NpW8?version=3' WIDTH='960' HEIGHT='540' allowfullscreen='true' scale='noscale'/>"
+                	    				</textarea>
+                	    		</div>
+                             </div>
+                       </div>
+              </div>
+            </div>
+	    </div>
+
+	    <div class="video_box">
+	    	
+	    </div>
+    </div>
+</body>
+</html>
+
+<!-- <div class="instructions" title="Copy content in the text area and paste it in your weblog/website">?</div> -->

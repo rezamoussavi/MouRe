@@ -1,0 +1,291 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	5/5/2011
+	Ver:		1.0
+
+#biz
+	myaccviewer
+
+#frame
+	frmProfile
+	frmPubLinks
+	frmAdLinks
+	frmBalance
+
+#node
+	profileviewer profile
+	videolistviewer pubLinks
+	videolistviewer adLinks
+	transaction
+
+#message
+	frame->profileBtn=onProfileBtn
+	frame->pubLinkBtn=onPubLinkBtn
+	frame->adLinkBtn=onAdLinkBtn
+	frame->balanceBtn=onBalanceBtn
+	frame->reCalc=onReCalc
+	frame->test=onTest
+	user->login=onReCalc
+	user->logout=onLogout
+
+#var
+	balance=0
+	paid=0
+	earned=0
+	reimbursed=0
+	adpay=0
+	cur_menue="profile";
+
+#phpfunction
+
+	/******************************
+	*	Message Handlers
+	******************************/
+
+	function onReCalc($info){
+		#fun->reCalc();
+	}
+
+	function onTest($info){
+		$t=new transaction("");
+		$t->bookCharge($info['amount'],"For TEST purpose ONLY!");
+		#fun->reCalc();
+	}
+
+	function onLogout($info){
+		_bookframe(#frm->frmProfile);
+	}
+
+	function onProfileBtn($info){
+		#var->cur_menue="profile";
+		_bookframe(#frm->frmProfile);
+	}
+
+	function onPubLinkBtn($info){
+		#var->cur_menue="mypub";
+		#node->pubLinks->bookModeUser("mypub",osBackUserID());
+		_bookframe(#frm->frmPubLinks);
+	}
+
+	function onAdLinkBtn($info){
+		#var->cur_menue="myad";
+		#node->adLinks->bookModeUser("myad",osBackUserID());
+		_bookframe(#frm->frmAdLinks);
+	}
+
+	function onBalanceBtn($info){
+		#var->cur_menue="credit";
+		_bookframe(#frm->frmBalance);
+	}
+
+	/******************************
+	*	Frames
+	******************************/
+
+	function frmProfile(){
+		return #fun->buttons().#node->profile->_backframe();
+	}
+
+	function frmPubLinks(){
+		return #fun->buttons().#node->pubLinks->_backframe();
+	}
+
+	function frmAdLinks(){
+		return #fun->buttons().#node->adLinks->_backframe();
+	}
+
+	function frmBalance(){
+		if(!osUserLogedin()){
+			return "";
+		}
+		$ReCalcFrmName = #nodeID."reCalc";
+		$testFrame=#nodeID."test";
+		$buttons=#fun->buttons();
+		$transaction_history=#fun->transactionHistory();
+		return<PHTML>
+			$buttons
+			<div class="balance_area_div">
+				<div class="balance_info">
+					<div class="balance_title_area">
+						<span class="balance_title_span">Credit Information</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input value="ReCalculate" type="button" class="btn_flat" onclick="JavaScript:sndmsg('#msg->reCalc')" />
+					</div>
+					<div class="balance_label">Balance:</div>
+						 <div class="balance_data">{#var->balance} $</div>
+					<div class="balance_label">Paid:</div>
+						<div class="balance_data">{#var->paid} $</div>
+					<div class="balance_label">adPay:</div>
+						<div class="balance_data">{#var->adpay} $</div>
+					<div class="balance_label">Re-imbursed:</div>
+						<div class="balance_data">{#var->reimbursed} $</div>
+					<div class="balance_label">Earned:</div>
+						<div class="balance_data">{#var->earned} $</div>
+				</div>
+				<div class="balance_section">
+					<div class="balance_test">
+						<form name="$testFrame" method="post">
+							<#msg->test>
+							<input name="amount" size=5 />
+							<input value="test" type="button" onclick='JavaScript:sndmsg("$testFrame")' />
+						</form>
+					</div>
+					$transaction_history
+				</div>
+			</div>
+		</PHTML>
+	}
+
+	function transactionHistory(){
+		$tran="";
+		query("SELECT * FROM transaction_history WHERE UID=".osBackUserID()." ORDER BY date DESC, TID DESC");
+		while($row=fetch()){
+			$tran.=<PHTML>
+				<div class="balance_row">
+					<div style="float:left;width:50px;padding:3px;">{$row['TID']}</div>
+					<div style="float:left;width:100px;padding:3px;">{$row['date']}</div>
+					<div style="float:left;width:100px;padding:3px;">{$row['type']}</div>
+					<div style="float:left;width:100px;padding:3px;">{$row['amount']}</div>
+					<div style="float:left;width:400px;padding:3px;">{$row['comments']}</div>
+				</div>
+			</PHTML>
+		}
+		return <PHTML>
+			<div style="float:left;width:800px;">
+				<div class="balance_row_head">
+					<div style="float:left;width:50px;padding:3px;">ID</div>
+					<div style="float:left;width:100px;padding:3px;">Date</div>
+					<div style="float:left;width:100px;padding:3px;">Type</div>
+					<div style="float:left;width:100px;padding:3px;">$</div>
+					<div style="float:left;width:400px;padding:3px;">Comments</div>
+				</div>
+				$tran
+			</div>
+		</PHTML>
+	}
+
+	function buttons(){
+		$ProfileFormName=#nodeID."profileBtn";
+		$BalanceFormName=#nodeID."balanceBtn";
+		$pubLinkFormName=#nodeID."pubLinkBtn";
+		$adLinkFormName=#nodeID."adLinkBtn";
+		$mnu_bg_profile=(#var->cur_menue=="profile")?"#E3E1E1":"white";
+		$mnu_bg_myad=(#var->cur_menue=="myad")?"#E3E1E1":"white";
+		$mnu_bg_mypub=(#var->cur_menue=="mypub")?"#E3E1E1":"white";
+		$mnu_bg_credit=(#var->cur_menue=="credit")?"#E3E1E1":"white";
+		$html=<PHTML>
+		    <div id="content_menu"> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_profile;" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1','$mnu_bg_profile')" onclick="JavaScript:sndmsg('#msg->profileBtn');">Profile</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_mypub;" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2','$mnu_bg_mypub')" onclick="JavaScript:sndmsg('#msg->pubLinkBtn');">My Published Videos</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_myad;" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3','$mnu_bg_myad')" onclick="JavaScript:sndmsg('#msg->adLinkBtn');">My Ads</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_credit;" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4','$mnu_bg_credit')" onclick="JavaScript:sndmsg('#msg->balanceBtn');">Credit</div> 
+		    </div> 
+		</PHTML>
+		return $html;
+	}
+
+	/******************************
+	*	Functionalities
+	******************************/
+
+	function reCalc(){
+		$t=new transaction("");
+		$all=$t->backUserSummary(osBackUserID());
+
+		#var->balance=$all['Balance'];
+		#var->paid=$all['Charge'];
+		#var->adpay=$all['adPay'];
+		#var->earned=$all['Earn'];
+		#var->reimbursed=$all['Reimburse'];
+	}
+
+#javascript
+	function menu_hover(elem)
+	{
+		document.getElementById(elem).style.backgroundColor = '#F0EDEE';
+	}
+	function menu_out(elem,color)
+	{
+		document.getElementById(elem).style.backgroundColor = color;
+	}
+
+#css
+	.content_menu_lst
+	{
+		margin-top: 5px;
+		padding: 20px 40px 20px 40px;
+		font-size: 24px;
+		font-weight: bold;
+		/*border-radius: 5px;*/
+		float: left;
+		cursor:pointer;
+	}
+	#cml_1, #cml_2, #cml_3 {border-right: 1px solid #DBD7D8;}
+	#cml_1 {margin-left: 20px;}
+	.balance_area_div
+	{
+		margin: 30px auto auto 70px;
+		width: 800px;
+		overflow: auto;
+		padding-bottom: 20px;
+	}
+	.balance_title_span
+	{
+		color: #00c0ee;
+		font-size: 20px;
+		font-weight: bold;
+		margin-bottom:10px;
+		margin-left:-20px;
+	}
+	.balance_title_area
+	{
+		width: 300px;
+	}
+	.balance_info{
+		width: 250px;
+		height: 200px;
+		padding-right: 400px;
+		margin-left: 50px;
+	}
+	.balance_section{
+		width:750px;
+	}
+	.balance_label{
+		padding:5px;
+		color:black;
+		width:100px;
+		display:inline;
+		float:left;
+	}
+	.balance_data{
+		padding:5px;
+		color:#222222;
+		display:inline;
+		float:left;
+	}
+	.balance_row{
+		border-bottom:1px dotted gray;
+		float:left;
+		width:800px;
+		font-size:90%;
+	}
+	.balance_row_head{
+		border-bottom:2px solid black;
+		float:left;
+		width:800px;
+	}
+	.balance_test{
+		background-color: #DDDDDD;
+		border: 1px solid #BBBBBB;
+		width: 750px;
+		padding: 5px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	.btn_flat{
+		border:1px solid #DDDDDD;
+		padding:5px;
+		margin:5px;
+		background-color:transparent;
+	}
+

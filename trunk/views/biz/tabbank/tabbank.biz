@@ -21,28 +21,20 @@
 #frame
     frm[pric_cont]
 
-#message
-	client->tab=onTabSelected
-
-#css
-	.pric_cont {
-		float: left;
-		margin-top: 43px;
-		display:inline;
-	}
-
 #phpfunction
 
-    function bookContent($content){//String[]
+    function bookContent($content){/* array[caption=caption, page=page, caption=caption, page=page ...] */
         #var->tabs=array();
-        foreach($content as $c){
-            #var->tabs[]=$c;
+        foreach($content as $k=>$v){
+            #var->tabs[$k]=$v;
         }
 	}
 
 	function bookSelected($sel){
-		#var->curTabName=$sel;
-		osBroadcast(#msg->tabChanged,array("tabName"=>$sel));
+/*
+*		#var->curTabName=$sel;
+*		osBroadcast(#msg->tabChanged,array("tabName"=>$sel));
+*/
     }
 
 	/*
@@ -52,18 +44,38 @@
 		$html=<PHTML>
                 <ul id="menu_list">
 		</PHTML>
-		foreach(#var->tabs as $t){
-			$link=osBackPageLink($t);
+		$menu=array();
+		$cap="";/* caption */
+		foreach(#var->tabs as $el){
+			if($cap==""){
+				$cap=$el;
+			}else{/* caption it is*/
+				$menu[]=array('caption'=>$cap,'page'=>$el);
+				$cap="";
+			}
+		}
+		foreach($menu as $t){
+			$link=osBackPageLink($t['page']);
 			$html.=<PHTML>
-				<li><a href="{$link}">{$t}</a></li>
+				<li><a href="{$link}">{$t['caption']}</a></li>
 			</PHTML>
 		}
 		return $html."</ul>";
 	}
 
     function onTabSelected($info){
-		if(array_search($info["name"],#var->tabs)!==false){
-			#fun->bookSelected($info["name"]);
-		}
+/*
+*		if(array_search($info["name"],#var->tabs)!==false){
+*			#fun->bookSelected($info["name"]);
+*
+*		}
+*/
+	}
+
+#css
+	.pric_cont {
+		float: left;
+		margin-top: 43px;
+		display:inline;
 	}
 

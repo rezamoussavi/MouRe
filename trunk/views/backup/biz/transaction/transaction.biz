@@ -1,0 +1,88 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	14/07/2011
+	Ver:	0.1
+
+#biz
+	transaction:transaction
+
+#db
+	history('TID' INT NOT NULL AUTO_INCREMENT; 'UID' INT NOT NULL; 'date' VARCHAR( 10 ) NOT NULL; 'type' VARCHAR( 50 ) NOT NULL; 'amount' FLOAT NOT NULL; 'comments' TEXT NOT NULL ;PRIMARY KEY (  'TID' ))
+
+#db-comment
+	'TID' INT NOT NULL AUTO_INCREMENT ;
+	'UID' INT NOT NULL ;
+	'date' VARCHAR( 10 ) NOT NULL ;
+	'type' VARCHAR( 50 ) NOT NULL ;
+	'amount' FLOAT NOT NULL ;
+	'comments' TEXT NOT NULL ;
+	PRIMARY KEY (  'TID' )
+
+#phpfunction
+
+	/*************************************
+	*	APIs
+	*************************************/
+
+	function bookCharge($amount,$comments){
+		#fun->INSERT(osBackUserID(),date("Y/m/d"),"Charge",$amount,$comments);
+	}
+
+	function bookAdPay($amount,$comments){
+		#fun->INSERT(osBackUserID(),date("Y/m/d"),"adPay",-$amount,$comments);
+	}
+
+	function bookWithdraw($amount,$comments){
+		#fun->INSERT(osBackUserID(),date("Y/m/d"),"Withdra",-$amount,$comments);
+	}
+
+	function bookReimburse($amount,$comments){
+		#fun->INSERT(osBackUserID(),date("Y/m/d"),"Reimburse",$amount,$comments);
+	}
+
+	function backBalance($UID){
+		$earned=0;
+		query("SELECT SUM(PPV * totalView) as earned FROM publink_info WHERE publisher=".$UID);
+		if($row=fetch()){$earned=sprintf("%.2f",$row['earned']);}
+
+		$trans=0;
+		query("SELECT SUM(amount) as trans FROM #db->history WHERE UID=".$UID);
+		if($row=fetch()){
+			$trans=$row['trans'];
+		}
+		return $trans+$earned;
+	}
+
+	function backUserSummary($UID){
+		$ret=array("Balance"=>0,"Charge"=>0,"Earn"=>0,"Reimburse"=>0,"Withdraw"=>0,"adPay"=>0);
+
+		query("SELECT SUM(PPV * totalView) as earned FROM publink_info WHERE publisher=".$UID);
+		if($row=fetch()){$ret['Earn']=sprintf("%.2f",$row['earned']);}
+
+		query("SELECT SUM(amount) as total FROM #db->history WHERE UID=".$UID." AND type='Charge'");
+		if($row=fetch()){$ret['Charge']=sprintf("%.2f",$row['total']);}
+
+		query("SELECT SUM(amount) as total FROM #db->history WHERE UID=".$UID." AND type='adPay'");
+		if($row=fetch()){$ret['adPay']=sprintf("%.2f",$row['total']);}
+
+		query("SELECT SUM(amount) as total FROM #db->history WHERE UID=".$UID." AND type='Withdraw'");
+		if($row=fetch()){$ret['Withdraw']=sprintf("%.2f",$row['total']);}
+
+		query("SELECT SUM(amount) as total FROM #db->history WHERE UID=".$UID." AND type='Reimburse'");
+		if($row=fetch()){$ret['Reimburse']=sprintf("%.2f",$row['total']);}
+
+		$ret['Balance']=$ret['Earn']+$ret['Charge']+$ret['adPay']+$ret['Withdraw']+$ret['Reimburse'];
+
+		osBroadcast(#msg->update,array("balance"=>$ret['Balance']));
+		return $ret;
+	}
+
+	/*************************************
+	*	INTERNAL FUNCTIONS
+	*************************************/
+
+	function INSERT($UID,$date,$type,$amount,$comments){
+		$s="INSERT INTO #db->history (UID,date,type,amount,comments) ";
+		$s.=" VALUE ('$UID','$date','$type','$amount','$comments');";
+		query($s);
+	}

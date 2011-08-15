@@ -1,0 +1,194 @@
+#comments
+	Author:	Reza Moussavi
+	Date:	7/05/2011
+	Ver:	1.0
+	---------------------
+	Author:	Reza Moussavi
+	Date:	4/21/2011
+	Ver:	0.1
+
+#biz
+	ipviewer
+
+#var
+	linkID, title
+
+#frame
+	frm[stats_div]
+
+#node
+	publink
+
+#phpfunction
+
+	/*******************************
+	*	Frame
+	*******************************/
+/*
+		$html= <PHTML>
+			<table class="stats_table"> 
+			    <tr> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			        <th class="stats_empty_td"></th> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			        <th class="stats_empty_td"></th> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			        <th class="stats_empty_td"></th> 
+			        <th class="stats_country_td">Country</th> 
+			        <th class="stats_views_td">Views</th> 
+			        <th class="stats_prcnt_td">%</th> 
+			    </tr> 
+			    <tr> 
+			        <td>Sweden</td> 
+			        <td>200</td> 
+			        <td>45</td> 
+
+			        <td class="stats_empty_td"></td> 
+
+			        <td>United States</td> 
+			        <td class="stats_views_td">3499728</td> 
+			        <td>83</td> 
+
+			        <td class="stats_empty_td"></td> 
+
+			        <td>Iran</td> 
+			        <td>5</td> 
+			        <td>2</td> 
+
+			        <td class="stats_empty_td"></td> 
+
+			        <td>Iran</td> 
+			        <td>5</td> 
+			        <td>2</td> 
+			    </tr> 
+			</table>
+		</PHTML>
+*/
+
+	function frm(){
+		$pl=new publink("");
+		$data=$pl->backStat(#var->linkID);
+		if(!is_array($data)){
+			return "No Record for Statistics";
+		}
+		$total=0;
+		foreach($data as $d)	$total+=$d['views'];
+		
+		$html= <PHTML>
+			<div class="tstats_table">
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_empty"></div> 
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_empty"></div> 
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+			        <div class="tstats_empty"></div> 
+			        <div class="tstats_countryh">Country</div> 
+			        <div class="tstats_viewsh">Views</div> 
+			        <div class="tstats_prcnth">%</div> 
+
+			        <div class="tstats_row"> </div> 
+		</PHTML>
+		$posinrow=1;
+		foreach($data as $d){
+			$percent=sprintf("%01.2f", $d['views']*100/$total);
+			$html.=<PHTML>
+			        <div class="tstats_country">{$d['countryName']}</div> 
+			        <div class="tstats_views">{$d['views']}</div> 
+			        <div class="tstats_prcnt">{$percent}</div> 
+			</PHTML>
+			if($posinrow<4){
+				$html.='<div class="tstats_empty"></div>';
+				$posinrow++;
+			}else $posinrow=1;
+		}
+		$html.=<PHTML>
+			</div>
+		</PHTML>
+		return <PHTML>
+			$html
+			<div class="show_map_div"> 
+			    <a target="_blank" href="/worldmap?video={#var->linkID}&title={#var->title}" title="Open in new window">
+			    	<input class="show_map_btn" type="button" value="Show location demographics on map" />
+			    </a>
+			</div> 
+		</PHTML>
+	}
+
+	function frm_OLD(){
+		$pl=new publink("");
+		$data=$pl->backStat(#var->linkID);
+		if(!is_array($data)){
+			return "No Record for Statistics";
+		}
+		$total=0;
+		$html='<div style="width:200px;float:left;">';
+		$html.='<div style="float:left;width:100;display:inline;margin:2px;padding:2px;border:1px dotted black;">Country</div>';
+		$html.='<div style="float:left;width:50;display:inline;margin:2px;padding:2px;border:1px dotted black;">Views</div></div>';
+		foreach($data as $d){
+			$html.='<div style="width:200px;float:left;">';
+			$html.='<div style="float:left;width:100;display:inline;margin:2px;padding:2px;border:1px dotted black;">'.$d['countryName'].'('.$d['countryCode'].')</div>';
+			$html.='<div style="float:left;width:50;display:inline;margin:2px;padding:2px;border:1px dotted black;">'.$d['views'].'</div></div>';
+			$total+=$d['views'];
+		}
+		$html.='<div style="width:200px;float:left;border:1px dotted black;">';
+		$html.='<div style="float:left;width:100;display:inline;margin:2px;padding:2px;text-align:right;">Total:</div>';
+		$html.='<div style="float:left;width:50;display:inline;margin:2px;padding:2px;">'.$total.'</div></div>';
+		$html.='<div style="float:left;width:150;display:inline;margin:2px;padding:2px;"><a target="_blank" href="/worldmap?video='.#var->linkID.'&title='.#var->title.'" title="Open in new window">Show on Map</a></div>';
+		return $html;
+	}
+
+	/*******************************
+	*	Book/Back
+	*******************************/
+
+	function bookInfo($id,$title){
+		#var->linkID=$id;
+		#var->title=$title;
+	}
+
+#css
+	.stats_table
+	{
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+		/*border: 1px solid black;*/
+	}
+	.stats_div
+	{
+		margin-top: 10px;
+		width: 900px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.stats_table th {border-bottom: 1px solid white}
+	.stats_table th.stats_empty_td {border-bottom: 10px;}
+	.stats_table th, td {padding: 5px; font-size: 12px;}
+	.stats_country_td {width: 80px;}
+	.stats_views_td {width: 40px;}
+	.stats_prcnt_td {width: 20px;}
+	.stats_empty_td {width: 20px;}
+
+	.tstats_table {width: 770px;text-align: center;margin: 5px; font-size: 12px;}
+	.tstats_row {width: 770px;height:10px;float:left;}
+	.tstats_countryh{ width: 90px; float:left; display:inline;border-bottom: 1px solid white;}
+	.tstats_viewsh{ width: 50px; float:left; display:inline;border-bottom: 1px solid white;}
+	.tstats_prcnth{ width: 30px; float:left; display:inline;border-bottom: 1px solid white;}
+	.tstats_country{ width: 90px; float:left; display:inline;}
+	.tstats_views{ width: 50px; float:left; display:inline;}
+	.tstats_prcnt{ width: 30px; float:left; display:inline;}
+	.tstats_empty{ width: 30px; height:10px; float:left; display:inline;}
+
+
