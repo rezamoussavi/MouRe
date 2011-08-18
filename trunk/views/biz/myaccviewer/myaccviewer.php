@@ -261,25 +261,54 @@ PHTMLCODE;
 
 	}
 	function frmPaypal(){
+		$userID=osBackUserID();
 		return <<<PHTMLCODE
 
-			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-			<input type="hidden" name="cmd" value="_xclick">
-			<input type="hidden" name="business" value="KATDYWARKWSXS">
-			<input type="hidden" name="lc" value="SE">
-			<input type="hidden" name="item_name" value="RocketViews Balance">
-			<input type="hidden" name="item_number" value="7">
-			<input  name="amount" value="103.00">
-			<input type="hidden" name="currency_code" value="USD">
-			<input type="hidden" name="button_subtype" value="services">
-			<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
-			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-			<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+			<input id="paypal_user_amount" value="0" onchange="JavaScript:checkPaypal();" onkeypress="JavaScript:checkPaypal();" />
+			<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" name="paypal_form">
+				<input type="hidden" name="amount" value="00.00">
+				<input type="hidden" name="cmd" value="_xclick">
+				<input type="hidden" name="image_url" value="http://rocketviews.com/logo.png">
+				<input type="hidden" name="business" value="FCE49XXTRTKV4">
+				<input type="hidden" name="lc" value="US">
+				<input type="hidden" name="item_name" value="RocketViews Balance">
+				<input type="hidden" name="item_number" value="7">
+				<input type="hidden" name="button_subtype" value="services">
+				<input type="hidden" name="no_note" value="0">
+				<input type="hidden" name="custom" value="{$userID}">
+				<input type="hidden" name="no_shipping" value="1">
+				<input type="hidden" name="rm" value="1">
+				<input type="hidden" name="return" value="http://RocketViews.com/?p=Myacc_balance">
+				<input type="hidden" name="cancel_return" value="http://RocketViews.com/?p=Myacc_balance">
+				<input type="hidden" name="currency_code" value="USD">
+				<input type="hidden" name="handling" value="00.00">
+				<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
+				<input type="image" id="paypal_button" disabled=1 src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 			</form>
 		
 PHTMLCODE;
 
 	}
+/*
+	KIAN KOD
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" name="paypal_form">
+				<input type="hidden" name="amount" value="00.00">
+				<input type="hidden" name="cmd" value="_xclick">
+				<input type="hidden" name="business" value="7G9KMAVAHKNLS">
+				<input type="hidden" name="lc" value="SE">
+				<input type="hidden" name="item_name" value="Charge account">
+				<input type="hidden" name="item_number" value="7">
+				<input type="hidden" name="currency_code" value="USD">
+				<input type="hidden" name="button_subtype" value="services">
+				<input type="hidden" name="no_note" value="0">
+				<input type="hidden" name="cn" value="Add special instructions to the seller">
+				<input type="hidden" name="no_shipping" value="2">
+				<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
+				<input id="paypal_button" disabled type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+			</form>
+*/
 	function frmPaypal_OLD(){
 		if(isset($_SESSION['paypal_confirm'])){
 			if($_SESSION['paypal_confirm']=="true"){

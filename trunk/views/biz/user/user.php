@@ -348,9 +348,9 @@ class user {
                 query("INSERT INTO user_info (email,password,verificationCode,biznessUID,userName,Address,Country,PostalCode,role) VALUES ('" . $email . "', '" . $hashPassword . "','" . $vcode . "','".osBackBizness()."','".$userName."','".$Address."','".$Country."','".$PostalCode."','".$role."');");
                 
                 // A welcome message to the user...
-                $msg = "Welcome! Please login to your account and verify by this code: ".$vcode;
-				$mailheader='From: register@sam-rad.com' . "\r\n" .
-							'Reply-To: register@sam-rad.com' . "\r\n" .
+                $msg = "Welcome!<br />Please login to your account and verify by this code: ".$vcode;
+				$mailheader='From: register@RocketViews.com' . "\r\n" .
+							'Reply-To: register@RocketViews.com' . "\r\n" .
 							'X-Mailer: PHP/' . phpversion();
                 //send an email to the user. FIX MAILING FUNCTION!
                 $this->sendEmail($email, "Welcome to buziness!", $msg,$mailheader);

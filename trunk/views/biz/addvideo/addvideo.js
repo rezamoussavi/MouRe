@@ -4,6 +4,13 @@
 	var okYLink=false;
 	var okAOPV=false;
 	var okNOV=false;
+	function isNumber(num){
+		size=(num+"").length;
+		for(i=0;i<size;i++)
+			if( (num.charAt(i)<'0' || num.charAt(i)>'9') && (num.charAt(i)!='.') )
+				return false;
+		return true;
+	}
 	function checkTitle(){
 		var msg="<font color=green>OK</font>";
 		okTitle=true;
@@ -28,7 +35,7 @@
 	function checkAOPV(minAOPV){
 		okAOPV=true;
 		var msg="<font color=green>OK</font>";// OK
-		if(document.getElementById('theAOPV').value < minAOPV){
+		if(!isNumber(_eGetVal('theAOPV')) || _eGetVal('theAOPV') < minAOPV){
 			msg="<font color=red>Invalid</font>";// ERROR
 			okAOPV=false;
 		}
@@ -38,7 +45,7 @@
 	function checkNOV(minNOV){
 		okNOV=true;
 		var msg="<font color=green>OK</font>";// OK
-		if(document.getElementById('theNOV').value < minNOV){
+		if(!isNumber(_eGetVal('theNOV')) || _eGetVal('theNOV') < minNOV){
 			msg="<font color=red>Invalid</font>";// ERROR
 			okNOV=false;
 		}

@@ -117,6 +117,7 @@ class transaction {
 		$s="INSERT INTO transaction_history (UID,date,type,amount,comments) ";
 		$s.=" VALUE ('$UID','$date','$type','$amount','$comments');";
 		query($s);
+		$this->backUserSummary(osBackUserID());
 	}
 
 }

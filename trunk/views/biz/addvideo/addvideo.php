@@ -98,7 +98,7 @@ class addvideo {
 				$_style=' class="addvideo_area_div"  ';
 				break;
 			case 'frmSuccess':
-				$_style=' class="addvideo_area_div"  ';
+				$_style=' class="addvideo_success_div"  ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';

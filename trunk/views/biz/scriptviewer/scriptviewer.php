@@ -141,7 +141,7 @@ class scriptviewer {
 					</div>
 				</div>
 				<div class="embed_box_scv">
-					<textarea id="{$this->_fullname}scriptarea_link" class="link_src_scv" disabled="disabled">{$this->script_link}</textarea>
+					<textarea id="{$this->_fullname}scriptarea_link" class="link_src_scv" readonly>{$this->script_link}</textarea>
 					<br/>
 					<textarea id="{$this->_fullname}scriptarea" class="embed_src_scv" disabled="disabled">{$this->script}</textarea>
 				</div>

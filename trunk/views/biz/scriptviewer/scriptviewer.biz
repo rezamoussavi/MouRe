@@ -54,7 +54,7 @@
 					</div>
 				</div>
 				<div class="embed_box_scv">
-					<textarea id="{#nodeID}scriptarea_link" class="link_src_scv" disabled="disabled">{#var->script_link}</textarea>
+					<textarea id="{#nodeID}scriptarea_link" class="link_src_scv" readonly>{#var->script_link}</textarea>
 					<br/>
 					<textarea id="{#nodeID}scriptarea" class="embed_src_scv" disabled="disabled">{#var->script}</textarea>
 				</div>

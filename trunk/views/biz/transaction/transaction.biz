@@ -7,7 +7,7 @@
 	transaction:transaction
 
 #db
-	history('TID' INT NOT NULL AUTO_INCREMENT; 'UID' INT NOT NULL; 'date' VARCHAR( 10 ) NOT NULL; 'type' VARCHAR( 50 ) NOT NULL; 'amount' FLOAT NOT NULL; 'comments' TEXT NOT NULL ;PRIMARY KEY (  'TID' ))
+	history('TID' INT NOT NULL AUTO_INCREMENT; 'UID' INT NOT NULL; 'date' VARCHAR( 10 ) NOT NULL; 'type' VARCHAR( 50 ) NOT NULL; 'amount' FLOAT NOT NULL; 'comments' TEXT NOT NULL; 'txn_id' VARCHAR( 100 ) NOT NULL; PRIMARY KEY (  'TID' ))
 
 #db-comment
 	'TID' INT NOT NULL AUTO_INCREMENT ;
@@ -16,6 +16,7 @@
 	'type' VARCHAR( 50 ) NOT NULL ;
 	'amount' FLOAT NOT NULL ;
 	'comments' TEXT NOT NULL ;
+	'txn_id' VARCHAR( 100 ) NOT NULL ;
 	PRIMARY KEY (  'TID' )
 
 #phpfunction
@@ -85,4 +86,5 @@
 		$s="INSERT INTO #db->history (UID,date,type,amount,comments) ";
 		$s.=" VALUE ('$UID','$date','$type','$amount','$comments');";
 		query($s);
+		#fun->backUserSummary(osBackUserID());
 	}

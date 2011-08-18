@@ -155,8 +155,10 @@ JQUERY;
 			if(isset($bizbank)){
 				$page_content=$bizbank->show(false);
 				foreach($_SESSION['osNodes'] as $nodeFN=>$node){
-					if(is_object($node['node'])){
+					if(isset($node['node'])){
+						if(is_object($node['node'])){
 //						$JQueryCode.="if(window.".$nodeFN.")".$nodeFN."();";
+						}
 					}
 				}
 			}
@@ -164,8 +166,38 @@ JQUERY;
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<script type="text/javascript" src="http://yui.yahooapis.com/2.9.0/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+		<!-- Quantcast Tag -->
+			<script type="text/javascript">
+			var _qevents = _qevents || [];
+
+			(function() {
+			var elem = document.createElement('script');
+			elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+			elem.async = true;
+			elem.type = "text/javascript";
+			var scpt = document.getElementsByTagName('script')[0];
+			scpt.parentNode.insertBefore(elem, scpt);
+			})();
+
+			_qevents.push({
+			qacct:"p-85opaofliuE9o"
+			});
+			</script>
+
+			<noscript>
+			<div style="display:none;">
+			<img src="//pixel.quantserve.com/pixel/p-85opaofliuE9o.gif" border="0" height="1" width="1" alt="Quantcast"/>
+			</div>
+			</noscript>
+		<!-- End Quantcast tag -->
 		$JQueryCode });
+		</script>
+		<script type="text/javascript">
+			function _e(elem){return document.getElementById(elem);}
+			function _eGetHTML(elem){return _e(elem).innerHTML;}
+			function _eSetHTML(elem,HTML){_e(elem).innerHTML=HTML;}
+			function _eGetVal(elem){return _e(elem).value;}
+			function _eSetHTML(elem,val){_e(elem).value=val;}
 		</script>
 	</head>
 	<body>
