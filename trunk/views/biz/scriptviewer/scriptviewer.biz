@@ -43,31 +43,21 @@
 					<div class="width_container">
 						<div class="size_title_scv">Width: </div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="1" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/>px
+							<input class="input_area_scv" type="text" size="4" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/>px
 						</div>
 					</div>
 					<div class="height_container">
-						<div class="size_title_scv">Height:</div>
+						<div class="size_title_scv">Height: </div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="1" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/>px
+							<input class="input_area_scv" type="text" size="4" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/>px
 						</div>
 					</div>
 				</div>
 				<div class="embed_box_scv">
 					<textarea id="{#nodeID}scriptarea_link" class="link_src_scv" readonly>{#var->script_link}</textarea>
 					<br/>
-					<textarea id="{#nodeID}scriptarea" class="embed_src_scv" disabled="disabled">{#var->script}</textarea>
+					<textarea id="{#nodeID}scriptarea" class="embed_src_scv" readonl>{#var->script}</textarea>
 				</div>
-			</PHTML>
-
-			return <PHTML>
-				<input style="display:none;" id="{#nodeID}id" value="{#var->id}" />
-				<input style="display:none;" id="{#nodeID}link" value="{#var->link}" />
-				<textarea id="{#nodeID}scriptarea" rows="5" cols="75">{#var->script}</textarea><br />
-				Width : <input size="10" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/>px 
-				Height : <input size="10" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/>px
-				<br><b>Instruction:</b><br>
-				Copy content in the text area and paste it in your weblog/website
 			</PHTML>
 		}else{
 			return <PHTML>
@@ -144,6 +134,7 @@
 		border-color: white;
 		border-width:1px;
 		text-align: left;
+		font-size:70%;
 	}
 
 	.embed_size_scv
@@ -166,8 +157,8 @@
 	}
 	.size_input_scv{
 		float: right;
-		margin-left: 2px;
-		border-radius: 5px 5px 5px 5px;
+//		margin-left: 2px;
+//		border-radius: 5px 5px 5px 5px;
 	}
 	.link_title_scv{
 		margin-top:10px;
@@ -176,3 +167,12 @@
 		margin-bottom:40px;
 		width: 110px;
 	}
+	.width_container{
+		width:110px;
+		float:left;
+	}
+	.height_container{
+		width:110px;
+		float:left;
+	}
+

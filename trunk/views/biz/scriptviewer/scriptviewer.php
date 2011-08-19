@@ -130,33 +130,21 @@ class scriptviewer {
 					<div class="width_container">
 						<div class="size_title_scv">Width: </div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="1" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px
+							<input class="input_area_scv" type="text" size="4" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px
 						</div>
 					</div>
 					<div class="height_container">
-						<div class="size_title_scv">Height:</div>
+						<div class="size_title_scv">Height: </div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="1" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
+							<input class="input_area_scv" type="text" size="4" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
 						</div>
 					</div>
 				</div>
 				<div class="embed_box_scv">
 					<textarea id="{$this->_fullname}scriptarea_link" class="link_src_scv" readonly>{$this->script_link}</textarea>
 					<br/>
-					<textarea id="{$this->_fullname}scriptarea" class="embed_src_scv" disabled="disabled">{$this->script}</textarea>
+					<textarea id="{$this->_fullname}scriptarea" class="embed_src_scv" readonl>{$this->script}</textarea>
 				</div>
-			
-PHTMLCODE;
-
-			return <<<PHTMLCODE
-
-				<input style="display:none;" id="{$this->_fullname}id" value="{$this->id}" />
-				<input style="display:none;" id="{$this->_fullname}link" value="{$this->link}" />
-				<textarea id="{$this->_fullname}scriptarea" rows="5" cols="75">{$this->script}</textarea><br />
-				Width : <input size="10" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px 
-				Height : <input size="10" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
-				<br><b>Instruction:</b><br>
-				Copy content in the text area and paste it in your weblog/website
 			
 PHTMLCODE;
 

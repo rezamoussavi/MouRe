@@ -147,6 +147,7 @@
 			</div>
 			<div class="content_container" >
 				$btn
+				<div class="video_list_title">Publishing Videos</div>
 				$VList
 			</div>
 		</PHTML>
@@ -220,5 +221,12 @@
 		background-image: url('./img/ad_btn.png');
 		margin-left: 25px;
 	}
-
+	.video_list_title{
+		font-size:150%;
+		width:900px;
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:20px;
+		margin-bottom:-20px;
+	}
 

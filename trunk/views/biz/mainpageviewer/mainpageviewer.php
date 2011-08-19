@@ -278,6 +278,7 @@ PHTMLCODE;
 			</div>
 			<div class="content_container" >
 				$btn
+				<div class="video_list_title">Publishing Videos</div>
 				$VList
 			</div>
 		

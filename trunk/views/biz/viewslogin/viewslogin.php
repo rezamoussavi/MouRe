@@ -340,7 +340,7 @@ PHTMLCODE;
                     </div>
                     <div class="password_div">
                         <label class="pass_lbl">Password: </label>
-                        <input class="pass_tf" tabindex=2 name="password" type="password" />
+                        <input class="pass_tf" tabindex=2 name="password" type="password" onkeypress="return sndmsgOnEnterKey(event,'$lgFrm')"/>
                     </div>
 				     <div id="forgot_div">
                     	<a id="forgot" class="login_anc" tabindex=4 onclick="JavaScript:sndevent('{$this->_fullname}','frame_forgotPassword')" >Forgot Password?</a>
@@ -364,7 +364,7 @@ PHTMLCODE;
 
             <div id="pers_info">
                 Welcome <span id="user_name">$name</span>!
-                <div id="balance_div">Balance: <span id="balance_span">$this->balance $</span></div>
+                <div id="balance_div">Balance: <span id="balance_span">&#36;$this->balance</span></div>
             </div>
 			<ul>
 				<li>
@@ -417,7 +417,7 @@ PHTMLCODE;
                         <input class="pass_tf" tabindex=2 name="password" type="password" />
                     </div>
                     <div class="password_div">Confirm: </label>
-                        <input class="confirm_tf" tabindex=3 name="passwordagain" type="password" />
+                        <input class="confirm_tf" tabindex=3 name="passwordagain" type="password" onkeypress="return sndmsgOnEnterKey(event,'$dosuFrm')"/>
                     </div>
                     <div id="signup_btn_div">
                         <input class="form_btn" tabindex=4 type="button" value="Sign up" onclick="JavaScript:sndmsg('$dosuFrm')" />

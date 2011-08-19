@@ -252,7 +252,7 @@ class user {
         return $this->userUID;
     }
     function sendVerificationCode() {
-        $this->sendEmail($this->email, "Verify", $this->createVerificationCode());
+        $this->sendEmail($this->email, "Verify", "Your verification code is: ".$this->createVerificationCode());
     }
     function validate($verificationCode) {        
         query("SELECT * FROM user_info WHERE userUID='" . $this->userUID . "' ;");
@@ -349,11 +349,8 @@ class user {
                 
                 // A welcome message to the user...
                 $msg = "Welcome!<br />Please login to your account and verify by this code: ".$vcode;
-				$mailheader='From: register@RocketViews.com' . "\r\n" .
-							'Reply-To: register@RocketViews.com' . "\r\n" .
-							'X-Mailer: PHP/' . phpversion();
                 //send an email to the user. FIX MAILING FUNCTION!
-                $this->sendEmail($email, "Welcome to buziness!", $msg,$mailheader);
+                $this->sendEmail($email, "Welcome to buziness!", $msg);
                 
                 
                 //to get the fresh userUID...
@@ -388,7 +385,7 @@ class user {
                 $password = $this->generateRandomPassword();
                 $hashPassword = $this->sha1Hash($email,$password);
                 query("UPDATE user_info SET password = '" . $hashPassword . "' WHERE email = '" . $email . "';");
-                $this->sendEmail($email, "New Password", $password);
+                $this->sendEmail($email, "New Password", "Your new password is: ".$password);
                 return TRUE; //email succefully sent
         }
         return FALSE; //email wasn't found in db
@@ -398,11 +395,14 @@ class user {
         $hashPassword = sha1($email.$password);
         return $hashPassword;
     }
-    private function sendEmail($to, $title, $msgToSend, $header) {
+    private function sendEmail($to, $title, $msgToSend) {
         /*
          * Needs to be reworked...
          */
-        mail($to, $title, $msgToSend, $header);
+		$mailheader='From: register@RocketViews.com' . "\r\n" .
+					'Reply-To: register@RocketViews.com' . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+        mail($to, $title, $msgToSend, $mailheader);
     }
     private function createRandomChars($toSelectFrom, $length) {
         $i = 0;
@@ -417,7 +417,7 @@ class user {
     }
     private function generateRandomPassword() {
         $toSelectFrom = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
-        return $this->createRandomChars($toSelectFrom, 8);
+        return $this->createRandomChars($toSelectFrom, 4);
     }
     private function createVerificationCode() {
         $toSelectFrom = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

@@ -225,7 +225,7 @@
                     </div>
                     <div class="password_div">
                         <label class="pass_lbl">Password: </label>
-                        <input class="pass_tf" tabindex=2 name="password" type="password" />
+                        <input class="pass_tf" tabindex=2 name="password" type="password" onkeypress="return sndmsgOnEnterKey(event,'$lgFrm')"/>
                     </div>
 				     <div id="forgot_div">
                     	<a id="forgot" class="login_anc" tabindex=4 onclick="JavaScript:sndmsg('#msg->forgotPassword')" >Forgot Password?</a>
@@ -247,7 +247,7 @@
 		return <PHTML>
             <div id="pers_info">
                 Welcome <span id="user_name">$name</span>!
-                <div id="balance_div">Balance: <span id="balance_span">#var->balance $</span></div>
+                <div id="balance_div">Balance: <span id="balance_span">&#36;#var->balance</span></div>
             </div>
 			<ul>
 				<li>
@@ -298,7 +298,7 @@
                         <input class="pass_tf" tabindex=2 name="password" type="password" />
                     </div>
                     <div class="password_div">Confirm: </label>
-                        <input class="confirm_tf" tabindex=3 name="passwordagain" type="password" />
+                        <input class="confirm_tf" tabindex=3 name="passwordagain" type="password" onkeypress="return sndmsgOnEnterKey(event,'$dosuFrm')"/>
                     </div>
                     <div id="signup_btn_div">
                         <input class="form_btn" tabindex=4 type="button" value="Sign up" onclick="JavaScript:sndmsg('$dosuFrm')" />
@@ -340,6 +340,13 @@
 		</PHTML>
 	}
 
+#js
+	function sndmsgOnEnterKey(evt,msg){
+		var charCode = (evt.which) ? evt.which : event.keyCode;
+		if(charCode==13)
+			setTimeout("sndmsg('"+msg+"');",100);
+		return true;
+	}
 #css
 	#login_div {
 		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;

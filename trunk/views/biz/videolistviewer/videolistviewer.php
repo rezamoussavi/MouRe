@@ -86,7 +86,7 @@ class videolistviewer {
 		$_style='';
 		switch($this->_curFrame){
 			case 'frm':
-				$_style=' class="my_adds_div"  ';
+				$_style=' class="video_list_div"  ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';

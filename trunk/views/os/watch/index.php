@@ -4,8 +4,10 @@
 	foreach($_GET as $a=>$b){
 		if($a=='v'){
 			$code= "1x".$b;
+			$autoplay="&autoplay=1";
 		}else{
 			$code= $a;
+			$autoplay="&autoplay=0";
 			break;
 		}
 	}

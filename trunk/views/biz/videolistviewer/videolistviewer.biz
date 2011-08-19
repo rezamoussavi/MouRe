@@ -15,7 +15,7 @@
 	videobar VBars[]
 
 #frame
-	frm[my_adds_div]
+	frm[video_list_div]
 
 #phpfunction
 
@@ -47,7 +47,7 @@
 	{
 		width: 960px;
 	}
-	.my_adds_div
+	.video_list_div
 	{
 		margin-top: 30px;
 		width: 960px;

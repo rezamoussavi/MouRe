@@ -64,13 +64,14 @@
 	function frmBar(){
 		$frmAdLink=#nodeID."adLink";
 		$frmPubLink=#nodeID."pubLink";
+		$balance=isset(#var->userData['balance'])?#var->userData['balance']:"-";
 		$html=<PHTML>
 			<br /><div style="height:20px;float:left;overflow: hidden;width:100px;display:inline;">{#var->userData['email']}</div>
 			<div style="height:20px;background-color:#eebbee;float:left;overflow: hidden;width:100px;display:inline;">{#var->userData['userName']}</div>
 			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{#var->userData['Address']}</div>
 			<form name="$frmAdLink" style="float:left;overflow: hidden;width:50px;display:inline;"><#msg->showAdLinks><input type="button" value="adL." onclick='Javascript:sndmsg("$frmAdLink")' /></form>
 			<form name="$frmPubLink" style="float:left;overflow: hidden;width:50px;display:inline;"><#msg->showPubLinks><input type="button" value="pubL." onclick='Javascript:sndmsg("$frmPubLink")' /></form>
-			<div style="float:left;overflow: hidden;width:50px;display:inline;">{#var->userData['balance']}</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">{$balance}</div>
 			<div style="float:left;overflow: hidden;width:50px;display:inline;">Intr</div><br />
 		</PHTML>
 		if((#var->showAdLinks) OR (#var->showPubLinks)){
@@ -80,11 +81,13 @@
 	}
 
 	function frmShort(){
+		$balance=isset(#var->userData['balance'])?#var->userData['balance']:"-";
+		$address=isset(#var->userData['Address'])?#var->userData['Address']:"-";
 		return <PHTML>
 			<br /><div style="height:20px;float:left;overflow: hidden;width:100px;display:inline;">{#var->userData['email']}</div>
 			<div style="height:20px;background-color:#eebbee;float:left;overflow: hidden;width:100px;display:inline;">{#var->userData['userName']}</div>
-			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{#var->userData['Address']}</div>
-			<div style="float:left;overflow: hidden;width:50px;display:inline;">{#var->userData['balance']}</div>
+			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{$address}</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">{$balance}</div>
 			<div style="float:left;overflow: hidden;width:50px;display:inline;">Intr</div><br />
 			<br />
 		</PHTML>

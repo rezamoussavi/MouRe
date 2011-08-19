@@ -230,7 +230,7 @@ PHTMLCODE;
 				                Viewd $VN of {$this->data['maxViews']}<br />(remaining: $RM)
 				            </div> 
 				            <div class="video_details btnbrdr"> 
-								Earn Per View: {$EPV}<br />(country: $country)
+								Earn Per View: &#36;{$EPV}<br />(country: $country)
 				            </div> 
 				            <div class="video_details btnbrdr"> 
 				                Start Date : {$this->data['startDate']}
@@ -241,7 +241,7 @@ PHTMLCODE;
 				        </div> 
 						<div class="box_open_mypub"> 
 				            <div class="pubvid_num_div">Viewd by You: {$UVN}</div>
-				            <div class="earned_div">You earned: {$UE}$ </div>
+				            <div class="earned_div">You earned: &#36;{$UE} </div>
 				        </div> 
 				    </div> 
 				</div> 
@@ -331,8 +331,8 @@ PHTMLCODE;
 							</div> 
 				        </div> 
 						<div class="box_open"> 
-				            <div class="pubvid_num_div">Total Paid: {$this->data['paid']}</div>
-				            <div class="earned_div">Pay Per View : {$AOPV}</div>
+				            <div class="pubvid_num_div">Total Paid: &#36;{$this->data['paid']}</div>
+				            <div class="earned_div">Pay Per View : &#36;{$AOPV}</div>
 				        </div> 
 				    </div> 
 				</div> 

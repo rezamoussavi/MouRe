@@ -153,6 +153,7 @@ class userviewer {
 	function frmBar(){
 		$frmAdLink=$this->_fullname."adLink";
 		$frmPubLink=$this->_fullname."pubLink";
+		$balance=isset($this->userData['balance'])?$this->userData['balance']:"-";
 		$html=<<<PHTMLCODE
 
 			<br /><div style="height:20px;float:left;overflow: hidden;width:100px;display:inline;">{$this->userData['email']}</div>
@@ -160,7 +161,7 @@ class userviewer {
 			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{$this->userData['Address']}</div>
 			<form name="$frmAdLink" style="float:left;overflow: hidden;width:50px;display:inline;"><input type="hidden" name="_message" value="frame_showAdLinks" /><input type = "hidden" name="_target" value="{$this->_fullname}" /><input type="button" value="adL." onclick='Javascript:sndmsg("$frmAdLink")' /></form>
 			<form name="$frmPubLink" style="float:left;overflow: hidden;width:50px;display:inline;"><input type="hidden" name="_message" value="frame_showPubLinks" /><input type = "hidden" name="_target" value="{$this->_fullname}" /><input type="button" value="pubL." onclick='Javascript:sndmsg("$frmPubLink")' /></form>
-			<div style="float:left;overflow: hidden;width:50px;display:inline;">{$this->userData['balance']}</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">{$balance}</div>
 			<div style="float:left;overflow: hidden;width:50px;display:inline;">Intr</div><br />
 		
 PHTMLCODE;
@@ -171,12 +172,14 @@ PHTMLCODE;
 		return $html."<br />";
 	}
 	function frmShort(){
+		$balance=isset($this->userData['balance'])?$this->userData['balance']:"-";
+		$address=isset($this->userData['Address'])?$this->userData['Address']:"-";
 		return <<<PHTMLCODE
 
 			<br /><div style="height:20px;float:left;overflow: hidden;width:100px;display:inline;">{$this->userData['email']}</div>
 			<div style="height:20px;background-color:#eebbee;float:left;overflow: hidden;width:100px;display:inline;">{$this->userData['userName']}</div>
-			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{$this->userData['Address']}</div>
-			<div style="float:left;overflow: hidden;width:50px;display:inline;">{$this->userData['balance']}</div>
+			<div style="height:20px;float:left;overflow: hidden;width:200px;display:inline;">{$address}</div>
+			<div style="float:left;overflow: hidden;width:50px;display:inline;">{$balance}</div>
 			<div style="float:left;overflow: hidden;width:50px;display:inline;">Intr</div><br />
 			<br />
 		

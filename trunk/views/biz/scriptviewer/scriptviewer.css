@@ -31,6 +31,7 @@
 		border-color: white;
 		border-width:1px;
 		text-align: left;
+		font-size:70%;
 	}
 	.embed_size_scv
 	{
@@ -52,8 +53,8 @@
 	}
 	.size_input_scv{
 		float: right;
-		margin-left: 2px;
-		border-radius: 5px 5px 5px 5px;
+//		margin-left: 2px;
+//		border-radius: 5px 5px 5px 5px;
 	}
 	.link_title_scv{
 		margin-top:10px;
@@ -61,5 +62,13 @@
 		float:left;
 		margin-bottom:40px;
 		width: 110px;
+	}
+	.width_container{
+		width:110px;
+		float:left;
+	}
+	.height_container{
+		width:110px;
+		float:left;
 	}
 
