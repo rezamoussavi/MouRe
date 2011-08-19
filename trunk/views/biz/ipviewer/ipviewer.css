@@ -1,4 +1,7 @@
 
+/********************
+	START: ipviewer
+*/
 	.stats_table
 	{
 		margin-left: auto;
@@ -30,3 +33,6 @@
 	.tstats_prcnt{ width: 30px; float:left; display:inline;}
 	.tstats_empty{ width: 30px; height:10px; float:left; display:inline;}
 
+/*
+	END: ipviewer
+********************/

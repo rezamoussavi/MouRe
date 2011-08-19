@@ -130,13 +130,13 @@ class scriptviewer {
 					<div class="width_container">
 						<div class="size_title_scv">Width: </div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="4" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/>px
+							<input class="input_area_scv" type="text" size="4" id="{$this->_fullname}W" value="960" onkeypress='JavaSript:onWChange("{$this->_fullname}")' onchange='JavaSript:onWChange("{$this->_fullname}")'/> px
 						</div>
 					</div>
 					<div class="height_container">
 						<div class="size_title_scv">Height: </div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="4" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/>px
+							<input class="input_area_scv" type="text" size="4" id="{$this->_fullname}H" value="540" onkeypress='JavaSript:onHChange("{$this->_fullname}")' onchange='JavaSript:onHChange("{$this->_fullname}")'/> px
 						</div>
 					</div>
 				</div>

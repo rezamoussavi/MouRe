@@ -135,7 +135,7 @@ PHTMLCODE;
 				<span class="profile_title_span">Personal Information</span> 
 				<form id="$formName" class="persinf_frm" method="post">
 					<input type="hidden" name="_message" value="frame_updateInfo" /><input type = "hidden" name="_target" value="{$this->_fullname}" /><br />
-					<label class="bold" id="profile_email_lbl">email <span class="red_star">*</span></label> 
+					<label class="bold" id="profile_email_lbl">email </label> 
 					<input class="persinf_inp" id="profile_email_inp" type="text" size="30" value="{$user['email']}" disabled/> 
 					<br /><br /> 					
 					<label class="bold" id="profile_name_lbl">Full name <span class="red_star">*</span></label> 

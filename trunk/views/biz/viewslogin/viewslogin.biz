@@ -155,10 +155,10 @@
 			<div class="login_msg">$msg</div>
 	        <ul>
 	            <li>
-	                <a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
+	                <a id="signup-link" href="#signup" onclick="JavaScript:_focus('emailfield');JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
 	            </li>
 	            <li>
-                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('#msg->loginBtn')">Log in</a>
+                	<a id="login-link" href="#login" onclick="JavaScript:_focus('emailfield');JavaScript:sndmsg('#msg->loginBtn')">Log in</a>
 	            </li>
 	        </ul>
 		</PHTML>
@@ -172,16 +172,16 @@
 			<div style="height:40px;"></div>
 	        <ul>
 	            <li>
-	               	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
+	               	<a id="signup-link" href="#signup" onclick="JavaScript:_focus('emailfield');JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
 	            </li>
 	            <li>
 					<form id="" style="display:inline;">
-	                	<a disabled id="login-link" >Log in</a>
+	                	<a id="login-link" href="#login" onclick="JavaScript:_focus('emailfield');JavaScript:sndmsg('#msg->loginBtn')">Log in</a>
 					</form>
 	            </li>
 	        </ul>
             <div id="login_div" class="bloop">
-		    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('#msg->xBtn')">X</a></font>
+		    	<span class="bloop_xButton"><font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('#msg->xBtn')">X</a></font></span>
                 <form id="$lgFrm" method="post">
 					<#msg->sendMePassBtn>
 					New password will be sent to you!
@@ -189,9 +189,7 @@
                         <label class="user_lbl">email: </label>
                         <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
                     </div>
-					<div id="forgot_div">
-					</div>
-                    <div id="login_btn_div">
+                    <div id="reset_btn_div">
                         <input class="form_btn" tabindex=2 type="button" value="Reset" onclick="JavaScript:sndmsg('$lgFrm')" />
                     </div>
                 </form>
@@ -207,7 +205,7 @@
 			<div style="height:40px;"></div>
 	        <ul>
 	            <li>
-	               	<a id="signup-link" href="#signup" onclick="JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
+	               	<a id="signup-link" href="#signup" onclick="JavaScript:_focus('emailfield');JavaScript:sndmsg('#msg->signupBtn')">Sign up</a>
 	            </li>
 	            <li>
 					<form id="" style="display:inline;">
@@ -216,9 +214,8 @@
 	            </li>
 	        </ul>
             <div id="login_div" class="bloop">
-		    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('#msg->xBtn')">X</a></font>
+		    	<span class="bloop_xButton"><font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('#msg->xBtn')">X</a></font></span>
                 <form id="$lgFrm" method="post">
-					<#msg->doLoginBtn>
                     <div class="username_div">
                         <label class="user_lbl">email: </label>
                         <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
@@ -228,11 +225,12 @@
                         <input class="pass_tf" tabindex=2 name="password" type="password" onkeypress="return sndmsgOnEnterKey(event,'$lgFrm')"/>
                     </div>
 				     <div id="forgot_div">
-                    	<a id="forgot" class="login_anc" tabindex=4 onclick="JavaScript:sndmsg('#msg->forgotPassword')" >Forgot Password?</a>
+                    	<a id="forgot" class="login_anc" tabindex=4 onclick="JavaScript:_focus('emailfield');JavaScript:sndmsg('#msg->forgotPassword')" >Forgot Password?</a>
                     </div>
                     <div id="login_btn_div">
                         <input class="form_btn" tabindex=3 type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
                     </div>
+					<#msg->doLoginBtn>
                 </form>
             </div>
 		</PHTML>
@@ -247,7 +245,7 @@
 		return <PHTML>
             <div id="pers_info">
                 Welcome <span id="user_name">$name</span>!
-                <div id="balance_div">Balance: <span id="balance_span">&#36;#var->balance</span></div>
+                <div id="balance_div" onclick="document.location.href='http://rocketviews.com/?p=Myacc_balance'" >Balance: <span id="balance_span">&#36;#var->balance</span></div>
             </div>
 			<ul>
 				<li>
@@ -278,20 +276,17 @@
 	            <li>
 					<form id="$lgFrm" style="display:inline;">
 						<#msg->loginBtn>
-	                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('$lgFrm')">Log in</a>
+	                	<a id="login-link" href="#login" onclick="JavaScript:_focus('emailfield');JavaScript:sndmsg('$lgFrm')">Log in</a>
 					</form>
 	            </li>
 	        </ul>
             <div id="signup_div" class="bloop">
-			    <form name="$xFrm" style="float:right;">
-			    	<#msg->xBtn>
-			    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('$xFrm')">X</a></font>
-			    </form>
+		    	<span class="bloop_xButton"><font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('#msg->xBtn')">X</a></font></span>
             	<form id="$dosuFrm" method="post">
             		<#msg->doSignupBtn>
             		<div class="username_div">
                         <label class="user_lbl">Email: </label>
-                        <input class="user_tf" tabindex=1 name="email" type="text" />
+                        <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
                     </div>
                     <div class="password_div">
                         <label class="pass_lbl">Password: </label>
@@ -347,6 +342,7 @@
 			setTimeout("sndmsg('"+msg+"');",100);
 		return true;
 	}
+
 #css
 	#login_div {
 		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
@@ -375,6 +371,7 @@
 	}
 	#balance_div {
 		margin-top: 10px;
+		cursor: pointer;
 	}
 	#signup_div {
 		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
@@ -389,8 +386,10 @@
 	}
 	.username_div, .password_div {
 		font-size: 80%;
-		margin-top: 10px;
+		margin-bottom: 10px;
 		margin-left: 10px;
+		width:240px;
+		float:left;
 	}
 	.user_tf, .pass_tf {
 		width: 150px;
@@ -406,23 +405,23 @@
 		margin-top: 0px;
 		margin-bottom: 0px;
 	}
-	#remember_div {
-		margin-top: 20px;
-	}
 	#login_btn_div {
 		margin-top: -20px;
 		margin-left: 145px;
 	}
+	#reset_btn_div {
+		margin-left: 145px;
+	}
 	#signup_btn_div {
-		margin-top: 13px;
-		margin-left: 90px;
+		margin-left: 150px;
 	}
 	#forgot, #remember {
 		font-size: 70%;
 		margin-left: 10px;
 	}
-	#forgot_div, #remember_div a:hover {
+	#forgot_div {
 		margin-top: 20px;
+		cursor: pointer;
 		/* border-bottom: none; */
 	}
 	.form_btn {
@@ -437,5 +436,10 @@
 		height: 40px;
 		width: 200px;
 		font-size: 70%;
+	}
+	.user_lbl,.pass_lbl{float:left;}
+	.user_tf,.pass_tf,.confirm_tf{float:right;}
+	.bloop_xButton{
+		margin:2px;
 	}
 

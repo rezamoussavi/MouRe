@@ -1,8 +1,11 @@
 
+/********************
+	START: scriptviewer
+*/
 	.box_open_scv
 	{
 		float: right;
-		margin-right: 20px;
+		margin-right: 15px;
 		margin-left: 3px;
 		border-left: 1px dotted #4969E6;
 	}
@@ -11,7 +14,7 @@
 		border-color: white;
 		/*border-radius: 10px 10px 10px 10px;*/
 		height: 75px;
-		width: 320px;
+		width: 370px;
 		margin-left: 10px;
 		text-align: left;
 		/* font-size:90%; */
@@ -21,7 +24,7 @@
 		border-color: white;
 		/*border-radius: 10px 10px 10px 10px;*/
 		height: 40px;
-		width: 320px;
+		width: 370px;
 		margin-left: 10px;
 		text-align: left;
 		/* font-size:90%; */
@@ -72,3 +75,6 @@
 		float:left;
 	}
 
+/*
+	END: scriptviewer
+********************/

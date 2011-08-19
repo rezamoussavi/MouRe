@@ -1,4 +1,7 @@
 
+/********************
+	START: videobar
+*/
 	.adds_video_box
 	{
 		color: white;
@@ -10,7 +13,7 @@
 		padding-bottom: 10px;
 	}
 	.bold{font-weight:  bold; font-size: 14px;}
-	.box_close {height: 250px;}
+	.box_close {height: 200px;}
 	.box_closed {
 		height: 120px;
 		width: 100px;
@@ -135,7 +138,7 @@
 	}
 	.video_header {}
 	.video_image {
-		width: 320px;
+		width: 240px;
 		height: 180px;
 		margin-top: 12px;
 		border: 4px solid #6DC8E0;
@@ -145,12 +148,12 @@
 	{
 		margin-left: 10px;
 		float: left;
-		width: 420px;
+		width: 490px;
 		font-weight: bold;
 	}
 	.video_other_info
 	{
-		font-size: 13px;
+		font-size: 16px;
 		width: 180px;
 		height: 100px;
 		font-weight: bold;
@@ -184,3 +187,6 @@
 		border-bottom:1px dotted white;
 	}
 
+/*
+	END: videobar
+********************/

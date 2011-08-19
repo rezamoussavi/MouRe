@@ -123,6 +123,24 @@ class bizbank {
 				</div>
 			</div>
 			$pages
+<!-- Histats.com  START (hidden counter)-->
+<script type="text/javascript">document.write(unescape("%3Cscript src=%27http://s10.histats.com/js15.js%27 type=%27text/javascript%27%3E%3C/script%3E"));</script>
+<a href="http://www.histats.com" target="_blank" title="free hit counters" ><script  type="text/javascript" >
+try {Histats.start(1,1613939,4,0,0,0,"");
+Histats.track_hits();} catch(err){};
+</script></a>
+<noscript><a href="http://www.histats.com" target="_blank"><img  src="http://sstatic1.histats.com/0.gif?1613939&101" alt="free hit counters" border="0"></a></noscript>
+<!-- Histats.com  END  -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23789180-2']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 		
 PHTMLCODE;
 

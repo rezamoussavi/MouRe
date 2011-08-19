@@ -1,4 +1,7 @@
 
+/********************
+	START: bizbank
+*/
 	body
 	{
 		margin: 0px;
@@ -16,14 +19,14 @@
 		height: 100px;
 	}
 	#logo_div {
-		margin-top: auto;
+		margin-top: 10px;
 		margin-bottom: auto;
 		margin-left: 15%;
 		float: left;
 	}
 	#logo_img {
-		height: 61px;
-		width: 318px;
+		height: 70px;
+		width: 250px;
 	}
 	#menu_div {
 		color: white;
@@ -52,3 +55,6 @@
 		height: 100px;
 	}
 
+/*
+	END: bizbank
+********************/

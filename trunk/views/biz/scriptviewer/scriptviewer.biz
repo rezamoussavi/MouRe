@@ -43,13 +43,13 @@
 					<div class="width_container">
 						<div class="size_title_scv">Width: </div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="4" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/>px
+							<input class="input_area_scv" type="text" size="4" id="{#nodeID}W" value="960" onkeypress='JavaSript:onWChange("{#nodeID}")' onchange='JavaSript:onWChange("{#nodeID}")'/> px
 						</div>
 					</div>
 					<div class="height_container">
 						<div class="size_title_scv">Height: </div>
 						<div class="size_input_scv">
-							<input class="input_area_scv" type="text" size="4" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/>px
+							<input class="input_area_scv" type="text" size="4" id="{#nodeID}H" value="540" onkeypress='JavaSript:onHChange("{#nodeID}")' onchange='JavaSript:onHChange("{#nodeID}")'/> px
 						</div>
 					</div>
 				</div>
@@ -105,7 +105,7 @@
 	.box_open_scv
 	{
 		float: right;
-		margin-right: 20px;
+		margin-right: 15px;
 		margin-left: 3px;
 		border-left: 1px dotted #4969E6;
 	}
@@ -114,7 +114,7 @@
 		border-color: white;
 		/*border-radius: 10px 10px 10px 10px;*/
 		height: 75px;
-		width: 320px;
+		width: 370px;
 		margin-left: 10px;
 		text-align: left;
 		/* font-size:90%; */
@@ -124,7 +124,7 @@
 		border-color: white;
 		/*border-radius: 10px 10px 10px 10px;*/
 		height: 40px;
-		width: 320px;
+		width: 370px;
 		margin-left: 10px;
 		text-align: left;
 		/* font-size:90%; */

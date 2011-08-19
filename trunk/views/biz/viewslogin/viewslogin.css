@@ -1,4 +1,7 @@
 
+/********************
+	START: viewslogin
+*/
 	#login_div {
 		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
 		color: white;
@@ -26,6 +29,7 @@
 	}
 	#balance_div {
 		margin-top: 10px;
+		cursor: pointer;
 	}
 	#signup_div {
 		background: url('./img/formsbg.png') repeat scroll 0 0 transparent;
@@ -40,8 +44,10 @@
 	}
 	.username_div, .password_div {
 		font-size: 80%;
-		margin-top: 10px;
+		margin-bottom: 10px;
 		margin-left: 10px;
+		width:240px;
+		float:left;
 	}
 	.user_tf, .pass_tf {
 		width: 150px;
@@ -57,23 +63,23 @@
 		margin-top: 0px;
 		margin-bottom: 0px;
 	}
-	#remember_div {
-		margin-top: 20px;
-	}
 	#login_btn_div {
 		margin-top: -20px;
 		margin-left: 145px;
 	}
+	#reset_btn_div {
+		margin-left: 145px;
+	}
 	#signup_btn_div {
-		margin-top: 13px;
-		margin-left: 90px;
+		margin-left: 150px;
 	}
 	#forgot, #remember {
 		font-size: 70%;
 		margin-left: 10px;
 	}
-	#forgot_div, #remember_div a:hover {
+	#forgot_div {
 		margin-top: 20px;
+		cursor: pointer;
 		/* border-bottom: none; */
 	}
 	.form_btn {
@@ -89,4 +95,12 @@
 		width: 200px;
 		font-size: 70%;
 	}
+	.user_lbl,.pass_lbl{float:left;}
+	.user_tf,.pass_tf,.confirm_tf{float:right;}
+	.bloop_xButton{
+		margin:2px;
+	}
 
+/*
+	END: viewslogin
+********************/

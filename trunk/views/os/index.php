@@ -198,6 +198,8 @@ JQUERY;
 			function _eSetHTML(elem,HTML){_e(elem).innerHTML=HTML;}
 			function _eGetVal(elem){return _e(elem).value;}
 			function _eSetHTML(elem,val){_e(elem).value=val;}
+			function _focus(elem){setTimeout("_doSetFocus('"+elem+"');",500);}
+			function _doSetFocus(elem){_e(elem).focus();}
 		</script>
 	</head>
 	<body>

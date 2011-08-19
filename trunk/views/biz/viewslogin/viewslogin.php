@@ -266,10 +266,10 @@ class viewslogin {
 			<div class="login_msg">$msg</div>
 	        <ul>
 	            <li>
-	                <a id="signup-link" href="#signup" onclick="JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
+	                <a id="signup-link" href="#signup" onclick="JavaScript:_focus('emailfield');JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
 	            </li>
 	            <li>
-                	<a id="login-link" href="#login" onclick="JavaScript:sndevent('{$this->_fullname}','frame_loginBtn')">Log in</a>
+                	<a id="login-link" href="#login" onclick="JavaScript:_focus('emailfield');JavaScript:sndevent('{$this->_fullname}','frame_loginBtn')">Log in</a>
 	            </li>
 	        </ul>
 		
@@ -285,16 +285,16 @@ PHTMLCODE;
 			<div style="height:40px;"></div>
 	        <ul>
 	            <li>
-	               	<a id="signup-link" href="#signup" onclick="JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
+	               	<a id="signup-link" href="#signup" onclick="JavaScript:_focus('emailfield');JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
 	            </li>
 	            <li>
 					<form id="" style="display:inline;">
-	                	<a disabled id="login-link" >Log in</a>
+	                	<a id="login-link" href="#login" onclick="JavaScript:_focus('emailfield');JavaScript:sndevent('{$this->_fullname}','frame_loginBtn')">Log in</a>
 					</form>
 	            </li>
 	        </ul>
             <div id="login_div" class="bloop">
-		    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndevent('{$this->_fullname}','frame_xBtn')">X</a></font>
+		    	<span class="bloop_xButton"><font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndevent('{$this->_fullname}','frame_xBtn')">X</a></font></span>
                 <form id="$lgFrm" method="post">
 					<input type="hidden" name="_message" value="frame_sendMePassBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
 					New password will be sent to you!
@@ -302,9 +302,7 @@ PHTMLCODE;
                         <label class="user_lbl">email: </label>
                         <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
                     </div>
-					<div id="forgot_div">
-					</div>
-                    <div id="login_btn_div">
+                    <div id="reset_btn_div">
                         <input class="form_btn" tabindex=2 type="button" value="Reset" onclick="JavaScript:sndmsg('$lgFrm')" />
                     </div>
                 </form>
@@ -322,7 +320,7 @@ PHTMLCODE;
 			<div style="height:40px;"></div>
 	        <ul>
 	            <li>
-	               	<a id="signup-link" href="#signup" onclick="JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
+	               	<a id="signup-link" href="#signup" onclick="JavaScript:_focus('emailfield');JavaScript:sndevent('{$this->_fullname}','frame_signupBtn')">Sign up</a>
 	            </li>
 	            <li>
 					<form id="" style="display:inline;">
@@ -331,9 +329,8 @@ PHTMLCODE;
 	            </li>
 	        </ul>
             <div id="login_div" class="bloop">
-		    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndevent('{$this->_fullname}','frame_xBtn')">X</a></font>
+		    	<span class="bloop_xButton"><font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndevent('{$this->_fullname}','frame_xBtn')">X</a></font></span>
                 <form id="$lgFrm" method="post">
-					<input type="hidden" name="_message" value="frame_doLoginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
                     <div class="username_div">
                         <label class="user_lbl">email: </label>
                         <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
@@ -343,11 +340,12 @@ PHTMLCODE;
                         <input class="pass_tf" tabindex=2 name="password" type="password" onkeypress="return sndmsgOnEnterKey(event,'$lgFrm')"/>
                     </div>
 				     <div id="forgot_div">
-                    	<a id="forgot" class="login_anc" tabindex=4 onclick="JavaScript:sndevent('{$this->_fullname}','frame_forgotPassword')" >Forgot Password?</a>
+                    	<a id="forgot" class="login_anc" tabindex=4 onclick="JavaScript:_focus('emailfield');JavaScript:sndevent('{$this->_fullname}','frame_forgotPassword')" >Forgot Password?</a>
                     </div>
                     <div id="login_btn_div">
                         <input class="form_btn" tabindex=3 type="button" value="Login" onclick="JavaScript:sndmsg('$lgFrm')" />
                     </div>
+					<input type="hidden" name="_message" value="frame_doLoginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
                 </form>
             </div>
 		
@@ -364,7 +362,7 @@ PHTMLCODE;
 
             <div id="pers_info">
                 Welcome <span id="user_name">$name</span>!
-                <div id="balance_div">Balance: <span id="balance_span">&#36;$this->balance</span></div>
+                <div id="balance_div" onclick="document.location.href='http://rocketviews.com/?p=Myacc_balance'" >Balance: <span id="balance_span">&#36;$this->balance</span></div>
             </div>
 			<ul>
 				<li>
@@ -397,20 +395,17 @@ PHTMLCODE;
 	            <li>
 					<form id="$lgFrm" style="display:inline;">
 						<input type="hidden" name="_message" value="frame_loginBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-	                	<a id="login-link" href="#login" onclick="JavaScript:sndmsg('$lgFrm')">Log in</a>
+	                	<a id="login-link" href="#login" onclick="JavaScript:_focus('emailfield');JavaScript:sndmsg('$lgFrm')">Log in</a>
 					</form>
 	            </li>
 	        </ul>
             <div id="signup_div" class="bloop">
-			    <form name="$xFrm" style="float:right;">
-			    	<input type="hidden" name="_message" value="frame_xBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-			    	<font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndmsg('$xFrm')">X</a></font>
-			    </form>
+		    	<span class="bloop_xButton"><font size="1px" color="red"><a style="cursor:pointer;" onclick="JavaScript:sndevent('{$this->_fullname}','frame_xBtn')">X</a></font></span>
             	<form id="$dosuFrm" method="post">
             		<input type="hidden" name="_message" value="frame_doSignupBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
             		<div class="username_div">
                         <label class="user_lbl">Email: </label>
-                        <input class="user_tf" tabindex=1 name="email" type="text" />
+                        <input class="user_tf" id="emailfield" tabindex=1 name="email" type="text" />
                     </div>
                     <div class="password_div">
                         <label class="pass_lbl">Password: </label>
