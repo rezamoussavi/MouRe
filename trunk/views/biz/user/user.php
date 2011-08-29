@@ -28,6 +28,7 @@ class user {
 	var $userUID;
 	var $userName;
 	var $email;
+	var $paypalemail;
 	var $loggedIn;
 	var $BDate;
 	var $Address;
@@ -58,6 +59,10 @@ class user {
 		if(!isset($_SESSION['osNodes'][$fullname]['email']))
 			$_SESSION['osNodes'][$fullname]['email']='';
 		$this->email=&$_SESSION['osNodes'][$fullname]['email'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['paypalemail']))
+			$_SESSION['osNodes'][$fullname]['paypalemail']='';
+		$this->paypalemail=&$_SESSION['osNodes'][$fullname]['paypalemail'];
 
 		if(!isset($_SESSION['osNodes'][$fullname]['loggedIn']))
 			$_SESSION['osNodes'][$fullname]['loggedIn']='';
@@ -111,6 +116,23 @@ class user {
 //########################################
 
 
+	function bookPaypalEmail($paypalemail,$password){
+		if($this->checkPass($password)==TRUE){
+			$email=osBackUserEmail();
+			$pmail=osBackUserPaypalEmail();
+			if($pmail!=-1){
+				query("UPDATE user_info SET paypalemail='$paypalemail' WHERE email='".$email."'");
+				fetch();
+				$olduser=osBackUser();
+				$olduser['paypalemail']=$paypalemail;
+				osBookUser($olduser);
+				return TRUE;
+			}else
+				return FALSE;//paypalemail already set
+		}else{
+			return FALSE;//pass error
+		}
+	}
 	function changePass($old,$new){
 		$u=osBackUser();
 		$hashPass = $this->sha1Hash($u['email'],$old);
@@ -303,6 +325,7 @@ class user {
             
             if ($row = fetch()) {
                 $this->email = $email;
+                $this->paypalemail = $row['paypalemail'];
                 $this->userUID = $row["userUID"];
                 $this->userName = $row["userName"];
                 if ($row["verificationCode"] == '0') {
@@ -310,7 +333,7 @@ class user {
                     $this->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => $this->email, "userUID" => $this->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
+					osBookUser(array("email" => $this->email, "paypalemail" => $this->paypalemail, "userUID" => $this->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
                     osBroadcast("user_login", array());
                     return 1;
                 } else {

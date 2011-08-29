@@ -8,22 +8,44 @@
 	{
 		document.getElementById(elem).style.backgroundColor = color;
 	}
+	function isValidNumber(num){
+		size=(num+"").length;
+		if(!(size>0)) return false;
+		for(i=0;i<size;i++)
+			if( num.charAt(i)<'0' || num.charAt(i)>'9' )
+				return false;
+		return true;
+	}
 	function checkPaypal(){
 		setTimeout("doCheckPaypal()",200);
 	}
 	function doCheckPaypal(){
 		var amount=0.0;
 		var handle=0.0;
-		var user_amount=parseFloat(document.getElementById("paypal_user_amount").value);
-		if(!isNaN(user_amount)){
+		var user_amount=parseFloat(_eGetVal("paypal_user_amount"));
+		if(!isNaN(user_amount) && isValidNumber(_eGetVal("paypal_user_amount"))){
 			handle=(user_amount*0.039+0.3)/(1-0.039);
 			amount=user_amount;
-			document.getElementById("paypal_button").disabled=0;
+			_e("paypal_button").disabled=0;
+			_eSetHTML("paypal_pay_msg","OK");
 		}else{
-			document.getElementById("paypal_button").disabled=1;
+			_e("paypal_button").disabled=1;
+			_eSetHTML("paypal_pay_msg","Invalid");
 		}
 		document.forms['paypal_form'].elements['handling'].value=handle.toFixed(2);
 		document.forms['paypal_form'].elements['amount'].value=amount.toFixed(2);
+	}
+	function checkValidWithdraw(){
+		setTimeout("doCheckValidWithdraw()",200);
+	}
+	function doCheckValidWithdraw(){
+		if(isValidNumber(_eGetVal("withdraw_amount"))){
+			_e("withdraw_button").disabled=0;
+			_eSetHTML("paypal_withdraw_msg","OK");
+		}else{
+			_e("withdraw_button").disabled=1;
+			_eSetHTML("paypal_withdraw_msg","Invalid");
+		}
 	}
 
 //js.end.myaccviewer

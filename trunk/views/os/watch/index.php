@@ -43,7 +43,7 @@ PHTML;
 		<meta property="og:image" content="<?=$img?>" />
 	</head>
 	<body>
-		<div style="margin:100px auto auto auto;width:960px;">
+		<div style="margin:50px auto auto auto;width:960px;">
 			<?=$embed?>
 		</div>
 	</body>

@@ -73,7 +73,7 @@ class transaction {
 	*************************************/
 	function backAll(){
 		$UID=osBackUserID();
-		$q="SELECT * FROM transaction_history WHERE UID=".$UID." ORDER BY date DESC";
+		$q="SELECT * FROM transaction_history WHERE UID=".$UID." ORDER BY TID DESC";
 		query($q);
 		$html="<table border='1'>";
 		$html.="<tr><th>TransactionID</th><th>date</th><th>type</th><th>amount</th><th>comments</th></tr>";
@@ -112,6 +112,8 @@ class transaction {
 		$ret=array("Balance"=>0,"Charge"=>0,"Earn"=>0,"Reimburse"=>0,"Withdraw"=>0,"adPay"=>0);
 		query("SELECT SUM(PPV * totalView) as earned FROM publink_info WHERE publisher=".$UID);
 		if($row=fetch()){$ret['Earn']=sprintf("%.2f",$row['earned']);}
+		query("SELECT SUM(amount) as withdrawn FROM transaction_history WHERE type='Withdraw' AND UID=".$UID);
+		if($row=fetch()){$ret['Withdrawn']=sprintf("%.2f",$row['withdrawn']);}
 		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='Charge'");
 		if($row=fetch()){$ret['Charge']=sprintf("%.2f",$row['total']);}
 		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='adPay'");

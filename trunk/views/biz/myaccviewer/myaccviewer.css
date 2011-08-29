@@ -2,24 +2,37 @@
 /********************
 	START: myaccviewer
 */
+	.balance_hr{
+		float: left;
+		margin-left: 20px;
+	}
+	#paypal_warning{
+		font-size:10px;
+		width:300px;
+		color:red;
+	}
 	#payment_box{
 		float: left;
-		margin-left:100px;
+		height: 100px;
+		width: 800px;
+		border-top: 2px solid #DBD7D8;
+		margin-left:10px;
+		padding: 10px;
 	}
 	#widthraw_box{
-		height: 80px;
+		height: 100px;
 		float: left;
-		border-left: 2px solid #DBD7D8; 
-		margin-left:100px;
-		padding-left: 20px;
-		
+		width: 800px;
+		border-top: 2px solid #DBD7D8;
+		margin-top:20px;
+		margin-left:10px;
+		padding: 10px;		
 	}
 	#paypal_buttons_area{
 		width: 800px;
-		height: 80px;
+		height: 300px;
 		padding: 10px;
 		margin: 10px;
-		border-top: 2px solid #DBD7D8;
 		border-bottom: 2px solid #DBD7D8;
 	}
 	#content_menu
@@ -45,7 +58,7 @@
 	.balance_area_div
 	{
 		margin: 30px auto auto 70px;
-		width: 800px;
+		width: 850px;
 		overflow: auto;
 		padding-bottom: 20px;
 	}
@@ -57,15 +70,25 @@
 		margin-bottom:10px;
 		margin-left:-20px;
 	}
+	.paypal_title_span
+	{
+		color: #00c0ee;
+		font-size: 20px;
+		font-weight: bold;
+		margin-bottom:10px;
+	}
 	.balance_title_area
 	{
-		width: 300px;
+		width: 750px;
+		height: 50px;
 	}
 	.balance_info{
-		width: 250px;
-		height: 200px;
+		width: 500px;
+		height: 350px;
 		padding-right: 400px;
 		margin-left: 50px;
+		font-size: 14px;
+		font-weight: bold;
 	}
 	.balance_section{
 		width:750px;
@@ -73,15 +96,20 @@
 	.balance_label{
 		padding:5px;
 		color:black;
-		width:100px;
+		width:250px;
+		height: 30px;
 		display:inline;
 		float:left;
+		margin-left: 20px;
 	}
 	.balance_data{
 		padding:5px;
 		color:#222222;
+		width:100px;
+		height: 30px;
 		display:inline;
 		float:left;
+		text-align: right;
 	}
 	.balance_row{
 		border-bottom:1px dotted gray;
@@ -101,6 +129,10 @@
 		padding: 5px;
 		margin-top: 20px;
 		margin-bottom: 20px;
+	}
+	#btn_recalc{
+		float:right;
+		margin-right: 30px;
 	}
 	.btn_flat{
 		border:1px solid #DDDDDD;

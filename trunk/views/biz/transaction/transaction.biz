@@ -27,7 +27,7 @@
 
 	function backAll(){
 		$UID=osBackUserID();
-		$q="SELECT * FROM #db->history WHERE UID=".$UID." ORDER BY date DESC";
+		$q="SELECT * FROM #db->history WHERE UID=".$UID." ORDER BY TID DESC";
 		query($q);
 		$html="<table border='1'>";
 		$html.="<tr><th>TransactionID</th><th>date</th><th>type</th><th>amount</th><th>comments</th></tr>";
@@ -74,6 +74,9 @@
 
 		query("SELECT SUM(PPV * totalView) as earned FROM publink_info WHERE publisher=".$UID);
 		if($row=fetch()){$ret['Earn']=sprintf("%.2f",$row['earned']);}
+
+		query("SELECT SUM(amount) as withdrawn FROM #db->history WHERE type='Withdraw' AND UID=".$UID);
+		if($row=fetch()){$ret['Withdrawn']=sprintf("%.2f",$row['withdrawn']);}
 
 		query("SELECT SUM(amount) as total FROM #db->history WHERE UID=".$UID." AND type='Charge'");
 		if($row=fetch()){$ret['Charge']=sprintf("%.2f",$row['total']);}

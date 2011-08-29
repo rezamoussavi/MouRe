@@ -15,7 +15,7 @@
 	user:user
 
 #var
-	userUID,userName,email,loggedIn,BDate,Address,role
+	userUID,userName,email,paypalemail,loggedIn,BDate,Address,role
 
 #db
 	info ('userUID' int(11) NOT NULL auto_increment; 'email' varchar(50) NOT NULL; 'paypalemail' varchar(50); 'userName' varchar(50) NOT NULL; 'BDate' varchar(10) NOT NULL; 'Address' varchar(255) NOT NULL; 'Country' varchar(100) NOT NULL; 'PostalCode' varchar(25) NOT NULL; 'password' varchar(50) NOT NULL; 'verificationCode' varchar(50) NOT NULL; 'biznessUID' int(11) NOT NULL; 'role' varchar(50) NOT NULL COMMENT 'user / admin'; PRIMARY KEY  ('userUID'); UNIQUE KEY 'email' ('email'))
@@ -33,6 +33,24 @@
 	'role' varchar(50)
 
 #phpfunction
+
+	function bookPaypalEmail($paypalemail,$password){
+		if(#fun->checkPass($password)==TRUE){
+			$email=osBackUserEmail();
+			$pmail=osBackUserPaypalEmail();
+			if($pmail!=-1){
+				query("UPDATE #db->info SET paypalemail='$paypalemail' WHERE email='".$email."'");
+				fetch();
+				$olduser=osBackUser();
+				$olduser['paypalemail']=$paypalemail;
+				osBookUser($olduser);
+				return TRUE;
+			}else
+				return FALSE;//paypalemail already set
+		}else{
+			return FALSE;//pass error
+		}
+	}
 
 	function changePass($old,$new){
 		$u=osBackUser();
@@ -248,6 +266,7 @@
             
             if ($row = fetch()) {
                 #var->email = $email;
+                #var->paypalemail = $row['paypalemail'];
                 #var->userUID = $row["userUID"];
                 #var->userName = $row["userName"];
                 if ($row["verificationCode"] == '0') {
@@ -255,7 +274,7 @@
                     #var->loggedIn = 1;
                     
                     // let bizes know we're logged in!
-					osBookUser(array("email" => #var->email, "userUID" => #var->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
+					osBookUser(array("email" => #var->email, "paypalemail" => #var->paypalemail, "userUID" => #var->userUID, "Address"=>$row["Address"], "Country"=>$row["Country"], "PostalCode"=>$row["PostalCode"], "userName"=>$row["userName"], "role"=>$row["role"], "BDate"=>$row["BDate"]));
                     osBroadcast(#msg->login, array());
                     return 1;
                 } else {

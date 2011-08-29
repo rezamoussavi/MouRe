@@ -21,6 +21,7 @@ class myaccviewer {
 
 	//Variables
 	var $balance;
+	var $withdrawn;
 	var $paid;
 	var $earned;
 	var $reimbursed;
@@ -68,6 +69,10 @@ class myaccviewer {
 		if(!isset($_SESSION['osNodes'][$fullname]['balance']))
 			$_SESSION['osNodes'][$fullname]['balance']=0;
 		$this->balance=&$_SESSION['osNodes'][$fullname]['balance'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['withdrawn']))
+			$_SESSION['osNodes'][$fullname]['withdrawn']=0;
+		$this->withdrawn=&$_SESSION['osNodes'][$fullname]['withdrawn'];
 
 		if(!isset($_SESSION['osNodes'][$fullname]['paid']))
 			$_SESSION['osNodes'][$fullname]['paid']=0;
@@ -187,7 +192,7 @@ class myaccviewer {
 					'From: paypa!@RocketViews.com' . "\r\n" .
 					'Reply-To: kian.gb@gmail.com' . "\r\n" .
 					'X-Mailer: PHP/' . phpversion();
-		$userpaypalemail=$this->backUserPaypalEmail();
+		$paypalemail=osBackUserPaypalEmail();
 		$userID=osBackUserID();
 		$t=new transaction("");
 		$trans=$t->backAll();
@@ -198,9 +203,10 @@ class myaccviewer {
 
 			Hi,<br />
 			UserName: <b>$name</b> <br />
-			Email: <b>$email</b> <br /><br />
+			Email: <b>$email</b> <br />
+			Paypal Email: <b>$paypalemail</b> <br /><br />
 			Amount: $amount $ <br />
-			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$userpaypalemail}&item_name=Withdraw_RocketViews&item_number={$userID}&amount={$amount}&currency_code=USD">
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$paypalemail}&item_name=Withdraw_RocketViews&item_number={$userID}&amount={$amount}&currency_code=USD">
 				Click Here to Pay
 			</a> <br /><br />
 			$trans<br /><br />
@@ -212,41 +218,51 @@ PHTMLCODE;
 
         mail("reza2mussavi@hotmail.com", "Paypal Withdraw RocketViews", $msg, $mailheader);
     }
-	private function backUserPaypalEmail(){
-		return osBackUserEmail();
-	}
 	/******************************
 	*	Message Handlers
 	******************************/
 	function onWithdraw($info){
-		//////////////////
+		////////////////////////////////////
 		//	checkPass
-		//////////////////
+		////////////////////////////////////
 		$u=new user("");
 		if($u->checkPass($info['password'])==FALSE){
-			$this->withdraw_msg="<font color='red'>Wrong Password</font>";
+			$this->withdraw_msg="<font color='red'>Wrong paypal email or Password</font>";
 		}else{
-			//////////////////
-			//	check amount
-			//////////////////
-			$this->reCalc();
-			if($this->balance<$info['amount']){
-				$this->withdraw_msg="<font color='red'>Not enough credit in balance</font>";
+			////////////////////////////////////
+			//	check paypalemail
+			////////////////////////////////////
+			$pmail=osBackUserPaypalEmail();
+			if(strlen($pmail."")<4){//1st time, add pmail
+				if($u->bookPaypalEmail($info['paypalemail'],$info['password'])==TRUE){
+					$pmail=$info['paypalemal'];
+				}
+			}
+			if($info['paypalemail']!=$pmail){
+				$this->withdraw_msg="<font color='red'>Wrong paypal email or Password</font>";
 			}else{
-				//////////////////
-				// redeuce transaction
-				//////////////////
-				$t=new transaction("");
-				$t->bookWithdraw(-$info['amount'],"Withdraw via paypal");
-				//////////////////
-				// send email to us
-				//////////////////
-				$this->sendPaymentEmail($info['amount']);
-				//////////////////
-				//	Show Result
-				//////////////////
-				$this->withdraw_msg="<font color='green'>It will be in your paypal account in 48h</font>";
-			}//Amount check
+				////////////////////////////////////
+				//	check amount
+				////////////////////////////////////
+				$this->reCalc();
+				if($this->balance<$info['amount']){
+					$this->withdraw_msg="<font color='red'>Not enough credit in balance</font>";
+				}else{
+					////////////////////////////////////
+					// redeuce transaction
+					////////////////////////////////////
+					$t=new transaction("");
+					$t->bookWithdraw(-$info['amount'],"Withdraw via paypal");
+					////////////////////////////////////
+					// send email to us
+					////////////////////////////////////
+					$this->sendPaymentEmail($info['amount']);
+					////////////////////////////////////
+					//	Show Result
+					////////////////////////////////////
+					$this->withdraw_msg="<font color='green'>It will be in your paypal account in 48h</font>";
+				}//Amount check
+			}//paypalemail
 		}//Password check
 		$this->_bookframe("frmBalance");
 	}
@@ -314,20 +330,24 @@ PHTMLCODE;
 			<div class="balance_area_div">
 				<div class="balance_info">
 					<div class="balance_title_area">
-						<span class="balance_title_span">Credit Information</span>
+						<span class="balance_title_span">Credit information summary</span>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input value="ReCalculate" type="button" class="btn_flat" onclick="JavaScript:sndevent('{$this->_fullname}','frame_reCalc')" />
+						<input value="ReCalculate" type="button" class="btn_flat" id="btn_recalc" onclick="JavaScript:sndevent('{$this->_fullname}','frame_reCalc')" />
 					</div>
-					<div class="balance_label">Balance:</div>
-						 <div class="balance_data">{$this->balance} $</div>
-					<div class="balance_label">Paid:</div>
-						<div class="balance_data">{$this->paid} $</div>
-					<div class="balance_label">adPay:</div>
-						<div class="balance_data">{$this->adpay} $</div>
-					<div class="balance_label">Re-imbursed:</div>
-						<div class="balance_data">{$this->reimbursed} $</div>
-					<div class="balance_label">Earned:</div>
+					<div class="balance_label">+ Earned amount by publishing:</div>
 						<div class="balance_data">{$this->earned} $</div>
+					<div class="balance_label">- Withdrawn amount:</div>
+						<div class="balance_data">{$this->withdrawn} $</div>
+					<hr width=400 heught=1 class="balance_hr" color="#DBD7D8" /><br/>
+					<div class="balance_label">+ Deposited amount:</div>
+						<div class="balance_data">{$this->paid} $</div>
+					<div class="balance_label">- Paid amount for your ads:</div>
+						<div class="balance_data">{$this->adpay} $</div>
+					<div class="balance_label">+ Reimbursed amount:<br/><font size=1>&nbsp;&nbsp;&nbsp;after stopping a video's publish</font></div>
+						<div class="balance_data">{$this->reimbursed} $</div>
+					<hr width=400 heught=1 class="balance_hr" color=black /><br/>
+					<div class="balance_label" style="font-size:150%;">&nbsp;&nbsp;&nbsp;&nbsp;Balance:</div>
+						 <div class="balance_data">{$this->balance} $</div>
 				</div>
 				<div class="balance_section">
 					$paypal
@@ -343,11 +363,14 @@ PHTMLCODE;
 		$frmWithdraw=$this->_fullname."withdraw";
 		$wmsg=$this->withdraw_msg;
 		$this->withdraw_msg="";
+		$pmail=osBackUserPaypalEmail();
+		$withdrawmsg=strlen($pmail."")<4?"<span id='paypal_warning' ><b>Warning:</b> Please consider that once your paypal email account is set,<br />you cannot use other paypal accounts for future withdrawals for your own security.<br/>Please recheck the email address to be correct!</span>":"";
 		return <<<PHTMLCODE
 
 			<div id="paypal_buttons_area">
 				<div id="payment_box">
-					Amount: &#36;<input id="paypal_user_amount" size="5" value="0" onchange="JavaScript:checkPaypal();" onkeypress="JavaScript:checkPaypal();" />
+					<span class="paypal_title_span">Deposit funds to your account</span><br/>
+					Amount to be deposited to your account via credit card or Paypal: &#36;<input id="paypal_user_amount" size="5" value="0" onchange="JavaScript:checkPaypal();" onkeypress="JavaScript:checkPaypal();" /><span id="paypal_pay_msg"></span>
 					<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" name="paypal_form">
 						<input type="hidden" name="amount" value="00.00">
 						<input type="hidden" name="cmd" value="_xclick">
@@ -371,12 +394,14 @@ PHTMLCODE;
 					</form>
 				</div>
 				<div id="widthraw_box">
+					<span class="paypal_title_span">Withdraw funds from your account</span><br/>
 					<form id="$frmWithdraw" action="" method="POST">
 						<input type="hidden" name="_message" value="frame_withdraw" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+						$withdrawmsg <br />
 						Paypal email: <input name="paypalemail" size="5" />
-						Amount: &#36; <input name="amount" value="0" size="5" /><br />
+						Amount: &#36; <input name="amount" id="withdraw_amount" value="0" size="5" onchange="JavaScript:checkValidWithdraw();" onkeypress="JavaScript:checkValidWithdraw();" /><span id="paypal_withdraw_msg"></span><br />
 						password: <input type="password" name="password" size="5" />
-						<input type="button" value="Withdraw" onclick="_eSetHTML('withdrawmessage','<img src=\'/img/loading.gif\'> Processing...');JavaScript:sndmsg('$frmWithdraw')">
+						<input type="button" disabled=1 id="withdraw_button" value="Withdraw" onclick="_eSetHTML('withdrawmessage','<img src=\'/img/loading.gif\'> Processing...');JavaScript:sndmsg('$frmWithdraw')">
 					</form>
 					<br /><span id="withdrawmessage">$wmsg</span>
 				</div>
@@ -503,6 +528,7 @@ PHTMLCODE;
 		$this->paid=$all['Charge'];
 		$this->adpay=$all['adPay'];
 		$this->earned=$all['Earn'];
+		$this->withdrawn=$all['Withdrawn'];
 		$this->reimbursed=$all['Reimburse'];
 	}
 

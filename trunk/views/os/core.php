@@ -109,6 +109,10 @@
 		return isset($_SESSION['user']['email'])? $_SESSION['user']['email'] : -1;
 	}
 
+	function osBackUserPaypalEmail(){
+		return isset($_SESSION['user']['paypalemail'])? $_SESSION['user']['paypalemail'] : -1;
+	}
+
 	function osUserLogedin(){
 		return isset($_SESSION['user']['userUID'])? ($_SESSION['user']['userUID']>-1)?true:false : false;
 	}
