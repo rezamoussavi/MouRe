@@ -24,6 +24,7 @@
 	page->Myacc_adLink=onAdLinkBtn
 	page->Myacc_balance=onBalanceBtn
 	frame->reCalc=onReCalc
+	frame->withdraw=onWithdraw
 	user->login=onReCalc
 	user->logout=onLogout
 	page->paypal=onPayPal
@@ -34,13 +35,92 @@
 	earned=0
 	reimbursed=0
 	adpay=0
-	cur_menue="profile";
+	cur_menue="profile"
+	withdraw_msg =""
 
 #phpfunction
+
+
+	/******************************
+	*	Functionalities
+	******************************/
+
+    private function sendPaymentEmail($amount) {
+		$mailheader='MIME-Version: 1.0' . "\r\n" .
+					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+					'From: paypa!@RocketViews.com' . "\r\n" .
+					'Reply-To: kian.gb@gmail.com' . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+		$userpaypalemail=#fun->backUserPaypalEmail();
+		$userID=osBackUserID();
+		$t=new transaction("");
+		$trans=$t->backAll();
+		$u=osBackUser();
+		$name=strlen($u['userName'])>0?$u['userName']:"&lt;EMPTY&gt;";
+		$email=$u['email'];
+		$msg=<PHTML>
+			Hi,<br />
+			UserName: <b>$name</b> <br />
+			Email: <b>$email</b> <br /><br />
+			Amount: $amount $ <br />
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$userpaypalemail}&item_name=Withdraw_RocketViews&item_number={$userID}&amount={$amount}&currency_code=USD">
+				Click Here to Pay
+			</a> <br /><br />
+			$trans<br /><br />
+			Regards<br />
+			RocketViews<br />
+			Withdraw System<br />
+		</PHTML>
+        mail("reza2mussavi@hotmail.com", "Paypal Withdraw RocketViews", $msg, $mailheader);
+    }
+
+	private function backUserPaypalEmail(){
+		return osBackUserEmail();
+	}
 
 	/******************************
 	*	Message Handlers
 	******************************/
+
+	function onWithdraw($info){
+		//////////////////
+		//	checkPass
+		//////////////////
+
+		$u=new user("");
+		if($u->checkPass($info['password'])==FALSE){
+			#var->withdraw_msg="<font color='red'>Wrong Password</font>";
+		}else{
+			//////////////////
+			//	check amount
+			//////////////////
+			#fun->reCalc();
+			if(#var->balance<$info['amount']){
+				#var->withdraw_msg="<font color='red'>Not enough credit in balance</font>";
+			}else{
+				//////////////////
+				// redeuce transaction
+				//////////////////
+
+				$t=new transaction("");
+				$t->bookWithdraw(-$info['amount'],"Withdraw via paypal");
+
+				//////////////////
+				// send email to us
+				//////////////////
+
+				#fun->sendPaymentEmail($info['amount']);
+
+				//////////////////
+				//	Show Result
+				//////////////////
+
+				#var->withdraw_msg="<font color='green'>It will be in your paypal account in 48h</font>";
+			}//Amount check
+		}//Password check
+
+		_bookframe(#frm->frmBalance);
+	}
 
 	function onReCalc($info){
 		#fun->reCalc();
@@ -141,29 +221,46 @@
 
 	function frmPaypal(){
 		$userID=osBackUserID();
+		$frmWithdraw=#nodeID."withdraw";
+		$wmsg=#var->withdraw_msg;
+		#var->withdraw_msg="";
 		return <PHTML>
-			<input id="paypal_user_amount" value="0" onchange="JavaScript:checkPaypal();" onkeypress="JavaScript:checkPaypal();" />
-			<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" name="paypal_form">
-				<input type="hidden" name="amount" value="00.00">
-				<input type="hidden" name="cmd" value="_xclick">
-				<input type="hidden" name="image_url" value="http://rocketviews.com/img/paypallogo.png">
-				<input type="hidden" name="business" value="FCE49XXTRTKV4">
-				<input type="hidden" name="lc" value="US">
-				<input type="hidden" name="item_name" value="RocketViews Balance">
-				<input type="hidden" name="item_number" value="7">
-				<input type="hidden" name="button_subtype" value="services">
-				<input type="hidden" name="no_note" value="0">
-				<input type="hidden" name="custom" value="{$userID}">
-				<input type="hidden" name="no_shipping" value="1">
-				<input type="hidden" name="rm" value="1">
-				<input type="hidden" name="return" value="http://RocketViews.com/?p=Myacc_balance">
-				<input type="hidden" name="cancel_return" value="http://RocketViews.com/?p=Myacc_balance">
-				<input type="hidden" name="currency_code" value="USD">
-				<input type="hidden" name="handling" value="00.00">
-				<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
-				<input type="image" id="paypal_button" disabled=1 src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-				<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-			</form>
+			<div id="paypal_buttons_area">
+				<div id="payment_box">
+					Amount: &#36;<input id="paypal_user_amount" size="5" value="0" onchange="JavaScript:checkPaypal();" onkeypress="JavaScript:checkPaypal();" />
+					<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" name="paypal_form">
+						<input type="hidden" name="amount" value="00.00">
+						<input type="hidden" name="cmd" value="_xclick">
+						<input type="hidden" name="image_url" value="http://rocketviews.com/img/paypallogo.png">
+						<input type="hidden" name="business" value="FCE49XXTRTKV4">
+						<input type="hidden" name="lc" value="US">
+						<input type="hidden" name="item_name" value="RocketViews Balance">
+						<input type="hidden" name="item_number" value="7">
+						<input type="hidden" name="button_subtype" value="services">
+						<input type="hidden" name="no_note" value="0">
+						<input type="hidden" name="custom" value="{$userID}">
+						<input type="hidden" name="no_shipping" value="1">
+						<input type="hidden" name="rm" value="1">
+						<input type="hidden" name="return" value="http://RocketViews.com/?p=Myacc_balance">
+						<input type="hidden" name="cancel_return" value="http://RocketViews.com/?p=Myacc_balance">
+						<input type="hidden" name="currency_code" value="USD">
+						<input type="hidden" name="handling" value="00.00">
+						<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
+						<input type="image" id="paypal_button" disabled=1 src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+						<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+					</form>
+				</div>
+				<div id="widthraw_box">
+					<form id="$frmWithdraw" action="" method="POST">
+						<#msg->withdraw>
+						Paypal email: <input name="paypalemail" size="5" />
+						Amount: &#36; <input name="amount" value="0" size="5" /><br />
+						password: <input type="password" name="password" size="5" />
+						<input type="button" value="Withdraw" onclick="_eSetHTML('withdrawmessage','<img src=\'/img/loading.gif\'> Processing...');JavaScript:sndmsg('$frmWithdraw')">
+					</form>
+					<br /><span id="withdrawmessage">$wmsg</span>
+				</div>
+			</div>
 		</PHTML>
 	}
 
@@ -308,6 +405,34 @@
 	}
 
 #css
+	#payment_box{
+		float: left;
+		margin-left:100px;
+	}
+	#widthraw_box{
+		height: 80px;
+		float: left;
+		border-left: 2px solid #DBD7D8; 
+		margin-left:100px;
+		padding-left: 20px;
+		
+	}
+	#paypal_buttons_area{
+		width: 800px;
+		height: 80px;
+		padding: 10px;
+		margin: 10px;
+		border-top: 2px solid #DBD7D8;
+		border-bottom: 2px solid #DBD7D8;
+	}
+	#content_menu
+	{
+		width: 840px;
+		height: 80px;
+		border-bottom: 2px solid #DBD7D8;
+		margin-left: auto;
+		margin-right: auto;
+	}
 	.content_menu_lst
 	{
 		margin-top: 5px;

@@ -350,7 +350,7 @@ class user {
                 // A welcome message to the user...
                 $msg = "Welcome!<br />Please login to your account and verify by this code: ".$vcode;
                 //send an email to the user. FIX MAILING FUNCTION!
-                $this->sendEmail($email, "Welcome to buziness!", $msg);
+                $this->sendEmail($email, "Welcome to bizness!", $msg);
                 
                 
                 //to get the fresh userUID...

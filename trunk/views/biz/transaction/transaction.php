@@ -71,14 +71,28 @@ class transaction {
 	/*************************************
 	*	APIs
 	*************************************/
+	function backAll(){
+		$UID=osBackUserID();
+		$q="SELECT * FROM transaction_history WHERE UID=".$UID." ORDER BY date DESC";
+		query($q);
+		$html="<table border='1'>";
+		$html.="<tr><th>TransactionID</th><th>date</th><th>type</th><th>amount</th><th>comments</th></tr>";
+		while($row=fetch()){
+			$html.="<tr>";
+			$html.="<td>".$row['TID']."</td><td>".$row['date']."</td><td>".$row['type']."</td><td>".$row['amount']."</td><td>".$row['comments']."</td>";
+			$html.="</tr>";
+		}
+		$html.="</table>";
+		return $html;
+	}
+	function bookWithdraw($amount,$comments){
+		$this->INSERT(osBackUserID(),date("Y/m/d"),"Withdraw",$amount,$comments);
+	}
 	function bookCharge($amount,$comments){
 		$this->INSERT(osBackUserID(),date("Y/m/d"),"Charge",$amount,$comments);
 	}
 	function bookAdPay($amount,$comments){
 		$this->INSERT(osBackUserID(),date("Y/m/d"),"adPay",-$amount,$comments);
-	}
-	function bookWithdraw($amount,$comments){
-		$this->INSERT(osBackUserID(),date("Y/m/d"),"Withdra",-$amount,$comments);
 	}
 	function bookReimburse($amount,$comments){
 		$this->INSERT(osBackUserID(),date("Y/m/d"),"Reimburse",$amount,$comments);
