@@ -254,7 +254,7 @@
 		*
 		* Today-minCancelTime>startDate
 		*/
-		elseif(date("Y/m/d",mktime(0,0,0,date("m"),date("d") - #var->data['minCancelTime'],date("Y"))) < #var->data['startDate']){
+		elseif(date("Y/m/d",mktime(0,0,0,date("m"),date("d") - #var->data['minLifeTime'],date("Y"))) < #var->data['startDate']){
 			$month=substr(#var->data['startDate'],5,2);
 			$day=substr(#var->data['startDate'],8,2);
 			$year=substr(#var->data['startDate'],0,4);
@@ -275,9 +275,9 @@
 		            <input class="stop_btn" type="button" value="Stop" onclick='document.getElementById("stopBtn1st").style.display="none";document.getElementById("confirmForm").style.display="inline"'/> 
 		        </div> 
 		        <div class="stop_not_div" id="confirmForm" style="display:none;"> 
-   					<form id="$frmName" method="post" style="display:inline;">
+   					<form id="$frmName" method="post" style="display:inline;float:right;margin-right:-50px;">
 						<#msg->stopBtn>
-						<font size=1px>this video will stop in {#var->data['minLifeTime']} days. Are you sure you want to stop rocketing the views?</font>
+						<font size=1px>this video will stop in {#var->data['minCancelTime']} days. Are you sure you want to stop rocketing the views?</font>
 						<br />
 				        <label class="bold">Password: </label> 
 				        <input name="password" type="password" size="20" /> 
@@ -319,7 +319,7 @@
 	function onStopBtn($info){
 		$al=new adlink("");
 		$u=new user("");
-		if($u->changePass($info['password'])){
+		if($u->checkPass($info['password'])){
 			if($al->stop(#var->data['adUID'])){
 				#var->data=$al->backLinkByID(#var->data['adUID']);
 			}
@@ -384,7 +384,7 @@
 		float: left;
 	}
 	.details_btn_div {float: left; margin-left: 10px;}
-	.stop_btn_div {float: right; margin-right: 10px;}
+	.stop_btn_div {float: right; margin-right: -115px;}
 	.getlink_btn {
 		margin-right: 17px;
 		width: 150px;
@@ -467,13 +467,6 @@
 		border: 5px solid #1ABABA;
 		border-radius: 10px;
 		font-weight: bold;
-	}
-	.stop_not_div
-	{
-		margin-top: 5px;
-		margin-left: 100px;
-		float: left;
-		width: 500px;
 	}
 	.stop_not_div
 	{

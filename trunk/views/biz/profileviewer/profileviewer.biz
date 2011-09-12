@@ -17,7 +17,8 @@
 	frame->changePassword=onChangePassword
 
 #var
-	message=""
+	changepassmsg=""
+	personalinfomsg=""
 
 #phpfunction
 
@@ -46,7 +47,7 @@
 			$html="Please Login First";
 		}else{
 			$html=<PHTML>
-				{#var->message}
+				{#var->personalinfomsg}
 				<span class="profile_title_span">Personal Information</span> 
 				<form id="$formName" class="persinf_frm" method="post">
 					<#msg->updateInfo><br />
@@ -78,6 +79,7 @@
 					</div> 
 					<br /><br /> 
 				</form> 
+				{#var->changepassmsg}
 				<span class="profile_title_span">Change Password</span> 
 				<form id="$formPass" class="change_pass_frm" method="post"> 
 					<#msg->changePassword>
@@ -94,7 +96,8 @@
 				</form> 
 			</PHTML>
 		}
-		#var->message="";
+		#var->personalinfomsg="";
+		#var->changepassmsg="";
 		return $html;
 	}
 
@@ -105,12 +108,12 @@
 	function onChangePassword($info){
 		//check password match
 		if($info['NewPass1']!=$info['NewPass2']){
-			#var->message="<font color=red>Password and Confirm password dismatch! try again</font>";
+			#var->changepassmsg="<center><b><font color=red>Password and Confirm password dismatch! try again</font></b></center>";
 			return;
 		}
 		//applypass
 		$u=new user("");
-		#var->message=($u->changePass($info['Password'],$info['NewPass1']))?"<b><center><font color=green>Password has been Changed!</font></center></b>":"<b><center><font color=red>ERROR! Password NOT Changed!</font></center></b>";
+		#var->changepassmsg=($u->changePass($info['Password'],$info['NewPass1']))?"<b><center><font color=green>Password has been Changed!</font></center></b>":"<b><center><font color=red>ERROR! Password NOT Changed!</font></center></b>";
 	}
 
 	function onUpdateInfo($info){
@@ -119,9 +122,9 @@
 		$u=new user("");
 		$ret=$u->bookInfo($info);
 		if($ret==1)
-			#var->message="<center><b><font color=green>Update Successfully!</font></b></center>";
+			#var->personalinfomsg="<center><b><font color=green>Update Successfully!</font></b></center>";
 		else
-			#var->message="<center><b><font color=red>$ret</font></b></center>";
+			#var->personalinfomsg="<center><b><font color=red>$ret</font></b></center>";
 		_bookframe(#frm->frm);
 	}
 

@@ -116,19 +116,38 @@ class adlink {
 		/*	fetch the link */
 		query(" SELECT * FROM adlink_info WHERE adUID=$id ");
 		if($row=fetch()){
-			$timeUnlock=date("Y/m/d",mktime(0,0,0,$m,$d - $row['minCancelTime'],$y)) >= $row['startDate'];
+			$title=$row['title'];
+			$timeUnlock=date("Y/m/d",mktime(0,0,0,$m,$d - $row['minLifeTime'],$y)) >= $row['startDate'];
 			/*
 			*	Check IF it is running (running==1)
-			*	&& publishe is logedin
+			*	&& publisher is logedin
 			*	&& more than minLifeTime passed
 			*/
 			if( ($row['advertisor']==osBackUserID()) && ($row['running']==1) && $timeUnlock){
 				/*
 				*	thus stop it (running=-1)
 				*/
-				$lastDate=date("Y/m/d",mktime(0,0,0,$m,$d+$row['minLifeTime'],$y));
+				$lastDate=date("Y/m/d",mktime(0,0,0,$m,$d+$row['minCancelTime'],$y));
 				$q="UPDATE adlink_info as d SET d.lastDate='".$lastDate."' , d.running=-1 WHERE d.adUID=$id";
 				query($q);
+				/*
+				*	Send email to all publisher of this video
+				*/
+				query("SELECT u.email as email, u.userName as name FROM publink_info as p, user_info as u where u.userUID=p.publisher AND p.totalView>0 and p.adLinkUID=".$id);
+				while($row=fetch()){
+					$msg=<<<PHTMLCODE
+
+						Hello {$row['name']}<br/>
+						<br/>
+						The following video will stop from $lastDate <br />
+						<br /> 
+						<b><i>$title</i></b>
+					
+PHTMLCODE;
+
+					osMail("admin@RocketViews.com",$row['email'],"Video Expiration",$msg);
+					osLog('adlink',$this->_fullname,"Sent to ".$row['email']."<hr>".$msg);
+				}
 				return TRUE;
 			}
 		}

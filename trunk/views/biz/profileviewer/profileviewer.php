@@ -18,7 +18,8 @@ class profileviewer {
 	var $_tmpNode;
 
 	//Variables
-	var $message;
+	var $changepassmsg;
+	var $personalinfomsg;
 
 	//Nodes (bizvars)
 
@@ -41,9 +42,13 @@ class profileviewer {
 			$_SESSION['osNodes'][$fullname]['_curFrame']='frm';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
-		if(!isset($_SESSION['osNodes'][$fullname]['message']))
-			$_SESSION['osNodes'][$fullname]['message']="";
-		$this->message=&$_SESSION['osNodes'][$fullname]['message'];
+		if(!isset($_SESSION['osNodes'][$fullname]['changepassmsg']))
+			$_SESSION['osNodes'][$fullname]['changepassmsg']="";
+		$this->changepassmsg=&$_SESSION['osNodes'][$fullname]['changepassmsg'];
+
+		if(!isset($_SESSION['osNodes'][$fullname]['personalinfomsg']))
+			$_SESSION['osNodes'][$fullname]['personalinfomsg']="";
+		$this->personalinfomsg=&$_SESSION['osNodes'][$fullname]['personalinfomsg'];
 
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='profileviewer';
@@ -131,7 +136,7 @@ PHTMLCODE;
 		}else{
 			$html=<<<PHTMLCODE
 
-				{$this->message}
+				{$this->personalinfomsg}
 				<span class="profile_title_span">Personal Information</span> 
 				<form id="$formName" class="persinf_frm" method="post">
 					<input type="hidden" name="_message" value="frame_updateInfo" /><input type = "hidden" name="_target" value="{$this->_fullname}" /><br />
@@ -163,6 +168,7 @@ PHTMLCODE;
 					</div> 
 					<br /><br /> 
 				</form> 
+				{$this->changepassmsg}
 				<span class="profile_title_span">Change Password</span> 
 				<form id="$formPass" class="change_pass_frm" method="post"> 
 					<input type="hidden" name="_message" value="frame_changePassword" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
@@ -181,7 +187,8 @@ PHTMLCODE;
 PHTMLCODE;
 
 		}
-		$this->message="";
+		$this->personalinfomsg="";
+		$this->changepassmsg="";
 		return $html;
 	}
 	/********************************************
@@ -190,12 +197,12 @@ PHTMLCODE;
 	function onChangePassword($info){
 		//check password match
 		if($info['NewPass1']!=$info['NewPass2']){
-			$this->message="<font color=red>Password and Confirm password dismatch! try again</font>";
+			$this->changepassmsg="<center><b><font color=red>Password and Confirm password dismatch! try again</font></b></center>";
 			return;
 		}
 		//applypass
 		$u=new user("");
-		$this->message=($u->changePass($info['Password'],$info['NewPass1']))?"<b><center><font color=green>Password has been Changed!</font></center></b>":"<b><center><font color=red>ERROR! Password NOT Changed!</font></center></b>";
+		$this->changepassmsg=($u->changePass($info['Password'],$info['NewPass1']))?"<b><center><font color=green>Password has been Changed!</font></center></b>":"<b><center><font color=red>ERROR! Password NOT Changed!</font></center></b>";
 	}
 	function onUpdateInfo($info){
 		$curU=osBackUser();
@@ -203,9 +210,9 @@ PHTMLCODE;
 		$u=new user("");
 		$ret=$u->bookInfo($info);
 		if($ret==1)
-			$this->message="<center><b><font color=green>Update Successfully!</font></b></center>";
+			$this->personalinfomsg="<center><b><font color=green>Update Successfully!</font></b></center>";
 		else
-			$this->message="<center><b><font color=red>$ret</font></b></center>";
+			$this->personalinfomsg="<center><b><font color=red>$ret</font></b></center>";
 		$this->_bookframe("frm");
 	}
 

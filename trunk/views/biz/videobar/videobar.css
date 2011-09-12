@@ -26,7 +26,7 @@
 		float: left;
 	}
 	.details_btn_div {float: left; margin-left: 10px;}
-	.stop_btn_div {float: right; margin-right: 10px;}
+	.stop_btn_div {float: right; margin-right: -115px;}
 	.getlink_btn {
 		margin-right: 17px;
 		width: 150px;
@@ -109,13 +109,6 @@
 		border: 5px solid #1ABABA;
 		border-radius: 10px;
 		font-weight: bold;
-	}
-	.stop_not_div
-	{
-		margin-top: 5px;
-		margin-left: 100px;
-		float: left;
-		width: 500px;
 	}
 	.stop_not_div
 	{

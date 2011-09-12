@@ -375,7 +375,7 @@ PHTMLCODE;
 		*
 		* Today-minCancelTime>startDate
 		*/
-		elseif(date("Y/m/d",mktime(0,0,0,date("m"),date("d") - $this->data['minCancelTime'],date("Y"))) < $this->data['startDate']){
+		elseif(date("Y/m/d",mktime(0,0,0,date("m"),date("d") - $this->data['minLifeTime'],date("Y"))) < $this->data['startDate']){
 			$month=substr($this->data['startDate'],5,2);
 			$day=substr($this->data['startDate'],8,2);
 			$year=substr($this->data['startDate'],0,4);
@@ -400,9 +400,9 @@ PHTMLCODE;
 		            <input class="stop_btn" type="button" value="Stop" onclick='document.getElementById("stopBtn1st").style.display="none";document.getElementById("confirmForm").style.display="inline"'/> 
 		        </div> 
 		        <div class="stop_not_div" id="confirmForm" style="display:none;"> 
-   					<form id="$frmName" method="post" style="display:inline;">
+   					<form id="$frmName" method="post" style="display:inline;float:right;margin-right:-50px;">
 						<input type="hidden" name="_message" value="frame_stopBtn" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-						<font size=1px>this video will stop in {$this->data['minLifeTime']} days. Are you sure you want to stop rocketing the views?</font>
+						<font size=1px>this video will stop in {$this->data['minCancelTime']} days. Are you sure you want to stop rocketing the views?</font>
 						<br />
 				        <label class="bold">Password: </label> 
 				        <input name="password" type="password" size="20" /> 
@@ -440,7 +440,7 @@ PHTMLCODE;
 	function onStopBtn($info){
 		$al=new adlink("");
 		$u=new user("");
-		if($u->changePass($info['password'])){
+		if($u->checkPass($info['password'])){
 			if($al->stop($this->data['adUID'])){
 				$this->data=$al->backLinkByID($this->data['adUID']);
 			}

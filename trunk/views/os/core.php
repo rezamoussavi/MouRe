@@ -43,6 +43,15 @@
 //########################################################
 //########################################################
 
+	function osMail($from,$to,$subject,$message){
+		$mailheader='MIME-Version: 1.0' . "\r\n" .
+					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+					'From: ' .$from. "\r\n" .
+					'Reply-To: ' .$from. "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+        mail($to, $subject, $message, $mailheader);
+	}
+
 	function osLog($Biz,$NodeID,$Message){
 		$t=$_SERVER['REQUEST_TIME'];
 		query("INSERT INTO os_log(TimeStamp,Biz,NodeID,Message) VALUES('$t','$Biz','$NodeID','$Message')");
