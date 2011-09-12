@@ -114,7 +114,7 @@ class bizbank {
 			<div id="header_bg">
 				<div id="logo_div">
 					<a href="$home">
-						<img id="logo_img" alt="" src="./img/logo.png" />
+						<img id="logo_img" alt="" src="./img/logo.png" border="0"/>
 					</a>
 				</div>
 				<div id="menu_div">

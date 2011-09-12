@@ -2,6 +2,30 @@
 /********************
 	START: mainpageviewer
 */
+	.contact_row{
+		padding: 10px;
+	}
+	.contact_row_txt{
+		padding: 10px;
+		height:150px;
+	}
+	.contact_us_area_div
+	{
+		margin: 30px auto auto 120px;
+		width: 450px;
+		overflow: auto;
+		padding-bottom: 100px;
+	}
+	.contact_us_container
+	{
+		border-radius: 15px;
+		background-color: white;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		width: 650px;
+		margin-left: auto;
+		margin-right: auto;
+	}
 	.content_container
 	{
 		background-color: white;
@@ -23,9 +47,17 @@
 		border-bottom: 2px solid #E1E3DC;
 		/*display: none;*/
 		padding: 36px 0;
-		height: 200px;
+		height: 370px;
 		margin:auto;
 	}
+	#showbox_content{
+		background: url('./img/showbox_bg.png') no-repeat center ;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: -20px;
+		height: 430px;
+		width: 960px;
+    }
 	#publish_btns {
 		text-align: center;
 	}
@@ -52,7 +84,7 @@
 		width:900px;
 		margin-left:auto;
 		margin-right:auto;
-		margin-top:20px;
+		padding-top:20px;
 		margin-bottom:-20px;
 	}
 

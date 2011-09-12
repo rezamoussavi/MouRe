@@ -46,7 +46,7 @@
 	.content_menu_lst
 	{
 		margin-top: 5px;
-		padding: 20px 40px 20px 40px;
+		padding: 20px 30px 20px 30px;
 		font-size: 24px;
 		font-weight: bold;
 		/*border-radius: 5px;*/
@@ -132,13 +132,17 @@
 	}
 	#btn_recalc{
 		float:right;
-		margin-right: 30px;
+		margin-right: 0px;
 	}
 	.btn_flat{
 		border:1px solid #DDDDDD;
 		padding:5px;
 		margin:5px;
 		background-color:transparent;
+	}
+	#recalcwait{
+		float:right;
+		margin-top:10px;
 	}
 
 /*

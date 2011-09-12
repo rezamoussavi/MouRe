@@ -13,10 +13,11 @@
 	frmAdmin
 	frmHome
 	frmHow
-	frmContactUs
+	frmContactUs[contact_us_container]
 
 #message
 	user->logout=onLogOut
+	frame->contactusMessage=onSendContactMessage
 	page->Myacc_profile=onMyAcc
 	page->Myacc_pubLink=onMyAcc
 	page->Myacc_adLink=onMyAcc
@@ -35,12 +36,36 @@
 
 #var
 	userpage=0
+	contactus_msg=""
 
 #phpfunction
 
 	/**************************************
 	*	MESSAGE Handlers
 	**************************************/
+
+	function sndmail($name,$email,$subject,$message){
+		$mailheader='MIME-Version: 1.0' . "\r\n" .
+					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+					'From: Contactus@RocketViews.com' . "\r\n" .
+					'Reply-To: kian.gb@gmail.com' . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+		$msg=<PHTML>
+			Hi,<br />
+			UserName: <b>$name</b> <br />
+			Email: <b>$email</b> <br />
+			Subject: <b>$subject</b> <br /><br />
+			Message: <br />$message<br /><br />
+		</PHTML>
+        mail("kian.gb@gmail.com", "Contact Us Form from RocketViews", $msg, $mailheader);
+	}
+
+	function onSendContactMessage($info){
+		#var->userpage=0;
+		#fun->sndmail($info['user_name'],$info['user_email'],$info['user_subject'],htmlspecialchars($info['user_message'],ENT_QUOTES));
+		#var->contactus_msg="Sent successfully";
+		_bookframe(#frm->frmContactUs);
+	}
 
 	function onAdVideo($info){
 		#var->userpage=0;
@@ -52,24 +77,24 @@
 		_bookframe(#frm->frmPubVideo);
 	}
 
-	function onLogOut(){
+	function onLogOut($info){
 		if(#var->userpage==1){
 			#var->userpage=0;
 			_bookframe(#frm->frmPubVideo);
 		}
 	}
 
-	function onHow(){
+	function onHow($info){
 		#var->userpage=0;
 		_bookframe(#frm->frmHow);
 	}
 
-	function onHome(){
+	function onHome($info){
 		#var->userpage=0;
 		_bookframe(#frm->frmHome);
 	}
 
-	function onContactUs(){
+	function onContactUs($info){
 		#var->userpage=0;
 		_bookframe(#frm->frmContactUs);
 	}
@@ -90,6 +115,7 @@
 	//////////////////////////////////////////////////////////////////////
 
 	function frmButtons(){
+		return "";
 		$adPage=osBackPageLink("AdVideo");
 		$pubPage=osBackPageLink("PubVideo");
 		return <PHTML>
@@ -118,9 +144,38 @@
 
 	function frmContactUs(){
 		$buttons=#fun->frmButtons();
+		$frmID=#nodeID."contactus";
+		$themsg=#var->contactus_msg;
+		#var->contactus_msg="";
 		return <PHTML>
-			$buttons
-			Contact Us
+			<div class="contact_us_area_div" >
+				<br /><br /><br />
+				<span class="profile_title_span">Contact Us</span>
+				<br /><br />
+				<form id="{$frmID}" class="persinf_frm" method="post">
+					<#msg->contactusMessage>
+					<div class="contact_row">
+						<label class="bold" id="profile_email_lbl">Name </label>
+						<input class="persinf_inp" id="profile_email_inp" type="text" size="30" name="user_name"/>
+					</div>
+					<div class="contact_row">
+						<label class="bold" id="profile_email_lbl">Email </label>
+						<input class="persinf_inp" id="profile_email_inp" type="text" size="30" name="user_email"/>
+					</div>
+					<div class="contact_row">
+						<label class="bold" id="profile_email_lbl">Subject </label>
+						<input class="persinf_inp" id="profile_email_inp" type="text" size="30" name="user_subject"/>
+					</div>
+					<div class="contact_row_txt">
+						<label class="bold" id="profile_email_lbl">Message </label>
+						<textarea class="persinf_inp" rows="10" cols="29" name="user_message"></textarea>
+					</div>
+					<div class="contact_row">
+						<input class="persinf_inp" type="button" value="Send" onclick="_eSetHTML('contactwait','<img src=\'/img/loading.gif\'>');JavaScript:sndmsg('{$frmID}');"/>
+						<span id="contactwait" style="padding-top: 4px;font-size:13px;color:green;margin-right:10px;float:right;">{$themsg}</span>
+					</div>					
+				</form>
+			</div>
 		</PHTML>
 	}
 
@@ -144,6 +199,7 @@
 		$VList=#node->VideoList->_backframe();
 		return <PHTML>
 			<div id="showbox">
+				<div id="showbox_content" style="cursor: auto; "></div>
 			</div>
 			<div class="content_container" >
 				$btn
@@ -158,6 +214,7 @@
 		$adV=#node->AddVideo->_backframe();
 		return <PHTML>
 			<div id="showbox">
+				<div id="showbox_content" style="cursor: auto; "></div>
 			</div>
 			<div class="content_container" >
 				$btn
@@ -167,7 +224,56 @@
 	}
 
 
+#js
+	$(document).ready(function(){
+	   	$("#showbox_content").click(function(e){
+
+			var x = e.pageX - this.offsetLeft;
+			var y = e.pageY - this.offsetTop;
+			if(x>0 && x<475 && y>335 && y<420){
+				window.location.href = "http://rocketviews.com/?p=PubVideo";
+			}else if (x>475 && x<950 && y>335 && y<420){
+				window.location.href = "http://rocketviews.com/?p=AdVideo";
+			}
+		});
+		$("#showbox_content").mousemove(function(e){
+
+			var x = e.pageX - this.offsetLeft;
+			var y = e.pageY - this.offsetTop;
+			if((x>0 && x<475 && y>335 && y<420) || (x>475 && x<950 && y>335 && y<420)){
+				$(this).css('cursor','pointer');
+			}else{
+				$(this).css('cursor','auto');
+			}
+		});
+	});
+
 #css
+	.contact_row{
+		padding: 10px;
+	}
+	.contact_row_txt{
+		padding: 10px;
+		height:150px;
+	}
+	.contact_us_area_div
+	{
+		margin: 30px auto auto 120px;
+		width: 450px;
+		overflow: auto;
+		padding-bottom: 100px;
+	}
+	.contact_us_container
+	{
+		border-radius: 15px;
+		background-color: white;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		width: 650px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
 	.content_container
 	{
 		background-color: white;
@@ -189,9 +295,17 @@
 		border-bottom: 2px solid #E1E3DC;
 		/*display: none;*/
 		padding: 36px 0;
-		height: 200px;
+		height: 370px;
 		margin:auto;
 	}
+	#showbox_content{
+		background: url('./img/showbox_bg.png') no-repeat center ;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: -20px;
+		height: 430px;
+		width: 960px;
+    }
 	#publish_btns {
 		text-align: center;
 	}
@@ -218,7 +332,7 @@
 		width:900px;
 		margin-left:auto;
 		margin-right:auto;
-		margin-top:20px;
+		padding-top:20px;
 		margin-bottom:-20px;
 	}
 

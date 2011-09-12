@@ -62,7 +62,7 @@
 				</div>
 				<div class="other_info_container">
 					<div class="video_header">
-						<div class="video_title">{$Title}</div>
+						<div class="video_title" id="{$Title}">{$Title}</div>
 						<div class="details_btn_div">
 							<form id="$frmName" method="post">
 								<input class="getlink_btn" type="button" value="Get link to publish" onclick='JavaScript:sndmsg("$frmName")'/>
@@ -101,7 +101,7 @@
 		$UVN=#var->data['totalView'];
 		$country=#var->data['country'];
 		$UE=$UVN*$EPV;
-		$lastDate=(strlen(#var->data['lastDate'])>2)?#var->data['lastDate']:"&lt;yet open&gt;";
+		$lastDate=(strlen(#var->data['lastDate'])>2)?"<div class=\"video_details btnbrdr\">Finishing Date : ".#var->data['lastDate']."</div>":"";
 		return <PHTML>
 			<div class="box_close"> 
 				<div class="box_image"> 
@@ -118,7 +118,7 @@
 				    <div class="other_n_embed"> 
 				        <div class="video_other_info" > 
 				            <div class="video_details btnbrdr"> 
-				                Viewd $VN of {#var->data['maxViews']}<br />(remaining: $RM)
+				                viewed $VN of {#var->data['maxViews']}<br />(remaining: $RM)
 				            </div> 
 				            <div class="video_details btnbrdr"> 
 								Earn Per View: &#36;{$EPV}<br />(country: $country)
@@ -126,12 +126,10 @@
 				            <div class="video_details btnbrdr"> 
 				                Start Date : {#var->data['startDate']}
 				            </div> 
-				            <div class="video_details btnbrdr"> 
-				                Finishing Date : {$lastDate}
-							</div> 
+							{$lastDate}
 				        </div> 
 						<div class="box_open_mypub"> 
-				            <div class="pubvid_num_div">Viewd by You: {$UVN}</div>
+				            <div class="pubvid_num_div">number of views via your publish: {$UVN}</div>
 				            <div class="earned_div">You earned: &#36;{$UE} </div>
 				        </div> 
 				    </div> 
@@ -207,7 +205,7 @@
 				    <div class="other_n_embed"> 
 				        <div class="video_other_info" > 
 				            <div class="video_details"> 
-				                Viewd $VN of $TV<br />(remaining: $RM)
+				                viewed $VN of $TV<br />(remaining: $RM)
 				            </div> 
 				            <div class="video_details"> 
 				                Start Date : {#var->data['startDate']}
@@ -361,7 +359,6 @@
 		#node->scv->generateScript(#var->data);
 	}
 
-
 #css
 	.adds_video_box
 	{
@@ -492,7 +489,7 @@
 		font-style: italic;
 		font-size: 14px;
 		text-align: right;
-		margin-top: 35px;
+		margin-top: -20px;
 		margin-left: 80px;
 		width: 500px;
 		color: cyan;

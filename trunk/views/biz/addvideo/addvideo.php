@@ -141,35 +141,83 @@ PHTMLCODE;
 		}
 		$html=<<<PHTMLCODE
 
+			<input id="APRatio" value="{$of['APRatio']}" type="hidden"/>
 			<center><font color=red>{$this->errMessage}</font><br></center>
+			<span class="addvideo_title">Rocket views video submission</span>
+			<br /><br />
+			<span class="addvideo_description">
+			Here you can submit the youtube video link to be promoted and go viral.<br/>
+			Remember that higher offer on each view means encouraging more publishers, then higher number of viewers and views.
+			</span>
+			<br /><br />
 			<form name="$formname" method="post">
 				<input type="hidden" name="_message" value="frame_addVideo" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				<input type="hidden" class="total_price" value="0" name="total" id="theTotal" />
 				<div class="addvideo_label">
-					Title:
+					Title<font color="red">*</font>
+					<span class="ToolText" onMouseOver="javascript:this.className='ToolTextHover'" onMouseOut="javascript:this.className='ToolText'">&nbsp;&nbsp;&nbsp;?
+						<span>
+							Choose a title to give a fast idea to publishers about your video
+						</span>
+					</span>
 				</div>
 				<div class="addvideo_field">
-					<input id="theTitle" name="title" size=40 onkeypress='setTimeout("checkTitle()",100)' onchange='JavaScript:checkTitle();'><span id="msgTitle"><font color="red">*</font></span><br />
+					<input id="theTitle" name="title" style="width:400px;" onkeypress='setTimeout("checkTitle()",100)' onchange='JavaScript:checkTitle();'><span id="msgTitle"></span>
+					<br />
 				</div>
 				<div class="addvideo_label">
-					Youtube link:
+					YouTube link<font color="red">*</font>
+					<span class="ToolText" onMouseOver="javascript:this.className='ToolTextHover'" onMouseOut="javascript:this.className='ToolText'">&nbsp;&nbsp;&nbsp;?
+						<span>
+							Copy and paste the youtube video link from browser's address bar or shortened link provided by youtube share.
+						</span>
+					</span>
 				</div>
 				<div class="addvideo_field">
-					<input id="theYLink" name="link" size=40 onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"><font color="red">*</font></span><br />
+					<input id="theYLink" name="link" style="width:400px;" onkeypress='setTimeout("checkYLink()",100)' onchange='JavaScript:checkYLink()'><span id="msgYLink"></span><br />
 				</div>
 				<div class="addvideo_label">
-					Your Offer on Price/View:
+					Your Offer on Price/View<font color="red">*</font>
+					<span class="ToolText" onMouseOver="javascript:this.className='ToolTextHover'" onMouseOut="javascript:this.className='ToolText'">&nbsp;&nbsp;&nbsp;?
+						<span>
+							This is the price you offer to publishers for each view counted via their publishing.
+							<br> It is obvious that the higher price you offer to publishers to publish your video,
+							 the more publishers will be encouraged and you will get faster and more number of views.
+							 <br> It is noticeable that publishers will earn money for real views, simulated to be the closest to youtube number of views.
+						</span>
+					</span>
 				</div>
 				<div class="addvideo_field">
-					<input id="theAOPV" name="AOPV" size=5 onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'> (min: {$of['minAOPV']})<span id="msgAOPV"><font color="red">*</font></span><br />
+					<input id="theAOPV" name="AOPV" style="width:50px;" onkeypress='setTimeout("checkAOPV({$of['minAOPV']})",100)' onchange='JavaScript:checkAOPV({$of['minAOPV']})'>
+					(min: {$of['minAOPV']}$) <span id="msgAOPV"></span>
+					 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Publishers will earn <span id="publisher_will_earn">0</span>$ for each view
+					<br />
 				</div>
 				<div class="addvideo_label">
-					Number of Viewes:
+					Number of Viewes<font color="red">*</font>
+					<span class="ToolText" onMouseOver="javascript:this.className='ToolTextHover'" onMouseOut="javascript:this.className='ToolText'">&nbsp;&nbsp;&nbsp;?
+						<span>
+							This is the number of views you wish to get at least for the video submitted.
+							<br> When this number is finished, publishers will not earn more money by your link,
+							 so they may remove your video from where they have shared it or let it be and let you get more and more views.
+						</span>
+					</span>
 				</div>
 				<div class="addvideo_field">
-					<input id="theNOV" name="NOV" size=5 onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'> (min: {$of['minNOV']})<span id="msgNOV"><font color="red">*</font></span><br />
+					<input id="theNOV" name="NOV" style="width:50px;" onkeypress='setTimeout("checkNOV({$of['minNOV']})",100)' onchange='JavaScript:checkNOV({$of['minNOV']})'>
+					(min: {$of['minNOV']})
+					<span id="msgNOV"></span>
+					<br />
 				</div>
 				<div class="addvideo_label">
-					Country:
+					Target Country
+					<span class="ToolText" onMouseOver="javascript:this.className='ToolTextHover'" onMouseOut="javascript:this.className='ToolText'">&nbsp;&nbsp;&nbsp;?
+						<span>
+							If you have a target country for viewers of your video, you can choose it here. 
+							If a country is selected, publishers will earn for views sent only from that country. 
+							<br> If you have multiple countries targeted, please submit the video for each of those countries separately, with number of views you wish to get in each.
+						</span>
+					</span>
 				</div>
 				<div class="addvideo_field">
 					<SELECT name="country" style="width:150px;">$countries</SELECT>
@@ -179,15 +227,18 @@ PHTMLCODE;
 					Total:
 				</div>
 				<div class="addvideo_field">
-					$<input type="text" class="total_price" value="0" name="total" id="theTotal" size=10 disabled/><span id="msgTotal"></span><br />
+					<span id="theTotalShow" >0.0</span>$<span id="msgTotal"></span><br />
 				</div>
-				<div class="addvideo_label">
-					Balance:
+				<div style="float:left;">
+					<div class="addvideo_label">
+						Your Balance:
+					</div>
+					<div class="addvideo_field">
+						<span id="theBalance">$balance</span>$<br />
+					</div>
 				</div>
-				<div class="addvideo_field">
-					$<span id="theBalance">$balance</span><br />
-				</div>
-				<input style="float:right;" id="theButton" disabled type="button" value="Submit" onclick = 'JavaScript:sndmsg("$formname")'>
+				<input style="float:right;" id="theButton" disabled type="button" value="Submit" onclick = "_eSetHTML('addvideowait','<img src=\'/img/loading.gif\'>');JavaScript:sndmsg('$formname')">
+				<span id="addvideowait" style="float:right;"></span>
 			</form>
 		
 PHTMLCODE;
@@ -214,8 +265,10 @@ PHTMLCODE;
 	}
 	function onAddVideo($info){
 		$of=$this->offer->backInfo();
+		$t=new transaction("");
+		$balance=$t->backBalance(osBackUserID());
 		$e="";
-		if(strlen($info['link'])<5){
+		if(strpos($info['link'],"www.youtube.com/watch?v=")===FALSE && strpos($info['link'],"youtu.be/")===FALSE){
 			$e.="Enter a valid link<br>";
 		}
 		if($info['AOPV']<$of['minAOPV']){
@@ -223,6 +276,15 @@ PHTMLCODE;
 		}
 		if($info['NOV']<$of['minNOV']){
 			$e.="Minimum Number of Views should be ".$of['minNOV']."<br>";
+		}
+		if($info['NOV']*$info['AOPV']!=$info['total']){
+			$e.="Invalid total value<br>";
+		}
+		if(strlen($info['title'])<2){
+			$e.="Invalid Title<br>";
+		}
+		if($info['total']>$balance){
+			$e.="Insuffient balance<br>";
 		}
 		if(strlen($e)<2){// NO ERROR
 			$al=new adlink("");

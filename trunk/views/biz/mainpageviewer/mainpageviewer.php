@@ -22,6 +22,7 @@ class mainpageviewer {
 
 	//Variables
 	var $userpage;
+	var $contactus_msg;
 
 	//Nodes (bizvars)
 	var $AddVideo;
@@ -40,6 +41,7 @@ class mainpageviewer {
 			$_SESSION['osNodes'][$fullname]=array();
 			//If any message need to be registered will placed here
 			$_SESSION['osMsg']['user_logout'][$this->_fullname]=true;
+			$_SESSION['osMsg']['frame_contactusMessage'][$this->_fullname]=true;
 			$_SESSION['osMsg']['page_Myacc_profile'][$this->_fullname]=true;
 			$_SESSION['osMsg']['page_Myacc_pubLink'][$this->_fullname]=true;
 			$_SESSION['osMsg']['page_Myacc_adLink'][$this->_fullname]=true;
@@ -68,6 +70,10 @@ class mainpageviewer {
 			$_SESSION['osNodes'][$fullname]['userpage']=0;
 		$this->userpage=&$_SESSION['osNodes'][$fullname]['userpage'];
 
+		if(!isset($_SESSION['osNodes'][$fullname]['contactus_msg']))
+			$_SESSION['osNodes'][$fullname]['contactus_msg']="";
+		$this->contactus_msg=&$_SESSION['osNodes'][$fullname]['contactus_msg'];
+
 		$_SESSION['osNodes'][$fullname]['node']=$this;
 		$_SESSION['osNodes'][$fullname]['biz']='mainpageviewer';
 	}
@@ -84,6 +90,9 @@ class mainpageviewer {
 		switch($message){
 			case 'user_logout':
 				$this->onLogOut($info);
+				break;
+			case 'frame_contactusMessage':
+				$this->onSendContactMessage($info);
 				break;
 			case 'page_Myacc_profile':
 				$this->onMyAcc($info);
@@ -147,7 +156,7 @@ class mainpageviewer {
 				$_style=' ';
 				break;
 			case 'frmContactUs':
-				$_style=' ';
+				$_style=' class="contact_us_container"  ';
 				break;
 		}
 		$html='<div '.$_style.' id="' . $this->_fullname . '">'.call_user_func(array($this, $this->_curFrame)).'</div>';
@@ -168,6 +177,30 @@ class mainpageviewer {
 	/**************************************
 	*	MESSAGE Handlers
 	**************************************/
+	function sndmail($name,$email,$subject,$message){
+		$mailheader='MIME-Version: 1.0' . "\r\n" .
+					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+					'From: Contactus@RocketViews.com' . "\r\n" .
+					'Reply-To: kian.gb@gmail.com' . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+		$msg=<<<PHTMLCODE
+
+			Hi,<br />
+			UserName: <b>$name</b> <br />
+			Email: <b>$email</b> <br />
+			Subject: <b>$subject</b> <br /><br />
+			Message: <br />$message<br /><br />
+		
+PHTMLCODE;
+
+        mail("kian.gb@gmail.com", "Contact Us Form from RocketViews", $msg, $mailheader);
+	}
+	function onSendContactMessage($info){
+		$this->userpage=0;
+		$this->sndmail($info['user_name'],$info['user_email'],$info['user_subject'],htmlspecialchars($info['user_message'],ENT_QUOTES));
+		$this->contactus_msg="Sent successfully";
+		$this->_bookframe("frmContactUs");
+	}
 	function onAdVideo($info){
 		$this->userpage=0;
 		$this->_bookframe("frmAdVideo");
@@ -176,21 +209,21 @@ class mainpageviewer {
 		$this->userpage=0;
 		$this->_bookframe("frmPubVideo");
 	}
-	function onLogOut(){
+	function onLogOut($info){
 		if($this->userpage==1){
 			$this->userpage=0;
 			$this->_bookframe("frmPubVideo");
 		}
 	}
-	function onHow(){
+	function onHow($info){
 		$this->userpage=0;
 		$this->_bookframe("frmHow");
 	}
-	function onHome(){
+	function onHome($info){
 		$this->userpage=0;
 		$this->_bookframe("frmHome");
 	}
-	function onContactUs(){
+	function onContactUs($info){
 		$this->userpage=0;
 		$this->_bookframe("frmContactUs");
 	}
@@ -208,6 +241,7 @@ class mainpageviewer {
 	//			VIEW
 	//////////////////////////////////////////////////////////////////////
 	function frmButtons(){
+		return "";
 		$adPage=osBackPageLink("AdVideo");
 		$pubPage=osBackPageLink("PubVideo");
 		return <<<PHTMLCODE
@@ -242,10 +276,39 @@ PHTMLCODE;
 	}
 	function frmContactUs(){
 		$buttons=$this->frmButtons();
+		$frmID=$this->_fullname."contactus";
+		$themsg=$this->contactus_msg;
+		$this->contactus_msg="";
 		return <<<PHTMLCODE
 
-			$buttons
-			Contact Us
+			<div class="contact_us_area_div" >
+				<br /><br /><br />
+				<span class="profile_title_span">Contact Us</span>
+				<br /><br />
+				<form id="{$frmID}" class="persinf_frm" method="post">
+					<input type="hidden" name="_message" value="frame_contactusMessage" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+					<div class="contact_row">
+						<label class="bold" id="profile_email_lbl">Name </label>
+						<input class="persinf_inp" id="profile_email_inp" type="text" size="30" name="user_name"/>
+					</div>
+					<div class="contact_row">
+						<label class="bold" id="profile_email_lbl">Email </label>
+						<input class="persinf_inp" id="profile_email_inp" type="text" size="30" name="user_email"/>
+					</div>
+					<div class="contact_row">
+						<label class="bold" id="profile_email_lbl">Subject </label>
+						<input class="persinf_inp" id="profile_email_inp" type="text" size="30" name="user_subject"/>
+					</div>
+					<div class="contact_row_txt">
+						<label class="bold" id="profile_email_lbl">Message </label>
+						<textarea class="persinf_inp" rows="10" cols="29" name="user_message"></textarea>
+					</div>
+					<div class="contact_row">
+						<input class="persinf_inp" type="button" value="Send" onclick="_eSetHTML('contactwait','<img src=\'/img/loading.gif\'>');JavaScript:sndmsg('{$frmID}');"/>
+						<span id="contactwait" style="padding-top: 4px;font-size:13px;color:green;margin-right:10px;float:right;">{$themsg}</span>
+					</div>					
+				</form>
+			</div>
 		
 PHTMLCODE;
 
@@ -275,6 +338,7 @@ PHTMLCODE;
 		return <<<PHTMLCODE
 
 			<div id="showbox">
+				<div id="showbox_content" style="cursor: auto; "></div>
 			</div>
 			<div class="content_container" >
 				$btn
@@ -291,6 +355,7 @@ PHTMLCODE;
 		return <<<PHTMLCODE
 
 			<div id="showbox">
+				<div id="showbox_content" style="cursor: auto; "></div>
 			</div>
 			<div class="content_container" >
 				$btn

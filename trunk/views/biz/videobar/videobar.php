@@ -169,7 +169,7 @@ class videobar {
 				</div>
 				<div class="other_info_container">
 					<div class="video_header">
-						<div class="video_title">{$Title}</div>
+						<div class="video_title" id="{$Title}">{$Title}</div>
 						<div class="details_btn_div">
 							<form id="$frmName" method="post">
 								<input class="getlink_btn" type="button" value="Get link to publish" onclick='JavaScript:sndmsg("$frmName")'/>
@@ -209,7 +209,7 @@ PHTMLCODE;
 		$UVN=$this->data['totalView'];
 		$country=$this->data['country'];
 		$UE=$UVN*$EPV;
-		$lastDate=(strlen($this->data['lastDate'])>2)?$this->data['lastDate']:"&lt;yet open&gt;";
+		$lastDate=(strlen($this->data['lastDate'])>2)?"<div class=\"video_details btnbrdr\">Finishing Date : ".$this->data['lastDate']."</div>":"";
 		return <<<PHTMLCODE
 
 			<div class="box_close"> 
@@ -227,7 +227,7 @@ PHTMLCODE;
 				    <div class="other_n_embed"> 
 				        <div class="video_other_info" > 
 				            <div class="video_details btnbrdr"> 
-				                Viewd $VN of {$this->data['maxViews']}<br />(remaining: $RM)
+				                viewed $VN of {$this->data['maxViews']}<br />(remaining: $RM)
 				            </div> 
 				            <div class="video_details btnbrdr"> 
 								Earn Per View: &#36;{$EPV}<br />(country: $country)
@@ -235,12 +235,10 @@ PHTMLCODE;
 				            <div class="video_details btnbrdr"> 
 				                Start Date : {$this->data['startDate']}
 				            </div> 
-				            <div class="video_details btnbrdr"> 
-				                Finishing Date : {$lastDate}
-							</div> 
+							{$lastDate}
 				        </div> 
 						<div class="box_open_mypub"> 
-				            <div class="pubvid_num_div">Viewd by You: {$UVN}</div>
+				            <div class="pubvid_num_div">number of views via your publish: {$UVN}</div>
 				            <div class="earned_div">You earned: &#36;{$UE} </div>
 				        </div> 
 				    </div> 
@@ -321,7 +319,7 @@ PHTMLCODE;
 				    <div class="other_n_embed"> 
 				        <div class="video_other_info" > 
 				            <div class="video_details"> 
-				                Viewd $VN of $TV<br />(remaining: $RM)
+				                viewed $VN of $TV<br />(remaining: $RM)
 				            </div> 
 				            <div class="video_details"> 
 				                Start Date : {$this->data['startDate']}

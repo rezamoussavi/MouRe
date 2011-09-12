@@ -35,11 +35,15 @@
 	function checkAOPV(minAOPV){
 		okAOPV=true;
 		var msg="<font color=green>OK</font>";// OK
+		var publisher="0";
 		if(!isNumber(_eGetVal('theAOPV')) || _eGetVal('theAOPV') < minAOPV){
 			msg="<font color=red>Invalid</font>";// ERROR
 			okAOPV=false;
+		}else{
+			publisher=Math.round(_eGetVal('APRatio')*_eGetVal('theAOPV')*100)/100;
 		}
-		document.getElementById("msgAOPV").innerHTML = msg;
+		document.getElementById('msgAOPV').innerHTML = msg;
+		_eSetHTML("publisher_will_earn",publisher);
 		checkAll();
 	}
 	function checkNOV(minNOV){
@@ -55,7 +59,8 @@
 	function checkAll(){
 		var total=document.getElementById('theAOPV').value * document.getElementById('theNOV').value;
 		var balance=document.getElementById('theBalance').innerHTML;
-		document.getElementById("theTotal").value = total;
+		_eSetVal("theTotal",total);
+		_eSetHTML("theTotalShow",total);
 		var msgTotal="";
 		if( balance<total)
 			msgTotal="<font color=red>Insufficient Balance</font><a href='/?p=Myacc_balance'>charge</a>";

@@ -2,12 +2,36 @@
 /********************
 	START: addvideo
 */
+	.ToolText {position:relative;cursor:pointer;font-weight:normal;font-size:9px;}
+	.ToolText span{display: none;}
+	.ToolTextHover{position:relative;cursor:pointer;font-weight:normal;font-size:9px;}
+	.ToolTextHover span{
+		font-size:11px;
+		z-index:10;
+		width:300px;
+		padding:5px;
+		display:block;
+		position:absolute;
+		border:1px solid black;
+		top:1.3em;
+		left:5px;
+		background-color:#DDDDDD; color:black;
+		text-align: center;
+	}
+	.addvideo_title{
+		color: #00c0ee;
+		font-size: 20px;
+		font-weight: bold;
+		margin-left:-40px;
+	}
 	.addvideo_area_div
 	{
-		margin: 30px auto auto 200px;
-		width: 600px;
+		margin:auto auto auto 200px;
+		width: 700px;
 		overflow: auto;
 		padding-bottom: 100px;
+		padding-left: 40px;
+		padding-right: 150px;
 		font-size:75%;
 	}
 	.addvideo_success_div
@@ -21,10 +45,12 @@
 	.addvideo_label{
 		float: left;
 		width: 200px;
+		font-size: 14px;
+		font-weight:bold;
 	}
 	.addvideo_field{
 		float:left;
-		width: 400px;
+		width: 500px;
 	}
 	.addvideo_login_msg{
 		margin: 30px auto auto 200px;

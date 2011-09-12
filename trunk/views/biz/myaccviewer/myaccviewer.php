@@ -332,7 +332,8 @@ PHTMLCODE;
 					<div class="balance_title_area">
 						<span class="balance_title_span">Credit information summary</span>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input value="ReCalculate" type="button" class="btn_flat" id="btn_recalc" onclick="JavaScript:sndevent('{$this->_fullname}','frame_reCalc')" />
+						<input value="ReCalculate" type="button" class="btn_flat" id="btn_recalc" onclick="_eSetHTML('recalcwait','<img src=\'/img/loading.gif\'>');JavaScript:sndevent('{$this->_fullname}','frame_reCalc')" />
+						<span id="recalcwait"></span>
 					</div>
 					<div class="balance_label">+ Earned amount by publishing:</div>
 						<div class="balance_data">{$this->earned} $</div>
@@ -510,7 +511,7 @@ PHTMLCODE;
 		    <div id="content_menu"> 
 		        <div class="content_menu_lst" style="background-Color:$mnu_bg_profile;" id="cml_1" onmouseover="menu_hover('cml_1')" onmouseout="menu_out('cml_1','$mnu_bg_profile')" onclick="window.location.href='{$link_profile}';">Profile</div> 
 		        <div class="content_menu_lst" style="background-Color:$mnu_bg_mypub;" id="cml_2" onmouseover="menu_hover('cml_2')" onmouseout="menu_out('cml_2','$mnu_bg_mypub')" onclick="window.location.href='{$link_pubLink}';">My Published Videos</div> 
-		        <div class="content_menu_lst" style="background-Color:$mnu_bg_myad;" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3','$mnu_bg_myad')" onclick="window.location.href='{$link_adLink}';">My Ads</div> 
+		        <div class="content_menu_lst" style="background-Color:$mnu_bg_myad;" id="cml_3" onmouseover="menu_hover('cml_3')" onmouseout="menu_out('cml_3','$mnu_bg_myad')" onclick="window.location.href='{$link_adLink}';">My Ads & Virals</div> 
 		        <div class="content_menu_lst" style="background-Color:$mnu_bg_credit;" id="cml_4" onmouseover="menu_hover('cml_4')" onmouseout="menu_out('cml_4','$mnu_bg_credit')" onclick="window.location.href='{$link_balance}';">Credit</div> 
 		    </div> 
 		
