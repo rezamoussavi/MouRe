@@ -365,13 +365,24 @@ PHTMLCODE;
 		$wmsg=$this->withdraw_msg;
 		$this->withdraw_msg="";
 		$pmail=osBackUserPaypalEmail();
-		$withdrawmsg=strlen($pmail."")<4?"<span id='paypal_warning' ><b>Warning:</b> Please consider that once your paypal email account is set,<br />you cannot use other paypal accounts for future withdrawals for your own security.<br/>Please recheck the email address to be correct!</span>":"";
+		$withdrawmsg=strlen($pmail."")<4?"<span id='paypal_warning' ><b>Warning:</b><br/>Please consider that once your paypal email account is set, you cannot use other paypal accounts for future withdrawals for your own security.<br/>Please recheck the email address to be correct!</span>":"";
 		return <<<PHTMLCODE
 
 			<div id="paypal_buttons_area">
 				<div id="payment_box">
-					<span class="paypal_title_span">Deposit funds to your account</span><br/>
-					Amount to be deposited to your account via credit card or Paypal: &#36;<input id="paypal_user_amount" size="5" value="0" onchange="JavaScript:checkPaypal();" onkeypress="JavaScript:checkPaypal();" /><span id="paypal_pay_msg"></span>
+					<span class="paypal_title_span">Deposit funds into your account</span><br/><br/>
+					<div id="pay_cel1">
+						<span style="font-size: 14px;font-weight: bold;">
+							Amount to be deposited to your account via credit card or Paypal:
+							<input id="paypal_user_amount" value="0" onchange="JavaScript:checkPaypal();" onkeypress="JavaScript:checkPaypal();" />&#36;
+						</span>
+						<span id="paypal_pay_msg"></span>
+						<br/>
+						<div style="color:gray;font-size:11px;width:510px;">
+						 If you want to pay by credit card, please enter your desired amount and click on "Pay Now" button and then choose the "Don't have a PayPal account?" option below the PayPal login part on PayPal page.
+						</div>
+					</div>
+					<div id="pay_cel2">
 					<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" name="paypal_form">
 						<input type="hidden" name="amount" value="00.00">
 						<input type="hidden" name="cmd" value="_xclick">
@@ -393,18 +404,31 @@ PHTMLCODE;
 						<input type="image" id="paypal_button" disabled=1 src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 						<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 					</form>
+					</div>
 				</div>
 				<div id="widthraw_box">
-					<span class="paypal_title_span">Withdraw funds from your account</span><br/>
-					<form id="$frmWithdraw" action="" method="POST">
-						<input type="hidden" name="_message" value="frame_withdraw" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-						$withdrawmsg <br />
-						Paypal email: <input name="paypalemail" size="5" />
-						Amount: &#36; <input name="amount" id="withdraw_amount" value="0" size="5" onchange="JavaScript:checkValidWithdraw();" onkeypress="JavaScript:checkValidWithdraw();" /><span id="paypal_withdraw_msg"></span><br />
-						password: <input type="password" name="password" size="5" />
+					<span class="paypal_title_span">Withdraw funds from your account</span><br/><br/>
+					<div id="widthraw_inner_box">
+						<form id="$frmWithdraw" action="" method="POST">
+							<input type="hidden" name="_message" value="frame_withdraw" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+							<span style="width:500px;">
+								<span id="withdraw_email_title">Paypal email:</span>
+								<span id="withdraw_email"><input name="paypalemail" style="float:right;"/></span>
+							</span>
+							<br /><br />$withdrawmsg<br /><br />
+							<span style="width:500px">
+								<span id="withdraw_amount_title">Amount: </span>
+								<span id="withdraw_amount_field">&#36;<input name="amount" id="withdraw_amount" size="5" value="0" onchange="JavaScript:checkValidWithdraw();" onkeypress="JavaScript:checkValidWithdraw();" /></span>
+								<span id="withdraw_pass_title">password:</span>
+								<span id="withdraw_pass_field"><input type="password" name="password" style="float:right;"/></span>
+								<br/><br/>
+							</span>
+						</form>
+					</div>
+					<div id="widthraw_inner_box_btn">
 						<input type="button" disabled=1 id="withdraw_button" value="Withdraw" onclick="_eSetHTML('withdrawmessage','<img src=\'/img/loading.gif\'> Processing...');JavaScript:sndmsg('$frmWithdraw')">
-					</form>
-					<br /><span id="withdrawmessage">$wmsg</span>
+						<br /><br /><span id="withdrawmessage">$wmsg</span>
+					</div>
 				</div>
 			</div>
 		

@@ -27,7 +27,7 @@
 			handle=(user_amount*0.039+0.3)/(1-0.039);
 			amount=user_amount;
 			_e("paypal_button").disabled=0;
-			_eSetHTML("paypal_pay_msg","OK");
+			_eSetHTML("paypal_pay_msg","");
 		}else{
 			_e("paypal_button").disabled=1;
 			_eSetHTML("paypal_pay_msg","Invalid");
@@ -41,10 +41,10 @@
 	function doCheckValidWithdraw(){
 		if(isValidNumber(_eGetVal("withdraw_amount"))){
 			_e("withdraw_button").disabled=0;
-			_eSetHTML("paypal_withdraw_msg","OK");
+			_eSetHTML("withdrawmessage","");
 		}else{
 			_e("withdraw_button").disabled=1;
-			_eSetHTML("paypal_withdraw_msg","Invalid");
+			_eSetHTML("withdrawmessage","<font color='red'>Invalid Amount</font>");
 		}
 	}
 

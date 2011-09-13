@@ -4,9 +4,10 @@
 	*	This file provide for VIEWS project
 	*	to get publink id and increment views
 	*/
+	$log="View Counter<br/>";
 	$GapTime=3600;
 	$Now=date("YmdHis");
-	include_once "../db.php";
+	require_once "../db.php";
 	$osdbcon = mysql_connect ($ServerAddress, $UN, $Pass);
 	$result=false;
 													//$_X.="A .Welcom<br>";
@@ -14,13 +15,13 @@
 													//$_X.="B. id=".$_GET['id']." - link=".$_GET['link']."<br>";
 		mysql_select_db($DataBase,$osdbcon);
 													//$_X.="C.1 <br>";
+		$log.="db_connect GET[id] GET[link] : ok<br/>";
 		$id=$_GET['id'];
 		$link=substr($_GET['link'],0,strlen($_GET['link'])-10);
 		/* Timer stuff */
 													//$_X.="C.2 <br>";
 		if(!isset($_SESSION['video'])){
 			$_SESSION['video']=array();
-													//$_X.="C.3 <br>";
 		}
 		if(!isset($_SESSION['video']['$link'])){
 			/*
@@ -28,17 +29,16 @@
 			*	Set the time and do view
 			*/
 			$_SESSION['video']['$link']=$Now-$GapTime-100;
-													//$_X.="C.4 <br>";
+			$log.="This video has not viewed here<br/>";
 		}
 		if($Now-$_SESSION['video']['$link']>$GapTime){
-													//$_X.="C.5 ".$Now-$_SESSION['video']['$link']." > ".$GapTime."(gaptime)<br>";
+			$log.="Has been viewed more than $GapTime seconds ago<br/>";
 			$_SESSION['video']['$link']=$Now;
 			/*
 			*	Fetch Publisher and adUID
 			*	If the id exists
 			*/
 			if($row=SELECT(" * FROM publink_info WHERE pubUID=".$id)){
-													//$_X.="D.<br>";
 				$adUID=$row['adLinkUID'];
 				/* check if custom country has been set */
 				if(isset($_GET['countryCode']) && isset($_GET['countryName'])){
@@ -55,6 +55,8 @@
 						$countryName="Unknown";
 					}
 				}
+				$log.="<b>countryCode</b>: $countryCode<br/>";
+				$log.="<b>countryName</b>: $countryName<br/>";
 				/* fetch video country */
 				$adInfo=SELECT(" country FROM adlink_info WHERE adUID=".$adUID." AND running != 0");
 				$adCountry=$adInfo['country'];
@@ -62,12 +64,12 @@
 				*	if viewer country match video target country
 				*	will count it otherwise leave it
 				*/
-													//$_X.="E.<br>";
+				$log.="<b>Country target</b>: $adCountry<br/>";
 				if($adCountry==$countryName || $adCountry=="any"){
-													//$_X.="F.<br>";
+					$log.="Country: OK<br/>";
 					/*  UPDATE [publink] number of views */
 					if($row=SELECT(" * FROM publink_info WHERE pubUID=".$id." AND YTID LIKE '".$link."'")){
-													//$_X.="G.<br>";
+						$log.="YTID + publishID : FOUND<br/>";
 						UPDATE(" publink_info SET totalView=totalView+1 WHERE pubUID=".$id." AND YTID LIKE '".$link."'");
 						/*  UPDATE [adlink] number of views*/
 						UPDATE(" adlink_info SET viewed=viewed+1 WHERE adUID=".$adUID);
@@ -77,13 +79,24 @@
 						}else{/* If the country for this adLink does not exist add a row and set it to 1 (number of views */
 							INSERT(" INTO publink_stat VALUES('".$adUID."','".$countryCode."','".$countryName."',1)");
 						}
-					}
+						$log.="<b>--- UPDATE DONE ---</b><br/>";
+					}else
+						$log.="YTID + publishID : NOT Found on DB<br/>";
 				}//if country is correct
+				else
+					$log.="Country: Missmatch<br/>";
 			}
 		}// not viewed else
 		else{//Has been viewd during last GapView
+			$timeago=$Now-$_SESSION['video']['$link'];
+			$log.="Has been viewed LESS than $GapTime seconds ago; $timeago seconds ago<br/>";
 		}
 	}//main if
+	else
+		$log.="db_connect GET[id] GET[link] : ERROR!<br/>";
+
+	osLog($log);
+
 
 	/*
 	*	Database Interfaces
@@ -117,5 +130,5 @@
 	}
 
 //osLog($_X);
-//echo $_X;
+echo $log;
 ?>
