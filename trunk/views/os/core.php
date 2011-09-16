@@ -249,7 +249,33 @@ MSGLOG;
 		return $ret;
 	}
 
+	function showSessionReport(){
+		if(!isset($_SESSION['user']['email'])){
+			header('Location: http://www.RocketViews.com/');
+		}else if($_SESSION['user']['email']!="reza2mussavi@hotmail.com"){
+			header('Location: http://www.RocketViews.com/');
+		}
+		$session_content=arr2strOpt($_SESSION);
+		echo <<<PHTML
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+	</head>
+	<body>
+	$session_content
+	<div id="os_message_box" style="visibility:hidden"> </div>
+	</body>
+</html>
+<!-- <div class="instructions" title="Copy content in the text area and paste it in your weblog/website">?</div> -->
+PHTML;
+	}
+
 	function showLogPage(){
+		if(!isset($_SESSION['user']['email'])){
+			header('Location: http://www.RocketViews.com/');
+		}else if($_SESSION['user']['email']!="reza2mussavi@hotmail.com"){
+			header('Location: http://www.RocketViews.com/');
+		}
 		if(isset($_GET['delete'])){
 			query("DELETE FROM os_log WHERE logID=".$_GET['delete']);
 		}

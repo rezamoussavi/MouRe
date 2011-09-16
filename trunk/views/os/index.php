@@ -85,19 +85,7 @@ ini_set('display_errors', 1);
 	*	MODE: session_report
 	*/
 	}elseif(isset($_GET['session_report'])){
-		$session_content=arr2strOpt($_SESSION);
-		echo <<<PHTML
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-	<head>
-	</head>
-	<body>
-	$session_content
-	<div id="os_message_box" style="visibility:hidden"> </div>
-	</body>
-</html>
-<!-- <div class="instructions" title="Copy content in the text area and paste it in your weblog/website">?</div> -->
-PHTML;
+		showSessionReport();
 	/*
 	*	MODE: normal
 	*/

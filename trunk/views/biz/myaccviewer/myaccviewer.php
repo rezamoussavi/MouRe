@@ -187,10 +187,15 @@ class myaccviewer {
 	*	Functionalities
 	******************************/
     private function sendPaymentEmail($amount) {
-		$mailheader='MIME-Version: 1.0' . "\r\n" .
+		$mailheader1='MIME-Version: 1.0' . "\r\n" .
 					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
 					'From: paypa!@RocketViews.com' . "\r\n" .
 					'Reply-To: kian.gb@gmail.com' . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+		$mailheader2='MIME-Version: 1.0' . "\r\n" .
+					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+					'From: paypa!@RocketViews.com' . "\r\n" .
+					'Reply-To: reza2mussavi@hotmail.com' . "\r\n" .
 					'X-Mailer: PHP/' . phpversion();
 		$paypalemail=osBackUserPaypalEmail();
 		$userID=osBackUserID();
@@ -216,12 +221,14 @@ class myaccviewer {
 		
 PHTMLCODE;
 
-        mail("reza2mussavi@hotmail.com", "Paypal Withdraw RocketViews", $msg, $mailheader);
+        mail("kian.gb@gmail.com", "Paypal Withdraw RocketViews", $msg, $mailheader1);
+        mail("reza2mussavi@hotmail.com", "Paypal Withdraw RocketViews", $msg, $mailheader2);
     }
 	/******************************
 	*	Message Handlers
 	******************************/
 	function onWithdraw($info){
+		$this->withdraw_msg="";
 		////////////////////////////////////
 		//	checkPass
 		////////////////////////////////////
@@ -260,7 +267,7 @@ PHTMLCODE;
 					////////////////////////////////////
 					//	Show Result
 					////////////////////////////////////
-					$this->withdraw_msg="<font color='green'>It will be in your paypal account in 48h</font>";
+					$this->withdraw_msg="<font color='green'>It will be in your paypal account in 48 hours</font>";
 				}//Amount check
 			}//paypalemail
 		}//Password check
@@ -365,7 +372,7 @@ PHTMLCODE;
 		$wmsg=$this->withdraw_msg;
 		$this->withdraw_msg="";
 		$pmail=osBackUserPaypalEmail();
-		$withdrawmsg=strlen($pmail."")<4?"<span id='paypal_warning' ><b>Warning:</b><br/>Please consider that once your paypal email account is set, you cannot use other paypal accounts for future withdrawals for your own security.<br/>Please recheck the email address to be correct!</span>":"";
+		$withdrawmsg=strlen($pmail."")<4?"<span id='paypal_warning' ><b>Warning:</b><br/>Please consider that once your paypal email account is set, you cannot use other paypal accounts for future withdrawals for your own security.<br/>Please recheck the email address to be correct!</span><br/><br/>":"";
 		return <<<PHTMLCODE
 
 			<div id="paypal_buttons_area">
@@ -379,21 +386,21 @@ PHTMLCODE;
 						<span id="paypal_pay_msg"></span>
 						<br/>
 						<div style="color:gray;font-size:11px;width:510px;">
-						 If you want to pay by credit card, please enter your desired amount and click on "Pay Now" button and then choose the "Don't have a PayPal account?" option below the PayPal login part on PayPal page.
+						 <i>If you want to pay by credit card, please enter your desired amount and click on "Pay Now" button and then choose the "Don't have a PayPal account?" option below the PayPal login part on PayPal page.</i>
 						</div>
 					</div>
 					<div id="pay_cel2">
-					<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" name="paypal_form">
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" name="paypal_form">
 						<input type="hidden" name="amount" value="00.00">
 						<input type="hidden" name="cmd" value="_xclick">
 						<input type="hidden" name="image_url" value="http://rocketviews.com/img/paypallogo.png">
-						<input type="hidden" name="business" value="FCE49XXTRTKV4">
+						<input type="hidden" name="business" value="ashkangosili@yahoo.com">
 						<input type="hidden" name="lc" value="US">
 						<input type="hidden" name="item_name" value="RocketViews Balance">
 						<input type="hidden" name="item_number" value="7">
 						<input type="hidden" name="button_subtype" value="services">
 						<input type="hidden" name="no_note" value="0">
-						<input type="hidden" name="custom" value="{$userID}">
+						<input type="hidden" name="custom" value="RocketViews{$userID}">
 						<input type="hidden" name="no_shipping" value="1">
 						<input type="hidden" name="rm" value="1">
 						<input type="hidden" name="return" value="http://RocketViews.com/?p=Myacc_balance">
@@ -401,8 +408,8 @@ PHTMLCODE;
 						<input type="hidden" name="currency_code" value="USD">
 						<input type="hidden" name="handling" value="00.00">
 						<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
-						<input type="image" id="paypal_button" disabled=1 src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-						<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+						<input type="image" id="paypal_button" disabled=1 src="https://www.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+						<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 					</form>
 					</div>
 				</div>
@@ -411,23 +418,29 @@ PHTMLCODE;
 					<div id="widthraw_inner_box">
 						<form id="$frmWithdraw" action="" method="POST">
 							<input type="hidden" name="_message" value="frame_withdraw" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-							<span style="width:500px;">
-								<span id="withdraw_email_title">Paypal email:</span>
-								<span id="withdraw_email"><input name="paypalemail" style="float:right;"/></span>
-							</span>
-							<br /><br />$withdrawmsg<br /><br />
-							<span style="width:500px">
-								<span id="withdraw_amount_title">Amount: </span>
-								<span id="withdraw_amount_field">&#36;<input name="amount" id="withdraw_amount" size="5" value="0" onchange="JavaScript:checkValidWithdraw();" onkeypress="JavaScript:checkValidWithdraw();" /></span>
-								<span id="withdraw_pass_title">password:</span>
-								<span id="withdraw_pass_field"><input type="password" name="password" style="float:right;"/></span>
-								<br/><br/>
-							</span>
+							<div style="width:500px;float:left;">
+								<span><b>Paypal email:</b></span>
+								<span><input name="paypalemail" style="float:right;"/></span>
+							</div>
+							<div style="width:200px;float:left;"></div>
+							<br/><br/>
+							<div style="width:500px;float:left;">
+								$withdrawmsg
+							</div>
+							<div style="width:200px;float:left;"></div>
+							<div style="width:500px;float:left;">
+								<span><b>Amount: </b></span>
+								<span><input name="amount" id="withdraw_amount" size="5" value="0" onchange="JavaScript:checkValidWithdraw();" onkeypress="JavaScript:checkValidWithdraw();" />&#36;</span>
+								<span style="margin-left:80px;"><b>password:</b></span>
+								<span><input type="password" name="password" style="float:right;"/></span>
+							</div>
+							<div style="width:200px;float:left;">
+								<input style="float: right;margin-right: -30px;" type="button" disabled=1 id="withdraw_button" value="Withdraw" onclick="_eSetHTML('withdrawmessage','<img src=\'/img/loading.gif\'> Processing...');JavaScript:sndmsg('$frmWithdraw')">
+							</div>
+							<div style="width:700px;float:left;">
+								<br /><span id="withdrawmessage">$wmsg</span>
+							</div>
 						</form>
-					</div>
-					<div id="widthraw_inner_box_btn">
-						<input type="button" disabled=1 id="withdraw_button" value="Withdraw" onclick="_eSetHTML('withdrawmessage','<img src=\'/img/loading.gif\'> Processing...');JavaScript:sndmsg('$frmWithdraw')">
-						<br /><br /><span id="withdrawmessage">$wmsg</span>
 					</div>
 				</div>
 			</div>
@@ -504,6 +517,7 @@ PHTMLCODE;
 		return <<<PHTMLCODE
 
 			<div style="float:left;width:800px;">
+				<span class="paypal_title_span">Transaction Statement</span><br/><br/>
 				<div class="balance_row_head">
 					<div style="float:left;width:50px;padding:3px;">ID</div>
 					<div style="float:left;width:100px;padding:3px;">Date</div>

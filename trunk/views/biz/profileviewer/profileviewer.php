@@ -112,24 +112,23 @@ class profileviewer {
 		$user=osBackUser();
 		$formName=$this->_fullname."ApplyBtn";
 		$formPass=$this->_fullname."Pass";
-		$userNameDefined=TRUE;
+		$userBox='<input class="persinf_inp" id="profile_name_inp" type="text" size="30" name="userName"/>';
+		$bdBox='<input class="persinf_inp" id="profile_birth_inp" type="text" size="30" name="BDate"/>';
 		if(isset($user['userName'])){
-			if(strlen($user['userName'])<2){
-				$userNameDefined=FALSE;
+			if(strlen($user['userName'])>2){
+				$userBox=<<<PHTMLCODE
+<input class="persinf_inp" id="profile_name_inp" type="text" size="30" name="user-Name" value="{$user['userName']}" disabled/>
+PHTMLCODE;
+
 			}
 		}
-		if($userNameDefined){
-			$userBox=<<<PHTMLCODE
-<input class="persinf_inp" id="profile_name_inp" type="text" size="30" name="RealName" value="{$user['userName']}" disabled/>
+		if(isset($user['BDate'])){
+			if(strlen($user['BDate'])>2){
+				$bdBox=<<<PHTMLCODE
+<input class="persinf_inp" id="profile_birth_inp" type="text" size="30" name="B-Date" value="{$user['BDate']}" disabled/>
 PHTMLCODE;
 
-			$bdBox=<<<PHTMLCODE
-<input class="persinf_inp" id="profile_birth_inp" type="text" size="30" name="BDate" value="{$user['BDate']}" disabled/>
-PHTMLCODE;
-
-		}else{
-			$userBox='<input class="persinf_inp" id="profile_name_inp" type="text" size="30" name="RealName"/>';
-			$bdBox='<input class="persinf_inp" id="profile_birth_inp" type="text" size="30" name="BDate"/>';
+			}
 		}
 		if(!osUserLogedin()){
 			$html="Please Login First";
@@ -207,6 +206,16 @@ PHTMLCODE;
 	function onUpdateInfo($info){
 		$curU=osBackUser();
 		$info['email']=$curU['email'];
+		if(isset($curU['userName'])){
+			if(strlen($curU['userName'])>1){
+				$info['userName']=$curU['userName'];
+			}
+		}
+		if(isset($curU['BDate'])){
+			if(strlen($curU['BDate'])>1){
+				$info['BDate']=$curU['BDate'];
+			}
+		}
 		$u=new user("");
 		$ret=$u->bookInfo($info);
 		if($ret==1)

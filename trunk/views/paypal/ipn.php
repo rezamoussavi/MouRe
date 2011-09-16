@@ -15,7 +15,7 @@ $oslog.=$key." : ".$value."<br/>";
 $header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
 $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
 $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
-$fp = fsockopen ('ssl://sandbox.paypal.com', 443, $errno, $errstr, 30);
+$fp = fsockopen ('ssl://www.paypal.com', 443, $errno, $errstr, 30);
 
 // assign posted variables to local variables
 $item_name = $_POST['item_name'];
@@ -54,10 +54,17 @@ if (!$fp) {
 		$row=fetch();
 		if($row['cnt']==0){
 			$amount=$POST_payment_gross-$POST_payment_fee;
-			$s="INSERT INTO transaction_history (UID,date,type,amount,comments,txn_id) ";
-			$s.=" VALUE ('".$_POST['custom']."','".date("Y/m/d")."','Charge','".$amount."','You paid ".$POST_payment_gross." - ".$POST_payment_fee."(paypal fee)','".$txn_id."');";
-			query($s);
-			$oslog.="<br><font color=red>VERIFIED</font><hr>".$s;
+			if(isset($_POST['custom'])){
+				if(substr($_POST['custom'],0,11)=="RocketViews"){
+					$_POST['custom']=substr($_POST['custom'],11);
+					$s="INSERT INTO transaction_history (UID,date,type,amount,comments,txn_id) ";
+					$s.=" VALUE ('".$_POST['custom']."','".date("Y/m/d")."','Charge','".$amount."','You paid ".$POST_payment_gross." - ".$POST_payment_fee."(paypal fee)','".$txn_id."');";
+					query($s);
+					$oslog.="<br><font color=red>VERIFIED</font><hr>".$s;
+				}else// $_POST['custom'] NOT start with "RocketViews"
+					$oslog.="<br><font color=red>NOT ROCKETVIEWS PAYMENT</font><hr>".$s;
+			}else//is not set $_POST['custom']
+				$oslog.="<br><font color=red>NOT ROCKETVIEWS PAYMENT</font><hr>".$s;
 		}
 		else
 			$oslog.="<br><font color=red>VERIFIED - Already applied to DB</font><hr>".$s;
@@ -67,4 +74,44 @@ if (!$fp) {
 	fclose ($fp);
 }
 osLog("PayPal","IPN",$oslog);
+
+
+
+
+
+
+
+
+
+
+
+
+		$mailheader='MIME-Version: 1.0' . "\r\n" .
+					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+					'From: paypa!@RocketViews.com' . "\r\n" .
+					'Reply-To: reza2mussavi@hotmail.com' . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+		$msg=<<<PHTML
+			Hi,<br /><br />
+			<hr />
+			<br /><br />
+			$oslog
+			<br /><br />
+			<hr />
+PHTML;
+        mail("reza2mussavi@hotmail.com", "Paypal IPN", $msg, $mailheader);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>

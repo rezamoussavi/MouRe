@@ -20,52 +20,20 @@
 		padding: 10px;
 	}
 	#widthraw_box{
-		height: 200px;
 		float: left;
 		width: 800px;
 		border-top: 2px solid #DBD7D8;
 		margin-top:20px;
-		margin-left:10px;
-		padding: 10px;		
+		padding: 10px;
 	}
 	#widthraw_inner_box{
 		float: left;
-		width: 500px;
+		width: 700px;
 		margin-left:40px;
 	}
-	#widthraw_inner_box_btn{
-		float: right;
-		width: 120px;
-	}
-	#withdraw_email_title{
-		width:200px;
-		float:left;
-		height:30;
-	}
-	#withdraw_email{
-		width:200px;
-		float:right;
-		height:30;
-	}
-	#withdraw_amount_title{
-		width:100px;
-		float:left;
-	}
-	#withdraw_amount_field{
-		width:100px;
-		float:left;
-	}
-	#withdraw_pass_title{
-		width:100px;
-		float:left;
-	}
-	#withdraw_pass_field{
-		width:200px;
-		float:left;
-	}
 	#paypal_buttons_area{
+		float:left;
 		width: 800px;
-		height: 330px;
 		padding: 10px;
 		margin: 10px;
 		border-bottom: 2px solid #DBD7D8;

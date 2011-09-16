@@ -152,8 +152,8 @@ class user {
 				$passcheck=fetch();
 				if(!is_array($passcheck)) return "Incorrect Password!";
 				$q="UPDATE user_info SET email='$info[email]'";
-				if(isset($info['RealName']))
-					$q.=" , userName='$info[RealName]' ";
+				if(isset($info['userName']))
+					$q.=" , userName='$info[userName]' ";
 				if(isset($info['PostalCode']))
 					$q.=" , PostalCode='$info[PostalCode]' ";
 				if(isset($info['Country']))
@@ -166,8 +166,8 @@ class user {
 				query($q);
 				$u=osBackUser();
 				$u['email']=$info['email'];
-				if(isset($info['RealName']))
-					$u['userName']=$info['RealName'];
+				if(isset($info['userName']))
+					$u['userName']=$info['userName'];
 				if(isset($info['BDate']))
 					$u['BDate']=$info['BDate'];
 				if(isset($info['Address']))
