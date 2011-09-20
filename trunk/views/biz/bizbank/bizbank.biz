@@ -28,7 +28,7 @@
 		$login=#node->login->_backframe();
 		$tab=#node->tabbar->_backframe();
 		$pages=#node->pages->_backframe();
-		$home=osBackPageLink("PubVideo");
+		$home=osBackPageLink("Home");
 		return <PHTML>
 			<div id="header_bg">
 				<div id="logo_div">

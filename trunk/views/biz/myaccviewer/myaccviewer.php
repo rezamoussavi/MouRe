@@ -508,7 +508,7 @@ PHTMLCODE;
 					<div style="float:left;width:100px;padding:3px;">{$row['date']}</div>
 					<div style="float:left;width:100px;padding:3px;">{$row['type']}</div>
 					<div style="float:left;width:100px;padding:3px;">{$row['amount']}</div>
-					<div style="float:left;width:400px;padding:3px;">{$row['comments']}</div>
+					<div style="float:left;width:300px;padding:3px;">{$row['comments']}</div>
 				</div>
 			
 PHTMLCODE;
@@ -516,14 +516,14 @@ PHTMLCODE;
 		}
 		return <<<PHTMLCODE
 
-			<div style="float:left;width:800px;">
+			<div style="float:left;width:700px;margin-left:50px;">
 				<span class="paypal_title_span">Transaction Statement</span><br/><br/>
 				<div class="balance_row_head">
 					<div style="float:left;width:50px;padding:3px;">ID</div>
 					<div style="float:left;width:100px;padding:3px;">Date</div>
 					<div style="float:left;width:100px;padding:3px;">Type</div>
 					<div style="float:left;width:100px;padding:3px;">$</div>
-					<div style="float:left;width:400px;padding:3px;">Comments</div>
+					<div style="float:left;width:300px;padding:3px;">Comments</div>
 				</div>
 				$tran
 			</div>

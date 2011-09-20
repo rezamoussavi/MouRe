@@ -24,12 +24,13 @@
 		width: 800px;
 		border-top: 2px solid #DBD7D8;
 		margin-top:20px;
+		margin-left:10px;
 		padding: 10px;
 	}
 	#widthraw_inner_box{
 		float: left;
 		width: 700px;
-		margin-left:40px;
+		margin-left:52px;
 	}
 	#paypal_buttons_area{
 		float:left;
@@ -117,13 +118,13 @@
 	.balance_row{
 		border-bottom:1px dotted gray;
 		float:left;
-		width:800px;
+		width:700px;
 		font-size:90%;
 	}
 	.balance_row_head{
 		border-bottom:2px solid black;
 		float:left;
-		width:800px;
+		width:700px;
 	}
 	.balance_test{
 		background-color: #DDDDDD;

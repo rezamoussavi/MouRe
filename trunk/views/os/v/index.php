@@ -10,16 +10,12 @@
 	require_once "../db.php";
 	$osdbcon = mysql_connect ($ServerAddress, $UN, $Pass);
 	$result=false;
-													//$_X.="A .Welcom<br>";
 	if ($osdbcon && isset($_GET['id']) && isset($_GET['link'])){
-													//$_X.="B. id=".$_GET['id']." - link=".$_GET['link']."<br>";
 		mysql_select_db($DataBase,$osdbcon);
-													//$_X.="C.1 <br>";
 		$log.="db_connect GET[id] GET[link] : ok<br/>";
 		$id=$_GET['id'];
 		$link=substr($_GET['link'],0,strlen($_GET['link'])-10);
 		/* Timer stuff */
-													//$_X.="C.2 <br>";
 		if(!isset($_SESSION['video'])){
 			$_SESSION['video']=array();
 		}
@@ -129,6 +125,6 @@
 		query("INSERT INTO os_log(TimeStamp,Biz,NodeID,Message) VALUES('$t','$Biz','$NodeID','$Message')");
 	}
 
-//osLog($_X);
-echo $log;
+// osLog($_X);
+// echo $log;
 ?>

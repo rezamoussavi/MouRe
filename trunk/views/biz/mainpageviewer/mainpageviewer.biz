@@ -8,10 +8,10 @@
 
 #frame
 	frmAdVideo
-	*frmPubVideo
+	frmPubVideo
 	frmUser[user_content_container]
 	frmAdmin
-	frmHome
+	*frmHome
 	frmHow
 	frmContactUs[contact_us_container]
 
@@ -135,10 +135,18 @@
 	}
 
 	function frmHome(){
-		$buttons=#fun->frmButtons();
+		$btn=#fun->frmButtons();
+		#node->VideoList->bookModeUser("topublish",-1);
+		$VList=#node->VideoList->_backframe();
 		return <PHTML>
-			$buttons
-			Home Page
+			<div id="showbox">
+				<div id="showbox_content_home" class="showbox_content"></div>
+			</div>
+			<div class="content_container" >
+				$btn
+				<div class="video_list_title">Publishing Videos</div>
+				$VList
+			</div>
 		</PHTML>
 	}
 
@@ -199,7 +207,7 @@
 		$VList=#node->VideoList->_backframe();
 		return <PHTML>
 			<div id="showbox">
-				<div id="showbox_content" style="cursor: auto; "></div>
+				<div id="showbox_content_pubvideo" class="showbox_content"></div>
 			</div>
 			<div class="content_container" >
 				$btn
@@ -213,8 +221,8 @@
 		$btn=#fun->frmButtons();
 		$adV=#node->AddVideo->_backframe();
 		return <PHTML>
-			<div id="showbox">
-				<div id="showbox_content" style="cursor: auto; "></div>
+			<div id="showbox" style="height:432px;">
+				<div id="showbox_content_addvideo" class="showbox_content"></div>
 			</div>
 			<div class="content_container" >
 				$btn
@@ -226,7 +234,7 @@
 
 #js
 	$(document).ready(function(){
-	   	$("#showbox_content").click(function(e){
+	   	$("#showbox_content_home").click(function(e){
 
 			var x = e.pageX - this.offsetLeft;
 			var y = e.pageY - this.offsetTop;
@@ -236,11 +244,47 @@
 				window.location.href = "http://rocketviews.com/?p=AdVideo";
 			}
 		});
-		$("#showbox_content").mousemove(function(e){
+		$("#showbox_content_home").mousemove(function(e){
 
 			var x = e.pageX - this.offsetLeft;
 			var y = e.pageY - this.offsetTop;
 			if((x>0 && x<475 && y>335 && y<420) || (x>475 && x<950 && y>335 && y<420)){
+				$(this).css('cursor','pointer');
+			}else{
+				$(this).css('cursor','auto');
+			}
+		});
+	   	$("#showbox_content_addvideo").click(function(e){
+
+			var x = e.pageX - this.offsetLeft;
+			var y = e.pageY - this.offsetTop;
+			if(x>0 && x<475 && y>405 && y<490){
+				window.location.href = "http://rocketviews.com/?p=PubVideo";
+			}
+		});
+		$("#showbox_content_addvideo").mousemove(function(e){
+
+			var x = e.pageX - this.offsetLeft;
+			var y = e.pageY - this.offsetTop;
+			if(x>0 && x<475 && y>405 && y<490){
+				$(this).css('cursor','pointer');
+			}else{
+				$(this).css('cursor','auto');
+			}
+		});
+	   	$("#showbox_content_pubvideo").click(function(e){
+
+			var x = e.pageX - this.offsetLeft;
+			var y = e.pageY - this.offsetTop;
+			if (x>475 && x<950 && y>335 && y<420){
+				window.location.href = "http://rocketviews.com/?p=AdVideo";
+			}
+		});
+		$("#showbox_content_pubvideo").mousemove(function(e){
+
+			var x = e.pageX - this.offsetLeft;
+			var y = e.pageY - this.offsetTop;
+			if(x>475 && x<950 && y>335 && y<420){
 				$(this).css('cursor','pointer');
 			}else{
 				$(this).css('cursor','auto');
@@ -298,13 +342,24 @@
 		height: 370px;
 		margin:auto;
 	}
-	#showbox_content{
-		background: url('./img/showbox_bg.png') no-repeat center ;
+	.showbox_content{
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: -20px;
-		height: 430px;
 		width: 960px;
+		cursor: auto;
+	}
+	#showbox_content_pubvideo{
+		background: url('./img/showbox_bg_pubvideo.png') no-repeat center ;
+		height: 430px;
+    }
+	#showbox_content_home{
+		background: url('./img/showbox_bg_home.png') no-repeat center ;
+		height: 430px;
+    }
+	#showbox_content_addvideo{
+		background: url('./img/showbox_bg_addvideo.png') no-repeat center ;
+		height: 490px;
     }
 	#publish_btns {
 		text-align: center;

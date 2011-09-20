@@ -55,7 +55,7 @@ class mainpageviewer {
 
 		//default frame if exists
 		if(!isset($_SESSION['osNodes'][$fullname]['_curFrame']))
-			$_SESSION['osNodes'][$fullname]['_curFrame']='frmPubVideo';
+			$_SESSION['osNodes'][$fullname]['_curFrame']='frmHome';
 		$this->_curFrame=&$_SESSION['osNodes'][$fullname]['_curFrame'];
 
 		$this->AddVideo=new addvideo($this->_fullname.'_AddVideo');
@@ -137,19 +137,19 @@ class mainpageviewer {
 	function show($echo){
 		$_style='';
 		switch($this->_curFrame){
-			case 'frmPubVideo':
+			case 'frmHome':
 				$_style=' ';
 				break;
 			case 'frmAdVideo':
+				$_style=' ';
+				break;
+			case 'frmPubVideo':
 				$_style=' ';
 				break;
 			case 'frmUser':
 				$_style=' class="user_content_container"  ';
 				break;
 			case 'frmAdmin':
-				$_style=' ';
-				break;
-			case 'frmHome':
 				$_style=' ';
 				break;
 			case 'frmHow':
@@ -265,11 +265,19 @@ PHTMLCODE;
 
 	}
 	function frmHome(){
-		$buttons=$this->frmButtons();
+		$btn=$this->frmButtons();
+		$this->VideoList->bookModeUser("topublish",-1);
+		$VList=$this->VideoList->_backframe();
 		return <<<PHTMLCODE
 
-			$buttons
-			Home Page
+			<div id="showbox">
+				<div id="showbox_content_home" class="showbox_content"></div>
+			</div>
+			<div class="content_container" >
+				$btn
+				<div class="video_list_title">Publishing Videos</div>
+				$VList
+			</div>
 		
 PHTMLCODE;
 
@@ -338,7 +346,7 @@ PHTMLCODE;
 		return <<<PHTMLCODE
 
 			<div id="showbox">
-				<div id="showbox_content" style="cursor: auto; "></div>
+				<div id="showbox_content_pubvideo" class="showbox_content"></div>
 			</div>
 			<div class="content_container" >
 				$btn
@@ -354,8 +362,8 @@ PHTMLCODE;
 		$adV=$this->AddVideo->_backframe();
 		return <<<PHTMLCODE
 
-			<div id="showbox">
-				<div id="showbox_content" style="cursor: auto; "></div>
+			<div id="showbox" style="height:432px;">
+				<div id="showbox_content_addvideo" class="showbox_content"></div>
 			</div>
 			<div class="content_container" >
 				$btn

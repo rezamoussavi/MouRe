@@ -108,7 +108,7 @@ class bizbank {
 		$login=$this->login->_backframe();
 		$tab=$this->tabbar->_backframe();
 		$pages=$this->pages->_backframe();
-		$home=osBackPageLink("PubVideo");
+		$home=osBackPageLink("Home");
 		return <<<PHTMLCODE
 
 			<div id="header_bg">

@@ -50,13 +50,24 @@
 		height: 370px;
 		margin:auto;
 	}
-	#showbox_content{
-		background: url('./img/showbox_bg.png') no-repeat center ;
+	.showbox_content{
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: -20px;
-		height: 430px;
 		width: 960px;
+		cursor: auto;
+	}
+	#showbox_content_pubvideo{
+		background: url('./img/showbox_bg_pubvideo.png') no-repeat center ;
+		height: 430px;
+    }
+	#showbox_content_home{
+		background: url('./img/showbox_bg_home.png') no-repeat center ;
+		height: 430px;
+    }
+	#showbox_content_addvideo{
+		background: url('./img/showbox_bg_addvideo.png') no-repeat center ;
+		height: 490px;
     }
 	#publish_btns {
 		text-align: center;

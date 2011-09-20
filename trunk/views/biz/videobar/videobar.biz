@@ -461,7 +461,7 @@
 	.stop_conf_btn
 	{
 		margin-left: 5px;
-		width: 50px;
+		width: 85px;
 		height: 30px;
 		background-color: #A2E3F5;
 		border: 5px solid #1ABABA;
