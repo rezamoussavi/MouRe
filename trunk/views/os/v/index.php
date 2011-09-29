@@ -5,7 +5,8 @@
 	*	to get publink id and increment views
 	*/
 	$log="View Counter<br/>";
-	$GapTime=3600;
+//	$GapTime=3600;
+	$GapTime=3;
 	$Now=date("YmdHis");
 	require_once "../db.php";
 	$osdbcon = mysql_connect ($ServerAddress, $UN, $Pass);
@@ -14,7 +15,8 @@
 		mysql_select_db($DataBase,$osdbcon);
 		$log.="db_connect GET[id] GET[link] : ok<br/>";
 		$id=$_GET['id'];
-		$link=substr($_GET['link'],0,strlen($_GET['link'])-10);
+//		$link=substr($_GET['link'],0,strlen($_GET['link'])-10);
+		$link=$_GET['link'];
 		/* Timer stuff */
 		if(!isset($_SESSION['video'])){
 			$_SESSION['video']=array();
@@ -53,9 +55,18 @@
 				}
 				$log.="<b>countryCode</b>: $countryCode<br/>";
 				$log.="<b>countryName</b>: $countryName<br/>";
+				/*
+					Check if video has finished and no view will apply
+					It will check -1 and date and set it to 0 if time has passed
+				*/
+				$today=date("Y/m/d");
+				UPDATE(" adlink_info SET running=0 WHERE running=-1 AND lastDate<'".$today."'");
 				/* fetch video country */
 				$adInfo=SELECT(" country FROM adlink_info WHERE adUID=".$adUID." AND running != 0");
-				$adCountry=$adInfo['country'];
+				if(isset($adInfo['country']))
+					$adCountry=$adInfo['country'];
+				else
+					$adCountry="__NONE";
 				/*
 				*	if viewer country match video target country
 				*	will count it otherwise leave it
@@ -77,7 +88,7 @@
 						}
 						$log.="<b>--- UPDATE DONE ---</b><br/>";
 					}else
-						$log.="YTID + publishID : NOT Found on DB<br/>";
+						$log.="YTID($link) + publishID($id) : NOT Found on DB<br/>";
 				}//if country is correct
 				else
 					$log.="Country: Missmatch<br/>";
@@ -87,11 +98,11 @@
 			$timeago=$Now-$_SESSION['video']['$link'];
 			$log.="Has been viewed LESS than $GapTime seconds ago; $timeago seconds ago<br/>";
 		}
-	}//main if
+	}//main if (id and link has been set)
 	else
 		$log.="db_connect GET[id] GET[link] : ERROR!<br/>";
 
-	osLog($log);
+//	osLog($log);
 
 
 	/*

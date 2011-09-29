@@ -159,6 +159,18 @@ class videobar {
 		$country="";
 		if(strlen($this->data['country'])>3)
 			$country="<br />only in ".$this->data['country'];
+		$getLinkForm="";
+		if($this->data['running']==1){
+			$getLinkForm=<<<PHTMLCODE
+
+				<form id="$frmName" method="post">
+					<input class="getlink_btn" type="button" value="Get link to publish" onclick='JavaScript:sndmsg("$frmName")'/>
+					<input type="hidden" name="_message" value="frame_getLink" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
+				</form>
+			
+PHTMLCODE;
+
+		}
 		return <<<PHTMLCODE
 
 			<div class="box_close_topub">
@@ -171,10 +183,7 @@ class videobar {
 					<div class="video_header">
 						<div class="video_title" id="{$Title}">{$Title}</div>
 						<div class="details_btn_div">
-							<form id="$frmName" method="post">
-								<input class="getlink_btn" type="button" value="Get link to publish" onclick='JavaScript:sndmsg("$frmName")'/>
-								<input type="hidden" name="_message" value="frame_getLink" /><input type = "hidden" name="_target" value="{$this->_fullname}" />
-							</form>
+							$getLinkForm
 						</div>
 					</div>
 					<div class="other_n_embed">
@@ -365,7 +374,7 @@ PHTMLCODE;
 		elseif($this->data['running']==-1){
 			$html= <<<PHTMLCODE
 
-		        <div class="stop_not_txt">This video will be removed from publishing at {$this->data['lastDate']}<br />and you will be re-imbursed with teh remaining number of views.</div> 
+		        <div class="stop_not_txt">This video will be removed from publishing at {$this->data['lastDate']}<br />and you will be re-imbursed with the remaining number of views.</div> 
 			
 PHTMLCODE;
 
@@ -453,6 +462,7 @@ PHTMLCODE;
 	function bookMode($mode){
 		switch($mode){
 			case "topublish":
+			case "stopped":
 				$this->_bookframe("frmToPublish");
 				break;
 			case "myad":

@@ -31,6 +31,7 @@
 #node
 	addvideo AddVideo
 	videolistviewer VideoList
+	videolistviewer VideoList2
 	myaccviewer UserPanel
 	adminviewer AdminPanel
 
@@ -138,6 +139,8 @@
 		$btn=#fun->frmButtons();
 		#node->VideoList->bookModeUser("topublish",-1);
 		$VList=#node->VideoList->_backframe();
+		#node->VideoList2->bookModeUser("stopped",-1);
+		$VList2=#node->VideoList2->_backframe();
 		return <PHTML>
 			<div id="showbox">
 				<div id="showbox_content_home" class="showbox_content"></div>
@@ -146,6 +149,8 @@
 				$btn
 				<div class="video_list_title">Publishing Videos</div>
 				$VList
+				<div class="video_list_title">Viral Videos Archive</div>
+				$VList2
 			</div>
 		</PHTML>
 	}
@@ -205,6 +210,8 @@
 		$btn=#fun->frmButtons();
 		#node->VideoList->bookModeUser("topublish",-1);
 		$VList=#node->VideoList->_backframe();
+		#node->VideoList2->bookModeUser("stopped",-1);
+		$VList2=#node->VideoList2->_backframe();
 		return <PHTML>
 			<div id="showbox">
 				<div id="showbox_content_pubvideo" class="showbox_content"></div>
@@ -213,6 +220,8 @@
 				$btn
 				<div class="video_list_title">Publishing Videos</div>
 				$VList
+				<div class="video_list_title">Viral Videos Archive</div>
+				$VList2
 			</div>
 		</PHTML>
 	}
@@ -221,7 +230,7 @@
 		$btn=#fun->frmButtons();
 		$adV=#node->AddVideo->_backframe();
 		return <PHTML>
-			<div id="showbox" style="height:432px;">
+			<div id="showbox" style="height:462px;">
 				<div id="showbox_content_addvideo" class="showbox_content"></div>
 			</div>
 			<div class="content_container" >
@@ -258,7 +267,7 @@
 
 			var x = e.pageX - this.offsetLeft;
 			var y = e.pageY - this.offsetTop;
-			if(x>0 && x<475 && y>405 && y<490){
+			if(x>0 && x<475 && y>435 && y<520){
 				window.location.href = "http://rocketviews.com/?p=PubVideo";
 			}
 		});
@@ -266,7 +275,7 @@
 
 			var x = e.pageX - this.offsetLeft;
 			var y = e.pageY - this.offsetTop;
-			if(x>0 && x<475 && y>405 && y<490){
+			if(x>0 && x<475 && y>435 && y<520){
 				$(this).css('cursor','pointer');
 			}else{
 				$(this).css('cursor','auto');
@@ -359,7 +368,7 @@
     }
 	#showbox_content_addvideo{
 		background: url('./img/showbox_bg_addvideo.png') no-repeat center ;
-		height: 490px;
+		height: 520px;
     }
 	#publish_btns {
 		text-align: center;

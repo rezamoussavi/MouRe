@@ -163,7 +163,10 @@ PHTMLCODE;
 		$vl=array();
 		switch($mode){
 			case "topublish":
-				query("SELECT * FROM adlink_info WHERE running<>0 ORDER BY startDate DESC");
+				query("SELECT * FROM adlink_info WHERE running=1 ORDER BY startDate DESC");
+				break;
+			case "stopped":
+				query("SELECT * FROM adlink_info WHERE running<>1 ORDER BY startDate DESC");
 				break;
 			case "myad":
 				$q="SELECT * FROM adlink_info WHERE advertisor=".$userID." ORDER BY startDate DESC";

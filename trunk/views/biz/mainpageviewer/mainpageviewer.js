@@ -22,14 +22,14 @@
 	   	$("#showbox_content_addvideo").click(function(e){
 			var x = e.pageX - this.offsetLeft;
 			var y = e.pageY - this.offsetTop;
-			if(x>0 && x<475 && y>405 && y<490){
+			if(x>0 && x<475 && y>435 && y<520){
 				window.location.href = "http://rocketviews.com/?p=PubVideo";
 			}
 		});
 		$("#showbox_content_addvideo").mousemove(function(e){
 			var x = e.pageX - this.offsetLeft;
 			var y = e.pageY - this.offsetTop;
-			if(x>0 && x<475 && y>405 && y<490){
+			if(x>0 && x<475 && y>435 && y<520){
 				$(this).css('cursor','pointer');
 			}else{
 				$(this).css('cursor','auto');

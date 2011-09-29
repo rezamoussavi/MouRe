@@ -53,6 +53,15 @@
 		$country="";
 		if(strlen(#var->data['country'])>3)
 			$country="<br />only in ".#var->data['country'];
+		$getLinkForm="";
+		if(#var->data['running']==1){
+			$getLinkForm=<PHTML>
+				<form id="$frmName" method="post">
+					<input class="getlink_btn" type="button" value="Get link to publish" onclick='JavaScript:sndmsg("$frmName")'/>
+					<#msg->getLink>
+				</form>
+			</PHTML>
+		}
 		return <PHTML>
 			<div class="box_close_topub">
 				<div class="box_image">
@@ -64,10 +73,7 @@
 					<div class="video_header">
 						<div class="video_title" id="{$Title}">{$Title}</div>
 						<div class="details_btn_div">
-							<form id="$frmName" method="post">
-								<input class="getlink_btn" type="button" value="Get link to publish" onclick='JavaScript:sndmsg("$frmName")'/>
-								<#msg->getLink>
-							</form>
+							$getLinkForm
 						</div>
 					</div>
 					<div class="other_n_embed">
@@ -246,7 +252,7 @@
 		*/
 		elseif(#var->data['running']==-1){
 			$html= <PHTML>
-		        <div class="stop_not_txt">This video will be removed from publishing at {#var->data['lastDate']}<br />and you will be re-imbursed with teh remaining number of views.</div> 
+		        <div class="stop_not_txt">This video will be removed from publishing at {#var->data['lastDate']}<br />and you will be re-imbursed with the remaining number of views.</div> 
 			</PHTML>
 		}
 		/*
@@ -334,6 +340,7 @@
 	function bookMode($mode){
 		switch($mode){
 			case "topublish":
+			case "stopped":
 				_bookframe(#frm->frmToPublish);
 				break;
 			case "myad":

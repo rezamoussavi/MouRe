@@ -27,6 +27,7 @@ class mainpageviewer {
 	//Nodes (bizvars)
 	var $AddVideo;
 	var $VideoList;
+	var $VideoList2;
 	var $UserPanel;
 	var $AdminPanel;
 
@@ -61,6 +62,8 @@ class mainpageviewer {
 		$this->AddVideo=new addvideo($this->_fullname.'_AddVideo');
 
 		$this->VideoList=new videolistviewer($this->_fullname.'_VideoList');
+
+		$this->VideoList2=new videolistviewer($this->_fullname.'_VideoList2');
 
 		$this->UserPanel=new myaccviewer($this->_fullname.'_UserPanel');
 
@@ -268,6 +271,8 @@ PHTMLCODE;
 		$btn=$this->frmButtons();
 		$this->VideoList->bookModeUser("topublish",-1);
 		$VList=$this->VideoList->_backframe();
+		$this->VideoList2->bookModeUser("stopped",-1);
+		$VList2=$this->VideoList2->_backframe();
 		return <<<PHTMLCODE
 
 			<div id="showbox">
@@ -277,6 +282,8 @@ PHTMLCODE;
 				$btn
 				<div class="video_list_title">Publishing Videos</div>
 				$VList
+				<div class="video_list_title">Viral Videos Archive</div>
+				$VList2
 			</div>
 		
 PHTMLCODE;
@@ -343,6 +350,8 @@ PHTMLCODE;
 		$btn=$this->frmButtons();
 		$this->VideoList->bookModeUser("topublish",-1);
 		$VList=$this->VideoList->_backframe();
+		$this->VideoList2->bookModeUser("stopped",-1);
+		$VList2=$this->VideoList2->_backframe();
 		return <<<PHTMLCODE
 
 			<div id="showbox">
@@ -352,6 +361,8 @@ PHTMLCODE;
 				$btn
 				<div class="video_list_title">Publishing Videos</div>
 				$VList
+				<div class="video_list_title">Viral Videos Archive</div>
+				$VList2
 			</div>
 		
 PHTMLCODE;
@@ -362,7 +373,7 @@ PHTMLCODE;
 		$adV=$this->AddVideo->_backframe();
 		return <<<PHTMLCODE
 
-			<div id="showbox" style="height:432px;">
+			<div id="showbox" style="height:462px;">
 				<div id="showbox_content_addvideo" class="showbox_content"></div>
 			</div>
 			<div class="content_container" >

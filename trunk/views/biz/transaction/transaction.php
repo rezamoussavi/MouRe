@@ -109,30 +109,46 @@ class transaction {
 		return sprintf("%.2f",$trans+$earned);
 	}
 	function backUserSummary($UID){
-		$ret=array("Balance"=>0,"Charge"=>0,"Earn"=>0,"Reimburse"=>0,"Withdraw"=>0,"adPay"=>0);
+		$this->calcReimburse($UID);
+		$ret=array("Balance"=>0,"Charge"=>0,"Earn"=>0,"Reimburse"=>0,"Withdrawn"=>0,"adPay"=>0);
+		/*  Earned  */
 		query("SELECT SUM(PPV * totalView) as earned FROM publink_info WHERE publisher=".$UID);
 		if($row=fetch()){$ret['Earn']=sprintf("%.2f",$row['earned']);}
+		/*  Withdrawn  */
 		query("SELECT SUM(amount) as withdrawn FROM transaction_history WHERE type='Withdraw' AND UID=".$UID);
 		if($row=fetch()){$ret['Withdrawn']=sprintf("%.2f",$row['withdrawn']);}
+		/*  Deposit  */
 		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='Charge'");
 		if($row=fetch()){$ret['Charge']=sprintf("%.2f",$row['total']);}
+		/*  adPay  */
 		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='adPay'");
 		if($row=fetch()){$ret['adPay']=sprintf("%.2f",$row['total']);}
-		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='Withdraw'");
-		if($row=fetch()){$ret['Withdraw']=sprintf("%.2f",$row['total']);}
+		/*  Reimburse  */
 		query("SELECT SUM(amount) as total FROM transaction_history WHERE UID=".$UID." AND type='Reimburse'");
 		if($row=fetch()){$ret['Reimburse']=sprintf("%.2f",$row['total']);}
-		$ret['Balance']=$ret['Earn']+$ret['Charge']+$ret['adPay']+$ret['Withdraw']+$ret['Reimburse'];
+		$ret['Balance']=$ret['Earn']+$ret['Charge']+$ret['adPay']+$ret['Withdrawn']+$ret['Reimburse'];
 		osBroadcast("transaction_update",array("balance"=>$ret['Balance']));
 		return $ret;
+	}
+	function calcReimburse($UID){
+		while(1){
+			query("SELECT * FROM adlink_info WHERE advertisor=$UID AND running=0 AND reimbursed=0 AND maxViews>viewed");
+			if(!($row=fetch())) return;
+			$re=($row['maxViews']-$row['viewed'])*$row['AOPV'];
+			query("UPDATE adlink_info SET reimbursed=".$re." WHERE adUID=".$row['adUID']);
+			$this->INSERTonly($UID,$row['lastDate'],"Reimburse",$re,"Paid ".$row['paid']." for ".$row['maxViews']."(each ".$row['AOPV'].") But viewed ".$row['viewed']." times.");
+		}
 	}
 	/*************************************
 	*	INTERNAL FUNCTIONS
 	*************************************/
-	function INSERT($UID,$date,$type,$amount,$comments){
+	function INSERTonly($UID,$date,$type,$amount,$comments){
 		$s="INSERT INTO transaction_history (UID,date,type,amount,comments) ";
 		$s.=" VALUE ('$UID','$date','$type','$amount','$comments');";
 		query($s);
+	}
+	function INSERT($UID,$date,$type,$amount,$comments){
+		$this->INSERTonly($UID,$date,$type,$amount,$comments);
 		$this->backUserSummary(osBackUserID());
 	}
 
