@@ -101,7 +101,7 @@ class bizbank {
 
 
 	function init(){
-		$tabs=array('Contact us','contactus','Pricing','pricing');/* caption, page, caption , page ,... */
+		$tabs=array('Contact us','contactus','Pricing','AdVideo');/* caption, page, caption , page ,... */
 		$this->tabbar->bookContent($tabs);
 	}
 	function frm(){

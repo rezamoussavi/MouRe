@@ -9,7 +9,7 @@
 	----------------------------------
 	Author:	Reza Moussavi
 	Date:	4/21/2011
-	Ver:		0.1
+	Ver:	0.1
 
 */
 require_once 'biz/adlink/adlink.php';

@@ -5,33 +5,33 @@
 	*	to get publink id and increment views
 	*/
 	$log="View Counter<br/>";
-//	$GapTime=3600;
-	$GapTime=3;
+	$GapTime=3600;
+//	$GapTime=3;
 	$Now=date("YmdHis");
 	require_once "../db.php";
 	$osdbcon = mysql_connect ($ServerAddress, $UN, $Pass);
 	$result=false;
 	if ($osdbcon && isset($_GET['id']) && isset($_GET['link'])){
 		mysql_select_db($DataBase,$osdbcon);
-		$log.="db_connect GET[id] GET[link] : ok<br/>";
 		$id=$_GET['id'];
-//		$link=substr($_GET['link'],0,strlen($_GET['link'])-10);
-		$link=$_GET['link'];
+		$link=substr($_GET['link'],0,strlen($_GET['link'])-10);
+//		$link=$_GET['link'];
+		$log.="db_connect GET[id]=".$_GET['id']." GET[link]=".$_GET['link']." : ok<br/>";
 		/* Timer stuff */
 		if(!isset($_SESSION['video'])){
 			$_SESSION['video']=array();
 		}
-		if(!isset($_SESSION['video']['$link'])){
+		if(!isset($_SESSION['video'][$link])){
 			/*
 			*	This video has not viewed here
 			*	Set the time and do view
 			*/
-			$_SESSION['video']['$link']=$Now-$GapTime-100;
+			$_SESSION['video'][$link]=$Now-$GapTime-100;
 			$log.="This video has not viewed here<br/>";
 		}
-		if($Now-$_SESSION['video']['$link']>$GapTime){
+		if($Now-$_SESSION['video'][$link]>$GapTime){
 			$log.="Has been viewed more than $GapTime seconds ago<br/>";
-			$_SESSION['video']['$link']=$Now;
+			$_SESSION['video'][$link]=$Now;
 			/*
 			*	Fetch Publisher and adUID
 			*	If the id exists
@@ -45,6 +45,7 @@
 				}else{
 					/* Fetch User country code, country name and IP */
 					$ip=getenv(HTTP_X_FORWARDED_FOR)?getenv(HTTP_X_FORWARDED_FOR):getenv(REMOTE_ADDR);
+					$log.="ip: $ip<br/>";
 					if($row=SELECT(" CountryName, CountryCode2 FROM ip_country WHERE inet_aton('".$ip."') >= IPFrom AND inet_aton('".$ip."') <= IPTo")){
 						$countryCode=$row['CountryCode2'];
 						$countryName=$row['CountryName'];
@@ -95,7 +96,7 @@
 			}
 		}// not viewed else
 		else{//Has been viewd during last GapView
-			$timeago=$Now-$_SESSION['video']['$link'];
+			$timeago=$Now-$_SESSION['video'][$link];
 			$log.="Has been viewed LESS than $GapTime seconds ago; $timeago seconds ago<br/>";
 		}
 	}//main if (id and link has been set)
@@ -136,6 +137,6 @@
 		query("INSERT INTO os_log(TimeStamp,Biz,NodeID,Message) VALUES('$t','$Biz','$NodeID','$Message')");
 	}
 
-// osLog($_X);
+ osLog($log);
 // echo $log;
 ?>
